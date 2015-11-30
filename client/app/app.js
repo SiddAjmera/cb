@@ -52,3 +52,9 @@ angular.module('cbApp', [
       });
     });
   });
+
+var onDeviceReady = function() {
+    angular.bootstrap( document, ['cbApp']);
+}
+document.addEventListener('deviceready', 
+onDeviceReady);
