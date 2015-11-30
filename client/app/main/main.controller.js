@@ -1,8 +1,15 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('MainCtrl', function ($scope, $http, socket) {
-    $scope.awesomeThings = [];
+  .controller('MainCtrl', function ($scope, $http, socket, cordovaUtil) {
+	  
+	  
+	  $scope.startTracking=function(){
+		  
+		  cordovaUtil.getCoordinates();
+	  }
+	  
+  /*  $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
@@ -23,5 +30,5 @@ angular.module('cbApp')
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('thing');
-    });
+    }); */
   });
