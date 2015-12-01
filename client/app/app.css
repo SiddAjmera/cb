@@ -259,10 +259,10 @@
     padding-right: 0px;
     background-color: rgba(29, 28, 28, 0.58);
     text-align: center;
-    padding-top: 50px;
+    padding-top: 1%;
 }
 svg.map-svg,svg.signup-main-svg{
-    height: 150px;
+    height: 68%;
 }
 svg path.path-0{
     fill:#fff;
