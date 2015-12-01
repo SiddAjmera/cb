@@ -1,34 +1,19 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SignupCtrl', function ($scope, Auth, $location, $window) {
-    $scope.user = {};
+  .controller('SignupCtrl', function ($scope, Auth, $location, $window,parse) {
+    $scope.user = {vehicle:{}};
     $scope.errors = {};
 
     $scope.register = function(form) {
       $scope.submitted = true;
+      console.log($scope.user);
 
-      if(form.$valid) {
-        Auth.createUser({
-          name: $scope.user.name,
-          email: $scope.user.email,
-          password: $scope.user.password
-        })
-        .then( function() {
-          // Account created, redirect to home
-          $location.path('/');
-        })
-        .catch( function(err) {
-          err = err.data;
-          $scope.errors = {};
+      parse.saveObject("signupObject",$scope.user).
+      then(function(response){
+        console.log(response);
+      })
 
-          // Update validity of form fields that match the mongoose errors
-          angular.forEach(err.errors, function(error, field) {
-            form[field].$setValidity('mongoose', false);
-            $scope.errors[field] = error.message;
-          });
-        });
-      }
     };
 
     $scope.loginOauth = function(provider) {

@@ -5,7 +5,6 @@ angular.module('cbApp')
     $stateProvider
       .state('signup.stepThree', {
         url: '/stepThree',
-        templateUrl: 'app/account/signup/stepThree/stepThree.html',
-        controller: 'SignupCtrl'
+        templateUrl: 'app/account/signup/stepThree/stepThree.html'
       });
   });
