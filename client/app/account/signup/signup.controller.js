@@ -5,7 +5,7 @@ angular.module('cbApp')
     $scope.user = {vehicle:{}};
     $scope.errors = {};
 
-    $scope.register = function(form) {
+    $scope.register = function() {
       $scope.submitted = true;
       console.log($scope.user);
 

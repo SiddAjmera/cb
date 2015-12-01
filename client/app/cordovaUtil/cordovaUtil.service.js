@@ -18,6 +18,7 @@ angular.module('cbApp')
 			   }, function(error)
 			   {
 				   // The  Callback use to  receive a PositionError object
+				   console.log('Error Code: ' + error.code +  ' Error Message: ' + error.message);
 				   alert('Error Code: ' + error.code +  ' Error Message: ' + error.message);
 			   });
 		  
@@ -25,14 +26,21 @@ angular.module('cbApp')
 	   
 	   saveCoordinates:function(position)
 	   {
+	   		console.log("My cordinates ",position);
 		   var mySavedLocationCoordinates = window.localStorage.getItem('SavedLocationCoordinates');
-		   mySavedLocationCoordinates = JSON.parse(mySavedLocationCoordinates);
+		   
 		   if(mySavedLocationCoordinates != undefined)
 		   {
+		   	   mySavedLocationCoordinates = JSON.parse(mySavedLocationCoordinates);	
 			   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
-			   trackedLocationCoordinatesObject.Latitude = position.coords.latitude;
-			   trackedLocationCoordinatesObject.Longitude = position.coords.longitude;
-			   mySavedLocationCoordinates.push(trackedLocationCoordinatesObject);
+			   trackedLocationCoordinatesObject = {};
+			   var timestamp = position.timestamp
+			   var latObj={};
+			   latObj.Latitude=position.coords.latitude;
+			   latObj.Longitude=position.coords.longitude;	
+			   trackedLocationCoordinatesObject[timestamp] = latObj;
+			   console.log('current location object :',trackedLocationCoordinatesObject);
+			   mySavedLocationCoordinates.TrackedLocations.push(trackedLocationCoordinatesObject);
 			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
 		   }
 		   else
@@ -40,8 +48,18 @@ angular.module('cbApp')
 			   var objectToStoreTheTrackedLocationsArray = {};	// Object to store the TrackedLocations Array
 			   var trackedLocationsArray = [];	// Attribute in the ObjectToStoreTheTrackedLocationsArray to store array of Tracked Locations			   
 			   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
-			   trackedLocationCoordinatesObject.Latitude = position.coords.latitude;
-			   trackedLocationCoordinatesObject.Longitude = position.coords.longitude;
+			   var timestamp = position.timestamp
+			   var latObj={};
+			   latObj.Latitude=position.coords.latitude;
+			   latObj.Longitude=position.coords.longitude;			   
+			   trackedLocationCoordinatesObject[timestamp] =latObj;
+
+
+			   
+			  // trackedLocationCoordinatesObject.TimeStamp = position.timestamp;
+			 /*  trackedLocationCoordinatesObject.TimeStamp.Latitude = position.coords.latitude;
+			   trackedLocationCoordinatesObject.TimeStamp.Longitude = position.coords.longitude;*/
+			   alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
 			   trackedLocationsArray.push(trackedLocationCoordinatesObject);
 			   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocationsArray;
 			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray));
