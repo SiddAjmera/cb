@@ -1,0 +1,32 @@
+
+
+			<div class="form-section">
+				<div class="each-row">
+					<div><span class="glyphicon glyphicon-earphone"></span></div>
+					<div><input class="form-control" ng-model="user.contactNo" type="text" name="contact" placeholder="Contact"></div>
+				</div>
+				<div class="each-row">
+					<div><span class="glyphicon glyphicon-time"></span></div>
+					<div>
+						<select class="timeslot" ng-model="user.timeSlot">
+							<option>8:00 AM - 5:00 PM</option>
+							<option>9:00 AM - 6:00 PM</option>
+							<option>10:00 AM - 7:00 PM</option>
+						</select>
+					</div>
+				</div>				
+				<div class="each-row gender-section">
+					<div class="radio gender-radio">
+					  <label><input type="radio" name="optradio" ng-model="user.gender">Male</label>
+					</div>
+					<div class="radio gender-radio">
+					  <label><input type="radio" name="optradio" ng-model="user.gender">Female</label>
+					</div>
+				</div>
+				<div class="each-row">
+					<input type="button" name="continue" value="Continue" ui-sref="signup.stepThree">
+					
+				</div>
+			</div>
+
+	

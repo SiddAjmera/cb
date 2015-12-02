@@ -12,6 +12,11 @@ angular.module('cbApp')
 		  
 		  cordovaUtil.getCoordinates();
 	  }
+
+    $scope.fetch = function(){
+      console.log("fetching")
+      cordovaUtil.fetch();
+    }
 	  
   /*  $scope.awesomeThings = [];
 

@@ -1,0 +1,26 @@
+@media(max-width: 1024px){
+
+}
+
+@media(max-width: 991px){
+
+}
+
+@media(max-width: 767px){
+
+}
+@media(max-width: 580px){
+
+}
+@media(max-width: 480px){
+	.container.login-container{
+	    width: 100%;
+	}
+	.each-row div:first-child{
+		width: 11%;
+	}
+	.each-row div:last-child{
+		width: 88%;
+	}
+	
+}
