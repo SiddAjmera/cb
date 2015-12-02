@@ -8,6 +8,11 @@ angular.module('cbApp')
 		  cordovaUtil.saveDeviceDetails();
 	  }
 	  
+
+    $scope.openMap = function(){
+      $state.go('map');
+    }
+
 	  $scope.startTracking=function(){
 		  
 		  cordovaUtil.getCoordinates();
@@ -15,7 +20,7 @@ angular.module('cbApp')
 
     $scope.fetch = function(){
       console.log("fetching")
-      cordovaUtil.fetch();
+      cordovaUtil.getAllCoordinates();
     }
 
     $scope.openSignupForm = function(){

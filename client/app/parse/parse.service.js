@@ -7,13 +7,15 @@ angular.module('cbApp')
    			console.log(object,data);
    			var tmpobj = Parse.Object.extend(object);
 		   	var testObject = new tmpobj();
-			return testObject.save({"coordinates":[]})
-
+			//return testObject.save({"coordinates":[]})
+        return testObject.save(data);
    		},
    		getObjects:function(object){
-   			var tmpobj = Parse.Object.extend(object);
-   			var testObject = new tmpobj();
-   			return testObject.fetch();
+   			var tmpobj = Parse.Object.extend("coordinatesObj");
+        var query = new Parse.Query("coordinatesObj");
+        return query.find()
+   			/*var testObject = new tmpobj();
+   			return testObject.fetch();*/
    		},
    		addObjects:function(object,data){
    				var tmpobj = Parse.Object.extend(object);
