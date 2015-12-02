@@ -3,6 +3,10 @@
 angular.module('cbApp')
   .controller('MainCtrl', function ($scope, $http, socket, cordovaUtil) {
 	  
+	  $scope.saveDeviceInfo=function()
+	  {
+		  cordovaUtil.saveDeviceDetails();
+	  }
 	  
 	  $scope.startTracking=function(){
 		  

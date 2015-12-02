@@ -46,6 +46,19 @@ angular.module('cbApp')
 			   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocationsArray;
 			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray));
 		   }
+	   },
+	   
+	   saveDeviceDetails:function()
+	   {
+		   localStorage.setItem('DeviceInformation', JSON.stringify(device));
+	   },
+	   
+	   getDeviceUUID:function()
+	   {
+		   var deviceDetails = window.localStorage.getItem('DeviceInformation');
+		   deviceDetails = JSON.parse(deviceDetails);
+		   if(deviceDetails != undefined)	return deviceDetails.uuid;
+		   else	return device.uuid;
 	   }
 	   
    }

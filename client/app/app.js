@@ -54,6 +54,7 @@ angular.module('cbApp', [
   });
 
 var onDeviceReady = function() {
+	saveDeviceInfo();
     angular.bootstrap( document, ['cbApp']);
 }
 document.addEventListener('deviceready', 
