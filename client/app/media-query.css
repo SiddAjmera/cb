@@ -22,5 +22,8 @@
 	.each-row div:last-child{
 		width: 88%;
 	}
+	.each-row div.gender-radio{
+		width: 50%;
+	}
 	
 }

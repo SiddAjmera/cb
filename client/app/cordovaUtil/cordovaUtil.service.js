@@ -25,28 +25,34 @@ angular.module('cbApp')
 	   },
 	   
 	   saveCoordinates:function(position)
-	   {
+	   {	
+	   		var that=this;
 	   		console.log("My cordinates ",position);
 		   var mySavedLocationCoordinates = window.localStorage.getItem('SavedLocationCoordinates');
-		   
+		   var UUID = that.getDeviceUUID();
 		   if(mySavedLocationCoordinates != undefined)
 		   {
 		   	   mySavedLocationCoordinates = JSON.parse(mySavedLocationCoordinates);	
 			   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
-			   trackedLocationCoordinatesObject = {};
-			   var timestamp = 't'+position.timestamp
-			   var latObj={};
-			   latObj.Latitude=position.coords.latitude;
-			   latObj.Longitude=position.coords.longitude;	
-			   latObj.timestamp=position.timestamp;		
-			   trackedLocationCoordinatesObject[timestamp] = latObj;
+			   trackedLocationCoordinatesObject.latitude=position.coords.latitude;
+			   trackedLocationCoordinatesObject.longitude=position.coords.longitude;	
+			   trackedLocationCoordinatesObject.timestamp=position.timestamp;		
+			   trackedLocationCoordinatesObject.UUID=UUID;
 
 			   console.log('current location object :',trackedLocationCoordinatesObject);
 			   mySavedLocationCoordinates.TrackedLocations.push(trackedLocationCoordinatesObject);
 
-			 parse.addObjects('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
+			/* parse.addObjects('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
 			   	alert("done")
 			   	console.log(res);
+			   },function(err){
+			   		console.log(err);
+			   });*/
+
+				parse.saveObject('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
+			   //	alert("done")
+			   	console.log(res);
+	
 			   },function(err){
 			   		console.log(err);
 			   });
@@ -57,23 +63,17 @@ angular.module('cbApp')
 			   var objectToStoreTheTrackedLocationsArray = {};	// Object to store the TrackedLocations Array
 			   var trackedLocationsArray = [];	// Attribute in the ObjectToStoreTheTrackedLocationsArray to store array of Tracked Locations			   
 			   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
-			   var timestamp = 't'+position.timestamp;
-			   var latObj={};
-			   latObj.Latitude=position.coords.latitude;
-			   latObj.Longitude=position.coords.longitude;	
-			   latObj.timestamp=position.timestamp;			   
-			   trackedLocationCoordinatesObject[timestamp] =latObj;
-
-
+			  
 			   
-			  // trackedLocationCoordinatesObject.TimeStamp = position.timestamp;
-			 /*  trackedLocationCoordinatesObject.TimeStamp.Latitude = position.coords.latitude;
-			   trackedLocationCoordinatesObject.TimeStamp.Longitude = position.coords.longitude;*/
+			   trackedLocationCoordinatesObject.latitude=position.coords.latitude;
+			   trackedLocationCoordinatesObject.longitude=position.coords.longitude;	
+			   trackedLocationCoordinatesObject.timestamp=position.timestamp;
+			   trackedLocationCoordinatesObject.UUID=UUID;			   
 			   alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
 			   trackedLocationsArray.push(trackedLocationCoordinatesObject);
 			   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocationsArray;
 			   parse.saveObject('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
-			   	alert("done")
+			   //	alert("done")
 			   	console.log(res);
 	
 			   },function(err){
@@ -89,11 +89,22 @@ angular.module('cbApp')
 
 	   getDeviceUUID:function()
 	   {
-		   var deviceDetails = window.localStorage.getItem('DeviceInformation');
+		   /*var deviceDetails = window.localStorage.getItem('DeviceInformation');
 		   deviceDetails = JSON.parse(deviceDetails);
 		   if(deviceDetails != undefined)	return deviceDetails.uuid;
-		   else	return device.uuid;
-	   } 
+		   else	return device.uuid;*/
+		   return "ThisIsASampleDeviceUUID";
+	   },
+	   getAllCoordinates:function(){
+	   	parse.getObjects().
+	   	then(function(res){
+	   		
+	   		var coordinates = _.map(res,function(d){return d.toJSON()});
+	   		return coordinates;
+	   	},function(err){
+			  console.log(err);
+		});
+	   }
 	   
    }
   }]);

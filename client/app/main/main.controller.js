@@ -1,13 +1,18 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('MainCtrl', function ($scope, $http, socket, cordovaUtil) {
+  .controller('MainCtrl', function ($scope, $http, socket, cordovaUtil,$state) {
 	  
 	  $scope.saveDeviceInfo=function()
 	  {
 		  cordovaUtil.saveDeviceDetails();
 	  }
 	  
+
+    $scope.openMap = function(){
+      $state.go('map');
+    }
+
 	  $scope.startTracking=function(){
 		  
 		  cordovaUtil.getCoordinates();
@@ -15,7 +20,11 @@ angular.module('cbApp')
 
     $scope.fetch = function(){
       console.log("fetching")
-      cordovaUtil.fetch();
+      cordovaUtil.getAllCoordinates();
+    }
+
+    $scope.openSignupForm = function(){
+      $state.go('signup.stepOne');
     }
 	  
   /*  $scope.awesomeThings = [];
