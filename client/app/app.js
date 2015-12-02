@@ -6,7 +6,8 @@ angular.module('cbApp', [
   'ngSanitize',
   'btford.socket-io',
   'ui.router',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'ngAnimate'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
@@ -14,6 +15,9 @@ angular.module('cbApp', [
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+
+    Parse.initialize("oMdH0Ybh26y7Zz8chStjWBmK3ST9wA6hNQ7vrHZ3", "vYmfAKeYOTb7Hau3COS7xIFPeObQ8QAiBlxJR2Eb");
+
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
@@ -57,4 +61,5 @@ angular.module('cbApp', [
     angular.bootstrap( document, ['cbApp']);
 }
 document.addEventListener('deviceready', 
-onDeviceReady);*/
+onDeviceReady);
+*/
