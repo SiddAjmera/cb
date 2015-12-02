@@ -47,6 +47,16 @@
     float:left;
     width: 100%;
     height: 100vh;
+    min-height: 500px;
+
+}
+.main-page-wrapper{
+   
+    float:left;
+    width: 100%;
+    height: 100vh;
+    
+
 }
 .container.login-container{
     width: 400px;
@@ -96,7 +106,7 @@
     width: 90%;
 
 }
-.each-row div:last-child input[type="text"],.each-row div:last-child input[type="password"]{
+.each-row div:last-child input[type="text"].input-boxes,.each-row div:last-child input[type="password"].pwd-boxes{
     width: 100%;
     height: 35px;
     border-top-right-radius: 3px;
@@ -117,7 +127,8 @@
     color: #fff;
 }
 
-.each-row:last-child input[type="button"]{
+.each-row:last-child input[type="button"].input-buttons,
+.each-row:last-child input[type="submit"].submit-buttons{
     width:100%;
     height: 35px;
     background-color: #02A554;
@@ -234,6 +245,33 @@
     height: 28px;
 }
 
+.each-row .seater-svg svg{
+    width: 25px;
+    height: 25px;
+}
+.each-row.seater-section div svg{
+    width: 28px;
+    height: 28px;
+}
+
+.each-row.login-page div:last-child input[type="text"]:focus,
+.each-row.login-page div:last-child input[type="password"]:focus{
+        background-color: #464646;
+        border-bottom: 1px solid #5D5D5D;
+        transition: all ease .5s;
+}
+.each-row div:last-child input[type="text"]:focus,
+.each-row div:last-child input[type="password"]:focus{
+        background-color: #464646;
+        border-bottom: 1px solid #5D5D5D;
+        transition: all ease .5s;
+}
+.location-section{
+    background-image: url(../assets/images/map.png);
+    height: 50vh;
+    float:left;
+    padding:0px;
+}
 .each-row.login-page div:last-child input[type="text"]:focus,
 .each-row.login-page div:last-child input[type="password"]:focus{
         background-color: #464646;
@@ -252,6 +290,45 @@
     float:left;
     padding:0px;
     
+}
+.content-wrapper{
+    height: 50vh;
+    padding-left: 0px;
+    padding-right: 0px;
+    background-color: rgba(29, 28, 28, 0.58);
+    text-align: center;
+    padding-top: 1%;
+}
+svg.map-svg,svg.signup-main-svg{
+    height: 68%;
+}
+svg path.path-0{
+    fill:#fff;
+}
+svg path.path-1{
+    fill:#02A554;
+}
+.locate-me{
+    height: 35px;
+    background-color: #02A554;
+    border: none;
+    border-radius: 25px;
+    padding: 0 15px;
+    width: 165px;
+    color: #fff;
+    font-weight: bold;
+}
+.mainpage-signup-section{
+    background-image: url(../assets/images/signup-back.jpeg);
+    height: 50vh;
+    padding:0px;
+    
+}
+
+#form-views.ng-enter,
+#form-views.ng-leave      
+{ position:absolute; left:30px; right:30px;
+    transition:0.5s all ease; -moz-transition:0.5s all ease; -webkit-transition:0.5s all ease; 
 }
 .content-wrapper{
     height: 50vh;
