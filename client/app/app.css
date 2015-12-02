@@ -47,6 +47,16 @@
     float:left;
     width: 100%;
     height: 100vh;
+    min-height: 500px;
+
+}
+.main-page-wrapper{
+   
+    float:left;
+    width: 100%;
+    height: 100vh;
+    
+
 }
 .container.login-container{
     width: 400px;
@@ -96,7 +106,7 @@
     width: 90%;
 
 }
-.each-row div:last-child input[type="text"],.each-row div:last-child input[type="password"]{
+.each-row div:last-child input[type="text"].input-boxes,.each-row div:last-child input[type="password"].pwd-boxes{
     width: 100%;
     height: 35px;
     border-top-right-radius: 3px;
@@ -117,8 +127,8 @@
     color: #fff;
 }
 
-.each-row:last-child input[type="button"],
-.each-row:last-child input[type="submit"]{
+.each-row:last-child input[type="button"].input-buttons,
+.each-row:last-child input[type="submit"].submit-buttons{
     width:100%;
     height: 35px;
     background-color: #02A554;
