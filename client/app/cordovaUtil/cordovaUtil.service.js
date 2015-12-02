@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaUtil', function (cordovaInit) {
+  .service('cordovaUtil',['parse',function (parse) {
    return {
 	   getCoordinates:function()
 	   {
@@ -34,13 +34,22 @@ angular.module('cbApp')
 		   	   mySavedLocationCoordinates = JSON.parse(mySavedLocationCoordinates);	
 			   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
 			   trackedLocationCoordinatesObject = {};
-			   var timestamp = position.timestamp
+			   var timestamp = 't'+position.timestamp
 			   var latObj={};
 			   latObj.Latitude=position.coords.latitude;
 			   latObj.Longitude=position.coords.longitude;	
+			   latObj.timestamp=position.timestamp;		
 			   trackedLocationCoordinatesObject[timestamp] = latObj;
+
 			   console.log('current location object :',trackedLocationCoordinatesObject);
 			   mySavedLocationCoordinates.TrackedLocations.push(trackedLocationCoordinatesObject);
+
+			 parse.addObjects('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
+			   	alert("done")
+			   	console.log(res);
+			   },function(err){
+			   		console.log(err);
+			   });
 			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
 		   }
 		   else
@@ -48,10 +57,11 @@ angular.module('cbApp')
 			   var objectToStoreTheTrackedLocationsArray = {};	// Object to store the TrackedLocations Array
 			   var trackedLocationsArray = [];	// Attribute in the ObjectToStoreTheTrackedLocationsArray to store array of Tracked Locations			   
 			   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
-			   var timestamp = position.timestamp
+			   var timestamp = 't'+position.timestamp;
 			   var latObj={};
 			   latObj.Latitude=position.coords.latitude;
-			   latObj.Longitude=position.coords.longitude;			   
+			   latObj.Longitude=position.coords.longitude;	
+			   latObj.timestamp=position.timestamp;			   
 			   trackedLocationCoordinatesObject[timestamp] =latObj;
 
 
@@ -62,9 +72,28 @@ angular.module('cbApp')
 			   alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
 			   trackedLocationsArray.push(trackedLocationCoordinatesObject);
 			   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocationsArray;
+			   parse.saveObject('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
+			   	alert("done")
+			   	console.log(res);
+	
+			   },function(err){
+			   		console.log(err);
+			   });
 			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray));
 		   }
-	   }
+	   },
+	   saveDeviceDetails:function()
+	   {
+		   localStorage.setItem('DeviceInformation', JSON.stringify(device));
+	   },
+
+	   getDeviceUUID:function()
+	   {
+		   var deviceDetails = window.localStorage.getItem('DeviceInformation');
+		   deviceDetails = JSON.parse(deviceDetails);
+		   if(deviceDetails != undefined)	return deviceDetails.uuid;
+		   else	return device.uuid;
+	   } 
 	   
    }
-  });
+  }]);

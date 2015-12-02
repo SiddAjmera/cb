@@ -1,3 +1,10 @@
+<!-- <p>Locate Me</p>
+<div id="mapCanvas" style="width:500px;height:380px;"></div>
+<button ng-click="startTracking()"> Find my Location</button>
+
+<button ng-click="fetch()"> Fetch</button>
+<a ui-sref="signup.stepOne"> Signup</a>
+<script src="http://maps.google.com/maps/api/js?sensor=true"></script> -->
 
 	<div class="page-wrapper">
 		<div class="">
@@ -9,7 +16,7 @@
 							<path class="path-1" d="M78.9,16.9c-3-5.2-8.6-8.5-14.7-8.5c-6,0-11.6,3.2-14.7,8.5c-3,5.2-3,11.7,0,16.9c4.9,8.5,9.8,16.9,14.7,25.4   c4.9-8.5,9.8-16.9,14.7-25.4C82,28.6,82,22.2,78.9,16.9z M64.3,34.9c-5.3,0-9.5-4.3-9.5-9.5c0-5.3,4.3-9.5,9.5-9.5   c5.3,0,9.5,4.3,9.5,9.5C73.8,30.7,69.5,34.9,64.3,34.9z"/>
 						</g></svg>
 						<div class="col-md-12 col-sm-12 col-xs-12">
-							<input type="button" class="locate-me" value="LOCATE ME">
+							<input type="button" class="locate-me" value="LOCATE ME" ng-click="startTracking()">
 						</div>
 				</div>
 			</div>
@@ -20,7 +27,7 @@
 						<path class="path-1" d="M21.687,90.104H11.403v-10.06H1.343V69.76h10.06V59.699h10.284V69.76h10.06v10.284h-10.06V90.104z M14.403,87.104h4.284   v-10.06h10.06V72.76h-10.06V62.699h-4.284V72.76H4.343v4.284h10.06V87.104z"/>
 					</g></svg>
 					<div class="col-md-12 col-sm-12 col-xs-12">
-							<input type="button" class="locate-me" value="SIGN UP">
+							<input type="button" class="locate-me" value="SIGN UP" ng-click="openSignupForm()"> <!-- ui-sref="signup.stepOne" --> 
 					</div>
 				</div>
 			</div>

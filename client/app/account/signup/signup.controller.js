@@ -3,10 +3,11 @@
 angular.module('cbApp')
   .controller('SignupCtrl', function ($scope, Auth, $location, $window,parse) {
     $scope.user = {vehicle:{}};
-    $scope.errors = {};
+    $scope.isRequired = false;
+    //$scope.errors = {};
 
     $scope.register = function() {
-      $scope.submitted = true;
+      $scope.isRequired = true;
       console.log($scope.user);
 
       parse.saveObject("signupObject",$scope.user).
