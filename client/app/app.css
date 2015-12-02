@@ -286,7 +286,17 @@ svg path.path-1{
     padding:0px;
     
 }
-
+a.custom-btn{
+    /*height: 35px;
+    background-color: #02A554;
+    border: none;
+    border-radius: 25px;
+    padding: 0 15px;
+    width: 165px;
+    color: #fff;
+    font-weight: bold;
+    display: block;*/
+}
 #form-views.ng-enter,
 #form-views.ng-leave      
 { position:absolute; left:30px; right:30px;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('MainCtrl', function ($scope, $http, socket, cordovaUtil) {
+  .controller('MainCtrl', function ($scope, $http, socket, cordovaUtil,$state) {
 	  
 	  
 	  $scope.startTracking=function(){
@@ -12,6 +12,10 @@ angular.module('cbApp')
     $scope.fetch = function(){
       console.log("fetching")
       cordovaUtil.fetch();
+    }
+
+    $scope.openSignupForm = function(){
+      $state.go('signup.stepOne');
     }
 	  
   /*  $scope.awesomeThings = [];
