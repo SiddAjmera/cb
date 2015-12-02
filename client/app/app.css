@@ -47,6 +47,16 @@
     float:left;
     width: 100%;
     height: 100vh;
+    min-height: 500px;
+
+}
+.main-page-wrapper{
+   
+    float:left;
+    width: 100%;
+    height: 100vh;
+    
+
 }
 .container.login-container{
     width: 400px;
@@ -88,12 +98,15 @@
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
 }
+.each-row div.id-section{
+    padding-top: 6px;
+}
 .each-row div:last-child{
     float: left;
     width: 90%;
 
 }
-.each-row div:last-child input[type="text"],.each-row div:last-child input[type="password"]{
+.each-row div:last-child input[type="text"].input-boxes,.each-row div:last-child input[type="password"].pwd-boxes{
     width: 100%;
     height: 35px;
     border-top-right-radius: 3px;
@@ -114,7 +127,8 @@
     color: #fff;
 }
 
-.each-row:last-child input[type="button"]{
+.each-row:last-child input[type="button"].input-buttons,
+.each-row:last-child input[type="submit"].submit-buttons{
     width:100%;
     height: 35px;
     background-color: #02A554;
@@ -157,6 +171,10 @@
     width: 20px;
     height: 20px;
 }
+.each-row div.id-section svg{
+    width: 28px;
+    height: 28px;
+}
 .each-row div svg{
     fill: #fff;
 }
@@ -166,8 +184,7 @@
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
 }
-.each-row.login-page input[type="button"],
-.each-row input[type="submit"]{
+.each-row.login-page input[type="button"]{
     border-radius: 25px;
     width: 100%;
     height: 35px;
@@ -218,59 +235,149 @@
 #progressbar li.active a{
     background-color: #02A554;
 }
-.animation-form-signup{
-    width:100%;
+
+.each-row .seater-svg svg{
+    width: 25px;
+    height: 25px;
+}
+.each-row.seater-section div svg{
+    width: 28px;
+    height: 28px;
+}
+
+.each-row .seater-svg svg{
+    width: 25px;
+    height: 25px;
+}
+.each-row.seater-section div svg{
+    width: 28px;
+    height: 28px;
+}
+
+.each-row.login-page div:last-child input[type="text"]:focus,
+.each-row.login-page div:last-child input[type="password"]:focus{
+        background-color: #464646;
+        border-bottom: 1px solid #5D5D5D;
+        transition: all ease .5s;
+}
+.each-row div:last-child input[type="text"]:focus,
+.each-row div:last-child input[type="password"]:focus{
+        background-color: #464646;
+        border-bottom: 1px solid #5D5D5D;
+        transition: all ease .5s;
+}
+.location-section{
+    background-image: url(../assets/images/map.png);
+    height: 50vh;
     float:left;
+    padding:0px;
 }
-
-/* basic styling for entering and leaving */
-/* left and right added to ensure full width */
-/*#form-views.ng-enter,
-#form-views.ng-leave      { position:absolute; left:15%; right:50%;
-    transition:0.5s all ease; -moz-transition:0.5s all ease; -webkit-transition:0.5s all ease; width:50%;
-}*/
+.each-row.login-page div:last-child input[type="text"]:focus,
+.each-row.login-page div:last-child input[type="password"]:focus{
+        background-color: #464646;
+        border-bottom: 1px solid #5D5D5D;
+        transition: all ease .5s;
+}
+.each-row div:last-child input[type="text"]:focus,
+.each-row div:last-child input[type="password"]:focus{
+        background-color: #464646;
+        border-bottom: 1px solid #5D5D5D;
+        transition: all ease .5s;
+}
+.location-section{
+    background-image: url(../assets/images/map.png);
+    height: 50vh;
+    float:left;
+    padding:0px;
     
-/* enter animation */
-/*#form-views.ng-enter            { 
-    -webkit-animation:slideInRight 0.5s both ease;
-    -moz-animation:slideInRight 0.5s both ease;
-    animation:slideInRight 0.5s both ease; 
-}*/
-
-/* leave animation */
-/*#form-views.ng-leave            { 
-    -webkit-animation:slideOutLeft 0.5s both ease;
-    -moz-animation:slideOutLeft 0.5s both ease;
-    animation:slideOutLeft 0.5s both ease;   
-}*/
-
-
-
-/* ANIMATIONS
-============================================================================= */
-/* slide out to the left */
-/*@keyframes slideOutLeft {
-    to      { transform: translateX(-200%); }
 }
-@-moz-keyframes slideOutLeft {  
-    to      { -moz-transform: translateX(-200%); }
+.content-wrapper{
+    height: 50vh;
+    padding-left: 0px;
+    padding-right: 0px;
+    background-color: rgba(29, 28, 28, 0.58);
+    text-align: center;
+    padding-top: 1%;
 }
-@-webkit-keyframes slideOutLeft {
-    to      { -webkit-transform: translateX(-200%); }
-}*/
+svg.map-svg,svg.signup-main-svg{
+    height: 68%;
+}
+svg path.path-0{
+    fill:#fff;
+}
+svg path.path-1{
+    fill:#02A554;
+}
+.locate-me{
+    height: 35px;
+    background-color: #02A554;
+    border: none;
+    border-radius: 25px;
+    padding: 0 15px;
+    width: 165px;
+    color: #fff;
+    font-weight: bold;
+}
+.mainpage-signup-section{
+    background-image: url(../assets/images/signup-back.jpeg);
+    height: 50vh;
+    padding:0px;
+    
+}
 
-/* slide in from the right */
-/*@keyframes slideInRight {
-    from    { transform:translateX(40%); }
-    to      { transform: translateX(19.5%); }
+#form-views.ng-enter,
+#form-views.ng-leave      
+{ position:absolute; left:30px; right:30px;
+    transition:0.5s all ease; -moz-transition:0.5s all ease; -webkit-transition:0.5s all ease; 
 }
-@-moz-keyframes slideInRight {
-    from    { -moz-transform:translateX(200%); }
-    to      { -moz-transform: translateX(19.5%); }
+.content-wrapper{
+    height: 50vh;
+    padding-left: 0px;
+    padding-right: 0px;
+    background-color: rgba(29, 28, 28, 0.58);
+    text-align: center;
+    padding-top: 1%;
 }
-@-webkit-keyframes slideInRight {
-    from    { -webkit-transform:translateX(40%); }
-    to      { -webkit-transform: translateX(19.5%); }
-}*/
+svg.map-svg,svg.signup-main-svg{
+    height: 68%;
+}
+svg path.path-0{
+    fill:#fff;
+}
+svg path.path-1{
+    fill:#02A554;
+}
+.locate-me{
+    height: 35px;
+    background-color: #02A554;
+    border: none;
+    border-radius: 25px;
+    padding: 0 15px;
+    width: 165px;
+    color: #fff;
+    font-weight: bold;
+}
+.mainpage-signup-section{
+    background-image: url(../assets/images/signup-back.jpeg);
+    height: 50vh;
+    padding:0px;
+    
+}
+a.custom-btn{
+    /*height: 35px;
+    background-color: #02A554;
+    border: none;
+    border-radius: 25px;
+    padding: 0 15px;
+    width: 165px;
+    color: #fff;
+    font-weight: bold;
+    display: block;*/
+}
+#form-views.ng-enter,
+#form-views.ng-leave      
+{ position:absolute; left:30px; right:30px;
+    transition:0.5s all ease; -moz-transition:0.5s all ease; -webkit-transition:0.5s all ease; 
+}
 /*login and signup styles end*/
 
