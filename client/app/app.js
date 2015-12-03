@@ -11,7 +11,8 @@ angular.module('cbApp', [
   'ngMessages',
   /*'ngTouch',
   'angular-carousel',*/
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'ngHamburger'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
