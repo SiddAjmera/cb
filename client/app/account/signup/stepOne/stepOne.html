@@ -27,10 +27,10 @@
 				</div>
 				<div class="each-row">
 					<div><span class="glyphicon glyphicon-home"></span></div>
-					<div class="has-error"><input type="text" name="permanentAddress" class="form-control input-boxes" ng-model="user.permanentAddress" placeholder="Permanent Address" required>
-						<div ng-show="!showErrorMessage"  ng-messages="signupForm.permanentAddress.$error" class="error-msg-edit">
+					<div class="has-error"><input type="text" name="homeAddress" class="form-control input-boxes" ng-model="user.homeAddress" placeholder="Home Address" required>
+						<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
 										<p ng-message="required" class="error-msg">Please enter
-											permanent address</p>
+											home address</p>
 										
 						</div>
 					</div>
@@ -47,7 +47,7 @@
 					</div>
 				</div>
 				<div class="each-row">
-					<input type="button" class="input-buttons"  name="continue" value="Continue" ng-click="goToStepTwo()">
+					<input type="button" class="input-buttons"  name="continue" value="Continue" ng-click="goToStep(2)">
 					
 				</div>
 			</div>
