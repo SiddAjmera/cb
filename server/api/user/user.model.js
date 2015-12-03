@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
-var Vehicle = require('../api/vehicle/vehicle.model');
+var Vehicle = require('../vehicle/vehicle.model');
 
 var UserSchema = new Schema({
 
@@ -13,7 +13,6 @@ var UserSchema = new Schema({
   empId: Number,
   empName: String,
   officeAddress: String,
-  password: String,
   homeAddress: String,
   startTime: String,
   endTime: String,

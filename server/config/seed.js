@@ -8,6 +8,7 @@
 var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
 
+
 Thing.find({}).remove(function() {
   Thing.create({
     name : 'Development Tools',
@@ -35,12 +36,12 @@ User.find({}).remove(function() {
     provider: 'local',
     name: 'Test User',
     email: 'test@test.com',
-    password: 'test',
     contactNo: 84464828121,
+    password: 'test',
     empId: 306894,
     empName: "Jagdeep",
     officeAddress: "Hinjewadi Phase 3",
-    homeAddress: String,
+    homeAddress: "Mega Polis",
     startTime: "10-11",
     endTime: "20-21"
   }, {
@@ -48,7 +49,7 @@ User.find({}).remove(function() {
     role: 'admin',
     name: 'Admin',
     email: 'admin@admin.com',
-    password: 'admin',
+     password: 'test',
     contactNo: 84464828121,
     empId: 962060,
     empName: "Siddharth",
@@ -61,3 +62,16 @@ User.find({}).remove(function() {
     }
   );
 });
+
+/*Ride.find({}).remove(function(){
+  Ride.create({
+    rideId: 12345678,
+    offeredByUser : new User(9876543210,456781,"John Doe","Sahyadri Park","Wakad","09-24","15-56"),
+    vehicle: { type: Schema.Types.ObjectId, ref: 'Vehicle' }),
+    companions: [ { type: Schema.Types.ObjectId, ref: 'User' } ],
+    source: "Wakad",
+    destination: "Hinjewadi",
+    windowForDeparture: 40,
+    availableSeats: 3
+  });
+});*/
