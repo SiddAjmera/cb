@@ -130,9 +130,15 @@
     padding-top: 13px;
     border-bottom: 1px solid #434343;
 }
-.each-vailable-ride:nth-child(even) div.avail-list-img-sec{
+.each-vailable-ride:nth-child(odd) div.avail-list-img-sec{
+    float: left;
+}
+.each-vailable-ride:nth-child(odd) div.avail-list-img-sec .avail-user-img{
     float: left;
 }
 .each-vailable-ride:nth-child(even) div.avail-list-img-sec{
+    float: right;
+}
+.each-vailable-ride:nth-child(even) div.avail-list-img-sec .avail-user-img{
     float: right;
 }
