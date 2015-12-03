@@ -381,3 +381,14 @@ a.custom-btn{
 }
 /*login and signup styles end*/
 
+
+
+.each-row div:last-child input[type="text"].input-boxes.ng-invalid.error-border,
+.each-row div:last-child input[type="password"].pwd-boxes.ng-invalid.error-border,
+.each-row select.timeslot.ng-invalid.error-border,
+.each-row select.seater-select.ng-invalid.error-border {
+        border: 1px solid #FF7847;
+}
+p.error-msg{
+    color: #A94442;
+}

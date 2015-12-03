@@ -7,13 +7,13 @@
 			<div class="timeline-section">
 				<!-- progressbar -->
 				<ul id="progressbar">
-					<li ui-sref-active="active" ng-click="step=1" ui-sref="signup.stepOne"><a href="">1</a></li>
-					<li ng-class="{'active':step==2}"  ng-click="goToStepTwo()"><a href="">2</a></li>
-					<li ng-class="{'active':step==3}"  ng-click="goToStepThree()"><a href="">3</a></li>
+					<li ng-class="{'active':step==1}"  ng-click="goToStep(1)"><a href="">1</a></li>
+					<li ng-class="{'active':step==2}"  ng-click="goToStep(2)"><a href="">2</a></li>
+					<li ng-class="{'active':step==3}"  ng-click="goToStep(3)"><a href="">3</a></li>
 				</ul>
 			</div>
 
-		<form name="signupForm" class="animation-form-signup" ng-submit="register()">
+		<form name="signupForm" class="animation-form-signup" ng-submit="register()" novalidate>
 			<div  ui-view></div>
 		</form>		
 		</div>
