@@ -3,7 +3,8 @@
 			<div class="form-section">
 				<div class="each-row">
 					<div><span class="glyphicon glyphicon-earphone"></span></div>
-					<div><input class="form-control input-boxes" ng-model="user.contactNo" type="text" name="contactNo" required ng-pattern="/^[0-9]*$/" placeholder="Contact" >
+<<<<<<< HEAD
+					<div><input class="form-control" ng-model="user.contactNo" type="text" name="contactNo" required ng-pattern="/^[0-9]*$/" placeholder="Contact" >
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.contactNo.$error" class="error-msg-edit">
 										<p ng-message="required" class="error-msg">Please enter
 											contact number</p>
@@ -12,12 +13,23 @@
 						</div>
 
 					</div>
+=======
+					<div><input class="form-control input-boxes" ng-model="user.contactNo" type="text" name="contact" placeholder="Contact"></div>
+>>>>>>> 839147f09a15f00d04df2c15d668e3f15b4ec14c
 				</div>
 				<div class="each-row">
 					<div><span class="glyphicon glyphicon-time"></span></div>
 					<div>
+<<<<<<< HEAD
 						<select name="timeSlot" class="timeslot" ng-model="user.timeSlot" required ng-options="t as t for t in timeSlotJSON">
 							<option style="display:none" value="">Select timeslot</option> 	
+=======
+						<select class="timeslot" ng-model="user.timeSlot">
+							<option>Select Timeslot..</option>
+							<option>8:00 AM - 5:00 PM</option>
+							<option>9:00 AM - 6:00 PM</option>
+							<option>10:00 AM - 7:00 PM</option>
+>>>>>>> 839147f09a15f00d04df2c15d668e3f15b4ec14c
 						</select>
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.timeSlot.$error" class="error-msg-edit">
 										<p ng-message="required" class="error-msg">Please select
@@ -35,7 +47,11 @@
 					</div>
 				</div>
 				<div class="each-row">
-					<input type="button" class="input-buttons" name="continue" value="Continue" ng-click="goToStepThree()">
+<<<<<<< HEAD
+					<input type="button" name="continue" value="Continue" ng-click="goToStepThree()">
+=======
+					<input type="button" class="input-buttons" name="continue" value="Continue" ui-sref="signup.stepThree">
+>>>>>>> 839147f09a15f00d04df2c15d668e3f15b4ec14c
 					
 				</div>
 			</div>

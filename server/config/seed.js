@@ -35,13 +35,27 @@ User.find({}).remove(function() {
     provider: 'local',
     name: 'Test User',
     email: 'test@test.com',
-    password: 'test'
+    password: 'test',
+    contactNo: 84464828121,
+    empId: 306894,
+    empName: "Jagdeep",
+    officeAddress: "Hinjewadi Phase 3",
+    homeAddress: String,
+    startTime: "10-11",
+    endTime: "20-21"
   }, {
     provider: 'local',
     role: 'admin',
     name: 'Admin',
     email: 'admin@admin.com',
-    password: 'admin'
+    password: 'admin',
+    contactNo: 84464828121,
+    empId: 962060,
+    empName: "Siddharth",
+    officeAddress: "Hinjewadi Phase 3",
+    homeAddress: "Wakad",
+    startTime: "09-16",
+    endTime: "15-24"
   }, function() {
       console.log('finished populating users');
     }
