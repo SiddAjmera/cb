@@ -7,17 +7,17 @@
 		</div>
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<ul class="functionality-ham-list">
-				<li><a ui-sref="userHome.home" ng-click="toggleHamburger()">Home</a></li>
-				<li><a ui-sref="userHome.postRides" ng-click="toggleHamburger()"> Leaving Now</a></li>
-				<li><a ui-sref="userHome.availableRides" ng-click="toggleHamburger()">Available rides</a></li>
-				<li><a ui-sref="main">Logout</a></li>
+				<li><a class="function-links" ui-sref="userHome.home" ng-click="toggleHamburger()">Home</a></li>
+				<li><a class="function-links" ui-sref="userHome.postRides" ng-click="toggleHamburger()"> Leaving Now</a></li>
+				<li><a class="function-links" ui-sref="userHome.availableRides" ng-click="toggleHamburger()">Available rides</a></li>
+				<li><a class="function-links" ui-sref="main">Logout</a></li>
 			</ul>
 		</div>
 	</div>
 
 	<!-- page content -->
 	<div class="main-content" ng-class="{show : tgState}">
-		<hamburger-toggle state="tgState"></hamburger-toggle>
+		<!-- <hamburger-toggle state="tgState"></hamburger-toggle> -->
 		<ui-view>
 
 		</ui-view>

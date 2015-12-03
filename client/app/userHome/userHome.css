@@ -27,6 +27,9 @@
     -webkit-transition: all 0.6s ease-in-out;
     
 }
+.main-content .page-wrapper{
+	position: absolute;
+}
 .hamburger-image-section{
 	text-align: center;
     height: 110px;
@@ -47,7 +50,14 @@
 .functionality-ham-list{
 	list-style-type: none;
 	padding-left: 0px;
-	color: #949494;
+	
+}
+.functionality-ham-list li a.function-links{
+    color: #949494;
+    text-decoration: none;
+}
+.functionality-ham-list li a.function-links:hover{
+    text-decoration: none;
 }
 .functionality-ham-list li{
 	line-height: 40px;

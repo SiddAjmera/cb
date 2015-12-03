@@ -7,15 +7,19 @@
 .header-section{
     float: left;
     background-color: #02A554;
-    height: 35px;
+    height: 40px;
     padding-top: 5px;
     font-size: 15px;
     color: #fff;
     font-weight: bold;
     border-bottom: 2px solid #acacac;
+    position: fixed;
+    z-index: 1000;
 }
 .heading{
     font-size: 18px;
+    margin-top: 3px;
+    
 }
 .input-labels{
     color: #888888;
@@ -37,6 +41,9 @@
     padding: 0px;
     padding-top: 10px;
 }
+.no-border{
+    border: none;
+}
 .each-function-row:last-child{
     border: none;
 }
@@ -55,10 +62,11 @@
 }
 
 .form-section.functionality-wrap{
-    margin-top: 20px;
+    margin-top: 35px;
+    padding: 0 15px;
 }
 .form-section.functionality-wrap.avail-list-wrap{
-    margin-top: 0px;
+    margin-top: 35px;
 }
 .opp-input-box{
     width: 100%;
