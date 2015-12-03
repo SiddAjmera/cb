@@ -4,8 +4,22 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
+var Vehicle = require('../vehicle/vehicle.model');
 
 var UserSchema = new Schema({
+
+// According to the current scenario - Siddharth Ajmera
+  contactNo: Number,
+  empId: Number,
+  empName: String,
+  officeAddress: String,
+  homeAddress: String,
+  startTime: String,
+  endTime: String,
+  vehicle: { type: Schema.Types.ObjectId, ref: 'Vehicle' },
+// End of Code by Siddharth
+
+
   name: String,
   email: { type: String, lowercase: true },
   role: {
