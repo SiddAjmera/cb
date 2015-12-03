@@ -3,7 +3,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var User = require('../api/user/user.model');
+var User = require('../user/user.model');
 
 var RideSchema = new Schema({
   rideId: Number,

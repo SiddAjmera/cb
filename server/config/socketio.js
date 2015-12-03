@@ -19,7 +19,7 @@ function onConnect(socket) {
 
   // Insert sockets below
   require('../api/vehicle/vehicle.socket').register(socket);
-  require('../api/user/user.socket').register(socket);
+ // require('../api/user/user.socket').register(socket);
   require('../api/ride/ride.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);
 }
