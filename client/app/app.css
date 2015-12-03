@@ -46,8 +46,8 @@
     background-color: #000;
     float:left;
     width: 100%;
-    height: 100vh;
-    min-height: 500px;
+    min-height: 100vh;
+    /*min-height: 500px;*/
 
 }
 .main-page-wrapper{
@@ -91,15 +91,15 @@
 .each-row div:first-child{
     float: left;
     width: 35px;
-    height: 35px;
+    height: 40px;
     background-color: #5A5858;
-    padding-top: 8px;
+    padding-top: 10px;
     text-align: center;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
 }
 .each-row div.id-section{
-    padding-top: 6px;
+    padding-top: 9px;
 }
 .each-row div:last-child{
     float: left;
@@ -108,9 +108,9 @@
 }
 .each-row div:last-child input[type="text"].input-boxes,.each-row div:last-child input[type="password"].pwd-boxes{
     width: 100%;
-    height: 35px;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
+    height: 40px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border:none;
@@ -130,10 +130,10 @@
 .each-row:last-child input[type="button"].input-buttons,
 .each-row:last-child input[type="submit"].submit-buttons{
     width:100%;
-    height: 35px;
+    height: 40px;
     background-color: #02A554;
     border: none;
-    border-radius: 4px;
+    border-radius: 25px;
     color: #fff;
 }
 .each-row div.gender-radio{
@@ -147,16 +147,16 @@
     font-size: 14px;
 }
 .each-row.gender-section{
-    height: 35px;
+    height: 40px;
     margin-bottom: 0px;
 }
 .each-row select.timeslot{
     width: 100%;
     background-color: #797979;
     border: none;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    height: 35px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    height: 40px;
     color: #dadada;
 }
 .each-row select.timeslot:hover{
@@ -187,7 +187,7 @@
 .each-row.login-page input[type="button"]{
     border-radius: 25px;
     width: 100%;
-    height: 35px;
+    height: 40px;
     background-color: #02A554;
     border: none;
     color: #fff;
@@ -197,9 +197,9 @@
     width: 100%;
     background-color: #797979;
     border: none;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    height: 35px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    height: 40px;
     color: #dadada;
 }
 .each-row select.seater-select:hover{
@@ -381,3 +381,14 @@ a.custom-btn{
 }
 /*login and signup styles end*/
 
+
+
+.each-row div:last-child input[type="text"].input-boxes.ng-invalid.error-border,
+.each-row div:last-child input[type="password"].pwd-boxes.ng-invalid.error-border,
+.each-row select.timeslot.ng-invalid.error-border,
+.each-row select.seater-select.ng-invalid.error-border {
+        border: 1px solid #FF7847;
+}
+p.error-msg{
+    color: #A94442;
+}

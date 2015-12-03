@@ -9,9 +9,10 @@ angular.module('cbApp', [
   'ui.bootstrap',
   'ngAnimate',
   'ngMessages',
-  'ngTouch',
-  'angular-carousel',
-  'ui.bootstrap'
+  /*'ngTouch',
+  'angular-carousel',*/
+  'ui.bootstrap',
+  'ngHamburger'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

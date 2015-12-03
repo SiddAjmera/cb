@@ -57,15 +57,23 @@
 .form-section.functionality-wrap{
     margin-top: 20px;
 }
+.form-section.functionality-wrap.avail-list-wrap{
+    margin-top: 0px;
+}
 .opp-input-box{
     width: 100%;
-    height: 35px;
+    height: 40px;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
     border: none;
     padding: 10px;
     background-color: #797979;
     color: #dadada;
+}
+.opp-input-box:focus{
+    background-color: #464646;
+    border-bottom: 1px solid #5D5D5D;
+    transition: all ease .5s;
 }
 .other-box{
     margin-top: 15px;
@@ -108,5 +116,15 @@
     background-color: #FF9800;
 }
 .availability-label{
-    color: #888;
+    color: #b7b7b7;
+}
+.each-vailable-ride{
+    padding-top: 13px;
+    border-bottom: 1px solid #434343;
+}
+.each-vailable-ride:nth-child(even) div.avail-list-img-sec{
+    float: left;
+}
+.each-vailable-ride:nth-child(even) div.avail-list-img-sec{
+    float: right;
 }

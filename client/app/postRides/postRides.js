@@ -3,7 +3,7 @@
 angular.module('cbApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('postRides', {
+      .state('userHome.postRides', {
         url: '/postRides',
         templateUrl: 'app/postRides/postRides.html',
         controller: 'PostRidesCtrl'
