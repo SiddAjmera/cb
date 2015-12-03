@@ -46,8 +46,8 @@
     background-color: #000;
     float:left;
     width: 100%;
-    height: 100vh;
-    min-height: 500px;
+    min-height: 100vh;
+    /*min-height: 500px;*/
 
 }
 .main-page-wrapper{
