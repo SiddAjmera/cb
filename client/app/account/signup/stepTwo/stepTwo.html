@@ -3,7 +3,7 @@
 			<div class="form-section">
 				<div class="each-row">
 					<div><span class="glyphicon glyphicon-earphone"></span></div>
-					<div><input class="form-control input-boxes" ng-model="user.contactNo" type="text" name="contactNo" required ng-pattern="/^[0-9]*$/" placeholder="Contact" >
+					<div><input class="form-control input-boxes"  ng-class="{'error-border':!showErrorMessage}"  ng-model="user.contactNo" type="text" name="contactNo" required ng-pattern="/^[0-9]*$/" placeholder="Contact" >
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.contactNo.$error" class="error-msg-edit">
 										<p ng-message="required" class="error-msg">Please enter
 											contact number</p>
@@ -16,7 +16,7 @@
 				<div class="each-row">
 					<div><span class="glyphicon glyphicon-time"></span></div>
 					<div>
-						<select name="timeSlot" class="timeslot" ng-model="user.timeSlot" required ng-options="t as t for t in timeSlotJSON">
+						<select name="timeSlot" class="timeslot" ng-model="user.timeSlot" ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t for t in timeSlotJSON">
 							<option style="display:none" value="">Select timeslot</option> 	
 						</select>
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.timeSlot.$error" class="error-msg-edit">
