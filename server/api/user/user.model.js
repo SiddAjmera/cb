@@ -12,6 +12,7 @@ var UserSchema = new Schema({
   contactNo: Number,
   empId: Number,
   empName: String,
+  photoUrl: String,
   officeAddress: String,
   homeAddress: String,
   startTime: String,
