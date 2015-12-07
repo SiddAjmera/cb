@@ -17,11 +17,13 @@
     "angular-ui-router": "~0.2.10",
     "angular-animate": "~1.4.8",
     "angular-messages": "~1.4.8",
+    "underscore": "~1.8.3",
+    "angular-hamburger-toggle": "~0.2.0",
 <<<<<<< HEAD
-    "angular-carousel": "~1.0.1"
+    "angular-slick": "~0.2.1"
 =======
-    "underscore": "~1.8.3"
->>>>>>> 8c8d85f99da077d0c1cae2e90c12ffe564e6d275
+    "angular-localforage": "~1.2.3"
+>>>>>>> 3a2b9e38280466cb3962b69b2a5d5c08e4d5175a
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
