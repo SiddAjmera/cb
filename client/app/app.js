@@ -12,7 +12,8 @@ angular.module('cbApp', [
   /*'ngTouch',
   'angular-carousel',*/
   'ui.bootstrap',
-  'ngHamburger'
+  'ngHamburger',
+  'LocalForageModule'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
