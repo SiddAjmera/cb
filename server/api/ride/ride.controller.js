@@ -28,6 +28,15 @@ exports.create = function(req, res) {
   });
 };
 
+// Gets a ride based on any Ride Attribute
+exports.getRideByRideAttribute = function(req, res){
+  Ride.findOne( req.body, function(err, ride) {
+    if(err) { return handleError(res, err); }
+    if(!ride) { return res.send(404); }
+    return res.json(ride);
+  });
+};
+
 // Updates an existing ride in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }

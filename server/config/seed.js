@@ -178,17 +178,17 @@ Ride.find({}).remove(function(){
     companions: [ mongoose.Types.ObjectId("56601723647a6dac029d21eb"), mongoose.Types.ObjectId("56601723647a6dac029d21e9") ],
     source: "Wakad",
     destination: "Hinjewadi",
-    windowForDeparture: 40,
+    windowForDeparture: 15,
     availableSeats: 3
   },{
-    rideId: 12345678,
+    rideId: 23456789,
     offeredByUser : mongoose.Types.ObjectId("56601723647a6dac029d21ea"),
     vehicle: mongoose.Types.ObjectId("5660167ab6df47d026dafbc9"),
     companions: [ mongoose.Types.ObjectId("56601723647a6dac029d21ec")],
     source: "Wakad",
-    destination: "Hinjewadi",
+    destination: "Sahyadri Park",
     windowForDeparture: 40,
-    availableSeats: 3
+    availableSeats: 1
   }, function(){
     console.log('Finished Populating Rides');
   });
