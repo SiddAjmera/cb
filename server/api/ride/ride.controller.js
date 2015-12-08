@@ -30,6 +30,7 @@ exports.create = function(req, res) {
 
 // Gets a ride based on any Ride Attribute
 exports.getRideByRideAttribute = function(req, res){
+  console.log('Got to getRideByRideAttribute');
   Ride.findOne( req.body, function(err, ride) {
     if(err) { return handleError(res, err); }
     if(!ride) { return res.send(404); }

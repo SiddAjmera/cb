@@ -296,14 +296,6 @@
     padding:0px;
     
 }
-.content-wrapper{
-    height: 50vh;
-    padding-left: 0px;
-    padding-right: 0px;
-    /*background-color: rgba(29, 28, 28, 0.58);*/
-    text-align: center;
-    padding-top: 1%;
-}
 svg.map-svg,svg.signup-main-svg{
     height: 63%;
 }
@@ -340,9 +332,11 @@ svg path.path-1{
     height: 50vh;
     padding-left: 0px;
     padding-right: 0px;
-    background-color: rgba(29, 28, 28, 0.58);
     text-align: center;
     padding-top: 1%;
+}
+.map-content-wrapper{
+    background-color: rgba(29, 28, 28, 0.58);
 }
 svg.map-svg,svg.signup-main-svg{
     height: 68%;

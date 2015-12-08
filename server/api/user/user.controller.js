@@ -1,6 +1,7 @@
 'use strict';
 
 var User = require('./user.model');
+var Team = require('../team/team.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
@@ -32,6 +33,15 @@ exports.create = function (req, res, next) {
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
     res.json({ token: token });
   });
+};
+
+// Get the teams of the Current User
+
+// Here the req.body should contain { "empId" : 987654 or something }
+exports.teamsOfCurrentUser = function(req, res){
+  console.log('Got request to get Team Details of Current User');
+  var teamIDsForCurrentUser = User.find( req.body, { _id: 1 } );
+  console.log('Team IDs for Current User : ' + teamIDsForCurrentUser);
 };
 
 /**

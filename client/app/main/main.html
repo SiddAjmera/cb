@@ -1,15 +1,7 @@
-<!-- <p>Locate Me</p>
-<div id="mapCanvas" style="width:500px;height:380px;"></div>
-<button ng-click="startTracking()"> Find my Location</button>
-
-<button ng-click="fetch()"> Fetch</button>
-<a ui-sref="signup.stepOne"> Signup</a>
-<script src="http://maps.google.com/maps/api/js?sensor=true"></script> -->
-
 <div class="main-page-wrapper">
 	<div class="">
 		<div class="col-md-12 col-sm-12 col-xs-12 location-section">
-			<div class="col-md-12 col-sm-12 col-xs-12 content-wrapper">
+			<div class="col-md-12 col-sm-12 col-xs-12 content-wrapper map-content-wrapper">
 				<svg class="map-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 125" style="enable-background:new 0 0 100 100;" xml:space="preserve">
 					<path class="path-0" d="M73.5,48.3l-1.4,2.4l5.9,2.5l-7.8,4.5l-1.6-0.9l-0.3,0.5l1.3,0.7L67,59.4l-0.6,1.1l3.8-2.2l8.6,4.7l-8.9,5.5  L62,63l1.1-0.7l-0.3-0.5l-1.4,0.8l-5.9-4.1l4.1-2.2l-0.3-0.5L55,58.1l-4.7-3.3l6.6-3.4L56,49.9l-3-1.6l1.6-0.8l-0.3-0.5l-1.9,1  L48.9,46l3.8-1.8l-0.3-0.5l-4.2,2L45,43.9l5.5-2.6l0.7,0.3l-1.1-1.9l-12.9,5.9l-14.3-3.6L5,50.3l10.2,41.3l36.6-22.1l21.3,1.4  L95,56.9L73.5,48.3z M54.8,58.9l0.1-0.1l5.3,3.7l-7.3-1l-5-4l6.9,1.2L54.8,58.9z M41.8,53.5l3.8,3L37.2,55l-0.1-0.1l-0.1,0l-3.2-3  L41.8,53.5z M33.1,51.1L33,51l-0.1,0l-2.4-2.2l7.3,1.6l2.9,2.3L33.1,51.1z M39.2,50.6l5.9,1.3l0.1,0.1l0.1-0.1l3,2.1L42,52.9  L39.2,50.6z M38.1,49.8L36,48.1l5.5,1.3l0.1,0.1l0.1-0.1l2.3,1.6L38.1,49.8z M36.7,49.5l-7-1.5l-0.1-0.1l-0.1,0l-1.8-1.7l6.7,1.6  L36.7,49.5z M29,48.1l-8.2,4l-1.7-2.5l7.6-3.6L29,48.1z M29.5,48.6l2.9,2.7l-9.1,4.6l-2.1-3.2L29.5,48.6z M32.8,51.7l3.7,3.5  l-10.2,5.3l-2.7-4.2L32.8,51.7z M37,55.7l4.8,4.6l-11.5,6.4l-3.6-5.5L37,55.7z M38,55.8l8.6,1.5l5.1,4L42.5,60l-0.1-0.1l-0.1,0  L38,55.8z M53.7,57.9l-6.8-1.2l-3.8-3l6.4,1.3l0.1,0.1l0.1-0.1L53.7,57.9z M56.5,50.9l-6.8,3.5l-3.8-2.7l6.4-3.2L56.5,50.9z   M51.6,48.2l-6.3,3.1l-3.1-2.2l5.9-2.8L51.6,48.2z M44.3,44.2l3.2,1.7l-5.8,2.8l-2.8-2L44.3,44.2z M38.2,46.8L38.1,47l2.1,1.4  l-5.3-1.3l-2.2-1.7L38.2,46.8z M31.6,45.2l-0.1,0.1l1.9,1.5L27,45.3l-0.1-0.1l-0.1,0l-1.7-1.7L31.6,45.2z M24.2,43.6l2.1,1.9  l-7.5,3.5l-1.5-2.3L24.2,43.6z M9.1,50.5l7.6-3.5l1.5,2.3l-8.2,3.9L9.1,50.5z M10.1,53.8l8.4-4l1.7,2.5l-9.1,4.4L10.1,53.8z   M11.3,57.4l9.2-4.5l2.1,3.2l-10.1,5.1L11.3,57.4z M12.8,61.8L23,56.7l2.7,4.2l-11.3,5.9L12.8,61.8z M14.6,67.4l11.5-6l3.6,5.6  l-12.9,7.1L14.6,67.4z M20.1,84.3L17,74.7l13.1-7.2l5.2,7.9L20.1,84.3z M35.7,75l-5.1-7.9l11.7-6.4l6.8,6.4L35.7,75z M49.7,67  L49.7,67l-6.5-6.2l9.4,1.3l7.4,5.8L49.7,67z M60.9,68L60.9,68l-7.1-5.7l7.4,1l0.1,0.1l0.1-0.1l7.6,5.3L60.9,68z M70.8,58l7.9-4.5  l9.2,4l-8.5,5.2L70.8,58z"/>
 					<g>
@@ -35,30 +27,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- <section id="features" class="blue" ng-init="index=2">
-  <div class="content">
-    <slick dots="true" class="slider single-item" current-index="index" responsive="breakpoints" slides-to-show=1 slides-to-scroll=1>
-      	<div>
-      		<img src="../../assets/images/bg2.jpg" width="1200px" height="600px"/>
-      	</div>
-      	<div>
-      		<img src="../../assets/images/bg3.jpg" width="1200px" height="600px"/>
-      	</div>
-      	<div>
-      		<img src="../../assets/images/bg4.jpg" width="1200px" height="600px"/>
-      	</div>
-      	<div>
-      		<img src="../../assets/images/bg5.jpg" width="1200px" height="600px"/>
-      	</div>
-      	<div>
-      		<img src="../../assets/images/bg6.jpg" width="1200px" height="600px"/>
-      	</div>
-      	<div>
-      		<img src="../../assets/images/bg7.jpg" width="1200px" height="600px"/>
-      	</div>
-    </slick>
-    <br>
-    <hr/>
-  </div>
-</section> -->

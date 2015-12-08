@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 var Vehicle = require('../vehicle/vehicle.model');
+var Team = require('../team/team.model');
 
 var UserSchema = new Schema({
 
@@ -18,6 +19,7 @@ var UserSchema = new Schema({
   startTime: String,
   endTime: String,
   vehicle: { type: Schema.Types.ObjectId, ref: 'Vehicle' },
+  teams : [{ type: Schema.Types.ObjectId, ref: 'Team' }],
 // End of Code by Siddharth
 
 

@@ -10,29 +10,7 @@ var mongoose = require('mongoose');
 var User = require('../api/user/user.model');
 var Vehicle = require('../api/vehicle/vehicle.model');
 var Ride = require('../api/ride/ride.model');
-
-
-/*Thing.find({}).remove(function() {
-  Thing.create({
-    name : 'Development Tools',
-    info : 'Integration with popular tools such as Bower, Grunt, Karma, Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, Stylus, Sass, CoffeeScript, and Less.'
-  }, {
-    name : 'Server and Client integration',
-    info : 'Built with a powerful and fun stack: MongoDB, Express, AngularJS, and Node.'
-  }, {
-    name : 'Smart Build System',
-    info : 'Build system ignores `spec` files, allowing you to keep tests alongside code. Automatic injection of scripts and styles into your index.html'
-  },  {
-    name : 'Modular Structure',
-    info : 'Best practice client and server structures allow for more code reusability and maximum scalability'
-  },  {
-    name : 'Optimized Build',
-    info : 'Build process packs up your templates as a single JavaScript payload, minifies your scripts/css/images, and rewrites asset names for caching.'
-  },{
-    name : 'Deployment Ready',
-    info : 'Easily deploy your app to Heroku or Openshift with the heroku and openshift subgenerators'
-  });
-});*/
+var Team = require('../api/team/team.model');
 
 Vehicle.create({
     vehicleNo: "MH 14 JZ 1234",
@@ -170,8 +148,7 @@ User.create({
     console.log('Finished populating Users');
   });
 
-Ride.find({}).remove(function(){
-  Ride.create({
+Ride.create({
     rideId: 12345678,
     offeredByUser : mongoose.Types.ObjectId("56601723647a6dac029d21e8"),
     vehicle: mongoose.Types.ObjectId("5660167ab6df47d026dafbc5"),
@@ -192,4 +169,17 @@ Ride.find({}).remove(function(){
   }, function(){
     console.log('Finished Populating Rides');
   });
+
+Team.create({
+    teamId: 1000,
+    name: "Monday Mornings",
+    admin: mongoose.Types.ObjectId("56601723647a6dac029d21e8"),
+    members: [ mongoose.Types.ObjectId("56601723647a6dac029d21eb"), mongoose.Types.ObjectId("56601723647a6dac029d21e9") ]
+},{
+    teamId: 1001,
+    name: "Monday Evenings",
+    admin: mongoose.Types.ObjectId("56601723647a6dac029d21ea"),
+    members: [ mongoose.Types.ObjectId("56601723647a6dac029d21ec")],
+}, function(){
+    console.log('Finished populating Teams');
 });
