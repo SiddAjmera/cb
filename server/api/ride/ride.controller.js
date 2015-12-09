@@ -2,6 +2,8 @@
 
 var _ = require('lodash');
 var Ride = require('./ride.model');
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 
 // Get list of rides
 exports.index = function(req, res) {
@@ -35,6 +37,32 @@ exports.getRideByRideAttribute = function(req, res){
     if(err) { return handleError(res, err); }
     if(!ride) { return res.send(404); }
     return res.json(ride);
+  });
+};
+
+// Gets rides based on certain criteria
+exports.getAvailableRides = function(req, res){
+  console.log('Got to getAvailableRides with request body : ' + JSON.stringify(req.body));
+  //var arrayOfAvailableRides = Ride.find( JSON.stringify(req.body) ).toArray();
+  Ride.find().where("destination", req.body.destination)
+             .where("source", req.body.source)
+             .where("active", req.body.active)
+             .exec(function(err, rides) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, rides);
+  });
+};
+
+// Gets inactive rides for current user
+exports.getRideHistoryForCurrentUser = function(req, res){
+
+  Ride.find().where("offeredByUser", Schema.Types.ObjectId(req.body.userObjectId))
+            // .where("companions.forEachIndex", req.body.userObjectId)  // Some code required to check for ObjectIds in the nested Child Elements as well.
+             .where("active", req.body.active)    // Here req.body.active will be false as we want rides from history and not the ones which are currently active.
+             .exec(function(err, rides){
+    if(err) { return handleError(res, err); }
+    if(rides.length == 0) console.log("Rides object is empty. Here it is : " + rides);
+    return res.json(200, rides);
   });
 };
 

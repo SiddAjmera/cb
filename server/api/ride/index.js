@@ -12,6 +12,8 @@ router.post('/', auth.isAuthenticated(), controller.create);
 
 // This can be used for any type of sigle get. This will only return a single Ride Object
 router.post('/GetRideByRideAttribute', controller.getRideByRideAttribute);
+router.post('/GetAvailableRides', auth.isAuthenticated(), controller.getAvailableRides);
+router.post('/GetRideHistoryForCurrentUser', auth.isAuthenticated(), controller.getRideHistoryForCurrentUser);
 // End of routes
 
 router.put('/:id', controller.update);

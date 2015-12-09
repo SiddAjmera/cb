@@ -12,7 +12,8 @@ var RideSchema = new Schema({
   source: String,
   destination: String,
   windowForDeparture: Number,
-  availableSeats: Number
+  availableSeats: Number,
+  active: Boolean
 });
 
 module.exports = mongoose.model('Ride', RideSchema);
