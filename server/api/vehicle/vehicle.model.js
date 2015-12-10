@@ -4,12 +4,13 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var VehicleSchema = new Schema({
-  vehicleNo: String,
+  vehicleLicenseNumber: String,
   capacity: Number,
   make: String,
   model: String,
   rfid: String,
-  pictureUrl: String
+  vehiclePhotoUrl: String,
+  ownerUserId: Number
 });
 
 module.exports = mongoose.model('Vehicle', VehicleSchema);

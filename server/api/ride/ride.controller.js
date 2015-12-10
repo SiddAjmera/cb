@@ -55,7 +55,6 @@ exports.getAvailableRides = function(req, res){
 
 // Gets inactive rides for current user
 exports.getRideHistoryForCurrentUser = function(req, res){
-
   Ride.find().where("offeredByUser", Schema.Types.ObjectId(req.body.userObjectId))
             // .where("companions.forEachIndex", req.body.userObjectId)  // Some code required to check for ObjectIds in the nested Child Elements as well.
              .where("active", req.body.active)    // Here req.body.active will be false as we want rides from history and not the ones which are currently active.

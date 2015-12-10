@@ -10,20 +10,24 @@ var Team = require('../team/team.model');
 var UserSchema = new Schema({
 
 // According to the current scenario - Siddharth Ajmera
-  contactNo: Number,
-  empId: Number,
-  empName: String,
-  photoUrl: String,
+  contactNumber: String,
+  //empId: int,
+  userId: String,
+  userName: String,
+  userPhotoUrl: String,
   officeAddress: String,
   homeAddress: String,
   startTime: String,
   endTime: String,
-  vehicle: { type: Schema.Types.ObjectId, ref: 'Vehicle' },
-  teams : [{ type: Schema.Types.ObjectId, ref: 'Team' }],
+  vehicleLicenseNumber: String,
+  teams : [
+    { teamId: Number }
+  ],
+  gender: String,
 // End of Code by Siddharth
 
 
-  name: String,
+//  name: String,
   email: { type: String, lowercase: true },
   role: {
     type: String,

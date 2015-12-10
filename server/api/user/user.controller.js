@@ -22,13 +22,15 @@ exports.index = function(req, res) {
 };
 
 /**
- * Creates a new user
+ * Creates a new user. This will be used to SingUp a new User. This returns an access token that can be userd to log the user in right after signup.
  */
 exports.create = function (req, res, next) {
+  console.log('User requested to create a new account with data : ' + JSON.stringify(req.body) );
   var newUser = new User(req.body);
   newUser.provider = 'local';
   newUser.role = 'user';
   newUser.save(function(err, user) {
+    console.log('Error creating a User. Here is the error ', err);
     if (err) return validationError(res, err);
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
     res.json({ token: token });
@@ -93,6 +95,7 @@ exports.changePassword = function(req, res, next) {
  * Get my info
  */
 exports.me = function(req, res, next) {
+  console.log('This is the request body in me : ' + JSON.stringify(req));
   var userId = req.user._id;
   User.findOne({
     _id: userId

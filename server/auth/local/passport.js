@@ -26,12 +26,12 @@ var LocalStrategy = require('passport-local').Strategy;
 
 exports.setup = function (User, config) {
   passport.use(new LocalStrategy({
-      usernameField: 'empId',
+      usernameField: 'userId',
       passwordField: 'password' // this is the virtual field on the model
     },
-    function(empId, password, done) {
+    function(userId, password, done) {
       User.findOne({
-        empId: empId
+        empId: userId
       }, function(err, user) {
         if (err) return done(err);
 
