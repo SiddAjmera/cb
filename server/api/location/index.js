@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./vehicle.controller');
+var controller = require('./location.controller');
 
 var router = express.Router();
 
@@ -9,8 +9,7 @@ router.get('/', controller.index);
 router.get('/:id', controller.show);
 router.post('/', controller.create);
 
-router.post('/GetVehiclesByUserId', controller.getVehiclesByUserId);
-router.post('/GetVehicleByVehicleId', controller.getVehicleByVehicleId);
+router.post('/CreateOrUpdateLocation', controller.createOrUpdateLocation);
 
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);

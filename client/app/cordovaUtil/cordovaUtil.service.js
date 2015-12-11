@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaUtil',['parse',function (parse) {
+  .service('cordovaUtil',['parse', '$http', function (parse,$http) {
    return {
 	   getCoordinates:function()
 	   {
@@ -26,8 +26,8 @@ angular.module('cbApp')
 	   
 	   saveCoordinates:function(position)
 	   {	
-	   		var that=this;
-	   		console.log("My cordinates ",position);
+	   	   var that=this;
+	   	   console.log("My cordinates ",position);
 		   var mySavedLocationCoordinates = window.localStorage.getItem('SavedLocationCoordinates');
 		   var UUID = that.getDeviceUUID();
 		   if(mySavedLocationCoordinates != undefined)
@@ -41,6 +41,31 @@ angular.module('cbApp')
 
 			   console.log('current location object :',trackedLocationCoordinatesObject);
 			   mySavedLocationCoordinates.TrackedLocations.push(trackedLocationCoordinatesObject);
+			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
+			   var locationsObjectForMongoDB = window.localStorage.getItem('SavedLocationCoordinates');
+			   alert('This is the Current Location Object when localStorageObject is not null: ' + locationsObjectForMongoDB);
+			   locationsObjectForMongoDB = JSON.parse(locationsObjectForMongoDB);
+
+
+			   $http({
+			        url: 'http://localhost:9000/api/locations/CreateOrUpdateLocation',
+			        dataType: 'json',
+			        method: 'POST',
+			        data: { locations: locationsObjectForMongoDB.TrackedLocations, userId: 876543 },
+			        headers: {
+			            "Content-Type": "application/json"
+			        }
+			    }).success(function(response){
+			        $scope.response = response;
+			    }).error(function(error){
+			        $scope.error = error;
+			    });
+
+
+
+
+
+
 
 			/* parse.addObjects('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
 			   	alert("done")
@@ -49,6 +74,8 @@ angular.module('cbApp')
 			   		console.log(err);
 			   });*/
 
+				console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
+
 				parse.saveObject('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
 			   //	alert("done")
 			   	console.log(res);
@@ -56,7 +83,7 @@ angular.module('cbApp')
 			   },function(err){
 			   		console.log(err);
 			   });
-			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
+			   //window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
 		   }
 		   else
 		   {
@@ -72,6 +99,33 @@ angular.module('cbApp')
 			   alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
 			   trackedLocationsArray.push(trackedLocationCoordinatesObject);
 			   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocationsArray;
+			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray));
+			   var locationsObjectForMongoDB = window.localStorage.getItem('SavedLocationCoordinates');
+			   alert('This is the Current Location Object when localStorageObject is null: ' + locationsObjectForMongoDB);
+			   locationsObjectForMongoDB = JSON.parse(locationsObjectForMongoDB);
+
+
+			   $http({
+			        url: 'http://localhost:9000/api/locations/CreateOrUpdateLocation',
+			        dataType: 'json',
+			        method: 'POST',
+			        data: { locations: locationsObjectForMongoDB.TrackedLocations, userId: 987654 },
+			        headers: {
+			            "Content-Type": "application/json"
+			        }
+			    }).success(function(response){
+			        $scope.response = response;
+			    }).error(function(error){
+			        $scope.error = error;
+			    });
+
+
+
+
+			   console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
+			   console.log('This is the trackedLocationsArray : ' + JSON.stringify(trackedLocationsArray));
+
+
 			   parse.saveObject('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
 			   //	alert("done")
 			   	console.log(res);
