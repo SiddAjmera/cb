@@ -35,9 +35,10 @@ exports.createOrUpdateLocation = function(req, res){
         if(!location) {
             location = new Location();
             location.userId = req.body.userId;
-            location.locations = req.body.locations;
+            //location.locations = req.body.locations;
+            location.locations.push(req.body.locations);
         }
-        location.locations = req.body.locations;
+        location.locations.push(req.body.locations);
         location.save(function(err) {
             if(!err) {
                 console.log("Location Updated Successfully");
@@ -56,7 +57,7 @@ exports.createOrUpdateLocation = function(req, res){
         locations: req.body.locations
       }
     });*/
-}
+};
 
 // Updates an existing location in the DB.
 exports.update = function(req, res) {

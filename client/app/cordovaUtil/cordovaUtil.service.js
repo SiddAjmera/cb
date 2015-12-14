@@ -42,16 +42,38 @@ angular.module('cbApp')
 			   console.log('current location object :',trackedLocationCoordinatesObject);
 			   mySavedLocationCoordinates.TrackedLocations.push(trackedLocationCoordinatesObject);
 			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
+
+
+
+
+
+
+			   var objectToWriteInMongoDB = {};
+			   objectToWriteInMongoDB.userId = 987654;
+			   objectToWriteInMongoDB.timestamp = position.timestamp;
+			   objectToWriteInMongoDB.uuid = UUID;
+			   objectToWriteInMongoDB.location = {};
+			   objectToWriteInMongoDB.location.latitude = position.coords.latitude;
+			   objectToWriteInMongoDB.location.longitude = position.coords.longitude;
+
+
+
+
+
+
+
 			   var locationsObjectForMongoDB = window.localStorage.getItem('SavedLocationCoordinates');
 			   alert('This is the Current Location Object when localStorageObject is not null: ' + locationsObjectForMongoDB);
 			   locationsObjectForMongoDB = JSON.parse(locationsObjectForMongoDB);
 
-
 			   $http({
-			        url: 'http://localhost:9000/api/locations/CreateOrUpdateLocation',
+			        //url: 'http://localhost:9000/api/locations/CreateOrUpdateLocation',
+			        url: 'http://localhost:9000/api/locations/',
 			        dataType: 'json',
 			        method: 'POST',
-			        data: { locations: locationsObjectForMongoDB.TrackedLocations, userId: 876543 },
+			        //data: { locations: locationsObjectForMongoDB.TrackedLocations, userId: 876543 },
+			        //data: { locations: trackedLocationCoordinatesObject, userId: 876543 },
+			        data: objectToWriteInMongoDB,
 			        headers: {
 			            "Content-Type": "application/json"
 			        }
@@ -60,12 +82,6 @@ angular.module('cbApp')
 			    }).error(function(error){
 			        $scope.error = error;
 			    });
-
-
-
-
-
-
 
 			/* parse.addObjects('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
 			   	alert("done")

@@ -6,17 +6,17 @@ var mongoose = require('mongoose'),
 var User = require('../user/user.model');
 
 var RideSchema = new Schema({
-  rideId: Number,
-  startLocation: String,
-  endLocation: String,
+  rideId: { type: Number, index: true },
+  startLocation: { type: String },
+  endLocation: { type: String },
   vehicleLicenseNumber: String,
-  offeredByUserId: Number,
+  offeredByUserId: { type: Number, index: true },
   companions: [ { companionUserId: Number } ],
   rideDate: Date,
   rideStartTime: Date,
   rideStatus: { type: String, $in: [ 'Active', 'Started', 'Completed', 'Cancelled' ] },
-  createdDate: Date,
-  modifiedDate: Date
+  createdDate: { type: Date, default: Date.now },
+  modifiedDate: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Ride', RideSchema);
