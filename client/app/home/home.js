@@ -7,5 +7,6 @@ angular.module('cbApp')
         url: '/home',
         templateUrl: 'app/home/home.html',
         controller: 'HomeCtrl'
+
       });
   });
