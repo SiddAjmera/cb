@@ -95,7 +95,7 @@ exports.changePassword = function(req, res, next) {
  * Get my info
  */
 exports.me = function(req, res, next) {
-  console.log('This is the request body in me : ' + JSON.stringify(req));
+  // console.log('This is the request body in me : ' + JSON.stringify(req));
   var userId = req.user._id;
   User.findOne({
     _id: userId

@@ -110,6 +110,21 @@ UserSchema
     });
 }, 'The specified email address is already in use.');
 
+// Validate userId is not taken
+UserSchema
+  .path('userId')
+  .validate(function(value, respond) {
+    var self = this;
+    this.constructor.findOne({userId: value}, function(err, user) {
+      if(err) throw err;
+      if(user) {
+        if(self.id === user.id) return respond(true);
+        return respond(false);
+      }
+      respond(true);
+    });
+}, 'The specified email address is already in use.');
+
 var validatePresenceOf = function(value) {
   return value && value.length;
 };
