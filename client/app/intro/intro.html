@@ -1,18 +1,59 @@
 <section id="features" class="blue" ng-init="index=2">
   <div class="content">
-    <h2>Single Item</h2>
-    <slick class="slider single-item" current-index="index" responsive="breakpoints" slides-to-show=3 slides-to-scroll=3>
-      <div ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]"><h3>{{ i }}</h3></div>
-      <p>Current index: {{ index }}</p>
+
+    <slick dots="true" infinite="false" speed=300 slides-to-show=1 touch-move="false" slides-to-scroll=1 class="slider one-time">
+      <div class="slide-wrap">
+        <div class="slide-info-section slide-1">
+            <div class="icon-img-wrap">
+              <img class="slide-icons" src="../../assets/images/intro-slider/ico_search.png">
+            </div>
+            <p>Find a companion</p>
+            <p>to commute with</p>
+        </div>
+      </div>
+      <div class="slide-wrap">
+        <div class="slide-info-section slide-2">
+            <div class="icon-img-wrap">
+              <img class="slide-icons" src="../../assets/images/intro-slider/ico_save_exp.png">
+            </div>  
+            <p>Share fuel costs</p>
+            <p>and experiences</p>
+        </div>
+      </div>
+      <div class="slide-wrap">
+        <div class="slide-info-section slide-3">
+            <div class="icon-img-wrap">
+              <img class="slide-icons" src="../../assets/images/intro-slider/ico_make_friend.png">
+            </div>  
+            <p>Make new friends</p>
+            <p>while commuting</p>
+        </div>
+      </div>
+      <div class="slide-wrap">
+        <div class="slide-info-section slide-4">
+            <div class="icon-img-wrap">
+              <img class="slide-icons" src="../../assets/images/intro-slider/ico_make_friend.png">
+            </div>  
+            <p>Save fuel, reduce traffic</p>
+            <p>and save earth</p>
+            <div class="get-started-section">
+              <a class="get-started-link"> Get Started</a>
+            </div>
+            
+        </div>
+      </div>
     </slick>
-    <p ng-click="index=4">Change index to 4</p>
-    <br>
-    <hr/>
+
+    <!-- <p ng-click="index=4">Change index to 4</p>
+    <br> -->
+    <!-- <hr/> -->
   <!--   <h2>Multiple Items</h2>
     <slick slides-to-show=3 slides-to-scroll=3 init-onload=true data="awesomeThings" class="slider multiple-items">
       <div ng-repeat="thing in awesomeThings"><h3>{{ thing }}</h3></div>
     </slick>
     <hr/>
+
+
     <h2>One At A Time</h2>
     <slick dots="true" infinite="false" speed=300 slides-to-show=5 touch-move="false" slides-to-scroll=1 class="slider one-time">
       <div><h3>1</h3></div>
@@ -22,6 +63,8 @@
       <div><h3>5</h3></div>
       <div><h3>6</h3></div>
     </slick>
+    
+
     <br>
     <hr/>
     <h2>Lazy Loading</h2>

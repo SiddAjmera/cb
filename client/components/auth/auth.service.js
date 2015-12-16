@@ -20,8 +20,8 @@ angular.module('cbApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.post('http://172.29.177.181:9000/auth/local', {
-          empId: user.empId,
+        $http.post('http://172.29.181.56:9000/auth/local', {
+          userId: user.empId,
           password: user.password
         }).
         success(function(data) {
