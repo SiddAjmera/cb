@@ -26,15 +26,23 @@ angular.module('cbApp', [
 
   })
 
-  .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
+  .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location,$localForage) {
     return {
       // Add authorization token to headers
       request: function (config) {
         config.headers = config.headers || {};
-        if ($cookieStore.get('token')) {
+       /* $localForage.getItem('token').
+        then(function(res){
+          if(res.token)
+             config.headers.Authorization = 'Bearer ' + res.token;
+          return config;
+        });*/
+
+        if($cookieStore.get('token')) {
           config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
         }
-        return config;
+
+         return config;
       },
 
       // Intercept 401s and redirect you to login
