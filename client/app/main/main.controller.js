@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('MainCtrl', function ($scope, $http, socket, cordovaUtil,$state) {
+  .controller('MainCtrl', function ($scope, $http, socket, cordovaUtil, $state, localStorage) {
+
+   
 	  
 	  $scope.saveDeviceInfo=function()
 	  {
@@ -27,6 +29,8 @@ angular.module('cbApp')
       $state.go('signup.stepOne');
     }
 	  
+
+
   /*  $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {

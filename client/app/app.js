@@ -9,8 +9,8 @@ angular.module('cbApp', [
   'ui.bootstrap',
   'ngAnimate',
   'ngMessages',
-  /*'ngTouch',
-  'angular-carousel',*/
+  /*'ngTouch',*/
+  'slick',
   'ui.bootstrap',
   'ngHamburger',
   'LocalForageModule'
@@ -60,7 +60,17 @@ angular.module('cbApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth) {
+  .run(function ($rootScope, $location, Auth,localStorage) {
+
+     //logic to check if app is already initialized
+
+    if(localStorage.isInitialized())
+         $location.path('/login');
+    else{
+        localStorage.initialize();
+        $location.path('/intro');
+    }
+
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
       Auth.isLoggedInAsync(function(loggedIn) {

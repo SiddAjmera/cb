@@ -28,6 +28,23 @@ exports.create = function(req, res) {
   });
 };
 
+// Gets Vehicle Objects by UserId
+exports.getVehiclesByUserId = function(req, res){
+  Vehicle.find().where("ownerUserId", req.body.ownerUserId)
+             .exec(function(err, vehicles) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, vehicles);
+  });
+}
+
+exports.getVehicleByVehicleId = function(req, res){
+  Vehicle.find().where("vehicleLicenseNumber", req.body.vehicleLicenseNumber)
+             .exec(function(err, vehicle) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, vehicle);
+  });
+}
+
 // Updates an existing vehicle in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
