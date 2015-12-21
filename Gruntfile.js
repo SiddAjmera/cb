@@ -2,6 +2,7 @@
 'use strict';
 
 module.exports = function (grunt) {
+  var appPath='cordova/cbApp/www/';
   var localConfig;
   try {
     localConfig = require('./server/config/local.env');
@@ -17,7 +18,8 @@ module.exports = function (grunt) {
     cdnify: 'grunt-google-cdn',
     protractor: 'grunt-protractor-runner',
     injector: 'grunt-asset-injector',
-    buildcontrol: 'grunt-build-control'
+    buildcontrol: 'grunt-build-control',
+    customCopy:'grunt-contrib-copy'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -156,7 +158,8 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
+      server: '.tmp',
+      custom: appPath
     },
 
     // Add vendor prefixed styles
@@ -366,6 +369,54 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.client %>',
         dest: '.tmp/',
         src: ['{app,components}/**/*.css']
+      },
+      custom:{
+        files:[
+                {                         
+                  dest: appPath+'app/',
+                  expand:true,
+                  flatten:true,
+                  src: ['dist/public/app/*.js'],
+                  rename: function(dest, matchedSrcPath, options) {
+                    // return the destination path and filename:
+                    var name=matchedSrcPath.split('.');
+                    name=name[1]+'.'+name[2];
+                    return (dest + name);
+                  }
+                },
+                {                         
+                  dest: appPath+'app/',
+                  expand:true,
+                  flatten:true,
+                  src: ['dist/public/app/*.css'],
+                  rename: function(dest, matchedSrcPath, options) {
+                    // return the destination path and filename:
+                    var name=matchedSrcPath.split('.');
+                    name=name[1]+'.'+name[2];
+                    return (dest + name);
+                  }
+                },
+                {                         
+                  dest: appPath+'assets/',
+                  expand:true,
+                  cwd:'dist/public/assets/',
+                  src: ['**/*.*'],
+                  rename: function(dest, matchedSrcPath, options) {
+                    // return the destination path and filename:
+                    console.log(dest,matchedSrcPath);
+                    return (dest + matchedSrcPath);
+                  }
+                },
+                {                         
+                  dest: appPath,
+                  expand:true,                 
+                  src: ['dist/public/*.*'],
+                  filter:'isFile',
+                  flatten:true
+
+                }
+              ]
+        
       }
     },
 
@@ -492,7 +543,8 @@ module.exports = function (grunt) {
           ]
         }
       }
-    },
+    }
+    
   });
 
   // Used for delaying livereload until after server has restarted
@@ -610,4 +662,6 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.registerTask('mob-build', ['clean:custom','copy:custom']);
 };
