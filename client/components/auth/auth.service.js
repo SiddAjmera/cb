@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
+  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q,$localForage) {
     var currentUser = {};
     if($cookieStore.get('token')) {
       currentUser = User.get();
@@ -20,13 +20,14 @@ angular.module('cbApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.post('/auth/local', {
-          email: user.email,
+        $http.post('http://172.29.181.56:9000/auth/local', {
+          userId: user.empId,
           password: user.password
         }).
         success(function(data) {
-          $cookieStore.put('token', data.token);
+          $localForage.setItem('token', data.token);
           currentUser = User.get();
+          console.log("currentUser",currentUser)
           deferred.resolve(data);
           return cb();
         }).
@@ -45,7 +46,8 @@ angular.module('cbApp')
        * @param  {Function}
        */
       logout: function() {
-        $cookieStore.remove('token');
+        console.log( $localForage.getItem('token'))
+        $localForage.removeItem('token');
         currentUser = {};
       },
 
@@ -107,7 +109,15 @@ angular.module('cbApp')
        * @return {Boolean}
        */
       isLoggedIn: function() {
-        return currentUser.hasOwnProperty('role');
+       $localForage.getItem('token').then(function(res){
+          console.log(res);
+       });
+        console.log("token",token)
+        if(angular.isUndefined(token))
+          return false;
+
+        return true;
+        //return currentUser.hasOwnProperty('role');
       },
 
       /**
@@ -140,7 +150,7 @@ angular.module('cbApp')
        * Get auth token
        */
       getToken: function() {
-        return $cookieStore.get('token');
+        return $localForage.getItem('token');
       }
     };
   });

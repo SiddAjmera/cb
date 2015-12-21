@@ -4,9 +4,29 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
+var Vehicle = require('../vehicle/vehicle.model');
+var Team = require('../team/team.model');
 
 var UserSchema = new Schema({
-  name: String,
+
+// According to the current scenario - Siddharth Ajmera
+  contactNumber: String,
+  userId: String,
+  userName: String,
+  userPhotoUrl: String,
+  officeAddress: String,
+  homeAddress: String,
+  startTime: String,
+  endTime: String,
+  vehicleLicenseNumber: String,
+  teams : [
+    { teamId: Number }
+  ],
+  gender: String,
+// End of Code by Siddharth
+
+
+//  name: String,
   email: { type: String, lowercase: true },
   role: {
     type: String,
@@ -81,6 +101,21 @@ UserSchema
   .validate(function(value, respond) {
     var self = this;
     this.constructor.findOne({email: value}, function(err, user) {
+      if(err) throw err;
+      if(user) {
+        if(self.id === user.id) return respond(true);
+        return respond(false);
+      }
+      respond(true);
+    });
+}, 'The specified email address is already in use.');
+
+// Validate userId is not taken
+UserSchema
+  .path('userId')
+  .validate(function(value, respond) {
+    var self = this;
+    this.constructor.findOne({userId: value}, function(err, user) {
       if(err) throw err;
       if(user) {
         if(self.id === user.id) return respond(true);

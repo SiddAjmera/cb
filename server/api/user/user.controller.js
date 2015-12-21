@@ -1,6 +1,7 @@
 'use strict';
 
 var User = require('./user.model');
+var Team = require('../team/team.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
@@ -21,18 +22,40 @@ exports.index = function(req, res) {
 };
 
 /**
- * Creates a new user
+ * Creates a new user. This will be used to SingUp a new User. This returns an access token that can be userd to log the user in right after signup.
  */
 exports.create = function (req, res, next) {
+  console.log('User requested to create a new account with data : ' + JSON.stringify(req.body) );
   var newUser = new User(req.body);
   newUser.provider = 'local';
   newUser.role = 'user';
   newUser.save(function(err, user) {
+    console.log('Error creating a User. Here is the error ', err);
     if (err) return validationError(res, err);
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
     res.json({ token: token });
   });
 };
+
+// Get the teams of the Current User
+
+// Here the req.body should contain { "empId" : 987654 or something }
+exports.teamsOfCurrentUser = function(req, res){
+  console.log('Got request to get Team Details of Current User');
+  var teamIDsForCurrentUser = User.find( req.body, { _id: 1 } );
+  console.log('Team IDs for Current User : ' + teamIDsForCurrentUser);
+};
+
+// This will return an array of Users with the specified office and home address
+exports.getSuggestions = function(req, res){
+  console.log('Got request to get suggestions. Here is the request body : ' + req.body );
+  User.find().where("officeAddress", req.body.officeAddress)
+             .where("homeAddress", req.body.homeAddress)
+             .exec(function(err, users) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, users);
+  });
+}
 
 /**
  * Get a single user
@@ -83,6 +106,7 @@ exports.changePassword = function(req, res, next) {
  * Get my info
  */
 exports.me = function(req, res, next) {
+  // console.log('This is the request body in me : ' + JSON.stringify(req));
   var userId = req.user._id;
   User.findOne({
     _id: userId

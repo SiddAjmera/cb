@@ -1,21 +1,30 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('LoginCtrl', function ($scope, Auth, $location, $window) {
+  .controller('LoginCtrl', function ($scope, Auth, $location, $window,$state) {
     $scope.user = {};
-    $scope.errors = {};
+    $scope.loginForm = {};
+    $scope.showErrorMessage = false;
+    $scope.login = function() {
+      $scope.showErrorMessage = true;
+      if(!$scope.loginForm.$valid){   /*if form is invalid,return and show error messages */
+            console.log($scope.loginForm) ;
+            $("input.ng-invalid").eq(0).focus();      
+            console.log("----------",$("input.ng-invalid"))
+            return false;
+       } 
+    
 
-    $scope.login = function(form) {
-      $scope.submitted = true;
-
-      if(form.$valid) {
+      else if($scope.loginForm.$valid) {
+        console.log($scope.loginForm)
         Auth.login({
-          email: $scope.user.email,
+          empId: $scope.user.empId,
           password: $scope.user.password
         })
-        .then( function() {
+        .then(function(response) {
+          console.log(response)
           // Logged in, redirect to home
-          $location.path('/');
+          $state.go('userHome.home');
         })
         .catch( function(err) {
           $scope.errors.other = err.message;
