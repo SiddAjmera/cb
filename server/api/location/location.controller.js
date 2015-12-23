@@ -22,7 +22,8 @@ exports.show = function(req, res) {
 
 // Creates a new location in the DB.
 exports.create = function(req, res) {
-  Location.create(req.body, function(err, location) {
+  console.log('Request.body : ' + JSON.stringify(req.body) );
+  Location.create(req.body.trackedLocations, function(err, location) {
     if(err) { return handleError(res, err); }
     return res.json(201, location);
   });
