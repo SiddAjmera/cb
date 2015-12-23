@@ -37,8 +37,13 @@
 					<a class="function-links" ui-sref="main">ANALYZE</a>
 				</li>
 				<li>
-					<img src="../../assets/images/1x/ico_login_off.png" class="ham-menu-icon">
+<<<<<<< HEAD
+					<span class="glyphicon glyphicon-edit"></span>
 					<a class="function-links" ng-click="logout()">LOGOUT</a>
+=======
+					<img src="../../assets/images/1x/ico_login_off.png" class="ham-menu-icon">
+					<a class="function-links" ui-sref="main">LOGOUT</a>
+>>>>>>> 26d9ca998474c6725724908b4594de3ac2f588cf
 				</li>
 			</ul>
 		</div>
