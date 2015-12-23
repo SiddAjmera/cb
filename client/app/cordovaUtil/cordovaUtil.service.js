@@ -1,7 +1,13 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaUtil',['parse', '$http', function (parse,$http) {
+  .service('cordovaUtil',['parse', '$http','User','httpRequest',function (parse,$http,user,httpRequest) {
+  var currentUser = {};
+   user.get().$promise.
+   then(function(user){
+   	currentUser = user;
+   	console.log("currentUser",currentUser)
+   });
    return {
 	   getCoordinates:function()
 	   {
@@ -34,71 +40,25 @@ angular.module('cbApp')
 		   {
 		   	   mySavedLocationCoordinates = JSON.parse(mySavedLocationCoordinates);	
 			   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
-			   trackedLocationCoordinatesObject.latitude=position.coords.latitude;
-			   trackedLocationCoordinatesObject.longitude=position.coords.longitude;	
+			   trackedLocationCoordinatesObject.location = {};
+			   trackedLocationCoordinatesObject.location.latitude=position.coords.latitude;
+			   trackedLocationCoordinatesObject.location.longitude=position.coords.longitude;	
 			   trackedLocationCoordinatesObject.timestamp=position.timestamp;		
-			   trackedLocationCoordinatesObject.UUID=UUID;
-
+			   trackedLocationCoordinatesObject.uuid=UUID;
+			   trackedLocationCoordinatesObject.userId = currentUser.userId;
 			   console.log('current location object :',trackedLocationCoordinatesObject);
 			   mySavedLocationCoordinates.TrackedLocations.push(trackedLocationCoordinatesObject);
 			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
-
-
-
-
-
-
-			   var objectToWriteInMongoDB = {};
-			   objectToWriteInMongoDB.userId = 987654;
-			   objectToWriteInMongoDB.timestamp = position.timestamp;
-			   objectToWriteInMongoDB.uuid = UUID;
-			   objectToWriteInMongoDB.location = {};
-			   objectToWriteInMongoDB.location.latitude = position.coords.latitude;
-			   objectToWriteInMongoDB.location.longitude = position.coords.longitude;
-
-
-
-
-
-
-
-			   var locationsObjectForMongoDB = window.localStorage.getItem('SavedLocationCoordinates');
-			   alert('This is the Current Location Object when localStorageObject is not null: ' + locationsObjectForMongoDB);
-			   locationsObjectForMongoDB = JSON.parse(locationsObjectForMongoDB);
-
-			   $http({
-			        //url: 'http://localhost:9000/api/locations/CreateOrUpdateLocation',
-			        url: 'http://localhost:9000/api/locations/',
-			        dataType: 'json',
-			        method: 'POST',
-			        //data: { locations: locationsObjectForMongoDB.TrackedLocations, userId: 876543 },
-			        //data: { locations: trackedLocationCoordinatesObject, userId: 876543 },
-			        data: objectToWriteInMongoDB,
-			        headers: {
-			            "Content-Type": "application/json"
-			        }
-			    }).success(function(response){
-			        $scope.response = response;
-			    }).error(function(error){
-			        $scope.error = error;
-			    });
-
-			/* parse.addObjects('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
-			   	alert("done")
-			   	console.log(res);
-			   },function(err){
-			   		console.log(err);
-			   });*/
-
+			
 				console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
 
-				parse.saveObject('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
+				/*parse.saveObject('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
 			   //	alert("done")
 			   	console.log(res);
 	
 			   },function(err){
 			   		console.log(err);
-			   });
+			   });*/
 			   //window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
 		   }
 		   else
@@ -107,11 +67,12 @@ angular.module('cbApp')
 			   var trackedLocationsArray = [];	// Attribute in the ObjectToStoreTheTrackedLocationsArray to store array of Tracked Locations			   
 			   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
 			  
-			   
-			   trackedLocationCoordinatesObject.latitude=position.coords.latitude;
-			   trackedLocationCoordinatesObject.longitude=position.coords.longitude;	
+			   trackedLocationCoordinatesObject.location = {};
+			   trackedLocationCoordinatesObject.location.latitude=position.coords.latitude;
+			   trackedLocationCoordinatesObject.location.longitude=position.coords.longitude;	
 			   trackedLocationCoordinatesObject.timestamp=position.timestamp;
-			   trackedLocationCoordinatesObject.UUID=UUID;			   
+			   trackedLocationCoordinatesObject.userId = currentUser.userId;
+			   trackedLocationCoordinatesObject.uuid=UUID;			   
 			   alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
 			   trackedLocationsArray.push(trackedLocationCoordinatesObject);
 			   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocationsArray;
@@ -120,35 +81,17 @@ angular.module('cbApp')
 			   alert('This is the Current Location Object when localStorageObject is null: ' + locationsObjectForMongoDB);
 			   locationsObjectForMongoDB = JSON.parse(locationsObjectForMongoDB);
 
-
-			   $http({
-			        url: 'http://localhost:9000/api/locations/CreateOrUpdateLocation',
-			        dataType: 'json',
-			        method: 'POST',
-			        data: { locations: locationsObjectForMongoDB.TrackedLocations, userId: 987654 },
-			        headers: {
-			            "Content-Type": "application/json"
-			        }
-			    }).success(function(response){
-			        $scope.response = response;
-			    }).error(function(error){
-			        $scope.error = error;
-			    });
-
-
-
-
 			   console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
 			   console.log('This is the trackedLocationsArray : ' + JSON.stringify(trackedLocationsArray));
 
 
-			   parse.saveObject('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
+			/*   parse.saveObject('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
 			   //	alert("done")
 			   	console.log(res);
 	
 			   },function(err){
 			   		console.log(err);
-			   });
+			   });*/
 			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray));
 		   }
 	   },
@@ -174,6 +117,18 @@ angular.module('cbApp')
 	   	},function(err){
 			  console.log(err);
 		});
+	   },
+	   syncCoordinates:function(){
+	   		var storedlocations = window.localStorage.getItem('SavedLocationCoordinates');
+	   		if(storedlocations==null)
+	   			return;
+
+	   		httpRequest.post(config.apis.syncLocations,storedlocations.TrackedLocations).
+	   		then(function(res){
+	   			if(res.status==201)
+	   				 window.localStorage.removeItem('SavedLocationCoordinates');
+	   		});
+	   		 
 	   }
 	   
    }

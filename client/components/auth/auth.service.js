@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q,$localForage) {
+  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q,$localForage,httpRequest) {
     var currentUser = {};
 
   $localForage.getItem('token').
@@ -27,19 +27,23 @@ angular.module('cbApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.post('http://172.29.181.56:9000/auth/local', {
-          userId: user.empId,
-          password: user.password
-        }).
-        success(function(data) {
-          $localForage.setItem('token', data.token);
-          currentUser = User.get();
-          console.log("currentUser",currentUser)
-          deferred.resolve(data);
-          return cb();
-        }).
-        error(function(err) {
-          this.logout();
+        var tempUser = {};
+        tempUser.userId = user.empId;
+        tempUser.password = user.password;
+        httpRequest.post(config.apis.login,tempUser).
+        then(function(data){
+          if(data.status==200){
+             $localForage.setItem('token', data.data.token).
+             then(function(){
+                currentUser = User.get();
+                console.log("currentUser",currentUser)
+                deferred.resolve(data);
+                return cb();
+             });
+            
+          }
+        },function(err){
+           this.logout();
           deferred.reject(err);
           return cb(err);
         }.bind(this));

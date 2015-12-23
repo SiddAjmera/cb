@@ -16,7 +16,8 @@ angular.module('cbApp', [
   'LocalForageModule'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
-     console.log("In config block")
+     console.log("In config block");
+
     $urlRouterProvider
       .otherwise('/');
 
@@ -72,9 +73,9 @@ angular.module('cbApp', [
      //logic to check if app is already initialized
 
     if(localStorage.isInitialized()){
-
+         $location.path('/home');
     }
-       //  $location.path('/login');
+      
     else{
         localStorage.initialize();
         $location.path('/intro');

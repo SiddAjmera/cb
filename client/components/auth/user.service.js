@@ -2,7 +2,8 @@
 
 angular.module('cbApp')
   .factory('User', function ($resource) {
-    return $resource('http://172.29.181.56:9000/api/users/:id/:controller', {
+    var api = config.apiBaseURL;
+    return $resource(api+'api/users/:id/:controller', {
       id: '@_id'
     },
     {
