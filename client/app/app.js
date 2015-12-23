@@ -16,6 +16,7 @@ angular.module('cbApp', [
   'LocalForageModule'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+     console.log("In config block")
     $urlRouterProvider
       .otherwise('/');
 
@@ -30,19 +31,25 @@ angular.module('cbApp', [
     return {
       // Add authorization token to headers
       request: function (config) {
+        var deferred = $q.defer();
+
         config.headers = config.headers || {};
-       /* $localForage.getItem('token').
+        $localForage.getItem('token').
         then(function(res){
-          if(res.token)
-             config.headers.Authorization = 'Bearer ' + res.token;
-          return config;
-        });*/
+          console.log("header",res);
+          if(res!=null)
+             config.headers.Authorization = 'Bearer ' + res;
+          /*console.log("config",config);
+          return config;*/
+          deferred.resolve(config);
+        });
+        return deferred.promise;
 
-        if($cookieStore.get('token')) {
+        /*if($cookieStore.get('token')) {
           config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
-        }
+        }*/
 
-         return config;
+         //return config;
       },
 
       // Intercept 401s and redirect you to login
@@ -61,11 +68,13 @@ angular.module('cbApp', [
   })
 
   .run(function ($rootScope, $location, Auth,localStorage) {
-
+    console.log("In run block")
      //logic to check if app is already initialized
 
-    if(localStorage.isInitialized())
-         $location.path('/login');
+    if(localStorage.isInitialized()){
+
+    }
+       //  $location.path('/login');
     else{
         localStorage.initialize();
         $location.path('/intro');
@@ -74,6 +83,8 @@ angular.module('cbApp', [
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
       Auth.isLoggedInAsync(function(loggedIn) {
+        console.log("loggedIn",loggedIn);
+         console.log("next",next);
         if (next.authenticate && !loggedIn) {
           $location.path('/login');
         }

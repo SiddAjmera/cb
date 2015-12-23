@@ -2,7 +2,7 @@
 
 angular.module('cbApp')
   .factory('User', function ($resource) {
-    return $resource('localhost:9000/api/users/:id/:controller', {
+    return $resource('http://172.29.181.56:9000/api/users/:id/:controller', {
       id: '@_id'
     },
     {

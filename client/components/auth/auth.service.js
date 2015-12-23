@@ -4,15 +4,15 @@ angular.module('cbApp')
   .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q,$localForage) {
     var currentUser = {};
 
-    $localForage.getItem('token').
+  $localForage.getItem('token').
     then(function(res){
-      if(res.token)
+      if(res!=null)
          currentUser = User.get();
         console.log(currentUser)
     });
-  /*  if($cookieStore.get('token')) {
-      currentUser = User.get();
-    }*/
+   // if($cookieStore.get('token')) {
+   //    currentUser = User.get();
+   //  }
 
     return {
 
@@ -27,7 +27,7 @@ angular.module('cbApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.post('http://172.29.177.181:9000/auth/local', {
+        $http.post('http://172.29.181.56:9000/auth/local', {
           userId: user.empId,
           password: user.password
         }).
@@ -118,8 +118,8 @@ angular.module('cbApp')
       isLoggedIn: function() {
        $localForage.getItem('token').then(function(res){
           console.log(res);
-          console.log("token",token)
-          if(angular.isUndefined(token))
+          //console.log("token",token)
+          if(res==null)
             return false;
 
         return true;
