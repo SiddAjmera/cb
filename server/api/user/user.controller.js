@@ -46,6 +46,17 @@ exports.teamsOfCurrentUser = function(req, res){
   console.log('Team IDs for Current User : ' + teamIDsForCurrentUser);
 };
 
+// This will return an array of Users with the specified office and home address
+exports.getSuggestions = function(req, res){
+  console.log('Got request to get suggestions. Here is the request body : ' + req.body );
+  User.find().where("officeAddress", req.body.officeAddress)
+             .where("homeAddress", req.body.homeAddress)
+             .exec(function(err, users) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, users);
+  });
+}
+
 /**
  * Get a single user
  */
@@ -95,7 +106,7 @@ exports.changePassword = function(req, res, next) {
  * Get my info
  */
 exports.me = function(req, res, next) {
-  console.log('This is the request body in me : ' + JSON.stringify(req));
+  // console.log('This is the request body in me : ' + JSON.stringify(req));
   var userId = req.user._id;
   User.findOne({
     _id: userId
