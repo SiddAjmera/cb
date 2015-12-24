@@ -696,6 +696,6 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  grunt.registerTask('mob-build', ['clean:custom','copy:custom']);
-  grunt.registerTask('mob-build-dev', ['clean:custom','copy:customDev']);
+  grunt.registerTask('mob-build', ['copy:custom']);
+  grunt.registerTask('mob-build-dev', ['copy:customDev']);
 };
