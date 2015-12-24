@@ -27,16 +27,16 @@
     color: white;
 }
 .slide-1{
-	background: url(../../assets/images/intro-slider/img_slide_1.png) no-repeat center center ;
+	background: url(assets/images/intro-slider/img_slide_1.png) no-repeat center center ;
 }
 .slide-2{
-	background: url(../../assets/images/intro-slider/img_slide_2.png) no-repeat center center ;
+	background: url(assets/images/intro-slider/img_slide_2.png) no-repeat center center ;
 }
 .slide-3{
-	background: url(../../assets/images/intro-slider/img_slide_3.png) no-repeat center center ;
+	background: url(assets/images/intro-slider/img_slide_3.png) no-repeat center center ;
 }
 .slide-4{
-	background: url(../../assets/images/intro-slider/img_slide_4.png) no-repeat center center ;
+	background: url(assets/images/intro-slider/img_slide_4.png) no-repeat center center ;
 }
 .slick-prev, .slick-next{
 	display: none!important;
