@@ -10,12 +10,6 @@ angular.module('cbApp')
       console.log($scope.currentUser);
     });
     
-    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){ 
-
-    	console.log("state change",toState,Auth.isLoggedIn());
-  	
-
-    });
 
     $scope.toggleHamburger = function(){
     	$scope.tgState = !$scope.tgState;

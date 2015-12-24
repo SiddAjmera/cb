@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaUtil',['parse', '$http','User','httpRequest',function (parse,$http,user,httpRequest) {
+  .service('cordovaUtil',['parse','User','httpRequest','localStorage',function (parse,user,httpRequest,localStorage) {
   var currentUser = {};
    user.get().$promise.
    then(function(user){
@@ -33,67 +33,58 @@ angular.module('cbApp')
 	   saveCoordinates:function(position)
 	   {	
 	   	   var that=this;
+	   	   
 	   	   console.log("My cordinates ",position);
-		   var mySavedLocationCoordinates = window.localStorage.getItem('SavedLocationCoordinates');
-		   var UUID = that.getDeviceUUID();
-		   if(mySavedLocationCoordinates != undefined)
-		   {
-		   	   mySavedLocationCoordinates = JSON.parse(mySavedLocationCoordinates);	
-			   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
-			   trackedLocationCoordinatesObject.location = {};
-			   trackedLocationCoordinatesObject.location.latitude=position.coords.latitude;
-			   trackedLocationCoordinatesObject.location.longitude=position.coords.longitude;	
-			   trackedLocationCoordinatesObject.timestamp=position.timestamp;		
-			   trackedLocationCoordinatesObject.uuid=UUID;
-			   trackedLocationCoordinatesObject.userId = currentUser.userId;
-			   console.log('current location object :',trackedLocationCoordinatesObject);
-			   mySavedLocationCoordinates.TrackedLocations.push(trackedLocationCoordinatesObject);
-			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
-			
-				console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
+		  
+		   localStorage.retrieve('SavedLocationCoordinates').
+		   then(function(item){
+		   		   var mySavedLocationCoordinates = item;
+		   		   var UUID = that.getDeviceUUID();
+				   if(mySavedLocationCoordinates != null)
+				   {
+				   	   mySavedLocationCoordinates = JSON.parse(mySavedLocationCoordinates);	
+					   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
+					   trackedLocationCoordinatesObject.location = {};
+					   trackedLocationCoordinatesObject.location.latitude=position.coords.latitude;
+					   trackedLocationCoordinatesObject.location.longitude=position.coords.longitude;	
+					   trackedLocationCoordinatesObject.timestamp=position.timestamp;		
+					   trackedLocationCoordinatesObject.uuid=UUID;
+					   trackedLocationCoordinatesObject.userId = currentUser.userId;
+					   console.log('current location object :',trackedLocationCoordinatesObject);
+					   mySavedLocationCoordinates.TrackedLocations.push(trackedLocationCoordinatesObject);
+					  // window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
+					   localStorage.store('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
+					
+						console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
+				   }
+				   else
+				   {
+					   var objectToStoreTheTrackedLocationsArray = {};	// Object to store the TrackedLocations Array
+					   var trackedLocationsArray = [];	// Attribute in the ObjectToStoreTheTrackedLocationsArray to store array of Tracked Locations			   
+					   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
+					  
+					   trackedLocationCoordinatesObject.location = {};
+					   trackedLocationCoordinatesObject.location.latitude=position.coords.latitude;
+					   trackedLocationCoordinatesObject.location.longitude=position.coords.longitude;	
+					   trackedLocationCoordinatesObject.timestamp=position.timestamp;
+					   trackedLocationCoordinatesObject.userId = currentUser.userId;
+					   trackedLocationCoordinatesObject.uuid=UUID;			   
+					   alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
+					   trackedLocationsArray.push(trackedLocationCoordinatesObject);
+					   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocationsArray;
+					   localStorage.store('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray)).
+					   then(function(val){
+					   	   var locationsObjectForMongoDB = window.localStorage.getItem('SavedLocationCoordinates');
+						   alert('This is the Current Location Object when localStorageObject is null: ' + val);
+						   locationsObjectForMongoDB = JSON.parse(locationsObjectForMongoDB);
 
-				/*parse.saveObject('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
-			   //	alert("done")
-			   	console.log(res);
+						   console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
+						   console.log('This is the trackedLocationsArray : ' + JSON.stringify(trackedLocationsArray));
+
+					   });
+				 }
+			 });
 	
-			   },function(err){
-			   		console.log(err);
-			   });*/
-			   //window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
-		   }
-		   else
-		   {
-			   var objectToStoreTheTrackedLocationsArray = {};	// Object to store the TrackedLocations Array
-			   var trackedLocationsArray = [];	// Attribute in the ObjectToStoreTheTrackedLocationsArray to store array of Tracked Locations			   
-			   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
-			  
-			   trackedLocationCoordinatesObject.location = {};
-			   trackedLocationCoordinatesObject.location.latitude=position.coords.latitude;
-			   trackedLocationCoordinatesObject.location.longitude=position.coords.longitude;	
-			   trackedLocationCoordinatesObject.timestamp=position.timestamp;
-			   trackedLocationCoordinatesObject.userId = currentUser.userId;
-			   trackedLocationCoordinatesObject.uuid=UUID;			   
-			   alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
-			   trackedLocationsArray.push(trackedLocationCoordinatesObject);
-			   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocationsArray;
-			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray));
-			   var locationsObjectForMongoDB = window.localStorage.getItem('SavedLocationCoordinates');
-			   alert('This is the Current Location Object when localStorageObject is null: ' + locationsObjectForMongoDB);
-			   locationsObjectForMongoDB = JSON.parse(locationsObjectForMongoDB);
-
-			   console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
-			   console.log('This is the trackedLocationsArray : ' + JSON.stringify(trackedLocationsArray));
-
-
-			/*   parse.saveObject('coordinatesObj',trackedLocationCoordinatesObject).then(function(res){
-			   //	alert("done")
-			   	console.log(res);
-	
-			   },function(err){
-			   		console.log(err);
-			   });*/
-			   window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray));
-		   }
 	   },
 	   saveDeviceDetails:function()
 	   {
@@ -119,15 +110,18 @@ angular.module('cbApp')
 		});
 	   },
 	   syncCoordinates:function(){
-	   		var storedlocations = window.localStorage.getItem('SavedLocationCoordinates');
-	   		if(storedlocations==null)
-	   			return;
+	   		 localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
+	   			var storedlocations =locations;
+	   			if(storedlocations==null)
+	   				return;
 
-	   		httpRequest.post(config.apis.syncLocations,storedlocations.TrackedLocations).
-	   		then(function(res){
-	   			if(res.status==201)
-	   				 window.localStorage.removeItem('SavedLocationCoordinates');
+		   		httpRequest.post(config.apis.syncLocations,storedlocations.TrackedLocations).
+		   		then(function(res){
+		   			if(res.status==201)
+		   				 localStorage.remove('SavedLocationCoordinates');
+		   		});
 	   		});
+	   		
 	   		 
 	   }
 	   

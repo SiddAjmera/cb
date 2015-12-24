@@ -28,14 +28,14 @@ angular.module('cbApp', [
 
   })
 
-  .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location,$localForage) {
+  .factory('authInterceptor', function ($rootScope, $q,$location,localStorage) {
     return {
       // Add authorization token to headers
       request: function (config) {
         var deferred = $q.defer();
 
         config.headers = config.headers || {};
-        $localForage.getItem('token').
+        localStorage.retrieve('token').
         then(function(res){
           console.log("header",res);
           if(res!=null)
@@ -58,7 +58,7 @@ angular.module('cbApp', [
         if(response.status === 401) {
           $location.path('/login');
           // remove any stale tokens
-          $cookieStore.remove('token');
+          localStorage.remove('token');
           return $q.reject(response);
         }
         else {
@@ -69,17 +69,17 @@ angular.module('cbApp', [
   })
 
   .run(function ($rootScope, $location, Auth,localStorage) {
-    console.log("In run block")
+    console.log("In run block",localStorage.isInitialized())
      //logic to check if app is already initialized
+     localStorage.isInitialized().then(function(val){
+        if(val)
+           $location.path('/home');
+        else{
+          localStorage.initialize();
+          $location.path('/intro');
+        }
+     });
 
-    if(localStorage.isInitialized()){
-         $location.path('/home');
-    }
-      
-    else{
-        localStorage.initialize();
-        $location.path('/intro');
-    }
 
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {

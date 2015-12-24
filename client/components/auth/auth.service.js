@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('cbApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q,$localForage,httpRequest) {
+  .factory('Auth', function Auth($location, $rootScope, User,$q,httpRequest,localStorage) {
     var currentUser = {};
 
-  $localForage.getItem('token').
+  localStorage.retrieve('token').
     then(function(res){
       if(res!=null)
          currentUser = User.get();
@@ -33,7 +33,8 @@ angular.module('cbApp')
         httpRequest.post(config.apis.login,tempUser).
         then(function(data){
           if(data.status==200){
-             $localForage.setItem('token', data.data.token).
+            localStorage.store('token',data.data.token).
+             /*$localForage.setItem('token', data.data.token).*/
              then(function(){
                 currentUser = User.get();
                 console.log("currentUser",currentUser)
@@ -57,8 +58,8 @@ angular.module('cbApp')
        * @param  {Function}
        */
       logout: function() {
-        console.log( $localForage.getItem('token'))
-        $localForage.removeItem('token');
+        console.log(localStorage.retrieve('token'))
+        localStorage.remove('token');
         currentUser = {};
       },
 
@@ -74,7 +75,7 @@ angular.module('cbApp')
 
         return User.save(user,
           function(data) {
-            $cookieStore.put('token', data.token);
+            localStorage.store('token', data.token);
             currentUser = User.get();
             return cb(user);
           },
@@ -120,7 +121,7 @@ angular.module('cbApp')
        * @return {Boolean}
        */
       isLoggedIn: function() {
-       $localForage.getItem('token').then(function(res){
+      localStorage.retrieve('token').then(function(res){
           console.log(res);
           //console.log("token",token)
           if(res==null)
@@ -162,7 +163,7 @@ angular.module('cbApp')
        * Get auth token
        */
       getToken: function() {
-        return $localForage.getItem('token');
+        return localStorage.retrieve('token');
       }
     };
   });
