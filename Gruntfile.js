@@ -159,7 +159,10 @@ module.exports = function (grunt) {
         }]
       },
       server: '.tmp',
-      custom: appPath
+      custom: [
+        appPath+"app",      
+        appPath+"assets"
+      ]
     },
 
     // Add vendor prefixed styles
@@ -406,7 +409,7 @@ module.exports = function (grunt) {
                     console.log(dest,matchedSrcPath);
                     return (dest + matchedSrcPath);
                   }
-                },
+                }/*,
                 {                         
                   dest: appPath,
                   expand:true,                 
@@ -414,9 +417,39 @@ module.exports = function (grunt) {
                   filter:'isFile',
                   flatten:true
 
-                }
+                }*/
               ]
         
+      },
+      customDev:{
+        files:[
+                {                         
+                  dest: appPath+'app/',
+                  expand:true,
+                  flatten:true,
+                  src: ['.tmp/concat/app/*.js']                  
+                },
+                {                         
+                  dest: appPath+'app/',
+                  expand:true,
+                  flatten:true,
+                  src: ['.tmp/concat/app/*.css']                  
+                },
+                {                         
+                  dest: appPath+'assets/',
+                  expand:true,
+                  cwd:'dist/public/assets/',
+                  src: ['**/*.*']                  
+                }/*,
+                {                         
+                  dest: appPath,
+                  expand:true,                 
+                  src: ['dist/public/*.*'],
+                  filter:'isFile',
+                  flatten:true
+
+                }*/
+        ]        
       }
     },
 
@@ -458,7 +491,7 @@ module.exports = function (grunt) {
         }
       },
       dist: [
-        'imagemin',
+     //   'imagemin',
         'svgmin'
       ]
     },
@@ -664,4 +697,5 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('mob-build', ['clean:custom','copy:custom']);
+  grunt.registerTask('mob-build-dev', ['clean:custom','copy:customDev']);
 };

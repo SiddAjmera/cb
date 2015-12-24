@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('localStorage', ['$window',function ($window) {
+  .service('localStorage', ['$window','$localForage',function ($window,$localForage) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     
     return{
