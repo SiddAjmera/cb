@@ -16,6 +16,8 @@ angular.module('cbApp', [
   'LocalForageModule'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+     console.log("In config block");
+
     $urlRouterProvider
       .otherwise('/');
 
@@ -26,15 +28,29 @@ angular.module('cbApp', [
 
   })
 
-  .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
+  .factory('authInterceptor', function ($rootScope, $q,$location,localStorage) {
     return {
       // Add authorization token to headers
       request: function (config) {
+        var deferred = $q.defer();
+
         config.headers = config.headers || {};
-        if ($cookieStore.get('token')) {
+        localStorage.retrieve('token').
+        then(function(res){
+          console.log("header",res);
+          if(res!=null)
+             config.headers.Authorization = 'Bearer ' + res;
+          /*console.log("config",config);
+          return config;*/
+          deferred.resolve(config);
+        });
+        return deferred.promise;
+
+        /*if($cookieStore.get('token')) {
           config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
-        }
-        return config;
+        }*/
+
+         //return config;
       },
 
       // Intercept 401s and redirect you to login
@@ -42,7 +58,7 @@ angular.module('cbApp', [
         if(response.status === 401) {
           $location.path('/login');
           // remove any stale tokens
-          $cookieStore.remove('token');
+          localStorage.remove('token');
           return $q.reject(response);
         }
         else {
@@ -53,19 +69,23 @@ angular.module('cbApp', [
   })
 
   .run(function ($rootScope, $location, Auth,localStorage) {
-
+    console.log("In run block",localStorage.isInitialized())
      //logic to check if app is already initialized
+     localStorage.isInitialized().then(function(val){
+        if(val)
+           $location.path('/home');
+        else{
+          localStorage.initialize();
+          $location.path('/intro');
+        }
+     });
 
-    if(localStorage.isInitialized())
-         $location.path('/login');
-    else{
-        localStorage.initialize();
-        $location.path('/intro');
-    }
 
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
       Auth.isLoggedInAsync(function(loggedIn) {
+        console.log("loggedIn",loggedIn);
+         console.log("next",next);
         if (next.authenticate && !loggedIn) {
           $location.path('/login');
         }

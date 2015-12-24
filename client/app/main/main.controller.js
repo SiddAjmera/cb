@@ -22,7 +22,7 @@ angular.module('cbApp')
 
     $scope.fetch = function(){
       console.log("fetching")
-      cordovaUtil.getAllCoordinates();
+      cordovaUtil.syncCoordinates();
     }
 
     $scope.openSignupForm = function(){

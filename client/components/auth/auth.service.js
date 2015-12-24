@@ -1,11 +1,18 @@
 'use strict';
 
 angular.module('cbApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q,$localForage) {
+  .factory('Auth', function Auth($location, $rootScope, User,$q,httpRequest,localStorage) {
     var currentUser = {};
-    if($cookieStore.get('token')) {
-      currentUser = User.get();
-    }
+
+  localStorage.retrieve('token').
+    then(function(res){
+      if(res!=null)
+         currentUser = User.get();
+        console.log(currentUser)
+    });
+   // if($cookieStore.get('token')) {
+   //    currentUser = User.get();
+   //  }
 
     return {
 
@@ -20,19 +27,24 @@ angular.module('cbApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.post('http://172.29.181.56:9000/auth/local', {
-          userId: user.empId,
-          password: user.password
-        }).
-        success(function(data) {
-          $localForage.setItem('token', data.token);
-          currentUser = User.get();
-          console.log("currentUser",currentUser)
-          deferred.resolve(data);
-          return cb();
-        }).
-        error(function(err) {
-          this.logout();
+        var tempUser = {};
+        tempUser.userId = user.empId;
+        tempUser.password = user.password;
+        httpRequest.post(config.apis.login,tempUser).
+        then(function(data){
+          if(data.status==200){
+            localStorage.store('token',data.data.token).
+             /*$localForage.setItem('token', data.data.token).*/
+             then(function(){
+                currentUser = User.get();
+                console.log("currentUser",currentUser)
+                deferred.resolve(data);
+                return cb();
+             });
+            
+          }
+        },function(err){
+           this.logout();
           deferred.reject(err);
           return cb(err);
         }.bind(this));
@@ -46,8 +58,8 @@ angular.module('cbApp')
        * @param  {Function}
        */
       logout: function() {
-        console.log( $localForage.getItem('token'))
-        $localForage.removeItem('token');
+        console.log(localStorage.retrieve('token'))
+        localStorage.remove('token');
         currentUser = {};
       },
 
@@ -63,7 +75,7 @@ angular.module('cbApp')
 
         return User.save(user,
           function(data) {
-            $cookieStore.put('token', data.token);
+            localStorage.store('token', data.token);
             currentUser = User.get();
             return cb(user);
           },
@@ -109,14 +121,15 @@ angular.module('cbApp')
        * @return {Boolean}
        */
       isLoggedIn: function() {
-       $localForage.getItem('token').then(function(res){
+      localStorage.retrieve('token').then(function(res){
           console.log(res);
-       });
-        console.log("token",token)
-        if(angular.isUndefined(token))
-          return false;
+          //console.log("token",token)
+          if(res==null)
+            return false;
 
         return true;
+       });
+        
         //return currentUser.hasOwnProperty('role');
       },
 
@@ -150,7 +163,7 @@ angular.module('cbApp')
        * Get auth token
        */
       getToken: function() {
-        return $localForage.getItem('token');
+        return localStorage.retrieve('token');
       }
     };
   });

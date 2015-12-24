@@ -21,3 +21,28 @@
   background-color: #fafafa;
   border-color: #ccc;
 }
+
+
+.login-wrapper{
+    background-image: url("../../../assets/images/login_background.png");
+    background-size: cover;
+    float: left;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.form-section a{
+  text-decoration: none;
+  color: #fff;
+  text-transform: uppercase;
+}
+.form-section a:first-child{
+    float: left;
+}
+.form-section a:last-child{
+    float: right;
+}
+.icon-style{
+  width: 44px;
+  height: 42px;
+}
