@@ -85,42 +85,35 @@
 }
 .form-section{
     float: left;
-    margin-top: 50px;
+    margin-top: 50%;
     width: 100%;
 }
 .each-row{
     width: 100%;
     float: left;
-    margin-bottom: 25px;
+    margin-bottom: 5px;
 }
 .each-row div:first-child{
     float: left;
-    width: 35px;
-    height: 40px;
-    background-color: #5A5858;
+    width: 15%;
+    height: 60px;
+    background-color: #fff;
     padding-top: 10px;
     text-align: center;
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px;
 }
 .each-row div.id-section{
     padding-top: 9px;
 }
 .each-row div:last-child{
     float: left;
-    width: 90%;
-
+    width: 85%;
 }
 .each-row div:last-child input[type="text"].input-boxes,.each-row div:last-child input[type="password"].pwd-boxes{
     width: 100%;
     height: 40px;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
     border:none;
-    padding: 10px;
-    background-color: #797979;
+    padding: 30px 10px;
+    background-color: #fff;
     color: #dadada;
 }
 .each-row div span.glyphicon-user,.each-row div span.glyphicon-home,
@@ -169,8 +162,7 @@
     transition:all ease 3s;
 }
 .each-row.login-page div:first-child{
-    border-top-left-radius: 50%;
-    border-bottom-left-radius: 50%;
+    width: 15%;
 }
 .each-row div svg{
     width: 20px;
@@ -186,15 +178,18 @@
 .each-row.login-page div:last-child input[type="text"],
 .each-row.login-page div:last-child input[type="password"]
 {
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
+    border-radius: 0px;
 }
 .each-row.login-page input[type="button"]{
-    border-radius: 25px;
+    border-radius: 0px;
     width: 100%;
-    height: 40px;
-    background-color: #02A554;
+    height: 60px;
+    background-color: #EC6E3C;
     border: none;
+    color: #fff;
+    opacity: 0.8;
+
+    font-size: 20px;
     color: #fff;
 }
 
@@ -262,13 +257,13 @@
 .each-row.login-page div:last-child input[type="text"]:focus,
 .each-row.login-page div:last-child input[type="password"]:focus{
         background-color: #464646;
-        border-bottom: 1px solid #5D5D5D;
+        /*border-bottom: 1px solid #5D5D5D;*/
         transition: all ease .5s;
 }
 .each-row div:last-child input[type="text"]:focus,
 .each-row div:last-child input[type="password"]:focus{
         background-color: #464646;
-        border-bottom: 1px solid #5D5D5D;
+        /*border-bottom: 1px solid #5D5D5D;*/
         transition: all ease .5s;
 }
 .location-section{
@@ -279,14 +274,15 @@
 }
 .each-row.login-page div:last-child input[type="text"]:focus,
 .each-row.login-page div:last-child input[type="password"]:focus{
-        background-color: #464646;
-        border-bottom: 1px solid #5D5D5D;
+        box-shadow: none;
+        background-color: #fff;
+        /*border-bottom: 1px solid #5D5D5D;*/
         transition: all ease .5s;
 }
 .each-row div:last-child input[type="text"]:focus,
 .each-row div:last-child input[type="password"]:focus{
         background-color: #464646;
-        border-bottom: 1px solid #5D5D5D;
+        /*border-bottom: 1px solid #5D5D5D;*/
         transition: all ease .5s;
 }
 .location-section{
@@ -387,7 +383,7 @@ a.custom-btn{
 .each-row div:last-child input[type="password"].pwd-boxes.ng-invalid.error-border,
 .each-row select.timeslot.ng-invalid.error-border,
 .each-row select.seater-select.ng-invalid.error-border {
-        border: 1px solid #FF7847;
+        border: 0.4px solid #FF7847;
 }
 p.error-msg{
     color: #A94442;
