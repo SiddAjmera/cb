@@ -45,7 +45,8 @@
 /*login and signup styles*/
 
 .page-wrapper{
-    background-color: #000;
+    background-image: url("../../../assets/images/login_background.png");
+    background-size: cover;
     float:left;
     width: 100%;
     min-height: 100vh;
@@ -62,6 +63,7 @@
 }
 .container.login-container{
     width: 400px;
+    margin-top: 5%;
 }
 .container.login-container.user-home-container{
     width:100%;
@@ -74,6 +76,9 @@
 }
 
 /*TIMELINE CSS*/
+#progressbar{
+    overflow: hidden;
+}
 #progressbar li {
     list-style-type: none;
     color: white;
@@ -85,8 +90,11 @@
 }
 .form-section{
     float: left;
-    margin-top: 50%;
+    margin-top: 20%;
     width: 100%;
+}
+.form-section input{
+    border-radius: 0px;
 }
 .each-row{
     width: 100%;
@@ -98,7 +106,7 @@
     width: 15%;
     height: 60px;
     background-color: #fff;
-    padding-top: 10px;
+    /*padding-top: 10px;*/
     text-align: center;
 }
 .each-row div.id-section{
@@ -114,7 +122,7 @@
     border:none;
     padding: 30px 10px;
     background-color: #fff;
-    color: #dadada;
+    color: #38444e;
 }
 .each-row div span.glyphicon-user,.each-row div span.glyphicon-home,
 .each-row div span.glyphicon-briefcase,
@@ -128,10 +136,11 @@
 .each-row:last-child input[type="button"].input-buttons,
 .each-row:last-child input[type="submit"].submit-buttons{
     width:100%;
-    height: 40px;
-    background-color: #02A554;
+    height: 60px;
+    background-color: #eb6e3d;
+    opacity: 0.7;
     border: none;
-    border-radius: 25px;
+    /*border-radius: 25px;*/
     color: #fff;
 }
 .each-row div.gender-radio{
@@ -141,25 +150,28 @@
     background-color: transparent;
     text-align: left;
     margin-top: 0px;
-    padding-top: 0px;
+    padding: 5.5% 10%;
     font-size: 14px;
 }
+.gender-radio label{
+    color: #38444e;
+}
 .each-row.gender-section{
-    height: 40px;
-    margin-bottom: 0px;
+    background: #fff;
+    height: 60px;
+    margin-bottom: 10px;
 }
 .each-row select.timeslot{
     width: 100%;
-    background-color: #797979;
+    background-color: #fff;
     border: none;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
-    height: 40px;
-    color: #dadada;
+    height: 60px;
+    color: #38444e;
+    box-shadow: none;
 }
 .each-row select.timeslot:hover{
-    background-color: #353535;
-    transition:all ease 3s;
+    /*background-color: #353535;
+    transition:all ease 3s;*/
 }
 .each-row.login-page div:first-child{
     width: 15%;
@@ -187,8 +199,7 @@
     background-color: #EC6E3C;
     border: none;
     color: #fff;
-    opacity: 0.8;
-
+    opacity: 0.7;
     font-size: 20px;
     color: #fff;
 }
@@ -281,8 +292,9 @@
 }
 .each-row div:last-child input[type="text"]:focus,
 .each-row div:last-child input[type="password"]:focus{
-        background-color: #464646;
+        background-color: #fff;
         /*border-bottom: 1px solid #5D5D5D;*/
+        box-shadow: none;
         transition: all ease .5s;
 }
 .location-section{
@@ -387,4 +399,27 @@ a.custom-btn{
 }
 p.error-msg{
     color: #A94442;
+}
+.icon-style{
+    width: 70%;
+    height: 70%;
+    margin-top: 10px;
+}
+.each-row-half{
+    display: block;
+    float: left;
+    width: 50%;
+}
+
+.each-row-half div:first-child{
+    width: 30%;
+}
+.each-row-half div:last-child{
+    width: 70%;
+}
+.each-row .each-row-half:first-child{
+    border-right: 2.5px solid;
+}
+.each-row .each-row-half:last-child{
+    border-left: 2.5px solid;
 }

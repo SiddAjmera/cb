@@ -1,42 +1,115 @@
 
 
 			<div class="form-section">
+				
+
 				<div class="each-row">
-					<div><span class="glyphicon glyphicon-earphone"></span></div>
-					<div><input class="form-control input-boxes"  ng-class="{'error-border':!showErrorMessage}"  ng-model="user.contactNo" type="text" name="contactNo" required ng-pattern="/^[0-9]*$/" placeholder="Contact" >
-						<div ng-show="!showErrorMessage"  ng-messages="signupForm.contactNo.$error" class="error-msg-edit">
+					<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
+					<div class=""><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes" ng-model="user.homeAddress" placeholder="HOME ADDRESS" required>
+						<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
 										<p ng-message="required" class="error-msg">Please enter
-											contact number</p>
-										<p ng-message="pattern" class="error-msg">Please enter
-											valid contact number</p>
+											home address</p>
+										
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="each-row">
+					
+						<span class="each-row-half">
+							<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
+							<div class=""><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes" ng-model="user.homeAddress" placeholder="CITY" required>
+								<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
+												<p ng-message="required" class="error-msg">Please enter
+													home address</p>
+												
+								</div>
+							</div>
+						</span>
+					
+
+						<span  class="each-row-half">
+							<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
+							<div class=""><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes" ng-model="user.homeAddress" placeholder="ZIPCODE" required>
+								<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
+												<p ng-message="required" class="error-msg">Please enter
+													home address</p>
+												
+								</div>
+							</div>
+						</span>
+
+
+
+				</div>
+				
+
+
+
+				<div class="each-row">
+					<div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div>
+					<div><input type="text" name="officeAddress" ng-class="{'error-border':!showErrorMessage}"  class="form-control input-boxes" ng-model="user.officeAddress"placeholder="OFFICE ADDRESS" required>
+						<div ng-show="!showErrorMessage"  ng-messages="signupForm.officeAddress.$error" class="error-msg-edit">
+										<p ng-message="required" class="error-msg">Please enter
+											permanent address</p>
+										
 						</div>
 
 					</div>
 				</div>
+
+
+
 				<div class="each-row">
-					<div><span class="glyphicon glyphicon-time"></span></div>
-					<div>
-						<select name="timeSlot" class="timeslot" ng-model="user.timeSlot" ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t for t in timeSlotJSON">
-							<option style="display:none" value="">Select timeslot</option> 	
-						</select>
-						<div ng-show="!showErrorMessage"  ng-messages="signupForm.timeSlot.$error" class="error-msg-edit">
-										<p ng-message="required" class="error-msg">Please select
-											timeslot</p>
-										
-						</div>
-					</div>
-				</div>				
-				<div class="each-row gender-section">
-					<div class="radio gender-radio">
-					  <label><input type="radio" name="optradio" ng-model="user.gender">Male</label>
-					</div>
-					<div class="radio gender-radio">
-					  <label><input type="radio" name="optradio" ng-model="user.gender">Female</label>
-					</div>
-				</div>
-				<div class="each-row">
-					<input type="button" class="input-buttons" name="continue" value="Continue" ng-click="goToStep(3)">
 					
+						<span  class="each-row-half">
+							<div><span><img class="icon-style" src="assets/images/icon_time.png"></span></div>
+							<div>
+								<select name="timeSlot" class="timeslot" ng-model="user.timeSlot" ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t for t in timeSlotJSON">
+									<option style="display:none" value="">TIMESLOT</option> 	
+								</select>
+								<div ng-show="!showErrorMessage"  ng-messages="signupForm.timeSlot.$error" class="error-msg-edit">
+												<p ng-message="required" class="error-msg">Please select
+													timeslot</p>
+												
+								</div>
+							</div>
+						</span>		
+					
+
+						<span  class="each-row-half">
+							<div><span><img class="icon-style" src="assets/images/icon_seat.png"></span></div>
+							<div>
+								<select name="timeSlot" class="timeslot" ng-model="user.timeSlot" ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t for t in timeSlotJSON">
+									<option style="display:none" value="">SEAT</option> 	
+								</select>
+								<div ng-show="!showErrorMessage"  ng-messages="signupForm.timeSlot.$error" class="error-msg-edit">
+												<p ng-message="required" class="error-msg">Please select
+													timeslot</p>
+												
+								</div>
+							</div>
+						</span>		
+				</div>
+
+
+
+				<div class="each-row seater-section">
+						<div><span><img class="icon-style" src="assets/images/icon_car.png"></span></div>
+						<div><input class="form-control input-boxes " ng-class="{'error-border':!showErrorMessage}"   type="text" name="vehicleNo" required ng-model="user.vehicle.vehicleNo" placeholder="VEHICLE NUMBER">
+							<div ng-show="!showErrorMessage"  ng-messages="signupForm.vehicleNo.$error" class="error-msg-edit">
+										<p ng-message="required" class="error-msg">Please enter
+											vehicle registration no</p>
+										
+							</div>
+						</div>
+				</div>
+
+
+				<div class="each-row">
+					<input type="button" class="input-buttons" name="continue" value="CONTINUE" ng-click="goToStep(3)">
 				</div>
 			</div>
 
