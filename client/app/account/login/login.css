@@ -24,7 +24,7 @@
 
 
 .login-wrapper{
-    background-image: url("../../../assets/images/login_background.png");
+    background-image: url("/assets/images/login_background.png");
     background-size: cover;
     float: left;
     width: 100%;
