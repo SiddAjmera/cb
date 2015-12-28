@@ -11,7 +11,7 @@
 				</div>
 
 				<div class="each-row">
-					<div><span><img class="icon-style" src="assets/images/"></span></div>
+					<div><span><img class="icon-style" src="assets/images/icon_password.png"></span></div>
 					<div><input class="form-control pwd-boxes" ng-class="{'error-border':!showErrorMessage}"  required type="password" ng-model="user.password" name="password" placeholder="PASSWORD">
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.password.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Please enter password</p>
@@ -21,7 +21,7 @@
 				</div>
 
 				<div class="each-row">
-					<p>By Signing up, I agree to TCS's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
+					<p class="terms-cond-text">By Signing up, I agree to TCS's <a href="#" class="global-link float-none">Terms of Service</a> and <a href="#" class="global-link float-none">Privacy Policy</a></p>
 				</div>
 				<div class="each-row">
 					<input type="submit" class="submit-buttons" name="continue" value="REGISTER">
