@@ -48,10 +48,11 @@
     float: none!important;
 }
 .terms-cond-text{
-    color: #d0d0d0;
+    color: #fff;
+    text-transform: uppercase;
 }
 .page-wrapper{
-    background-image: url("../../../assets/images/login_background.png");
+    background-image: url("/assets/images/login_background.png");
     background-size: cover;
     float:left;
     width: 100%;
@@ -73,6 +74,7 @@
 }
 .container.login-container.user-home-container{
     width:100%;
+    margin-top: 0px;
 }
 .logo-section{
     margin-top: 45px;
@@ -143,8 +145,7 @@
 .each-row:last-child input[type="submit"].submit-buttons{
     width:100%;
     height: 60px;
-    background-color: #eb6e3d;
-    opacity: 0.7;
+    background-color: rgba(235, 110, 61, 0.68);
     border: none;
     /*border-radius: 25px;*/
     color: #fff;
@@ -326,7 +327,7 @@
     width: 100%;
 }
 .location-section{
-    background-image: url(../assets/images/map.png);
+    background-image: url(/assets/images/map.png);
     height: 50vh;
     float:left;
     padding:0px;
@@ -353,7 +354,7 @@ svg path.path-1{
     margin-bottom: 3%;
 }
 .mainpage-signup-section{
-    background-image: url(../assets/images/signup-back.jpeg);
+    background-image: url(/assets/images/signup-back.jpeg);
     height: 50vh;
     padding:0px;
     
@@ -394,7 +395,7 @@ svg path.path-1{
     font-weight: bold;
 }
 .mainpage-signup-section{
-    background-image: url(../assets/images/signup-back.jpeg);
+    background-image: url(/assets/images/signup-back.jpeg);
     height: 50vh;
     padding:0px;
 }
