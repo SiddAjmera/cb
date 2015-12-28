@@ -25,5 +25,8 @@
 	.each-row div.gender-radio{
 		width: 50%;
 	}
+	.each-row .each-row-half div:first-child{
+		width: 30%;
+	}
 	
 }

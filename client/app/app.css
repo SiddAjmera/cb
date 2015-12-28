@@ -297,6 +297,28 @@
         box-shadow: none;
         transition: all ease .5s;
 }
+.signup-two-wrap .each-row div.input-fields{
+    float:left;
+    width:85%;
+    height: 60px;
+    
+}
+.signup-two-wrap .each-row div.input-fields input{
+    height: 60px;
+    border: none;
+}
+.signup-two-wrap .each-row .each-row-half div.input-fields{
+    float:left;
+    width:70%;
+    height: 60px;
+}
+.signup-two-wrap .each-row .each-row-half div.input-fields input,
+.signup-two-wrap .each-row .each-row-half div.input-fields select{
+    width:100%;
+}
+.signup-two-wrap .each-row div:last-child{
+    width: 100%;
+}
 .location-section{
     background-image: url(../assets/images/map.png);
     height: 50vh;
@@ -399,7 +421,7 @@ a.custom-btn{
 p.error-msg{
     color: #A94442;
     float: left;
-    width: 140%;
+    width: 100%;
 }
 .icon-style{
     width: 70%;
@@ -409,7 +431,10 @@ p.error-msg{
 .each-row-half{
     display: block;
     float: left;
-    width: 50%;
+    width: 49.7%;
+}
+.each-row-half:last-child{
+    float: right;
 }
 .each-row-half .form-control{
     width: 70%;
@@ -422,9 +447,9 @@ p.error-msg{
 .each-row-half div:last-child{
     width: 70%;
 }
-.each-row .each-row-half:first-child{
+/*.each-row .each-row-half:first-child{
     border-right: 2.5px solid;
 }
 .each-row .each-row-half:last-child{
     border-left: 2.5px solid;
-}
+}*/

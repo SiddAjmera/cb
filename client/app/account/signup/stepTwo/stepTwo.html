@@ -1,18 +1,18 @@
-			<div class="form-section">	
+			<div class="form-section signup-two-wrap">	
 
 				<div class="each-row">
 					<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
-					<div class=""><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes" ng-model="user.homeAddress" placeholder="HOME ADDRESS" required>
-						<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
-							<p ng-message="required" class="error-msg">Home Address is required</p>
-						</div>
+					<div class="input-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes" ng-model="user.homeAddress" placeholder="HOME ADDRESS" required>
+					</div>
+					<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
+						<p ng-message="required" class="error-msg">Home Address is required</p>
 					</div>
 				</div>
 
 				<div class="each-row">
 					<span class="each-row-half">
 						<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
-						<div class=""><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="city" class="form-control input-boxes" ng-model="user.city" placeholder="CITY" required ng-pattern="/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/">
+						<div class="input-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="city" class="form-control input-boxes" ng-model="user.city" placeholder="CITY" required ng-pattern="/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/">
 						</div>
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.city.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">City is required</p>
@@ -22,7 +22,7 @@
 				
 					<span  class="each-row-half">
 						<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
-						<div class=""><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="zipcode" class="form-control input-boxes" ng-model="user.zipcode" placeholder="ZIPCODE" required ng-pattern="/^[123456789]\d{5}$/">
+						<div class="input-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="zipcode" class="form-control input-boxes" ng-model="user.zipcode" placeholder="ZIPCODE" required ng-pattern="/^[123456789]\d{5}$/">
 						</div>
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Zipcode is required</p>
@@ -33,17 +33,17 @@
 
 				<div class="each-row">
 					<div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div>
-					<div><input type="text" name="officeAddress" ng-class="{'error-border':!showErrorMessage}"  class="form-control input-boxes" ng-model="user.officeAddress"placeholder="OFFICE ADDRESS" required>
-						<div ng-show="!showErrorMessage"  ng-messages="signupForm.officeAddress.$error" class="error-msg-edit">
-							<p ng-message="required" class="error-msg">Office Address is required</p>		
-						</div>
+					<div class="input-fields"><input type="text" name="officeAddress" ng-class="{'error-border':!showErrorMessage}"  class="form-control input-boxes" ng-model="user.officeAddress"placeholder="OFFICE ADDRESS" required>
+					</div>
+					<div ng-show="!showErrorMessage"  ng-messages="signupForm.officeAddress.$error" class="error-msg-edit">
+						<p ng-message="required" class="error-msg">Office Address is required</p>		
 					</div>
 				</div>
 
 				<div class="each-row">
 					<span  class="each-row-half">
 						<div><span><img class="icon-style" src="assets/images/icon_time.png"></span></div>
-						<div>
+						<div class="input-fields">
 							<select name="timeSlot" class="timeslot" ng-model="user.timeSlot" ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t for t in timeSlotJSON">
 								<option style="display:none" value="">TIMESLOT</option> 	
 							</select>
@@ -55,7 +55,7 @@
 				
 					<span class="each-row-half">
 							<div><span><img class="icon-style" src="assets/images/icon_seat.png"></span></div>
-							<div>
+							<div class="input-fields">
 								<select class="seater-select" name="capacity" ng-class="{'error-border':!showErrorMessage}" required ng-model="user.vehicle.capacity" ng-options="c as c for c in vehicleCapacityJSON">
 									<option style="display:none"  value="">SEAT</option>
 								</select>
@@ -68,11 +68,11 @@
 
 				<div class="each-row seater-section">
 					<div><span><img class="icon-style" src="assets/images/icon_car.png"></span></div>
-					<div><input class="form-control input-boxes " ng-class="{'error-border':!showErrorMessage}" type="text" name="vehicleNo" required ng-pattern="/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/" ng-model="user.vehicle.vehicleNo" placeholder="VEHICLE REGISTRATION NUMBER">
-						<div ng-show="!showErrorMessage"  ng-messages="signupForm.vehicleNo.$error" class="error-msg-edit">
-							<p ng-message="required" class="error-msg">Registration Number is required</p>
-							<p ng-message="pattern" class="error-msg">Invalid Registration Number</p>
-						</div>
+					<div class="input-fields"><input class="form-control input-boxes " ng-class="{'error-border':!showErrorMessage}" type="text" name="vehicleNo" required ng-pattern="/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/" ng-model="user.vehicle.vehicleNo" placeholder="VEHICLE REGISTRATION NUMBER">
+					</div>
+					<div ng-show="!showErrorMessage"  ng-messages="signupForm.vehicleNo.$error" class="error-msg-edit">
+						<p ng-message="required" class="error-msg">Registration Number is required</p>
+						<p ng-message="pattern" class="error-msg">Invalid Registration Number</p>
 					</div>
 				</div>
 
