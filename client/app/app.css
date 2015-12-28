@@ -122,7 +122,7 @@
     border:none;
     padding: 30px 10px;
     background-color: #fff;
-    color: #38444e;
+    color: #000;
 }
 .each-row div span.glyphicon-user,.each-row div span.glyphicon-home,
 .each-row div span.glyphicon-briefcase,
@@ -162,7 +162,7 @@
     margin-bottom: 10px;
 }
 .each-row select.timeslot{
-    width: 100%;
+    width: 70%;
     background-color: #fff;
     border: none;
     height: 60px;
@@ -205,18 +205,18 @@
 }
 
 .each-row select.seater-select{
-    width: 100%;
-    background-color: #797979;
+    width: 70%;
+    background-color: #fff;
     border: none;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
-    height: 40px;
-    color: #dadada;
+    /*border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;*/
+    height: 60px;
+    color: #000;
 }
-.each-row select.seater-select:hover{
+/*.each-row select.seater-select:hover{
     background-color: #353535;
     transition: all ease 2s;
-}
+}*/
 
 
 .vehicle-wrapper p{
@@ -369,7 +369,6 @@ svg path.path-1{
     background-image: url(../assets/images/signup-back.jpeg);
     height: 50vh;
     padding:0px;
-    
 }
 a.custom-btn{
     /*height: 35px;
@@ -383,8 +382,8 @@ a.custom-btn{
     display: block;*/
 }
 #form-views.ng-enter,
-#form-views.ng-leave      
-{ position:absolute; left:30px; right:30px;
+#form-views.ng-leave{
+    position:absolute; left:30px; right:30px;
     transition:0.5s all ease; -moz-transition:0.5s all ease; -webkit-transition:0.5s all ease; 
 }
 /*login and signup styles end*/
@@ -399,6 +398,8 @@ a.custom-btn{
 }
 p.error-msg{
     color: #A94442;
+    float: left;
+    width: 140%;
 }
 .icon-style{
     width: 70%;
@@ -410,7 +411,11 @@ p.error-msg{
     float: left;
     width: 50%;
 }
-
+.each-row-half .form-control{
+    width: 70%;
+    height: 60px;
+    border: 1px solid #fff;
+}
 .each-row-half div:first-child{
     width: 30%;
 }
