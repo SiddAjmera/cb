@@ -17,13 +17,16 @@
 	    width: 100%;
 	}
 	.each-row div:first-child{
-		width: 11%;
+		width: 15%;
 	}
 	.each-row div:last-child{
 		width: 85%;
 	}
 	.each-row div.gender-radio{
 		width: 50%;
+	}
+	.each-row .each-row-half div:first-child{
+		width: 30%;
 	}
 	
 }
