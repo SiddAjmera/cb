@@ -132,16 +132,11 @@ angular.module('cbApp')
     };
 
     $scope.getLocation=function(){
-         var modalInstance = $uibModal.open({
-          animation: $scope.animationsEnabled,
+         var modalInstance = $modal.open({
+          animation: true,
           templateUrl: 'components/modal/modal.html',
        //   controller: 'ModalInstanceCtrl',
-          size: sm,
-          resolve: {
-            items: function () {
-              return $scope.items;
-            }
-          }
+          size: 'sm'
         });
     }
 
