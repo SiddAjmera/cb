@@ -9,11 +9,12 @@ angular.module('cbApp', [
   'ui.bootstrap',
   'ngAnimate',
   'ngMessages',
-  /*'ngTouch',*/
+  'ngTouch',
   'slick',
   'ui.bootstrap',
   'ngHamburger',
-  'LocalForageModule'
+  'LocalForageModule',
+  'leaflet-directive'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
      console.log("In config block");
