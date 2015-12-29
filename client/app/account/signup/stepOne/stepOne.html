@@ -31,14 +31,27 @@
 				</div>
 
 
-				<div class="each-row gender-section">
+				<!-- <div class="each-row gender-section">
 					<div class="radio gender-radio">
 					  <label><input type="radio" name="optradio" ng-model="user.gender">FEMALE</label>
 					</div>
 					<div class="radio gender-radio">
 					  <label><input type="radio" name="optradio" ng-model="user.gender">MALE</label>
 					</div>
+				</div> -->
+
+
+				<div id="sites" class="each-row gender-section">
+					<div class="radio gender-radio">
+					  <label class="rad"><input type="radio" name="optradio" ng-model="user.gender"/><i></i>    FEMALE</label>
+					</div>
+					<div class="radio gender-radio">
+					  <label class="rad"><input type="radio" name="optradio" ng-model="user.gender"/><i></i>    MALE</label>
+					</div>
 				</div>
+
+
+
 
 				<div class="each-row">
 					<input type="button" class="input-buttons"  name="continue" value="CONTINUE" ng-click="goToStep(2)">
