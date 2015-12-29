@@ -802,6 +802,7 @@ a.get-started-link:hover{
 .ham-con-wrap{
     background-color: #38454E;
     height: 100vh;
+    box-shadow: 12px 0 15px -4px rgba(0, 0, 0, 0.8), -12px 0 8px -4px rgba(255, 255, 255, 0.8);
 }
 .hamburger-overlay{
     height: 100vh;
