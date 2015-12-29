@@ -408,21 +408,21 @@
 .office-address-select{
     width:100%!important;
 }
-.office-address-select .select2-container .select2-choice{
+.office-address-select.select2-container .select2-choice{
     width: 100%;
     height: 60px;
     border: none;
     background-color: #fff;
     background-image: none;
 }
-.office-address-select .select2-container .select2-choice .select2-arrow{
-    background: url("/assets/images/icon_down_arrow.png") no-repeat right #fff;
-    background-size: 50px;
+.office-address-select.select2-container .select2-choice .select2-arrow{
     width: 45px;
     background-image: none;
+    border: none;
 }
-.office-address-select .select2-container .select2-choice .select2-arrow b{
-    background: none;
+.office-address-select.select2-container .select2-choice .select2-arrow b{
+    background: url("/assets/images/icon_down_arrow.png") no-repeat right #fff;
+    background-size: 50px;
 }
 
 svg.map-svg,svg.signup-main-svg{
