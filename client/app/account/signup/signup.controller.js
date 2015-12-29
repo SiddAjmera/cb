@@ -81,7 +81,7 @@ angular.module('cbApp')
 
       // Function to save the UserObject in MongoDB
       $http({
-          url: 'http://localhost:9000/api/users/',
+          url: config.apiBaseURL+'api/users/',
           dataType: 'json',
           method: 'POST',
           data: $scope.user,
