@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SignupCtrl', function ($scope, Auth, $location, $window,parse,$state, $http) {
+  .controller('SignupCtrl', function ($scope, Auth, $location, $window,parse,$state, $http,$modal) {
     $scope.user = {vehicle:{}};
     
     $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",
@@ -18,7 +18,6 @@ angular.module('cbApp')
                                 "CMC-Pune",
                                 "CRL - Hinjewadi",
                                 "Cerebrum IT Park",
-                                "IT Park - Hinjewadi",
                                 "KIRLOSKAR",
                                 "Millenium Bldg, Pune",
                                 "NAVLAKHA COMP.-PUNE",
@@ -132,7 +131,19 @@ angular.module('cbApp')
 
     };
 
-
+    $scope.getLocation=function(){
+         var modalInstance = $uibModal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'components/modal/modal.html',
+       //   controller: 'ModalInstanceCtrl',
+          size: sm,
+          resolve: {
+            items: function () {
+              return $scope.items;
+            }
+          }
+        });
+    }
 
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
