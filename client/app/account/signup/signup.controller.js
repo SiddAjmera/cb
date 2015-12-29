@@ -11,6 +11,38 @@ angular.module('cbApp')
                                 "12:00 AM - 9:00 PM"
                                ];
 
+    $scope.officeAddressJSON = ["BIRLA AT&T, PUNE",
+                                "BT TechM Collocation",
+                                "Bhosari MIDC Non STP",
+                                "Bhosari MIDC STP",
+                                "CMC-Pune",
+                                "CRL - Hinjewadi",
+                                "Cerebrum IT Park",
+                                "IT Park - Hinjewadi",
+                                "KIRLOSKAR",
+                                "Millenium Bldg, Pune",
+                                "NAVLAKHA COMP.-PUNE",
+                                "Nashik Centre NSTP",
+                                "Nashik PSK Sites",
+                                "Nyati Tiara",
+                                "Pune - Commerzone",
+                                "Pune PSK Sites",
+                                "Pune Sahyadri Park",
+                                "Pune(QuadraII) STP",
+                                "Pune(QuadraII)NonSTP",
+                                "Pune-Sun Suzlon-NSTP",
+                                "QBPL -Pune SEZ",
+                                "SP - A1 - Rajgad",
+                                "SP - S1 - Poorna",
+                                "SP - S2 - Torna",
+                                "SP - S3 - Tikona",
+                                "SahyadriPark SEZ - I",
+                                "Sp-S1-Poorna-BPO",
+                                "Sp-S2-Torna-BPO",
+                                "TRDDC HADAPSAR, PUNE",
+                                "VSNL - Pune"
+                               ];
+
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
     $scope.showErrorMessage = true;
     var currentStep = 1;

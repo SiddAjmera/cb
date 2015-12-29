@@ -373,7 +373,9 @@
     float:left;
     width:85%;
     height: 60px;
-    
+}
+.signup-two-wrap .each-row div.input-fields.address-fields{
+    width: 70%;
 }
 .signup-two-wrap .each-row div.input-fields input{
     height: 60px;
@@ -385,13 +387,42 @@
     width:70%;
     height: 60px;
 }
-.signup-two-wrap .each-row .each-row-half div.input-fields input,
-.signup-two-wrap .each-row .each-row-half div.input-fields select{
+.signup-two-wrap .each-row .each-row-half div.input-fields input{
     width:100%;
     outline-color: transparent;
 }
+.signup-two-wrap .each-row .each-row-half div.input-fields select{
+    width:100%;
+    outline-color: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url("/assets/images/icon_down_arrow.png") no-repeat right #fff;
+    background-size: 40%;
+    padding-right: 40%;
+}
 .signup-two-wrap .each-row div:last-child{
     width: 100%;
+}
+
+.office-address-select{
+    width:100%!important;
+}
+.office-address-select .select2-container .select2-choice{
+    width: 100%;
+    height: 60px;
+    border: none;
+    background-color: #fff;
+    background-image: none;
+}
+.office-address-select .select2-container .select2-choice .select2-arrow{
+    background: url("/assets/images/icon_down_arrow.png") no-repeat right #fff;
+    background-size: 50px;
+    width: 45px;
+    background-image: none;
+}
+.office-address-select .select2-container .select2-choice .select2-arrow b{
+    background: none;
 }
 
 svg.map-svg,svg.signup-main-svg{
@@ -985,3 +1016,27 @@ a.get-started-link:hover{
     height: 93vh;
 }
 /*suggestion page css ends*/
+
+.icon-address-fields{
+    width: 15%;
+    height: 60px;
+    float: left;
+    background-color: #fff;
+}
+.icon-address-fields img{
+    margin-left: 15%;
+    cursor: pointer;
+}
+.officeAddress{
+    width: 100%;
+    background-color: #fff;
+    border: none;
+    height: 60px;
+    color: #000;
+    outline-color: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url("/assets/images/icon_down_arrow.png") no-repeat right #fff;
+    background-size: 16%;
+}
