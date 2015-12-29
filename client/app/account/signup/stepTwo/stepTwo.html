@@ -51,7 +51,7 @@
 					<div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div>
 					<div class="input-fields office-address-select-wrap">
 						<select ui-select2  name="officeAddress" class="office-address-select" ng-model="user.officeAddress" ng-class="{'error-border':!showErrorMessage}" required ng-options="oa as oa for oa in officeAddressJSON" data-placeholder="OFFICE ADDRESS">
-							<!-- <option style="display:none" value=""></option>  -->	
+							 <option value=""></option>  
 						</select>
 					</div>
 					<div ng-show="!showErrorMessage"  ng-messages="signupForm.officeAddress.$error" class="error-msg-edit">

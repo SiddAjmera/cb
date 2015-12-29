@@ -414,11 +414,16 @@
     border: none;
     background-color: #fff;
     background-image: none;
+    outline-color: transparent;
 }
 .office-address-select.select2-container .select2-choice .select2-arrow{
     width: 45px;
     background-image: none;
     border: none;
+}
+.office-address-select.select2-container .select2-choice > .select2-chosen{
+    text-align: left;
+    padding-top: 18px;
 }
 .office-address-select.select2-container .select2-choice .select2-arrow b{
     background: url("/assets/images/icon_down_arrow.png") no-repeat right #fff;

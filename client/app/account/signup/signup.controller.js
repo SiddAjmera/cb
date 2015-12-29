@@ -135,7 +135,7 @@ angular.module('cbApp')
          var modalInstance = $modal.open({
           animation: true,
           templateUrl: 'components/modal/modal.html',
-       //   controller: 'ModalInstanceCtrl',
+          controller: 'ModalCtrl',
           size: 'sm'
         });
     }
