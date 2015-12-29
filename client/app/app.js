@@ -14,7 +14,8 @@ angular.module('cbApp', [
   'ui.bootstrap',
   'ngHamburger',
   'LocalForageModule',
-  'leaflet-directive'
+  'leaflet-directive',
+  'ui.select2'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
      console.log("In config block");

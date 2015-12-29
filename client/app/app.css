@@ -405,6 +405,26 @@
     width: 100%;
 }
 
+.office-address-select{
+    width:100%!important;
+}
+.office-address-select .select2-container .select2-choice{
+    width: 100%;
+    height: 60px;
+    border: none;
+    background-color: #fff;
+    background-image: none;
+}
+.office-address-select .select2-container .select2-choice .select2-arrow{
+    background: url("/assets/images/icon_down_arrow.png") no-repeat right #fff;
+    background-size: 50px;
+    width: 45px;
+    background-image: none;
+}
+.office-address-select .select2-container .select2-choice .select2-arrow b{
+    background: none;
+}
+
 svg.map-svg,svg.signup-main-svg{
     height: 63%;
 }
@@ -986,6 +1006,17 @@ a.get-started-link:hover{
   box-shadow: inset 0 0 0 6px #fff;
   background: #4ecd99;
 }
+
+/*suggestions page css starts*/
+.suggestion-map-wrap{
+    padding-top: 40px;
+}
+.leaflet-container{
+    width:100%;
+    height: 93vh;
+}
+/*suggestion page css ends*/
+
 .icon-address-fields{
     width: 15%;
     height: 60px;
