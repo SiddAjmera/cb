@@ -192,7 +192,7 @@
     background-color: #fff;
     color: #000;
 }
-.each-row div input[type="text"].input-boxes{
+.login-input-box{
     height: 60px;
 }
 .each-row div span.glyphicon-user,.each-row div span.glyphicon-home,

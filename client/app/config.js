@@ -5,7 +5,8 @@ if(angular.isUndefined(config)){
 
 
 //base URL for API
-config.apiBaseURL="http://172.29.181.56:9000/";
+config.apiBaseURL="http://localhost:9000/";
+//config.apiBaseURL="http://52.77.218.140:9000/";
 
 
 /*apis start from here*/
