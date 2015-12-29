@@ -9,11 +9,12 @@ angular.module('cbApp', [
   'ui.bootstrap',
   'ngAnimate',
   'ngMessages',
-  /*'ngTouch',*/
+  'ngTouch',
   'slick',
   'ui.bootstrap',
   'ngHamburger',
-  'LocalForageModule'
+  'LocalForageModule',
+  'leaflet-directive'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
      console.log("In config block");
@@ -21,7 +22,7 @@ angular.module('cbApp', [
     $urlRouterProvider
       .otherwise('/');
 
-    $locationProvider.html5Mode(true);
+  //  $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
 
     Parse.initialize("oMdH0Ybh26y7Zz8chStjWBmK3ST9wA6hNQ7vrHZ3", "vYmfAKeYOTb7Hau3COS7xIFPeObQ8QAiBlxJR2Eb");
@@ -93,10 +94,8 @@ angular.module('cbApp', [
     });
   });
 
-/*var onDeviceReady = function() {
-	saveDeviceInfo();
+var onDeviceReady = function() {
     angular.bootstrap( document, ['cbApp']);
 }
 document.addEventListener('deviceready', 
 onDeviceReady);
-*/
