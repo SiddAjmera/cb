@@ -2,7 +2,7 @@
 
 				<div class="each-row">
 					<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
-					<div class="input-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes" ng-model="user.homeAddress" placeholder="HOME ADDRESS" required>
+					<div class="input-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes login-input-box" ng-model="user.homeAddress" placeholder="HOME ADDRESS" required>
 					</div>
 					<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
 						<p ng-message="required" class="error-msg">Home Address is required</p>
@@ -12,7 +12,7 @@
 				<div class="each-row">
 					<span class="each-row-half">
 						<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
-						<div class="input-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="city" class="form-control input-boxes" ng-model="user.city" placeholder="CITY" required ng-pattern="/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/">
+						<div class="input-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="city" class="form-control input-boxes login-input-box" ng-model="user.city" placeholder="CITY" required ng-pattern="/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/">
 						</div>
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.city.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">City is required</p>
@@ -22,7 +22,7 @@
 				
 					<span  class="each-row-half">
 						<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
-						<div class="input-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="zipcode" class="form-control input-boxes" ng-model="user.zipcode" placeholder="ZIPCODE" required ng-pattern="/^[123456789]\d{5}$/">
+						<div class="input-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="zipcode" class="form-control input-boxes login-input-box" ng-model="user.zipcode" placeholder="ZIPCODE" required ng-pattern="/^[123456789]\d{5}$/">
 						</div>
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Zipcode is required</p>
@@ -33,7 +33,7 @@
 
 				<div class="each-row">
 					<div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div>
-					<div class="input-fields"><input type="text" name="officeAddress" ng-class="{'error-border':!showErrorMessage}"  class="form-control input-boxes" ng-model="user.officeAddress"placeholder="OFFICE ADDRESS" required>
+					<div class="input-fields"><input type="text" name="officeAddress" ng-class="{'error-border':!showErrorMessage}"  class="form-control input-boxes login-input-box" ng-model="user.officeAddress"placeholder="OFFICE ADDRESS" required>
 					</div>
 					<div ng-show="!showErrorMessage"  ng-messages="signupForm.officeAddress.$error" class="error-msg-edit">
 						<p ng-message="required" class="error-msg">Office Address is required</p>		
@@ -44,7 +44,7 @@
 					<span  class="each-row-half">
 						<div><span><img class="icon-style" src="assets/images/icon_time.png"></span></div>
 						<div class="input-fields">
-							<select name="timeSlot" class="timeslot" ng-model="user.timeSlot" ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t for t in timeSlotJSON">
+							<select name="timeSlot" class="timeslot login-input-box" ng-model="user.timeSlot" ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t for t in timeSlotJSON">
 								<option style="display:none" value="">TIMESLOT</option> 	
 							</select>
 						</div>
@@ -56,7 +56,7 @@
 					<span class="each-row-half">
 							<div><span><img class="icon-style" src="assets/images/icon_seat.png"></span></div>
 							<div class="input-fields">
-								<select class="seater-select" name="capacity" ng-class="{'error-border':!showErrorMessage}" required ng-model="user.vehicle.capacity" ng-options="c as c for c in vehicleCapacityJSON">
+								<select class="seater-select login-input-box" name="capacity" ng-class="{'error-border':!showErrorMessage}" required ng-model="user.vehicle.capacity" ng-options="c as c for c in vehicleCapacityJSON">
 									<option style="display:none"  value="">SEAT</option>
 								</select>
 							</div>
@@ -77,6 +77,6 @@
 				</div>
 
 				<div class="each-row">
-					<input type="button" class="input-buttons" name="continue" value="CONTINUE" ng-click="goToStep(3)">
+					<input type="button" class="input-buttons login-input-box" name="continue" value="CONTINUE" ng-click="goToStep(3)">
 				</div>
 			</div>
