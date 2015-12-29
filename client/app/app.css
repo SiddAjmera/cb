@@ -975,3 +975,13 @@ a.get-started-link:hover{
   box-shadow: inset 0 0 0 6px #fff;
   background: #4ecd99;
 }
+
+/*suggestions page css starts*/
+.suggestion-map-wrap{
+    padding-top: 40px;
+}
+.leaflet-container{
+    width:100%;
+    height: 93vh;
+}
+/*suggestion page css ends*/
