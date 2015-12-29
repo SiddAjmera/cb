@@ -309,7 +309,9 @@
     float:left;
     width:85%;
     height: 60px;
-    
+}
+.signup-two-wrap .each-row div.input-fields.address-fields{
+    width: 70%;
 }
 .signup-two-wrap .each-row div.input-fields input{
     height: 60px;
@@ -321,10 +323,19 @@
     width:70%;
     height: 60px;
 }
-.signup-two-wrap .each-row .each-row-half div.input-fields input,
+.signup-two-wrap .each-row .each-row-half div.input-fields input{
+    width:100%;
+    outline-color: transparent;
+}
 .signup-two-wrap .each-row .each-row-half div.input-fields select{
     width:100%;
     outline-color: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url("/assets/images/icon_down_arrow.png") no-repeat right #fff;
+    background-size: 40%;
+    padding-right: 40%;
 }
 .signup-two-wrap .each-row div:last-child{
     width: 100%;
@@ -494,4 +505,27 @@ p.error-msg{
 .rad > input:checked + i{ /* (RADIO CHECKED) <i> STYLE */
   box-shadow: inset 0 0 0 6px #fff;
   background: #4ecd99;
+}
+.icon-address-fields{
+    width: 15%;
+    height: 60px;
+    float: left;
+    background-color: #fff;
+}
+.icon-address-fields img{
+    margin-left: 15%;
+    cursor: pointer;
+}
+.officeAddress{
+    width: 100%;
+    background-color: #fff;
+    border: none;
+    height: 60px;
+    color: #000;
+    outline-color: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url("/assets/images/icon_down_arrow.png") no-repeat right #fff;
+    background-size: 16%;
 }

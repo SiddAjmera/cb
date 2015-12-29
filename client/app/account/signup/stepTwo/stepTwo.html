@@ -2,8 +2,9 @@
 
 				<div class="each-row">
 					<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
-					<div class="input-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes" ng-model="user.homeAddress" placeholder="HOME ADDRESS" required>
+					<div class="input-fields address-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes" ng-model="user.homeAddress" placeholder="HOME ADDRESS" required>
 					</div>
+					<div class="icon-address-fields"><span><img class="icon-style" src="assets/images/icon_location.png" ng-click="open_map"></span></div>
 					<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
 						<p ng-message="required" class="error-msg">Home Address is required</p>
 					</div>
@@ -31,14 +32,35 @@
 					</span>
 				</div>
 
-				<div class="each-row">
+				<!-- <div class="each-row">
 					<div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div>
 					<div class="input-fields"><input type="text" name="officeAddress" ng-class="{'error-border':!showErrorMessage}"  class="form-control input-boxes" ng-model="user.officeAddress"placeholder="OFFICE ADDRESS" required>
 					</div>
 					<div ng-show="!showErrorMessage"  ng-messages="signupForm.officeAddress.$error" class="error-msg-edit">
 						<p ng-message="required" class="error-msg">Office Address is required</p>		
 					</div>
+				</div> -->
+
+
+
+
+
+
+				<div class="each-row">
+					<div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div>
+					<div class="input-fields">
+						<select name="officeAddress" class="officeAddress" ng-model="user.officeAddress" ng-class="{'error-border':!showErrorMessage}" required ng-options="oa as oa for oa in officeAddressJSON">
+							<option style="display:none" value="">OFFICE ADDRESS</option> 	
+						</select>
+					</div>
+					<div ng-show="!showErrorMessage"  ng-messages="signupForm.officeAddress.$error" class="error-msg-edit">
+						<p ng-message="required" class="error-msg">Please select an office address</p>
+					</div>
 				</div>
+
+
+
+
 
 				<div class="each-row">
 					<span  class="each-row-half">
