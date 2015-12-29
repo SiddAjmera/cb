@@ -149,6 +149,7 @@
     border: none;
     /*border-radius: 25px;*/
     color: #fff;
+    outline-color: transparent;
 }
 .each-row div.gender-radio{
     float:left;
@@ -157,7 +158,7 @@
     background-color: transparent;
     text-align: left;
     margin-top: 0px;
-    padding: 5.5% 10%;
+    padding: 4.5% 4%;
     font-size: 14px;
 }
 .gender-radio label{
@@ -313,6 +314,7 @@
 .signup-two-wrap .each-row div.input-fields input{
     height: 60px;
     border: none;
+    box-shadow: none;
 }
 .signup-two-wrap .each-row .each-row-half div.input-fields{
     float:left;
@@ -322,6 +324,7 @@
 .signup-two-wrap .each-row .each-row-half div.input-fields input,
 .signup-two-wrap .each-row .each-row-half div.input-fields select{
     width:100%;
+    outline-color: transparent;
 }
 .signup-two-wrap .each-row div:last-child{
     width: 100%;
@@ -460,3 +463,35 @@ p.error-msg{
 .each-row .each-row-half:last-child{
     border-left: 2.5px solid;
 }*/
+.rad{
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  border-color: #4ecd99;
+}
+.rad > input{ /* HIDE ORG RADIO & CHECKBOX */
+  visibility: hidden;
+  position: absolute;
+  border-color: #4ecd99;
+}
+/* RADIO & CHECKBOX STYLES */
+.rad > i{     /* DEFAULT <i> STYLE */
+  display: inline-block;
+  vertical-align: middle;
+  width:  30px;
+  height: 30px;
+  border-radius: 50%;
+  transition: 0.2s;
+  box-shadow: inset 0 0 0 8px #fff;
+  border: 2px solid #4ecd99;
+  margin-right: 10%;
+}
+.rad:hover > i{ /* HOVER <i> STYLE */
+  box-shadow: inset 0 0 0 6px #fff;
+  background: #4ecd99;
+}
+.rad > input:checked + i{ /* (RADIO CHECKED) <i> STYLE */
+  box-shadow: inset 0 0 0 6px #fff;
+  background: #4ecd99;
+}
