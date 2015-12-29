@@ -6,7 +6,6 @@ angular.module('cbApp')
       .state('userHome', {
         url: '/userHome',
         templateUrl: 'app/userHome/userHome.html',
-        controller: 'UserHomeCtrl',
-        authenticate: true
+        controller: 'UserHomeCtrl'
       });
   });

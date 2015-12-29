@@ -57,9 +57,9 @@ angular.module('cbApp', [
       // Intercept 401s and redirect you to login
       responseError: function(response) {
         if(response.status === 401) {
-          $location.path('/login');
+     //     $location.path('/login');
           // remove any stale tokens
-          localStorage.remove('token');
+       //   localStorage.remove('token');
           return $q.reject(response);
         }
         else {
@@ -94,8 +94,8 @@ angular.module('cbApp', [
     });
   });
 
-var onDeviceReady = function() {
-    angular.bootstrap( document, ['cbApp']);
-}
-document.addEventListener('deviceready', 
-onDeviceReady);
+// var onDeviceReady = function() {
+//     angular.bootstrap( document, ['cbApp']);
+// }
+// document.addEventListener('deviceready', 
+// onDeviceReady);
