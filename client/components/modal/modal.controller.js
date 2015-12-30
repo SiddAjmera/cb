@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('ModalCtrl', function ($scope, $modalInstance) {
+  .controller('ModalCtrl', function ($scope, $modalInstance, cordovaUtil) {
     $scope.message = 'Hello';
 
     $scope.homeAddressModalOk = function(){

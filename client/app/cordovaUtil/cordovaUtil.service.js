@@ -131,17 +131,26 @@ angular.module('cbApp')
 
 
 	   getUserHomeCoordinates: function(){
-	   		alert('The Control got to CordovaUtils getUserHomeCoordinates method.');
 	   		if(!navigator.geolocation) return;
 			
 			navigator.geolocation.getCurrentPosition(function(pos) {
-				geocoder = new google.maps.Geocoder();
-				var latlng = new google.maps.LatLng(pos.coords.latitude,pos.coords.longitude);
-				geocoder.geocode({'latLng': latlng}, function(results, status) {
+				
+				var geocoder = new google.maps.Geocoder();
+				var latlng = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+				alert('Here is the latlng object : ' + JSON.stringify(latlng));
+				// var latlng = new google.maps.LatLng(pos.coords.latitude,pos.coords.longitude);
+				// var latlngStr = latlng.split(',', 2);
+  				// var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+				geocoder.geocode({'location': latlng}, function(results, status) {
+					alert('Got inside the geocode method.');
 					if (status == google.maps.GeocoderStatus.OK) {
-				        	
-						//Check result 0
+
+
+						alert('Got inside the geocode status ok.');
+
+				        //Check result 0
 						var result = results[0];
+						alert('These are the results of the reverse geocode : ' + results);
 						//look for locality tag and administrative_area_level_1
 						var city = "";
 						var state = "";
@@ -154,9 +163,13 @@ angular.module('cbApp')
 						if(city != '' && state != '') {
 							$("#result").html("Hello to you out there in "+city+", "+state+"!");
 						}
-					} 
+					}
+					else{
+						alert('Geocoder failed due to : ' + status);
+						alert('Geocoder failed due to FETCH THE RESULTS : ' + results);
+					}
 				});
-			}
+			});
 	   }
 
 
