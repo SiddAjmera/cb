@@ -77,14 +77,15 @@ User.create({
     userName: 'Jagdeep',
     email: 'jagdeep@jagdeep.com',
     contactNumber: "9876543210",
-    password: 'Jagdeep@123',
+    password: '123',
     userId: "987654",
     userPhotoUrl: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/08a/0fe/2c2b6bb.jpg",
     vehicleLicenseNumber: "RJ 11 JK 3892",
     officeAddress: "Office",
     homeAddress: "Home",
     startTime: "09-11",
-    endTime: "20-21"
+    endTime: "20-21",
+    empId: "987654"
   }, {
     provider: 'local',
     role: 'admin',

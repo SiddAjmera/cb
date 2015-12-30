@@ -12,6 +12,7 @@ var UserSchema = new Schema({
 // According to the current scenario - Siddharth Ajmera
   contactNumber: String,
   userId: String,
+  empId : String,
   userName: String,
   userPhotoUrl: String,
   officeAddress: String,
