@@ -8,6 +8,8 @@ angular.module('cbApp')
    	currentUser = user;
    	console.log("currentUser",currentUser)
    });
+
+
    return {
 	   getCoordinates:function()
 	   {
@@ -129,7 +131,7 @@ angular.module('cbApp')
 
 
 	   getUserHomeCoordinates: function(){
-
+	   		alert('The Control got to CordovaUtils getUserHomeCoordinates method.');
 	   		if(!navigator.geolocation) return;
 			
 			navigator.geolocation.getCurrentPosition(function(pos) {
@@ -159,6 +161,6 @@ angular.module('cbApp')
 
 
 
-	   
+
    }
   }]);

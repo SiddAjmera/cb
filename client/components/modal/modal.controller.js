@@ -5,7 +5,7 @@ angular.module('cbApp')
     $scope.message = 'Hello';
 
     $scope.homeAddressModalOk = function(){
-    	
+    	cordovaUtil.getUserHomeCoordinates();
     	$modalInstance.close();
     };
 
@@ -14,5 +14,5 @@ angular.module('cbApp')
     	$modalInstance.close();
     };
 
-    
+
   });
