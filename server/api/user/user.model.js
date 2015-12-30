@@ -16,6 +16,7 @@ var UserSchema = new Schema({
   userPhotoUrl: String,
   officeAddress: String,
   homeAddress: String,
+  placeID : String,
   startTime: String,
   endTime: String,
   vehicleLicenseNumber: String,
