@@ -8,13 +8,13 @@ angular.module('cbApp')
 
     $scope.markers= [];
     $scope.center={
-        lat : 59.91,
-        lng : 10.75,
-        zoom: 4
+        lat : 18.581904504725568,
+        lng : 73.68483066558838,
+        zoom: 15
     };
     var tempObj = {};
-    tempObj.lat = 59.91;
-    tempObj.lng = 10.75;
+    tempObj.lat = 18.581904504725568;
+    tempObj.lng = 73.68483066558838;
     tempObj.enable=['click','touch'];
     /*tempObj.layer="Options";*/
     tempObj.icon= {

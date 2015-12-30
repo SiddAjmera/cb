@@ -19,6 +19,7 @@
       <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick-theme.css" />
       <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
       <link rel="stylesheet" href="bower_components/select2/select2.css" />
+      <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -39,6 +40,7 @@
       <link rel="stylesheet" href="app/postRides/postRides.css">
       <link rel="stylesheet" href="app/suggestions/suggestions.css">
       <link rel="stylesheet" href="app/userHome/userHome.css">
+      <link rel="stylesheet" href="app/userProfile/userProfile.css">
       <link rel="stylesheet" href="components/modal/modal.css">
       <!-- endinjector -->
     <!-- endbuild -->
@@ -228,6 +230,7 @@ if ( typeof define === 'function' && define.amd ) {
       <script src="bower_components/angular-touch/angular-touch.js"></script>
       <script src="bower_components/select2/select2.js"></script>
       <script src="bower_components/angular-ui-select2/src/select2.js"></script>
+      <script src="bower_components/angular-ui-select/dist/select.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
@@ -270,8 +273,11 @@ if ( typeof define === 'function' && define.amd ) {
           <script src="app/suggestions/suggestions.js"></script>
           <script src="app/userHome/userHome.controller.js"></script>
           <script src="app/userHome/userHome.js"></script>
+          <script src="app/userProfile/userProfile.controller.js"></script>
+          <script src="app/userProfile/userProfile.js"></script>
           <script src="components/auth/auth.service.js"></script>
           <script src="components/auth/user.service.js"></script>
+          <script src="components/modal/modal.controller.js"></script>
           <script src="components/modal/modal.service.js"></script>
           <script src="components/mongoose-error/mongoose-error.directive.js"></script>
           <script src="components/navbar/navbar.controller.js"></script>

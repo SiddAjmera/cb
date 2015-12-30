@@ -8,7 +8,6 @@ if(angular.isUndefined(config)){
 config.apiBaseURL="http://localhost:9000/";
 //config.apiBaseURL="http://52.77.218.140:9000/";
 
-
 /*apis start from here*/
 
 config.apis.login = "auth/local";

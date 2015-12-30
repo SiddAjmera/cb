@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SignupCtrl', function ($scope, Auth, $location, $window,parse,$state, $http) {
+  .controller('SignupCtrl', function ($scope, Auth, $location, $window,parse,$state, $http,$modal,cordovaUtil) {
     $scope.user = {vehicle:{}};
-    
+    $scope.user.gender = "Female";
     $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",
                                 "9:00 AM - 6:00 PM",
                                 "10:00 AM - 7:00 PM",
@@ -18,7 +18,6 @@ angular.module('cbApp')
                                 "CMC-Pune",
                                 "CRL - Hinjewadi",
                                 "Cerebrum IT Park",
-                                "IT Park - Hinjewadi",
                                 "KIRLOSKAR",
                                 "Millenium Bldg, Pune",
                                 "NAVLAKHA COMP.-PUNE",
@@ -132,7 +131,24 @@ angular.module('cbApp')
 
     };
 
-
+    $scope.getLocation=function(){
+         var modalInstance = $modal.open({
+          animation: true,
+          templateUrl: 'components/modal/modal.html',
+          controller: 'ModalCtrl',
+          size: 'sm'
+        });
+        
+        modalInstance.result.then(function(option){
+          if(option == "yes")
+          cordovaUtil.getUserHomeCoordinates().then(function(address){
+           $scope.user.homeAddress=address.homeAddress;
+            $scope.user.city=address.city;
+            $scope.user.zipcode=address.zipcode;
+            $scope.user.placeID=address.placeID;
+          })
+        })
+    }
 
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;

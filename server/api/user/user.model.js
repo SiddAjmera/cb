@@ -10,19 +10,28 @@ var Team = require('../team/team.model');
 var UserSchema = new Schema({
 
 // According to the current scenario - Siddharth Ajmera
-  contactNumber: String,
-  userId: String,
-  userName: String,
-  userPhotoUrl: String,
-  officeAddress: String,
+  empId: String,
+  empName: String,
+  contactNo: String,
+  gender: String,
   homeAddress: String,
-  startTime: String,
-  endTime: String,
-  vehicleLicenseNumber: String,
+  city: String,
+  zipcode: String,
+  officeAddress: String,
+  timeSlot: String,
+  username: String,
+  userId: String,
+  userPhotoUrl: String,
+  placeID : String,
+
+  vehicle: {
+    capacity: String,
+    vehicleNo: String
+  },
+
   teams : [
     { teamId: Number }
   ],
-  gender: String,
 // End of Code by Siddharth
 
 
@@ -33,7 +42,7 @@ var UserSchema = new Schema({
     default: 'user'
   },
   hashedPassword: String,
-  provider: String,
+  provider: { type: String, default: 'local' },
   salt: String,
   facebook: {},
   twitter: {},
