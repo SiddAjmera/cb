@@ -50,15 +50,26 @@
 				<div class="each-row">
 					<div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div>
 					<div class="input-fields office-address-select-wrap">
-						<select ui-select2  name="officeAddress" class="office-address-select" ng-model="user.officeAddress" ng-class="{'error-border':!showErrorMessage}" required ng-options="oa as oa for oa in officeAddressJSON" data-placeholder="OFFICE ADDRESS">
-							 <option value=""></option>  
-						</select>
+						<!-- <select ui-select2  name="officeAddress" class="office-address-select" ng-model="user.officeAddress" ng-class="{'error-border':!showErrorMessage}" required  data-placeholder="OFFICE ADDRESS">
+								<option value="">OFFICE ADDRESS</option>
+							 <option ng-repeat="oa in officeAddressJSON" value="{{oa}}">{{oa}}</option>   
+						</select> -->
+
+						<ui-select ng-model="user.officeAddress" class="office-address-select">
+						    <ui-select-match placeholder="OFFICE ADDRESS">
+						        <span ng-bind="$select.selected"></span>
+						    </ui-select-match>
+						    <ui-select-choices repeat="item in (officeAddressJSON | filter: $select.search)">
+						        <span ng-bind="item"></span>
+						    </ui-select-choices>
+						</ui-select>
+
 					</div>
 					<div ng-show="!showErrorMessage"  ng-messages="signupForm.officeAddress.$error" class="error-msg-edit">
 						<p ng-message="required" class="error-msg">Please select an office address</p>
 					</div>
 				</div>
-
+				
 
 
 
