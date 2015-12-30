@@ -15,7 +15,8 @@ angular.module('cbApp', [
   'ngHamburger',
   'LocalForageModule',
   'leaflet-directive',
-  'ui.select'
+  'ui.select',
+  'ngCordova'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
      console.log("In config block");
@@ -93,8 +94,8 @@ angular.module('cbApp', [
     });
   });
 
-// var onDeviceReady = function() {
-//     angular.bootstrap( document, ['cbApp']);
-// }
-// document.addEventListener('deviceready', 
-// onDeviceReady);
+var onDeviceReady = function() {
+    angular.bootstrap( document, ['cbApp']);
+}
+document.addEventListener('deviceready', 
+onDeviceReady);
