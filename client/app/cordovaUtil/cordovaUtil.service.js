@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaUtil',['parse','User','httpRequest','localStorage',function (parse,user,httpRequest,localStorage) {
+  .service('cordovaUtil',['parse','User','httpRequest','localStorage','$q',function (parse,user,httpRequest,localStorage,$q) {
   var currentUser = {};
    user.get().$promise.
    then(function(user){
@@ -131,45 +131,51 @@ angular.module('cbApp')
 
 
 	   getUserHomeCoordinates: function(){
+		   var deferred =$q.defer();
 	   		if(!navigator.geolocation) return;
 			
 			navigator.geolocation.getCurrentPosition(function(pos) {
 				
 				var geocoder = new google.maps.Geocoder();
 				var latlng = {lat: pos.coords.latitude, lng: pos.coords.longitude};
-				alert('Here is the latlng object : ' + JSON.stringify(latlng));
 				// var latlng = new google.maps.LatLng(pos.coords.latitude,pos.coords.longitude);
 				// var latlngStr = latlng.split(',', 2);
   				// var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
 				geocoder.geocode({'location': latlng}, function(results, status) {
-					alert('Got inside the geocode method.');
+					
 					if (status == google.maps.GeocoderStatus.OK) {
-
-
-						alert('Got inside the geocode status ok.');
 
 				        //Check result 0
 						var result = results[0];
-						alert('These are the results of the reverse geocode : ' + results);
 						//look for locality tag and administrative_area_level_1
+						
+						var homeAddress = result.formatted_address;
 						var city = "";
-						var state = "";
+						var zipcode = "";
+						var placeID = result.place_id;
+						
 						for(var i=0, len=result.address_components.length; i<len; i++) {
 							var ac = result.address_components[i];
-							if(ac.types.indexOf("locality") >= 0) city = ac.long_name;
-							if(ac.types.indexOf("administrative_area_level_1") >= 0) state = ac.long_name;
+							console.log(ac);
+							if(ac.types.indexOf("administrative_area_level_2") >= 0) city = ac.long_name;
+							if(ac.types.indexOf("postal_code") >= 0) zipcode = ac.long_name;
 						}
 						//only report if we got Good Stuff
-						if(city != '' && state != '') {
-							$("#result").html("Hello to you out there in "+city+", "+state+"!");
+						if(homeAddress != '' &&  city != '' && zipcode != '' && placeID != '') {
+							var addressObject={};
+							addressObject.homeAddress=homeAddress;
+							addressObject.city=city;
+							addressObject.zipcode=zipcode;
+							addressObject.placeID=placeID;
+							deferred.resolve(addressObject);
 						}
 					}
 					else{
-						alert('Geocoder failed due to : ' + status);
-						alert('Geocoder failed due to FETCH THE RESULTS : ' + results);
+						console.log(status)
 					}
 				});
 			});
+			return deferred.promise;
 	   }
 
 
