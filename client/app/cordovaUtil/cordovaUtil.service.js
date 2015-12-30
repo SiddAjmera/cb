@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaUtil',['parse','User','httpRequest','localStorage',function (parse,user,httpRequest,localStorage) {
+  .service('cordovaUtil',['parse','User','httpRequest','localStorage','$q',function (parse,user,httpRequest,localStorage,$q) {
   var currentUser = {};
    user.get().$promise.
    then(function(user){
    	currentUser = user;
    	console.log("currentUser",currentUser)
    });
+
+
    return {
 	   getCoordinates:function()
 	   {
@@ -86,6 +88,7 @@ angular.module('cbApp')
 			 });
 	
 	   },
+
 	   saveDeviceDetails:function()
 	   {
 		   localStorage.setItem('DeviceInformation', JSON.stringify(device));
@@ -99,6 +102,7 @@ angular.module('cbApp')
 		   else	return device.uuid;*/
 		   return "ThisIsASampleDeviceUUID";
 	   },
+
 	   getAllCoordinates:function(){
 	   	parse.getObjects().
 	   	then(function(res){
@@ -109,6 +113,7 @@ angular.module('cbApp')
 			  console.log(err);
 		});
 	   },
+
 	   syncCoordinates:function(){
 	   		 localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
 	   			var storedlocations =locations;
@@ -120,10 +125,61 @@ angular.module('cbApp')
 		   			if(res.status==201)
 		   				 localStorage.remove('SavedLocationCoordinates');
 		   		});
-	   		});
-	   		
-	   		 
+	   		});		 
+	   },
+
+
+
+	   getUserHomeCoordinates: function(){
+		   var deferred =$q.defer();
+	   		if(!navigator.geolocation) return;
+			
+			navigator.geolocation.getCurrentPosition(function(pos) {
+				
+				var geocoder = new google.maps.Geocoder();
+				var latlng = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+				// var latlng = new google.maps.LatLng(pos.coords.latitude,pos.coords.longitude);
+				// var latlngStr = latlng.split(',', 2);
+  				// var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+				geocoder.geocode({'location': latlng}, function(results, status) {
+					
+					if (status == google.maps.GeocoderStatus.OK) {
+
+				        //Check result 0
+						var result = results[0];
+						//look for locality tag and administrative_area_level_1
+						
+						var homeAddress = result.formatted_address;
+						var city = "";
+						var zipcode = "";
+						var placeID = result.place_id;
+						
+						for(var i=0, len=result.address_components.length; i<len; i++) {
+							var ac = result.address_components[i];
+							console.log(ac);
+							if(ac.types.indexOf("administrative_area_level_2") >= 0) city = ac.long_name;
+							if(ac.types.indexOf("postal_code") >= 0) zipcode = ac.long_name;
+						}
+						//only report if we got Good Stuff
+						if(homeAddress != '' &&  city != '' && zipcode != '' && placeID != '') {
+							var addressObject={};
+							addressObject.homeAddress=homeAddress;
+							addressObject.city=city;
+							addressObject.zipcode=zipcode;
+							addressObject.placeID=placeID;
+							deferred.resolve(addressObject);
+						}
+					}
+					else{
+						console.log(status)
+					}
+				});
+			});
+			return deferred.promise;
 	   }
-	   
+
+
+
+
    }
   }]);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SignupCtrl', function ($scope, Auth, $location, $window,parse,$state, $http) {
+  .controller('SignupCtrl', function ($scope, Auth, $location, $window,parse,$state, $http,$modal,cordovaUtil) {
     $scope.user = {vehicle:{}};
     
     $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",
@@ -9,6 +9,37 @@ angular.module('cbApp')
                                 "10:00 AM - 7:00 PM",
                                 "11:00 AM - 8:00 PM",
                                 "12:00 AM - 9:00 PM"
+                               ];
+
+    $scope.officeAddressJSON = ["BIRLA AT&T, PUNE",
+                                "BT TechM Collocation",
+                                "Bhosari MIDC Non STP",
+                                "Bhosari MIDC STP",
+                                "CMC-Pune",
+                                "CRL - Hinjewadi",
+                                "Cerebrum IT Park",
+                                "KIRLOSKAR",
+                                "Millenium Bldg, Pune",
+                                "NAVLAKHA COMP.-PUNE",
+                                "Nashik Centre NSTP",
+                                "Nashik PSK Sites",
+                                "Nyati Tiara",
+                                "Pune - Commerzone",
+                                "Pune PSK Sites",
+                                "Pune Sahyadri Park",
+                                "Pune(QuadraII) STP",
+                                "Pune(QuadraII)NonSTP",
+                                "Pune-Sun Suzlon-NSTP",
+                                "QBPL -Pune SEZ",
+                                "SP - A1 - Rajgad",
+                                "SP - S1 - Poorna",
+                                "SP - S2 - Torna",
+                                "SP - S3 - Tikona",
+                                "SahyadriPark SEZ - I",
+                                "Sp-S1-Poorna-BPO",
+                                "Sp-S2-Torna-BPO",
+                                "TRDDC HADAPSAR, PUNE",
+                                "VSNL - Pune"
                                ];
 
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
@@ -81,7 +112,7 @@ angular.module('cbApp')
 
       // Function to save the UserObject in MongoDB
       $http({
-          url: 'http://localhost:9000/api/users/',
+          url: config.apiBaseURL+'api/users/',
           dataType: 'json',
           method: 'POST',
           data: $scope.user,
@@ -100,7 +131,24 @@ angular.module('cbApp')
 
     };
 
-
+    $scope.getLocation=function(){
+         var modalInstance = $modal.open({
+          animation: true,
+          templateUrl: 'components/modal/modal.html',
+          controller: 'ModalCtrl',
+          size: 'sm'
+        });
+        
+        modalInstance.result.then(function(option){
+          if(option == "yes")
+          cordovaUtil.getUserHomeCoordinates().then(function(address){
+           $scope.user.homeAddress=address.homeAddress;
+            $scope.user.city=address.city;
+            $scope.user.zipcode=address.zipcode;
+            $scope.user.placeID=address.placeID;
+          })
+        })
+    }
 
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
