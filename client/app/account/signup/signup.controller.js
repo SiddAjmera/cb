@@ -3,7 +3,7 @@
 angular.module('cbApp')
   .controller('SignupCtrl', function ($scope, Auth, $location, $window,parse,$state, $http,$modal,cordovaUtil) {
     $scope.user = {vehicle:{}};
-    
+    $scope.user.gender = "Female";
     $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",
                                 "9:00 AM - 6:00 PM",
                                 "10:00 AM - 7:00 PM",
