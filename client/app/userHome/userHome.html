@@ -9,7 +9,7 @@
 					</div>
 					<div class="user-image-hamburger-wrap">
 						<a ui-sref="userHome.userProfile"> 
-						<img src="{{currentUser.userPhotoUrl}}" class="avail-user-img" ><!-- {{currentUser.userPhotoUrl}} -->
+						<img src="{{currentUser.userPhotoUrl}}"  ng-click="toggleHamburger()" class="avail-user-img" ><!-- {{currentUser.userPhotoUrl}} -->
 						
 						<svg class="user-indication-svg">
 						  <circle cx="50" cy="50" r="5" class="indicator-circle"/>

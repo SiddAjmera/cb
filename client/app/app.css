@@ -1330,7 +1330,34 @@ a.get-started-link:hover{
     outline: 0;
     box-shadow: none;
 }
-
+.image-update-wrap{
+    width: 100%;
+    height: 150px;
+    background-color: #fff;
+    margin-bottom: 5px;
+}
+.user-image-update{
+    padding: 10px;
+}
+.profile-image-update-sec{
+    width: 100%;
+    height: 128px;
+    float: left;
+}
+.image-update-btn{
+    float: right;
+    height: 146px;
+    float: right;
+    height: 146px;
+    background-color: #fff;
+    padding-top: 60px;
+    text-align: center;
+}
+.image-update-btn .glyphicon-pencil{
+    cursor: pointer;
+    color: #4ecd99;
+    font-size: 25px;
+}
 
 
 

@@ -1,17 +1,21 @@
 <div class="page-wrapper">
-		<div class="container login-container">
-
+	<div class="col-md-12 col-sm-12 col-xs-12 header-section">
+		<span class="glyphicon glyphicon-chevron-left cursor-pointer"  ng-click="toggleHamburger()"></span>
+		<span class="heading">User Profile</span> 
+	</div>
+	<div class="container login-container">
+			
 		<form name="userProfileUpdateForm" class="animation-form-signup" ng-submit="updateUserData()" novalidate>
 			
 			<div class="form-section signup-section-form">
-				<div class="each-row">
-					<div><span><img class="icon-style" src="assets/images/icon_username.png"></span></div>
-					<div><input type="file" ng-class="{'error-border':!showErrorMessage}" class="form-control input-boxes login-input-box profile-picture-uploader" ng-model="user.userPhotoUrl" name="empid" placeholder="EMPLOYEE ID" required>
-						<div ng-show="!showErrorMessage"  ng-messages="signupForm.empid.$error" class="error-msg-edit">
-							<p ng-message="required" class="error-msg">Please select a photo</p>
-							<p ng-message="pattern" class="error-msg">Invalid photo file format</p>
-						</div>
+				<div class="image-update-wrap">
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-L-none pad-R-none user-image-update">
+						<img class="profile-image-update-sec" src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png" alt="user-image">
 					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 image-update-btn">
+						<span class="glyphicon glyphicon-pencil"></span>
+					</div>
+					
 				</div>
 
 				<div class="each-row">
