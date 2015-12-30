@@ -6,7 +6,6 @@
 'use strict';
 
 var mongoose = require('mongoose');
-//var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
 var Vehicle = require('../api/vehicle/vehicle.model');
 var Ride = require('../api/ride/ride.model');
@@ -73,79 +72,103 @@ Vehicle.create({
   });
 
 User.create({
-    provider: 'local',
-    userName: 'Jagdeep',
-    email: 'jagdeep@jagdeep.com',
-    contactNumber: "9876543210",
-    password: '123',
-    userId: "987654",
-    userPhotoUrl: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/08a/0fe/2c2b6bb.jpg",
-    vehicleLicenseNumber: "RJ 11 JK 3892",
-    officeAddress: "Office",
-    homeAddress: "Home",
-    startTime: "09-11",
-    endTime: "20-21",
-    empId: "987654"
+    empId: '111111',
+    empName: 'Jagdeep Singh Soni',
+    contactNo: '9876543210',
+    gender: 'Male',
+    homeAddress: 'Jagdeep Home',
+    city: 'Pune',
+    zipcode: '411057',
+    officeAddress: 'Jagdeep Office',
+    timeSlot: '9:00 AM - 7:00 PM',
+    username: '111111',
+    password: "123",
+    userId: '111111',
+    userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/08a/0fe/2c2b6bb.jpg',
+    vehicle: {
+        capacity: '2',
+        vehicleNo: 'MH 09 JZ 7903'
+    },
+    email: 'jagdeep@tcs.com'
   }, {
-    provider: 'local',
-    role: 'admin',
-    userName: 'Siddharth',
-    email: 'siddharth@siddharth.com',
-    password: 'Siddharth@123',
-    contactNumber: "8765432109",
-    userId: "876543",
-    userPhotoUrl: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAALvAAAAJDQyNGQ1MDI0LTFmYmEtNGNlMy05ZTkzLWI4OWU1OTdhMDUzOQ.jpg",
-    vehicleLicenseNumber: "MP 09 JZ 7903",
-    officeAddress: "Office",
-    homeAddress: "Home",
-    startTime: "09-16",
-    endTime: "15-24"
+    empId: '111112',
+    empName: 'Siddharth Ajmera',
+    contactNo: '9876543211',
+    gender: 'Male',
+    homeAddress: 'Siddharth Home',
+    city: 'Pune',
+    zipcode: '411057',
+    officeAddress: 'Siddharth Office',
+    timeSlot: '9:00 AM - 7:00 PM',
+    username: '111112',
+    password: "123",
+    userId: '111112',
+    userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAALvAAAAJDQyNGQ1MDI0LTFmYmEtNGNlMy05ZTkzLWI4OWU1OTdhMDUzOQ.jpg',
+    vehicle: {
+        capacity: '2',
+        vehicleNo: 'MP 13 JZ 7903'
+    },
+    email: 'siddharth@tcs.com'
   },{
-    provider: 'local',
-    role: 'user',
-    userName: 'Parvez',
-    email: 'parvez@parvez.com',
-    password: 'Parvez@123',
-    contactNumber: "7654321098",
-    userId: "765432",
-    userPhotoUrl: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/055/092/193511e.jpg",
-    vehicleLicenseNumber: "GJ 16 KP 5678",
-    officeAddress: "Office",
-    homeAddress: "Home",
-    startTime: "09-16",
-    endTime: "15-24"
+    empId: '111113',
+    empName: 'Parvez Patel',
+    contactNo: '9876543212',
+    gender: 'Male',
+    homeAddress: 'Parvez Home',
+    city: 'Pune',
+    zipcode: '411057',
+    officeAddress: 'Parvez Office',
+    timeSlot: '9:00 AM - 7:00 PM',
+    username: '111113',
+    password: "123",
+    userId: '111113',
+    userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/055/092/193511e.jpg',
+    vehicle: {
+        capacity: '2',
+        vehicleNo: 'GJ 16 JZ 7903'
+    },
+    email: 'parvez@tcs.com'
   },{
-    provider: 'local',
-    role: 'user',
-    userName: 'Ninad',
-    email: 'ninad@ninad.com',
-    password: 'Ninad@123',
-    contactNumber: "9638527410",
-    userId: "654321",
-    userPhotoUrl: "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png",
-    vehicleLicenseNumber: "MH 64 RH 8732",
-    officeAddress: "Ninad Office",
-    homeAddress: "Ninad Home",
-    startTime: "09-16",
-    endTime: "15-24",
-    vehicle: mongoose.Types.ObjectId("5660167ab6df47d026dafbc4")
+    empId: '111114',
+    empName: 'Ninad Mahajan',
+    contactNo: '9876543213',
+    gender: 'Male',
+    homeAddress: 'Ninad Home',
+    city: 'Pune',
+    zipcode: '411057',
+    officeAddress: 'Ninad Office',
+    timeSlot: '9:00 AM - 7:00 PM',
+    username: '111114',
+    password: "123",
+    userId: '111114',
+    userPhotoUrl: 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png',
+    vehicle: {
+        capacity: '2',
+        vehicleNo: 'MH 16 JZ 7903'
+    },
+    email: 'ninad@tcs.com'
   },{
-    provider: 'local',
-    role: 'user',
-    userName: 'Ashraf',
-    email: 'ashraf@ashraf.com',
-    password: 'Ashraf@123',
-    contactNumber: "8527419630",
-    userId: "543210",
-    userPhotoUrl: "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png",
-    vehicleLicenseNumber: "MP 01 WE 9852",
-    officeAddress: "Ashraf Office",
-    homeAddress: "Ashraf Home",
-    startTime: "09-16",
-    endTime: "15-24"
+    empId: '111115',
+    empName: 'Md Ashraf',
+    contactNo: '9876543214',
+    gender: 'Male',
+    homeAddress: 'Ashraf Home',
+    city: 'Pune',
+    zipcode: '411057',
+    officeAddress: 'Ashraf Office',
+    timeSlot: '9:00 AM - 7:00 PM',
+    username: '111115',
+    password: "123",
+    userId: '111115',
+    userPhotoUrl: 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png',
+    vehicle: {
+        capacity: '2',
+        vehicleNo: 'MP 01 JZ 7903'
+    },
+    email: 'ashraf@tcs.com'
   },function(){
     console.log('Finished populating Users');
-  });
+});
 
 Ride.create({
     rideId: 12345678,
