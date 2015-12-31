@@ -1,31 +1,48 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout) {
+  .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest) {
    
-        
+     $scope.markers= [];
+    var getAllSuggestions = function(){
+        httpRequest.get(config.apis.getAllUsers).
+        then(function(res){
+            console.log("res",res);
+            if(res.status==200){
+                $scope.suggestedUsers = res.data;
 
+                angular.forEach($scope.suggestedUsers, function(user, key){
+                        var tempObj = {};
+                        tempObj.lat = parseFloat(user.homeLocationCoordinates.latitude);
+                        tempObj.lng = parseFloat(user.homeLocationCoordinates.longitude);
+                        tempObj.enable=['click','touch'];
+                        var image = angular.element('<img>',{src:user.userPhotoUrl,'class':'map-user-marker'});
+                        console.log(image.outerHTML )
+                        /*tempObj.layer="Options";*/
+                        tempObj.icon= {
+                                            type: 'div',
+                                            iconSize: [25, 60],
+                                            popupAnchor:  [0, -50],
+                                            iconAnchor:   [10, 45],
+                                            html: image[0].outerHTML  
+                                     }
+                        tempObj.message='<user-marker contactno="'+user.contactNo+'"></user-marker';
+                        $scope.markers.push(tempObj)
+                });
+                console.log($scope.markers)
+            }
+        })
+    }    
 
-    $scope.markers= [];
+    getAllSuggestions();
+
+   
     $scope.center={
         lat : 18.581904504725568,
         lng : 73.68483066558838,
         zoom: 15
     };
-    var tempObj = {};
-    tempObj.lat = 18.581904504725568;
-    tempObj.lng = 73.68483066558838;
-    tempObj.enable=['click','touch'];
-    /*tempObj.layer="Options";*/
-    tempObj.icon= {
-                        type: 'div',
-                        iconSize: [25, 60],
-                        popupAnchor:  [0, -50],
-                        iconAnchor:   [10, 45],
-                        html: '<img class="map-user-marker" src="assets/images/user-image.jpg">'  
-                 }
-    tempObj.message='<div class="cn-wrapper" id="cn-wrapper"><ul>   <li><a href="#"><img class="calling-icon-map" src="assets/images/map-icons/icon_call.png"></a></li> <li><a href="#"><img src="assets/images/map-icons/icon_contact_rollover.png"></a></li> <li><a href="#"><img src="assets/images/map-icons/icon_favorite.png"></a></li>  <li><a href="#"><img class="add-icon-map" src="assets/images/map-icons/icon_add.png"></a></li>  </ul></div>';
-    $scope.markers.push(tempObj)
+
      var eventNameClick = 'leafletDirectiveMarker.myMap.click';
      var eventNameTouch = 'leafletDirectiveMarker.myMap.touch';
                 $scope.$on(eventNameClick, function(event, args){
