@@ -1,3 +1,45 @@
-<div class="col-md-12">
-This is the userProfile view.
+<div class="page-wrapper">
+	<div class="col-md-12 col-sm-12 col-xs-12 header-section">
+		<span class="glyphicon glyphicon-chevron-left cursor-pointer"  ng-click="toggleHamburger()"></span>
+		<span class="heading">User Profile</span> 
+	</div>
+	<div class="container login-container">
+			
+		<form name="userProfileUpdateForm" class="animation-form-signup" ng-submit="updateUserData()" novalidate>
+			
+			<div class="form-section signup-section-form">
+				<div class="image-update-wrap">
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-L-none pad-R-none user-image-update">
+						
+						<img ng-if="selectedImage" class="profile-image-update-sec" ng-src="{{selectedImage}}" alt="user-image">
+						
+						
+						<img ng-if="!selectedImage" class="profile-image-update-sec" src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png" alt="user-image">
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 image-update-btn">
+						<span class="glyphicon glyphicon-pencil" ng-click="getImageSaveContact()"></span>
+					</div>
+					
+				</div>
+
+				<div class="each-row">
+					<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
+
+					<div class="input-fields address-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes home-address-changer" ng-model="user.homeAddress" placeholder="HOME ADDRESS" required></div>
+
+					<div class="icon-address-fields"><span><img class="icon-style" src="assets/images/icon_location.png" ng-click="getLocation()"></span></div>
+					<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
+						<p ng-message="required" class="error-msg">Home Address is required</p>
+					</div>
+				</div>
+
+				<div class="each-row">
+					<input type="button" class="input-buttons"  name="syncData" value="SYNC DATA" ng-click="syncUserLocationData()">
+				</div>
+			</div>
+
+
+
+		</form>		
+	</div>
 </div>
