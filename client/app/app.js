@@ -96,6 +96,7 @@ angular.module('cbApp', [
 
 var onDeviceReady = function() {
     angular.bootstrap( document, ['cbApp']);
+    $.getScript('http://maps.google.com/maps/api/js?sensor=false');
 }
 document.addEventListener('deviceready', 
 onDeviceReady);
