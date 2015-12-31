@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SignupCtrl', function ($scope, Auth, $location, $window,parse,$state, $http,$modal,cordovaUtil) {
+  .controller('SignupCtrl', function ($scope, Auth, $location, $window,parse,$state, $http,$modal,cordovaUtil,httpRequest) {
     $scope.user = {vehicle:{}};
     $scope.user.gender = "Female";
     $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",
@@ -102,31 +102,22 @@ angular.module('cbApp')
        } 
 
       /*else save the data*/
-      /*parse.saveObject("signupObject",$scope.user).
-      then(function(response){
-        console.log(response.toJSON());
-       
-         alert("User created successfully");
-         $state.go("main")
-      });*/
-
+    
       // Function to save the UserObject in MongoDB
-      $http({
-          url: config.apiBaseURL+'api/users/',
-          dataType: 'json',
-          method: 'POST',
-          data: $scope.user,
-          headers: {
-              "Content-Type": "application/json"
-          }
-      }).success(function(response){
-          console.log('User Stored in the MongoDB Successfully. Here is the Response : ' + JSON.stringify(response));
-          $scope.response = response;
-          $state.go("userHome.home");
-      }).error(function(error){
-          console.log('Error Storing the User to the MongoDB. Here is the Error: ' + error);
-          $scope.error = error;
+      var url = config.apis.signup;
+      httpRequest.post(url,$scope.users).
+      then(function(response){
+            console.log('User Stored in the MongoDB Successfully. Here is the Response : ' + JSON.stringify(response));
+            $scope.response = response;
+            localStorage.store('token',response.token).then(function(){
+                $state.go("userHome.home");
+            })
+          
+      },function(err){
+           console.log('Error Storing the User to the MongoDB. Here is the Error: ' + error);
+           $scope.error = err;
       });
+     
 
 
     };
