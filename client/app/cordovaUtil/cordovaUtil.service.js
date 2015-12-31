@@ -167,6 +167,7 @@ angular.module('cbApp')
 							addressObject.city=city;
 							addressObject.zipcode=zipcode;
 							addressObject.placeID=placeID;
+							addressObject.homeLocationCoordinates = latlng;
 							deferred.resolve(addressObject);
 						}
 					}

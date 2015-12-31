@@ -24,7 +24,7 @@ angular.module('cbApp')
                         iconAnchor:   [10, 45],
                         html: '<img class="map-user-marker" src="assets/images/user-image.jpg">'  
                  }
-    tempObj.message='<div class="cn-wrapper" id="cn-wrapper"><ul>   <li><a href="#"><img class="calling-icon-map" src="assets/images/map-icons/icon_call.png"></a></li> <li><a href="#"><img src="assets/images/map-icons/icon_contact_rollover.png"></a></li> <li><a href="#"><img src="assets/images/map-icons/icon_favorite.png"></a></li>  <li><a href="#"><img class="add-icon-map" src="assets/images/map-icons/icon_add.png"></a></li>  </ul></div>';
+    tempObj.message='<div class="cn-wrapper" id="cn-wrapper"><ul>   <li><a onclick="document.location="tel:4111111"" ><img class="calling-icon-map" src="assets/images/map-icons/icon_call.png"></a></li> <li><a href="#"><img src="assets/images/map-icons/icon_contact_rollover.png"></a></li> <li><a href="#"><img src="assets/images/map-icons/icon_favorite.png"></a></li>  <li><a href="#"><img class="add-icon-map" src="assets/images/map-icons/icon_add.png"></a></li>  </ul></div>';
     $scope.markers.push(tempObj)
      var eventNameClick = 'leafletDirectiveMarker.myMap.click';
      var eventNameTouch = 'leafletDirectiveMarker.myMap.touch';

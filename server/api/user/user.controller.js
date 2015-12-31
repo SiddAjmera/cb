@@ -57,6 +57,11 @@ exports.getSuggestions = function(req, res){
   });
 }
 
+
+exports.suggestionsTest = function(req, res){
+  console.log('Got request to get suggestions. Here is the request body : ' + req.body );
+  
+}
 /**
  * Get a single user
  */
