@@ -2,7 +2,8 @@
 
 angular.module('cbApp')
   .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest) {
-   $scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
+   
+<<<<<<< HEAD
      $scope.markers= [];
     var getAllSuggestions = function(){
         httpRequest.get(config.apis.getAllUsers).
@@ -35,6 +36,10 @@ angular.module('cbApp')
     }    
 
     getAllSuggestions();
+=======
+        
+$scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
+>>>>>>> d13ce5828ebff33501bb16e6f152f204e8fd48c6
 
    
     $scope.center={
@@ -42,7 +47,24 @@ angular.module('cbApp')
         lng : 73.68483066558838,
         zoom: 15
     };
+<<<<<<< HEAD
 
+=======
+    var tempObj = {};
+    tempObj.lat = 18.581904504725568;
+    tempObj.lng = 73.68483066558838;
+    tempObj.enable=['click','touch'];
+    /*tempObj.layer="Options";*/
+    tempObj.icon= {
+                        type: 'div',
+                        iconSize: [25, 60],
+                        popupAnchor:  [0, -50],
+                        iconAnchor:   [10, 45],
+                        html: '<img class="map-user-marker" src="assets/images/user-image.jpg">'  
+                 }
+    tempObj.message='<div class="cn-wrapper" id="cn-wrapper"><ul>   <li><a onclick="document.location="tel:4111111"" ><img class="calling-icon-map" src="assets/images/map-icons/icon_call.png"></a></li> <li><a href="#"><img src="assets/images/map-icons/icon_contact_rollover.png"></a></li> <li><a href="#"><img src="assets/images/map-icons/icon_favorite.png"></a></li>  <li><a href="#"><img class="add-icon-map" src="assets/images/map-icons/icon_add.png"></a></li>  </ul></div>';
+    $scope.markers.push(tempObj)
+>>>>>>> d13ce5828ebff33501bb16e6f152f204e8fd48c6
      var eventNameClick = 'leafletDirectiveMarker.myMap.click';
      var eventNameTouch = 'leafletDirectiveMarker.myMap.touch';
                 $scope.$on(eventNameClick, function(event, args){

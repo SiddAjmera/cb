@@ -9,8 +9,15 @@ angular.module('cbApp')
        {
           var promise;
           var req = {};   
-          var qs=queryString.stringify(params);
-          req.url = config.apiBaseURL+url+"?"+qs; //BaseURl+API+?+queryString
+          if(params){
+            var qs=queryString.stringify(params);
+            req.url = config.apiBaseURL+url+"?"+qs;
+          }
+          else{
+              req.url = config.apiBaseURL+url;
+          }
+            
+          //req.url = config.apiBaseURL+url+"?"+qs; //BaseURl+API+?+queryString
           req.method = 'GET';
           promise = $http(req).
                   then(function (response) {
