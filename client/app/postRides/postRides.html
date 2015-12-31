@@ -1,59 +1,68 @@
 <div class="page-wrapper">
-		<div class="container login-container user-home-container  pad-R-none pad-L-none">
-			<div class="col-md-12 col-sm-12 col-xs-12 header-section">
-				<span class="glyphicon glyphicon-chevron-left cursor-pointer"  ng-click="toggleHamburger()"></span>
-				<span class="heading">Leaving</span>
-			</div>
-
-			<div class="form-section functionality-wrap">
-				
-				<div class="col-md-12 col-sm-12 col-xs-12 each-function-row">
-						<div class="input-labels">
-							Leaving In (min)	
-						</div>
-						<div class="window-wrap field-gap-top field-gap-bottom">
-							<span class="each-window selected">02</span>
-							<span class="each-window">05</span>
-							<span class="each-window">10</span>
-							<span class="each-window">15</span>
-						</div>
-				</div>
-				<div class="col-md-12 col-sm-12 col-xs-12 each-function-row">
-						<div class="input-labels">
-							From	
-						</div>
-						<div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none field-gap-top field-gap-bottom">
-							<input class="form-control opp-input-box" type="text" >
-							<div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none field-gap-top field-gap-bottom">
-								<input type="checkbox" id="cb_1" class="other-box">
-								<label for="cb_1" class="checkbox-label">OTHER</label>
-								<input class="form-control opp-input-box show-other" type="text" >
-							</div>
-									
-						</div>
-				</div>
-				<div class="col-md-12 col-sm-12 col-xs-12 each-function-row no-border">
-						<div class="input-labels">
-							To	
-						</div>
-						<div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none field-gap-top field-gap-bottom">
-							<input class="form-control opp-input-box" type="text" >
-							<div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none field-gap-top field-gap-bottom">
-								<input type="checkbox" id="cb_1" class="other-box">
-								<label for="cb_1" class="checkbox-label">OTHER</label>
-								<input class="form-control opp-input-box show-other" type="text" >
-							</div>
-									
-						</div>
-				</div>
-					
-				<div class="each-row">
-					<input type="submit" class="submit-buttons" name="continue" value="SUBMIT">
-					
-				</div>
-			</div>
-
-	
-
-		</div>
+	<div class="col-md-12 col-sm-12 col-xs-12 header-section">
+		<span class="glyphicon glyphicon-chevron-left cursor-pointer"  ng-click="toggleHamburger()"></span>
+		<span class="heading">Post Ride</span> 
 	</div>
+	<div class="container login-container">
+			
+		<form name="userProfileUpdateForm" class="animation-form-signup" ng-submit="updateUserData()" novalidate>
+			
+			<div class="form-section signup-section-form">
+				
+				<div class="each-row">
+					<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
+
+					<div class="input-fields address-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="rideSource" class="form-control input-boxes ride-source-field" ng-model="ride.source" placeholder="LEAVING FROM" required></div>
+					<div class="icon-address-fields"><span><img class="icon-style" src="assets/images/icon_location.png" ng-click="getLocation()"></span></div>
+					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideSource.$error" class="error-msg-edit">
+						<p ng-message="required" class="error-msg">Ride source is required</p>
+					</div>
+				</div>
+
+				<div class="each-row">
+					<div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div>
+
+					<div class="input-fields address-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="rideDestination" class="form-control input-boxes home-address-changer" ng-model="ride.destination" placeholder="LEAVING FOR" required></div>
+
+					<div class="icon-address-fields"><span><img class="icon-style" src="assets/images/icon_location.png" ng-click="getLocation()"></span></div>
+					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error" class="error-msg-edit">
+						<p ng-message="required" class="error-msg">Ride destination is required</p>
+					</div>
+				</div>
+
+
+				<div class="each-row">
+					<span  class="each-row-half">
+						<div><span><img class="icon-style" src="assets/images/icon_time.png"></span></div>
+						<div class="input-fields">
+							<select name="leavingIn" class="timeslot login-input-box" ng-model="ride.leavingIn" ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t for t in leavingInJSON">
+								<option style="display:none" value="">LEAVING IN</option> 	
+							</select>
+						</div>
+						<div ng-show="!showErrorMessage"  ng-messages="postRideForm.leavingIn.$error" class="error-msg-edit">
+							<p ng-message="required" class="error-msg">Leaving in min. is required</p>
+						</div>
+					</span>		
+				
+					<span class="each-row-half">
+							<div><span><img class="icon-style" src="assets/images/icon_seat.png"></span></div>
+							<div class="input-fields">
+								<select class="seater-select login-input-box" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="ride.availableSeats" ng-options="c as c for c in availableSeatsJSON">
+									<option style="display:none" value="">SEATS AVAILABLE</option>
+								</select>
+							</div>
+							<div ng-show="!showErrorMessage"  ng-messages="postRideForm.availableSeats.$error" class="error-msg-edit">
+								<p ng-message="required" class="error-msg">Available seats is required</p>
+							</div>
+					</span>
+				</div>
+
+
+				<div class="each-row">
+					<input type="button" class="input-buttons"  name="syncData" value="POST RIDE" ng-click="postRide()">
+				</div>
+			</div>
+
+		</form>		
+	</div>
+</div>

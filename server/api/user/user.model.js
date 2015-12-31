@@ -23,6 +23,10 @@ var UserSchema = new Schema({
   userId: String,
   userPhotoUrl: String,
   placeID : String,
+  homeLocationCoordinates : {
+    latitude: String,
+    longitude: String
+  },
 
   vehicle: {
     capacity: String,
