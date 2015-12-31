@@ -13,8 +13,8 @@ angular.module('cbApp')
 
                 angular.forEach($scope.suggestedUsers, function(user, key){
                         var tempObj = {};
-                        tempObj.lat = parseFloat(user.homeLocationCoordinates.latitude);
-                        tempObj.lng = parseFloat(user.homeLocationCoordinates.longitude);
+                        tempObj.lat = parseFloat(user.homeLocationCoordinates[0]);
+                        tempObj.lng = parseFloat(user.homeLocationCoordinates[1]);
                         tempObj.enable=['click','touch'];
                         var image = angular.element('<img>',{src:user.userPhotoUrl,'class':'map-user-marker'});
                         console.log(image.outerHTML )
