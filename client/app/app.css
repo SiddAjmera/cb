@@ -1369,6 +1369,18 @@ a.get-started-link:hover{
     font-size: 25px;
 }
 
+/*This is the work for today*/
+.ride-source-field{
+    float: left;
+    width: 70%;
+    height: 60px;
+    border-color: transparent;
+}
+.ride-source-field:focus{
+    border-color: transparent;
+    box-shadow: none;
+}
+
 
 
 /*@media only screen and (max-width: 620px) {
