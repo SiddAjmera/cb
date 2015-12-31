@@ -10,7 +10,7 @@ var User = require('../api/user/user.model');
 var Vehicle = require('../api/vehicle/vehicle.model');
 var Ride = require('../api/ride/ride.model');
 var Team = require('../api/team/team.model');
-
+Vehicle.remove(function(){
 Vehicle.create({
     vehicleLicenseNumber: "MH 14 JZ 1234",
     capacity: "4",
@@ -70,7 +70,8 @@ Vehicle.create({
   }, function(){
     console.log('Finished populating Vehicles');
   });
-
+    });
+User.remove(function(){
 User.create({
     empId: '111111',
     empName: 'Jagdeep Singh Soni',
@@ -189,7 +190,8 @@ User.create({
   },function(){
     console.log('Finished populating Users');
 });
-
+});
+Ride.remove(function(){
 Ride.create({
     rideId: 12345678,
     offeredByUser : mongoose.Types.ObjectId("56601723647a6dac029d21e8"),
@@ -213,7 +215,8 @@ Ride.create({
   }, function(){
     console.log('Finished Populating Rides');
   });
-
+});
+Team.remove(function(){
 Team.create({
     teamId: 1000,
     name: "Monday Mornings",
@@ -226,4 +229,5 @@ Team.create({
     members: [ mongoose.Types.ObjectId("56601723647a6dac029d21ec")],
 }, function(){
     console.log('Finished populating Teams');
+});
 });
