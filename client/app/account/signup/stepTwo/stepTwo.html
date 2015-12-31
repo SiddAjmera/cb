@@ -24,7 +24,7 @@
 				
 					<span  class="each-row-half">
 						<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
-						<div class="input-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="zipcode" class="form-control input-boxes login-input-box" ng-model="user.zipcode" placeholder="ZIPCODE" required ng-pattern="/^[123456789]\d{5}$/">
+						<div class="input-fields"><input type="number" ng-class="{'error-border':!showErrorMessage}"  name="zipcode" class="form-control input-boxes login-input-box" ng-model="user.zipcode" placeholder="ZIPCODE" maxlength="6" required ng-pattern="/^[123456789]\d{5}$/">
 						</div>
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Zipcode is required</p>
@@ -32,20 +32,6 @@
 						</div>
 					</span>
 				</div>
-
-				<!-- <div class="each-row">
-					<div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div>
-					<div class="input-fields"><input type="text" name="officeAddress" ng-class="{'error-border':!showErrorMessage}"  class="form-control input-boxes login-input-box" ng-model="user.officeAddress"placeholder="OFFICE ADDRESS" required>
-					</div>
-					<div ng-show="!showErrorMessage"  ng-messages="signupForm.officeAddress.$error" class="error-msg-edit">
-						<p ng-message="required" class="error-msg">Office Address is required</p>		
-					</div>
-				</div> -->
-
-
-
-
-
 
 				<div class="each-row">
 					<div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div>
@@ -70,10 +56,6 @@
 					</div>
 				</div>
 				
-
-
-
-
 				<div class="each-row">
 					<span  class="each-row-half">
 						<div><span><img class="icon-style" src="assets/images/icon_time.png"></span></div>

@@ -89,10 +89,7 @@ User.create({
         capacity: '2',
         vehicleNo: 'MH 09 JZ 7903'
     },
-    homeLocationCoordinates: {
-        latitude: '18.574381',
-        longitude: '73.681143'
-    },
+    homeLocationCoordinates: [ 18.574381, 73.681143 ],
     email: 'jagdeep@tcs.com'
   }, {
     empId: '111112',
@@ -112,10 +109,7 @@ User.create({
         capacity: '2',
         vehicleNo: 'MP 13 JZ 7903'
     },
-    homeLocationCoordinates: {
-        latitude: '18.578157',
-        longitude: '73.686889'
-    },
+    homeLocationCoordinates: [ 18.578157, 73.686889 ],
     email: 'siddharth@tcs.com'
   },{
     empId: '111113',
@@ -135,10 +129,7 @@ User.create({
         capacity: '2',
         vehicleNo: 'GJ 16 JZ 7903'
     },
-    homeLocationCoordinates: {
-        latitude: '18.592117',
-        longitude: '73.762857'
-    },
+    homeLocationCoordinates: [ 18.592117, 73.762857 ],
     email: 'parvez@tcs.com'
   },{
     empId: '111114',
@@ -158,10 +149,7 @@ User.create({
         capacity: '2',
         vehicleNo: 'MH 16 JZ 7903'
     },
-    homeLocationCoordinates: {
-        latitude: '18.616153',
-        longitude: '73.778059'
-    },
+    homeLocationCoordinates: [ 18.616153, 73.778059 ],
     email: 'ninad@tcs.com'
   },{
     empId: '111115',
@@ -181,10 +169,7 @@ User.create({
         capacity: '2',
         vehicleNo: 'MP 01 JZ 7903'
     },
-    homeLocationCoordinates: {
-        latitude: '18.623647',
-        longitude: '73.810078'
-    },
+    homeLocationCoordinates: [ 18.623647, 73.810078 ],
     email: 'ashraf@tcs.com'
   },function(){
     console.log('Finished populating Users');

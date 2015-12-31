@@ -1389,6 +1389,12 @@ select:focus{
 .office-address-select.ui-select-bootstrap:visited{
     box-shadow: none;
 }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0;
+  box-shadow: none;
+}
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
         width: 4em;

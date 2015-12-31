@@ -1,7 +1,7 @@
 			<div class="form-section signup-section-form">
 				<div class="each-row">
 					<div><span><img class="icon-style" src="assets/images/icon_employee_ID.png"></span></div>
-					<div><input type="text" maxlength="7" ng-class="{'error-border':!showErrorMessage}" class="form-control input-boxes login-input-box" ng-model="user.empId" name="empid" placeholder="EMPLOYEE ID" required ng-pattern="/^[1-9]\d*$/">
+					<div><input type="number" maxlength="7" ng-class="{'error-border':!showErrorMessage}" class="form-control input-boxes login-input-box" ng-model="user.empId" name="empid" placeholder="EMPLOYEE ID" required ng-pattern="/^[1-9]\d*$/">
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.empid.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Employee ID is required</p>
 							<p ng-message="pattern" class="error-msg">Invalid Employee ID</p>
@@ -21,7 +21,7 @@
 
 				<div class="each-row">
 					<div><span><img class="icon-style" src="assets/images/icon_mobile_number.png"></span></div>
-					<div><input maxlength="10" class="form-control input-boxes login-input-box"  ng-class="{'error-border':!showErrorMessage}"  ng-model="user.contactNo" type="text" name="contactNo" required ng-pattern="/^[789]\d{9}$/" placeholder="MOBILE NUMBER" >
+					<div><input maxlength="10" class="form-control input-boxes login-input-box"  ng-class="{'error-border':!showErrorMessage}"  ng-model="user.contactNo" type="tel" name="contactNo" required ng-pattern="/^[789]\d{9}$/" placeholder="MOBILE NUMBER" >
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.contactNo.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Contact Number is required</p>
 							<p ng-message="pattern" class="error-msg">Invalid Contact Number</p>
