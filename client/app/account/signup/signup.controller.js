@@ -141,6 +141,9 @@ angular.module('cbApp')
             $scope.user.city=address.city;
             $scope.user.zipcode=address.zipcode;
             $scope.user.placeID=address.placeID;
+            $scope.user.homelocationCoordinates = {};
+            $scope.user.homelocationCoordinates.latitude = address.homeLocationCoordinates.lat;
+            $scope.user.homelocationCoordinates.longitude = address.homeLocationCoordinates.lng;
           })
         })
     }
