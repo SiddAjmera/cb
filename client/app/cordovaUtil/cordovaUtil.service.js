@@ -3,6 +3,7 @@
 angular.module('cbApp')
   .service('cordovaUtil',['parse','User','httpRequest','localStorage','$q',function (parse,user,httpRequest,localStorage,$q) {
   var currentUser = {};
+  var watchId;
    user.get().$promise.
    then(function(user){
    	currentUser = user;
@@ -15,7 +16,7 @@ angular.module('cbApp')
 	   {
 		   var that=this;
 		  
-			   navigator.geolocation.watchPosition(function(position)
+			   watchId = navigator.geolocation.watchPosition(function(position)
 			   {
 				   // The onSuccess method for  Geolocation
 				   var myLatLag = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);	//Create a Google MAP
@@ -87,6 +88,11 @@ angular.module('cbApp')
 				 }
 			 });
 	
+	   },
+
+	   stopSampling: function(){
+	   		navigator.geolocation.clearWatch(watchId);
+	   		;
 	   },
 
 	   saveDeviceDetails:function()

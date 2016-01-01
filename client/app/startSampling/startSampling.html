@@ -1,0 +1,18 @@
+<div class="page-wrapper">
+	<div class="col-md-12 col-sm-12 col-xs-12 header-section">
+		<span class="glyphicon glyphicon-chevron-left cursor-pointer"  ng-click="toggleHamburger()"></span>
+		<span class="heading">Start Sampling</span> 
+	</div>
+	<div class="container login-container">
+		<form name="userProfileUpdateForm" class="animation-form-signup" ng-submit="updateUserData()" novalidate>
+			<div class="form-section signup-section-form">
+
+				<div id="mapCanvas" style="width:500px;height:380px;"></div>
+
+				<div class="each-row">
+					<input type="button" class="input-buttons"  name="syncData" value="{{buttonText}}" ng-click="startOrStopSampling(buttonText)">
+				</div>
+			</div>
+		</form>		
+	</div>
+</div>
