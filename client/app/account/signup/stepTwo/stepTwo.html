@@ -13,7 +13,7 @@
 
 				<div class="each-row">
 					<span class="each-row-half">
-						<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
+						<div><span><img class="icon-style" src="assets/images/icon_city.png"></span></div>
 						<div class="input-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="city" class="form-control input-boxes login-input-box" ng-model="user.city" placeholder="CITY" required ng-pattern="/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/">
 						</div>
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.city.$error" class="error-msg-edit">
@@ -23,7 +23,7 @@
 					</span>
 				
 					<span  class="each-row-half">
-						<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
+						<div><span><img class="icon-style" src="assets/images/icon_zipcode.png"></span></div>
 						<div class="input-fields"><input type="number" ng-class="{'error-border':!showErrorMessage}"  name="zipcode" class="form-control input-boxes login-input-box" ng-model="user.zipcode" placeholder="ZIPCODE" maxlength="6" required ng-pattern="/^[123456789]\d{5}$/">
 						</div>
 						<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
