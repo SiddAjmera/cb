@@ -1062,12 +1062,14 @@ a.get-started-link:hover{
     color: #fff;
     padding: 5px 5px;
     border-radius: 25px;
-    min-width: 70px;
+    min-width: 59px;
     display: block;
-    max-width: 70px;
+    max-width: 55px;
+    font-size: 9px;
+    max-height: 19px;
     text-overflow: ellipsis;
     overflow: hidden;
-    margin-top:5px;
+    margin-top: 3px;
     text-transform: uppercase;
 }
 .leaflet-div-icon{
