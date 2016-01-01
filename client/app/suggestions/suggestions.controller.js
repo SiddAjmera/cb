@@ -16,7 +16,9 @@ angular.module('cbApp')
                         tempObj.lat = parseFloat(user.homeLocationCoordinates[0]);
                         tempObj.lng = parseFloat(user.homeLocationCoordinates[1]);
                         tempObj.enable=['click','touch'];
+
                         var image = angular.element('<img>',{src:user.userPhotoUrl,'class':'map-user-marker'});
+                        var p = angular.element('<p>',{'class':'map-user-name-sec','html':user.empName});
                         console.log(image.outerHTML )
                         /*tempObj.layer="Options";*/
                         tempObj.icon= {
@@ -24,7 +26,7 @@ angular.module('cbApp')
                                             iconSize: [25, 60],
                                             popupAnchor:  [0, -50],
                                             iconAnchor:   [10, 45],
-                                            html: image[0].outerHTML  
+                                            html: image[0].outerHTML+p[0].outerHTML  
                                      }
                         tempObj.message='<user-marker contactno="'+user.contactNo+'"></user-marker';
                         $scope.markers.push(tempObj)
