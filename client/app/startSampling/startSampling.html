@@ -6,13 +6,11 @@
 	<div class="container login-container">
 		<form name="userProfileUpdateForm" class="animation-form-signup" ng-submit="updateUserData()" novalidate>
 			<div class="form-section signup-section-form">
-
-				<div id="mapCanvas" style="width:500px;height:380px;"></div>
-
 				<div class="each-row">
 					<input type="button" class="input-buttons"  name="syncData" value="{{buttonText}}" ng-click="startOrStopSampling(buttonText)">
 				</div>
 			</div>
-		</form>		
+		</form>	
+		<leaflet   event-broadcast="events" id='myMap' defaults="defaults"></leaflet>	
 	</div>
 </div>
