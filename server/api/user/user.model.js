@@ -16,6 +16,7 @@ var UserSchema = new Schema({
   gender: String,
   homeAddress: String,
   city: String,
+  state: String,
   zipcode: String,
   officeAddress: String,
   timeSlot: String,

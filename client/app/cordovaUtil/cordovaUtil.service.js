@@ -158,6 +158,7 @@ angular.module('cbApp')
 						
 						var homeAddress = result.formatted_address;
 						var city = "";
+						var state = "";
 						var zipcode = "";
 						var placeID = result.place_id;
 						
@@ -165,16 +166,18 @@ angular.module('cbApp')
 							var ac = result.address_components[i];
 							console.log(ac);
 							if(ac.types.indexOf("administrative_area_level_2") >= 0) city = ac.long_name;
+							if(ac.types.indexOf("administrative_area_level_1") >= 0) state = ac.long_name;
 							if(ac.types.indexOf("postal_code") >= 0) zipcode = ac.long_name;
 						}
 						//only report if we got Good Stuff
-						if(homeAddress != '' &&  city != '' && zipcode != '' && placeID != '') {
+						if(homeAddress != '' &&  city != '' && zipcode != '' && placeID != '' && state != '') {
 							var addressObject={};
 							addressObject.homeAddress=homeAddress;
 							addressObject.city=city;
 							addressObject.zipcode=zipcode;
 							addressObject.placeID=placeID;
 							addressObject.homeLocationCoordinates = latlng;
+							addressObject.state = state;
 							deferred.resolve(addressObject);
 						}
 					}
@@ -185,9 +188,5 @@ angular.module('cbApp')
 			});
 			return deferred.promise;
 	   }
-
-
-
-
    }
   }]);

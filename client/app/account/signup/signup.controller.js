@@ -137,12 +137,14 @@ angular.module('cbApp')
         modalInstance.result.then(function(option){
           if(option == "yes")
           cordovaUtil.getUserHomeCoordinates().then(function(address){
-           $scope.user.homeAddress=address.homeAddress;
-            $scope.user.city=address.city;
-            $scope.user.zipcode=address.zipcode;
-            $scope.user.placeID=address.placeID;
+           $scope.user.homeAddress = address.homeAddress;
+            $scope.user.city = address.city;
+            $scope.user.zipcode = address.zipcode;
+            $scope.user.placeID = address.placeID;
+            $scope.user.homelocationCoordinates = [];
             $scope.user.homelocationCoordinates.push(address.homeLocationCoordinates.lat);
             $scope.user.homelocationCoordinates.push(address.homeLocationCoordinates.lng);
+            $scope.user.state = address.state;
           });
         });
     };
