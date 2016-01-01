@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaUtil',['parse','User','httpRequest','localStorage','$q',function (parse,user,httpRequest,localStorage,$q) {
+  .service('cordovaUtil',['parse','User','httpRequest','localStorage','$q','$rootScope',function (parse,user,httpRequest,localStorage,$q,$rootScope) {
   var currentUser = {};
   var watchId;
    user.get().$promise.
@@ -19,11 +19,12 @@ angular.module('cbApp')
 			   watchId = navigator.geolocation.watchPosition(function(position)
 			   {
 				   // The onSuccess method for  Geolocation
-				   var myLatLag = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);	//Create a Google MAP
-				   var myoptions = { zoom: 14, center: myLatLag, mapTypeId: google.maps.MapTypeId.ROADMAP};	//Set option for map so that is use latlng center
-				   var map = new google.maps.Map(document.getElementById("mapCanvas"), myoptions);	//google map instance
-				   var marker = new google.maps.Marker({ position: myLatLag, map: map });	//add marker for our location
+				   // var myLatLag = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);	//Create a Google MAP
+				   // var myoptions = { zoom: 14, center: myLatLag, mapTypeId: google.maps.MapTypeId.ROADMAP};	//Set option for map so that is use latlng center
+				   // var map = new google.maps.Map(document.getElementById("mapCanvas"), myoptions);	//google map instance
+				   // var marker = new google.maps.Marker({ position: myLatLag, map: map });	//add marker for our location
 				   that.saveCoordinates(position);
+				   $rootScope.$broadcast("locationCaptured");
 			   }, function(error)
 			   {
 				   // The  Callback use to  receive a PositionError object

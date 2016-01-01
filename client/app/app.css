@@ -1049,9 +1049,34 @@ a.get-started-link:hover{
     height: 60px;
     border: 3px solid #FF723C;
 }
+.user-own{
+    width: 70px;
+    height: 70px;
+    background-image: url(../assets/images/suggested-icon/self-image-back.png);
+    background-size: 70px;
+    padding: 12px;
+    border:none;
+}
+.map-user-name-sec{
+    background-color: #505050;
+    color: #fff;
+    padding: 5px 5px;
+    border-radius: 25px;
+    min-width: 59px;
+    display: block;
+    max-width: 55px;
+    font-size: 9px;
+    max-height: 19px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-top: 3px;
+    text-transform: uppercase;
+}
 .leaflet-div-icon{
     background: transparent;
     border: none;
+    width: initial!important;
+    text-align: center;
 }
 .leaflet-popup-content{
     margin:0;
