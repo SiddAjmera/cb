@@ -71,27 +71,29 @@ angular.module('cbApp', [
 
   .run(function ($rootScope, $location, Auth,localStorage,$state) {
     ///console.log("In run block",localStorage.isInitialized());
-     //logic to check if app is already initialized
-    $location.path('/intro');
-    //$state.go('intro');
-    /*  localStorage.isInitialized().then(function(val){
-        if(val)
-           $location.path('/home');
-        else{
-          localStorage.initialize();
-          $location.path('/intro');
-        }
-     });
-*/
+    
+   localStorage.isInitialized().then(function(val){
+            if(val){
+              // $location.path('/userHome/home');
+            }
+              
+            else{
+              localStorage.initialize();
+              $location.path('/intro');
+            }
+          })
+
     // Redirect to login if route requires auth and you're not logged in
-    $rootScope.$on('$stateChangeStart', function (event, next) {
+    $rootScope.$on('$stateChangeStart', function (event, next,nextPara,prev) {
       Auth.isLoggedInAsync(function(loggedIn) {
         console.log("loggedIn",loggedIn);
          console.log("next",next);
+         console.log("prev",prev);
 
         if(next.authenticate && !loggedIn) {
           $location.path('/login');
         }
+         //logic to check if app is already initialized
         if(next.name=="intro"){
           localStorage.isInitialized().then(function(val){
             if(val)

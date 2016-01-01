@@ -1,7 +1,12 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest) {
+  .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest,User) {
+     User.get().$promise
+    .then(function(userData){
+      $scope.currentUser=userData;
+      console.log($scope.currentUser);
+    });
    $scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
      $scope.markers= [];
     var getAllSuggestions = function(){
@@ -16,8 +21,12 @@ angular.module('cbApp')
                         tempObj.lat = parseFloat(user.homeLocationCoordinates[0]);
                         tempObj.lng = parseFloat(user.homeLocationCoordinates[1]);
                         tempObj.enable=['click','touch'];
-
-                        var image = angular.element('<img>',{src:user.userPhotoUrl,'class':'map-user-marker'});
+                        var markerClass ="";
+                        if($scope.currentUser.empId == user.empId)
+                            markerClass = "map-user-marker user-own";
+                        else
+                             markerClass = "map-user-marker";
+                        var image = angular.element('<img>',{src:user.userPhotoUrl,'class':markerClass});
                         var p = angular.element('<p>',{'class':'map-user-name-sec','html':user.empName});
                         console.log(image.outerHTML )
                         /*tempObj.layer="Options";*/
