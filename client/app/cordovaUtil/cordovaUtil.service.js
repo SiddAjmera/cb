@@ -130,11 +130,12 @@ angular.module('cbApp')
 	   			var storedlocations = locations;
 	   			if(storedlocations==null) return;
 	   			storedlocations = JSON.parse(storedlocations);
-	   			console.log('Stored Locations Object : ' + storedlocations);
-	   			console.log('Tracked Locations Object  : ', storedlocations.TrackedLocations);
-		   		httpRequest.post(config.apis.syncLocations,storedlocations.TrackedLocations).
+	   			httpRequest.post(config.apis.syncLocations,storedlocations.TrackedLocations).
 		   		then(function(res){
-		   			if(res.status==201) localStorage.remove('SavedLocationCoordinates');
+		   			if(res.status==201){
+		   				localStorage.remove('SavedLocationCoordinates');
+		   				alert('Data Synced Successfully');
+		   			}
 		   		});
 	   		});		 
 	   },
