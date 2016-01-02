@@ -30,6 +30,10 @@ angular.module('cbApp')
 				   // The  Callback use to  receive a PositionError object
 				   console.log('Error Code: ' + error.code +  ' Error Message: ' + error.message);
 				   alert('Error Code: ' + error.code +  ' Error Message: ' + error.message);
+			   },{
+				   enableHighAccuracy: true,
+				   timeout: 5000,
+				   frequency:5000
 			   });
 		  
 	   },
@@ -123,14 +127,14 @@ angular.module('cbApp')
 
 	   syncCoordinates:function(){
 	   		 localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
-	   			var storedlocations =locations;
-	   			if(storedlocations==null)
-	   				return;
-
+	   			var storedlocations = locations;
+	   			if(storedlocations==null) return;
+	   			storedlocations = JSON.parse(storedlocations);
+	   			console.log('Stored Locations Object : ' + storedlocations);
+	   			console.log('Tracked Locations Object  : ', storedlocations.TrackedLocations);
 		   		httpRequest.post(config.apis.syncLocations,storedlocations.TrackedLocations).
 		   		then(function(res){
-		   			if(res.status==201)
-		   				 localStorage.remove('SavedLocationCoordinates');
+		   			if(res.status==201) localStorage.remove('SavedLocationCoordinates');
 		   		});
 	   		});		 
 	   },
@@ -158,6 +162,7 @@ angular.module('cbApp')
 						
 						var homeAddress = result.formatted_address;
 						var city = "";
+						var state = "";
 						var zipcode = "";
 						var placeID = result.place_id;
 						
@@ -165,16 +170,18 @@ angular.module('cbApp')
 							var ac = result.address_components[i];
 							console.log(ac);
 							if(ac.types.indexOf("administrative_area_level_2") >= 0) city = ac.long_name;
+							if(ac.types.indexOf("administrative_area_level_1") >= 0) state = ac.long_name;
 							if(ac.types.indexOf("postal_code") >= 0) zipcode = ac.long_name;
 						}
 						//only report if we got Good Stuff
-						if(homeAddress != '' &&  city != '' && zipcode != '' && placeID != '') {
+						if(homeAddress != '' &&  city != '' && zipcode != '' && placeID != '' && state != '') {
 							var addressObject={};
 							addressObject.homeAddress=homeAddress;
 							addressObject.city=city;
 							addressObject.zipcode=zipcode;
 							addressObject.placeID=placeID;
 							addressObject.homeLocationCoordinates = latlng;
+							addressObject.state = state;
 							deferred.resolve(addressObject);
 						}
 					}
@@ -185,9 +192,5 @@ angular.module('cbApp')
 			});
 			return deferred.promise;
 	   }
-
-
-
-
    }
   }]);

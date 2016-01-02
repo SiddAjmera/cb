@@ -16,3 +16,4 @@ config.apis.signup = "api/users/"
 
 
 config.apis.getAllUsers = "api/users/"
+config.cordova=true;

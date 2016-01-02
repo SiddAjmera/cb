@@ -16,10 +16,14 @@ $scope.paths={};
     $scope.startOrStopSampling = function(value){
     	if(value == "START SAMPLING"){
     		$scope.buttonText="STOP SAMPLING";
+            if(config.cordova)
+            cordova.plugins.backgroundMode.enable();
     		cordovaUtil.getCoordinates();
     	}
     	else{
     		$scope.buttonText="START SAMPLING";
+             if(config.cordova)
+            cordova.plugins.backgroundMode.disable();
     		cordovaUtil.stopSampling();
     	}
     };

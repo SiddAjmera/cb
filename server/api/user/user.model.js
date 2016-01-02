@@ -16,6 +16,7 @@ var UserSchema = new Schema({
   gender: String,
   homeAddress: String,
   city: String,
+  state: String,
   zipcode: String,
   officeAddress: String,
   timeSlot: String,
@@ -28,7 +29,6 @@ var UserSchema = new Schema({
     capacity: String,
     vehicleNo: String
   },
-
   teams : [
     { teamId: Number }
   ],
