@@ -63,7 +63,7 @@ angular.module('cbApp')
 					  // window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
 					   localStorage.store('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
 					
-						console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
+					   console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
 				   }
 				   else
 				   {
@@ -140,7 +140,31 @@ angular.module('cbApp')
 	   		});		 
 	   },
 
-
+	   batchSync:function(){
+	   		localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
+	   			var storedlocations = locations;
+	   			if(storedlocations == null) return;
+	   			storedlocations = JSON.parse(storedlocations);
+	   			trackedLocations = storedlocations.TrackedLocations;
+	   			while(trackedLocations.length > 0){
+	   				if(trackedLocations.length <= 100) syncCoordinates();
+	   				else{
+	   					httpRequest.post(config.apis.syncLocations,trackedLocations.splice(0, 100)).
+				   		then(function(res){
+				   			if(res.status == 201){
+				   			   var objectToStoreTheTrackedLocationsArray = {};	// Object to store the TrackedLocations Array
+							   objectToStoreTheTrackedLocationsArray.TrackedLocations = [];
+							   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocations;
+							   localStorage.store('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray)).
+							   then(function(val){
+							   	   batchSync();
+							   });
+				   			}
+				   		});
+	   				}
+	   			}
+	   		});
+	   },
 
 	   getUserHomeCoordinates: function(){
 		   var deferred =$q.defer();
