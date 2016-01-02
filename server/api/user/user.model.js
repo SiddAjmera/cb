@@ -29,7 +29,6 @@ var UserSchema = new Schema({
     capacity: String,
     vehicleNo: String
   },
-
   teams : [
     { teamId: Number }
   ],
