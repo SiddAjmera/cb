@@ -32,7 +32,7 @@ angular.module('cbApp')
 				   alert('Error Code: ' + error.code +  ' Error Message: ' + error.message);
 			   },{
 				   enableHighAccuracy: true,
-				   timeout: 5000,
+				   timeout: 10000,
 				   frequency:5000
 			   });
 		  
@@ -102,16 +102,26 @@ angular.module('cbApp')
 
 	   saveDeviceDetails:function()
 	   {
-		   localStorage.setItem('DeviceInformation', JSON.stringify(device));
+		   localStorage.store('Device', JSON.stringify(device)).then(function(device){
+				return device;
+			});
 	   },
 
 	   getDeviceUUID:function()
 	   {
-		   /*var deviceDetails = window.localStorage.getItem('DeviceInformation');
-		   deviceDetails = JSON.parse(deviceDetails);
-		   if(deviceDetails != undefined)	return deviceDetails.uuid;
-		   else	return device.uuid;*/
-		   return "ThisIsASampleDeviceUUID";
+	   	   	localStorage.retrieve('DeviceUUID').then(function(uuid){
+	   			if(uuid != null) return uuid;
+	   		});
+
+	   	   	localStorage.store('DeviceUUID', JSON.stringify(device.uuid)).then(function(uuid){
+				return uuid;
+			});
+
+		   // var deviceDetails = window.localStorage.getItem('DeviceInformation');
+		   // deviceDetails = JSON.parse(deviceDetails);
+		   // if(deviceDetails != undefined)	return deviceDetails.uuid;
+		   // else	return device.uuid;
+		   // return "ThisIsASampleDeviceUUID";
 	   },
 
 	   getAllCoordinates:function(){
@@ -140,14 +150,29 @@ angular.module('cbApp')
 	   		});		 
 	   },
 
-	   batchSync:function(){
-	   		localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
+	   syncABatch: function(aBatch){
+	   		httpRequest.post(config.apis.syncLocations, aBatch).
+		   		then(function(res){
+		   			if(res.status==201){
+		   				localStorage.remove('SavedLocationCoordinates');
+		   				alert('Data Synced Successfully');
+		   		}
+		   	});
+	   },
+
+	    batchSync:function(){
+	    		var that=this;
+	   			localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
 	   			var storedlocations = locations;
 	   			if(storedlocations == null) return;
 	   			storedlocations = JSON.parse(storedlocations);
-	   			trackedLocations = storedlocations.TrackedLocations;
+	   			var trackedLocations = storedlocations.TrackedLocations;
+	   			var almostFinished = false;
 	   			while(trackedLocations.length > 0){
-	   				if(trackedLocations.length <= 100) syncCoordinates();
+	   				if(trackedLocations.length <= 100){
+	   					almostFinished = true;
+	   					break;
+	   				}
 	   				else{
 	   					httpRequest.post(config.apis.syncLocations,trackedLocations.splice(0, 100)).
 				   		then(function(res){
@@ -157,14 +182,15 @@ angular.module('cbApp')
 							   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocations;
 							   localStorage.store('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray)).
 							   then(function(val){
-							   	   batchSync();
+							   	   that.batchSync();
 							   });
 				   			}
 				   		});
 	   				}
 	   			}
+	   			if(almostFinished) that.syncABatch(trackedLocations);
 	   		});
-	   },
+	    },
 
 	   getUserHomeCoordinates: function(){
 		   var deferred =$q.defer();
