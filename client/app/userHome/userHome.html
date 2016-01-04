@@ -23,11 +23,15 @@
 					<p class="hamburger-username">{{currentUser.empName}}</p>
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-locationham-wrap">
 						<span class="glyphicon glyphicon-map-marker"></span>
-						<span class="user-location-ham">Pune, Maharashtra</span>
+						<span class="user-location-ham">{{currentUser.city}}, {{currentUser.state}}</span>
 					</div>
 				</div>
 				<div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none">
 					<ul class="functionality-ham-list">
+						<li>
+							<img src="assets/images/3x/ico_analyze_off.png" class="ham-menu-icon">
+							<a class="function-links" ui-sref="userHome.home" ng-click="toggleHamburger()">ANALYZE</a>
+						</li>
 						<li>
 							<img src="assets/images/3x/ico_post_ride_off.png" class="ham-menu-icon">
 							<a class="function-links" ui-sref="userHome.postRides" ng-click="toggleHamburger()">POST RIDE</a>

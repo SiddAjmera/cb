@@ -1420,6 +1420,68 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
   box-shadow: none;
 }
+.tab-section{
+    margin: 45px 5px 5px;
+    height: 50px;
+}
+.tab-section > div{
+    height: 50px;
+    float: left;
+    width: 49.66%;
+    background-color: #333;
+}
+.tab-section > div:first-child{
+    margin-right: 1px
+}
+.tab-section > div:last-child{
+    margin-left: 1px
+}
+.tab-section > div > img{
+    width: 50px;
+    float: left;
+    padding: 5px;
+}
+.tab-section > div > p{
+    color: #fff;
+    float: left;
+    position: relative;
+    left: 10px;
+    top: 10px;
+    padding: 5px;
+}
+.analyze-page{
+    background: none;
+    background-color: #000;
+}
+.analyze-wrapper .ongoing-journey{
+    margin-left: 5px;
+    color: #4ecd99;
+    text-transform: capitalize;
+}
+.analyze-wrapper .return-journey{
+    margin-left: 5px;
+    margin-top: 10px;
+    color: #eb6e3d;
+    text-transform: capitalize;
+}
+.analyze-wrapper .leaflet{
+    margin: 5px;
+    width: 97%;
+    height: 220px;
+}
+.analyze-wrapper .left-cursor{
+    float: left;
+    padding-left: 5px;
+    font-size: 20px;
+}
+.analyze-wrapper .right-cursor{
+    float: right;
+    padding-right: 10px;
+    font-size: 20px;
+}
+.lower-left-right-buttons{
+    background-color: #273037;
+}
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
         width: 4em;
