@@ -112,6 +112,14 @@ angular.module('cbApp', [
 var onDeviceReady = function() {
     angular.bootstrap( document, ['cbApp']);
     $.getScript('http://maps.google.com/maps/api/js?sensor=false');
+     document.addEventListener("backbutton", function(e){
+        if(window.location.hash=='#/userHome/home'){
+            e.preventDefault();
+            navigator.app.exitApp();
+        } /*else {
+            navigator.app.backHistory()
+        }*/
+    }, false);
 }
 document.addEventListener('deviceready', 
 onDeviceReady);
