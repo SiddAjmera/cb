@@ -4,6 +4,7 @@ angular.module('cbApp')
   .service('cordovaUtil',['parse','User','httpRequest','localStorage','$q','$rootScope',function (parse,user,httpRequest,localStorage,$q,$rootScope) {
   var currentUser = {};
   var watchId;
+  var deviceUUID;
   var almostFinished = false;
    user.get().$promise.
    then(function(user){
@@ -48,7 +49,12 @@ angular.module('cbApp')
 		   localStorage.retrieve('SavedLocationCoordinates').
 		   then(function(item){
 		   		   var mySavedLocationCoordinates = item;
-		   		   var UUID = that.getDeviceUUID();
+		   		   var UUID;
+		   		   if(deviceUUID != null) {
+		   		   		alert('The deviceUUID is not null and is : ' + deviceUUID);
+		   		   		UUID = deviceUUID;
+		   		   }
+		   		   else UUID = that.getDeviceUUID();
 				   if(mySavedLocationCoordinates != null)
 				   {
 				   	   mySavedLocationCoordinates = JSON.parse(mySavedLocationCoordinates);	
@@ -78,13 +84,13 @@ angular.module('cbApp')
 					   trackedLocationCoordinatesObject.timestamp=position.timestamp;
 					   trackedLocationCoordinatesObject.userId = currentUser.userId;
 					   trackedLocationCoordinatesObject.uuid=UUID;			   
-					   alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
+					   //alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
 					   trackedLocationsArray.push(trackedLocationCoordinatesObject);
 					   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocationsArray;
 					   localStorage.store('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray)).
 					   then(function(val){
 					   	   var locationsObjectForMongoDB = window.localStorage.getItem('SavedLocationCoordinates');
-						   alert('This is the Current Location Object when localStorageObject is null: ' + val);
+						   //alert('This is the Current Location Object when localStorageObject is null: ' + val);
 						   locationsObjectForMongoDB = JSON.parse(locationsObjectForMongoDB);
 
 						   console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
@@ -111,10 +117,16 @@ angular.module('cbApp')
 	   getDeviceUUID:function()
 	   {
 	   	   	localStorage.retrieve('DeviceUUID').then(function(uuid){
-	   			if(uuid != null) return uuid;
+	   			if(uuid != null){ 
+	   				//alert('This is the UUID : ' + uuid);
+	   				deviceUUID = uuid;
+	   				return uuid;
+	   			}
 	   		});
 
-	   	   	localStorage.store('DeviceUUID', JSON.stringify(device.uuid)).then(function(uuid){
+	   	   	localStorage.store('DeviceUUID', device.uuid).then(function(uuid){
+	   	   		//alert('This is the UUID : ' + uuid);
+	   	   		deviceUUID = uuid;
 				return uuid;
 			});
 
