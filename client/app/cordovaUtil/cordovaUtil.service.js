@@ -4,6 +4,7 @@ angular.module('cbApp')
   .service('cordovaUtil',['parse','User','httpRequest','localStorage','$q','$rootScope',function (parse,user,httpRequest,localStorage,$q,$rootScope) {
   var currentUser = {};
   var watchId;
+  var almostFinished = false;
    user.get().$promise.
    then(function(user){
    	currentUser = user;
@@ -155,7 +156,10 @@ angular.module('cbApp')
 		   		then(function(res){
 		   			if(res.status==201){
 		   				localStorage.remove('SavedLocationCoordinates');
-		   				alert('Data Synced Successfully');
+		   				if(almostFinished){
+		   					alert('Data Synced Successfully');
+		   					almostFinished =false;
+		   				}
 		   		}
 		   	});
 	   },
@@ -167,7 +171,6 @@ angular.module('cbApp')
 	   			if(storedlocations == null) return;
 	   			storedlocations = JSON.parse(storedlocations);
 	   			var trackedLocations = storedlocations.TrackedLocations;
-	   			var almostFinished = false;
 	   			while(trackedLocations.length > 0){
 	   				if(trackedLocations.length <= 100){
 	   					almostFinished = true;

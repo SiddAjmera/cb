@@ -1,7 +1,34 @@
-<div class="col-md-12 col-sm-12 col-xs-12 header-section ">
-				<span class="glyphicon glyphicon-chevron-left cursor-pointer"  ng-click="toggleHamburger()"></span>
-				<span class="heading">Home</span> 
-</div>
-<div>
-	<img class="img-responsive userHome-back" src="assets/images/analytics.jpg" width="320" height="568">
+<div class="page-wrapper analyze-page">
+	<div class="col-md-12 col-sm-12 col-xs-12 header-section">
+		<span class="glyphicon glyphicon-chevron-left cursor-pointer"  ng-click="toggleHamburger()"></span>
+		<span class="heading">Analyze</span> 
+	</div>
+	<div class="analyze-wrapper">
+		
+		<div class="tab-section">
+			<div>
+				<img src="assets/images/3x/ico_analyze_off.png">
+				<p>ANALYTICS</p>
+			</div>
+			<div>
+				<img src="assets/images/3x/ico_post_ride_off.png">
+				<p>HISTORY</p>
+			</div>
+		</div>
+
+		<div>
+			<p class="ongoing-journey">ONGOING JOURNEY</p>
+
+			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='myMap' defaults="defaults"></leaflet>
+
+			<p class="return-journey">RETURN JOURNEY</p>
+
+			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='myMap' defaults="defaults"></leaflet>
+		</div>
+
+		<div class="lower-left-right-buttons">
+			<span class="glyphicon glyphicon-chevron-left cursor-pointer left-cursor"></span>
+			<span class="glyphicon glyphicon-chevron-right cursor-pointer right-cursor"></span>
+		</div>
+	</div>
 </div>
