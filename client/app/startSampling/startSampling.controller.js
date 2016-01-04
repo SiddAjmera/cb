@@ -42,7 +42,7 @@ $scope.paths={};
                     $scope.center=pathArr[0];
                     $scope.setCenter=false;
                 }
-               console.log( $scope.filterData($scope.GDouglasPeucker(pathArr,20),0.002))
+               console.log( $scope.filterData($scope.GDouglasPeucker(pathArr,5),0.5))
                 $scope.paths={
                      p1: {
                 color: '#008000',
