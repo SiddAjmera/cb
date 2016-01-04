@@ -1431,10 +1431,12 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: #333;
 }
 .tab-section > div:first-child{
-    margin-right: 1px
+    margin-right: 1px;
+    cursor: pointer;
 }
 .tab-section > div:last-child{
-    margin-left: 1px
+    margin-left: 1px;
+    cursor: pointer;
 }
 .tab-section > div > img{
     width: 50px;
