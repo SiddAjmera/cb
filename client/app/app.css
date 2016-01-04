@@ -7,28 +7,25 @@
     font-family: 'Glyphicons Halflings';
     src: url('../bower_components/bootstrap/fonts/glyphicons-halflings-regular.eot');
     src: url('../bower_components/bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
-    url('../bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'),
+    url('../.functionality-ham-list li a.function-linksbower_components/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'),
     url('../bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'),
     url('../bower_components/bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
-
+*/
 
 @font-face {
-    font-family: 'FontAwesome';
-    src: url('../bower_components/font-awesome/fonts/fontawesome-webfont.eot?v=4.1.0');
-    src: url('../bower_components/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.1.0') format('embedded-opentype'),
-    url('../bower_components/font-awesome/fonts/fontawesome-webfont.woff?v=4.1.0') format('woff'),
-    url('../bower_components/font-awesome/fonts/fontawesome-webfont.ttf?v=4.1.0') format('truetype'),
-    url('../bower_components/font-awesome/fonts/fontawesome-webfont.svg?v=4.1.0#fontawesomeregular') format('svg');
+    font-family: helvetica;
+    src: url(../assets/fonts/HelveticaLTStd-Light.otf);
     font-weight: normal;
-    font-style: normal;
-}*/
+}
 
 /**
  * App-wide Styles
  */
-
+html,body{
+    font-family: helvetica;
+}
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -949,6 +946,7 @@ a.get-started-link:hover{
 .functionality-ham-list li a.function-links{
     color: #C7C7C7;
     text-decoration: none;
+    font-size:13px;
     margin-left: 10px;
 }
 .functionality-ham-list li a.function-links:hover{
