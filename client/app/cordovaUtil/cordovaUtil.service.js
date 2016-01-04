@@ -111,10 +111,14 @@ angular.module('cbApp')
 	   getDeviceUUID:function()
 	   {
 	   	   	localStorage.retrieve('DeviceUUID').then(function(uuid){
-	   			if(uuid != null) return uuid;
+	   			if(uuid != null){ 
+	   				alert('This is the UUID : ' + uuid);
+	   				return uuid;
+	   			}
 	   		});
 
-	   	   	localStorage.store('DeviceUUID', JSON.stringify(device.uuid)).then(function(uuid){
+	   	   	localStorage.store('DeviceUUID', device.uuid).then(function(uuid){
+	   	   		alert('This is the UUID : ' + uuid);
 				return uuid;
 			});
 
