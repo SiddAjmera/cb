@@ -4,8 +4,10 @@ angular.module('cbApp')
   .controller('LoginCtrl', function ($scope, Auth, $location, $window,$state) {
     $scope.user = {};
     $scope.loginForm = {};
+    $scope.errorMsg = '';
     $scope.showErrorMessage = false;
     $scope.login = function() {
+       $scope.errorMsg = '';
       $scope.showErrorMessage = true;
       if(!$scope.loginForm.$valid){   /*if form is invalid,return and show error messages */
             console.log($scope.loginForm) ;
@@ -22,12 +24,20 @@ angular.module('cbApp')
           password: $scope.user.password
         })
         .then(function(response) {
-          console.log(response)
-          // Logged in, redirect to home
-          $state.go('userHome.home');
+          if(response.status==200){
+             console.log(response)
+            // Logged in, redirect to home
+             $state.go('userHome.home');
+          }
+          else{
+            $scope.errorMsg = "Please check Employee id or password"
+          }
+         
+        },function(err){
+           $scope.errorMsg = "Please check Employee id or password"
         })
         .catch( function(err) {
-          $scope.errors.other = err.message;
+         $scope.errorMsg = "Please check Employee id or password"
         });
       }
     };
