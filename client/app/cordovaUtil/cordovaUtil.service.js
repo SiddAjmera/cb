@@ -30,6 +30,10 @@ angular.module('cbApp')
 				   // The  Callback use to  receive a PositionError object
 				   console.log('Error Code: ' + error.code +  ' Error Message: ' + error.message);
 				   alert('Error Code: ' + error.code +  ' Error Message: ' + error.message);
+			   },{
+				   enableHighAccuracy: true,
+				   timeout: 10000,
+				   frequency:5000
 			   });
 		  
 	   },
@@ -59,7 +63,7 @@ angular.module('cbApp')
 					  // window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
 					   localStorage.store('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
 					
-						console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
+					   console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
 				   }
 				   else
 				   {
@@ -98,16 +102,26 @@ angular.module('cbApp')
 
 	   saveDeviceDetails:function()
 	   {
-		   localStorage.setItem('DeviceInformation', JSON.stringify(device));
+		   localStorage.store('Device', JSON.stringify(device)).then(function(device){
+				return device;
+			});
 	   },
 
 	   getDeviceUUID:function()
 	   {
-		   /*var deviceDetails = window.localStorage.getItem('DeviceInformation');
-		   deviceDetails = JSON.parse(deviceDetails);
-		   if(deviceDetails != undefined)	return deviceDetails.uuid;
-		   else	return device.uuid;*/
-		   return "ThisIsASampleDeviceUUID";
+	   	   	localStorage.retrieve('DeviceUUID').then(function(uuid){
+	   			if(uuid != null) return uuid;
+	   		});
+
+	   	   	localStorage.store('DeviceUUID', JSON.stringify(device.uuid)).then(function(uuid){
+				return uuid;
+			});
+
+		   // var deviceDetails = window.localStorage.getItem('DeviceInformation');
+		   // deviceDetails = JSON.parse(deviceDetails);
+		   // if(deviceDetails != undefined)	return deviceDetails.uuid;
+		   // else	return device.uuid;
+		   // return "ThisIsASampleDeviceUUID";
 	   },
 
 	   getAllCoordinates:function(){
@@ -123,19 +137,60 @@ angular.module('cbApp')
 
 	   syncCoordinates:function(){
 	   		 localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
-	   			var storedlocations =locations;
-	   			if(storedlocations==null)
-	   				return;
-
-		   		httpRequest.post(config.apis.syncLocations,storedlocations.TrackedLocations).
+	   			var storedlocations = locations;
+	   			if(storedlocations==null) return;
+	   			storedlocations = JSON.parse(storedlocations);
+	   			httpRequest.post(config.apis.syncLocations,storedlocations.TrackedLocations).
 		   		then(function(res){
-		   			if(res.status==201)
-		   				 localStorage.remove('SavedLocationCoordinates');
+		   			if(res.status==201){
+		   				localStorage.remove('SavedLocationCoordinates');
+		   				alert('Data Synced Successfully');
+		   			}
 		   		});
 	   		});		 
 	   },
 
+	   syncABatch: function(aBatch){
+	   		httpRequest.post(config.apis.syncLocations, aBatch).
+		   		then(function(res){
+		   			if(res.status==201){
+		   				localStorage.remove('SavedLocationCoordinates');
+		   				alert('Data Synced Successfully');
+		   		}
+		   	});
+	   },
 
+	    batchSync:function(){
+	    		var that=this;
+	   			localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
+	   			var storedlocations = locations;
+	   			if(storedlocations == null) return;
+	   			storedlocations = JSON.parse(storedlocations);
+	   			var trackedLocations = storedlocations.TrackedLocations;
+	   			var almostFinished = false;
+	   			while(trackedLocations.length > 0){
+	   				if(trackedLocations.length <= 100){
+	   					almostFinished = true;
+	   					break;
+	   				}
+	   				else{
+	   					httpRequest.post(config.apis.syncLocations,trackedLocations.splice(0, 100)).
+				   		then(function(res){
+				   			if(res.status == 201){
+				   			   var objectToStoreTheTrackedLocationsArray = {};	// Object to store the TrackedLocations Array
+							   objectToStoreTheTrackedLocationsArray.TrackedLocations = [];
+							   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocations;
+							   localStorage.store('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray)).
+							   then(function(val){
+							   	   that.batchSync();
+							   });
+				   			}
+				   		});
+	   				}
+	   			}
+	   			if(almostFinished) that.syncABatch(trackedLocations);
+	   		});
+	    },
 
 	   getUserHomeCoordinates: function(){
 		   var deferred =$q.defer();
@@ -158,6 +213,7 @@ angular.module('cbApp')
 						
 						var homeAddress = result.formatted_address;
 						var city = "";
+						var state = "";
 						var zipcode = "";
 						var placeID = result.place_id;
 						
@@ -165,16 +221,18 @@ angular.module('cbApp')
 							var ac = result.address_components[i];
 							console.log(ac);
 							if(ac.types.indexOf("administrative_area_level_2") >= 0) city = ac.long_name;
+							if(ac.types.indexOf("administrative_area_level_1") >= 0) state = ac.long_name;
 							if(ac.types.indexOf("postal_code") >= 0) zipcode = ac.long_name;
 						}
 						//only report if we got Good Stuff
-						if(homeAddress != '' &&  city != '' && zipcode != '' && placeID != '') {
+						if(homeAddress != '' &&  city != '' && zipcode != '' && placeID != '' && state != '') {
 							var addressObject={};
 							addressObject.homeAddress=homeAddress;
 							addressObject.city=city;
 							addressObject.zipcode=zipcode;
 							addressObject.placeID=placeID;
 							addressObject.homeLocationCoordinates = latlng;
+							addressObject.state = state;
 							deferred.resolve(addressObject);
 						}
 					}
@@ -185,9 +243,5 @@ angular.module('cbApp')
 			});
 			return deferred.promise;
 	   }
-
-
-
-
    }
   }]);

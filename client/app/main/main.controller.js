@@ -21,8 +21,8 @@ angular.module('cbApp')
 	  }
 
     $scope.fetch = function(){
-      console.log("fetching")
-      cordovaUtil.syncCoordinates();
+      console.log("Syncing")
+      cordovaUtil.batchSync();
     }
 
     $scope.openSignupForm = function(){

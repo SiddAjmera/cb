@@ -22,7 +22,7 @@ angular.module('cbApp')
           promise = $http(req).
                   then(function (response) {
                     return response ;
-                  });
+                });
 
           // Return the promise to the controller
           return promise;
@@ -43,6 +43,5 @@ angular.module('cbApp')
             return promise;
         }
     }
-     
    }
   ]);

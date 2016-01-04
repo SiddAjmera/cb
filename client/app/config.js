@@ -14,5 +14,5 @@ config.apis.login = "auth/local";
 config.apis.syncLocations = "api/locations";
 config.apis.signup = "api/users/"
 
-
 config.apis.getAllUsers = "api/users/"
+config.cordova=false;
