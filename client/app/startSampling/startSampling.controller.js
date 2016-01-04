@@ -42,7 +42,7 @@ $scope.paths={};
                     $scope.center=pathArr[0];
                     $scope.setCenter=false;
                 }
-               console.log($scope.GDouglasPeucker(pathArr,20))
+               console.log( $scope.filterData($scope.GDouglasPeucker(pathArr,20),0.002))
                 $scope.paths={
                      p1: {
                 color: '#008000',
@@ -55,16 +55,37 @@ $scope.paths={};
             }) 
     });
     $scope.filterData=function(pathArr,threshold){
-        for(var i=0;i<=pathArr.length;i++){
+        var curr,prev;
+        var resultArr=[];
+        for(var i=0;i<pathArr.length;i++){
+            curr=pathArr[i];
+            if(prev){
             var p1={
-  "type": "Feature",
-  "properties": {},
-  "geometry": {
-    "type": "Point",
-    "coordinates": [pathArr[i].lng, pathArr[i].lat]
-  }
-}
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "Point",
+                "coordinates": [curr.lng, curr.lat]
+            }
+            }
+             var p2={
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "Point",
+                "coordinates": [prev.lng, prev.lat]
+            }
+            }
+            
+            var distance = turf.distance(p1, p2);
+            if(distance<threshold)
+            {
+                resultArr.push(curr);
+            }
+            }
+            prev=curr;
         }
+        return resultArr;
     }
     $scope.GDouglasPeucker=function(source, kink)
 /* source[] Input coordinates in GLatLngs 	*/
