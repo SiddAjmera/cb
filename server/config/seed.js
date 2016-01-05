@@ -10,6 +10,9 @@ var User = require('../api/user/user.model');
 var Vehicle = require('../api/vehicle/vehicle.model');
 var Ride = require('../api/ride/ride.model');
 var Team = require('../api/team/team.model');
+
+var SeedData = require('./seedData');
+
 Vehicle.remove(function(){
 Vehicle.create({
     vehicleLicenseNumber: "MH 14 JZ 1234",
@@ -221,3 +224,5 @@ Team.create({
     console.log('Finished populating Teams');
 });
 });
+
+SeedData.seedLocations();

@@ -1,23 +1,20 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaUtil',['parse','User','httpRequest','localStorage','$q','$rootScope',function (parse,user,httpRequest,localStorage,$q,$rootScope) {
+  .service('cordovaUtil',['parse','Auth','httpRequest','localStorage','$q','$rootScope',function (parse,Auth,httpRequest,localStorage,$q,$rootScope) {
   var currentUser = {};
   var watchId;
   var deviceUUID;
   var almostFinished = false;
-   user.get().$promise.
-   then(function(user){
-   	currentUser = user;
-   	console.log("currentUser",currentUser)
-   });
+  var driveId;
+   currentUser=Auth.getCurrentUser();
 
 
    return {
-	   getCoordinates:function()
+	   getCoordinates:function(driveId)
 	   {
 		   var that=this;
-		  
+		  	driveId=driveId;
 			   watchId = navigator.geolocation.watchPosition(function(position)
 			   {
 				   // The onSuccess method for  Geolocation
@@ -25,7 +22,7 @@ angular.module('cbApp')
 				   // var myoptions = { zoom: 14, center: myLatLag, mapTypeId: google.maps.MapTypeId.ROADMAP};	//Set option for map so that is use latlng center
 				   // var map = new google.maps.Map(document.getElementById("mapCanvas"), myoptions);	//google map instance
 				   // var marker = new google.maps.Marker({ position: myLatLag, map: map });	//add marker for our location
-				   that.saveCoordinates(position);
+				   that.saveCoordinates(position,driveId);
 				   $rootScope.$broadcast("locationCaptured");
 			   }, function(error)
 			   {
@@ -40,7 +37,7 @@ angular.module('cbApp')
 		  
 	   },
 	   
-	   saveCoordinates:function(position)
+	   saveCoordinates:function(position,driveId)
 	   {	
 	   	   var that=this;
 	   	   
@@ -65,6 +62,7 @@ angular.module('cbApp')
 					   trackedLocationCoordinatesObject.timestamp=position.timestamp;		
 					   trackedLocationCoordinatesObject.uuid=UUID;
 					   trackedLocationCoordinatesObject.userId = currentUser.userId;
+					   trackedLocationCoordinatesObject.driveId = driveId;
 					   console.log('current location object :',trackedLocationCoordinatesObject);
 					   mySavedLocationCoordinates.TrackedLocations.push(trackedLocationCoordinatesObject);
 					  // window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
@@ -84,6 +82,7 @@ angular.module('cbApp')
 					   trackedLocationCoordinatesObject.timestamp=position.timestamp;
 					   trackedLocationCoordinatesObject.userId = currentUser.userId;
 					   trackedLocationCoordinatesObject.uuid=UUID;			   
+					   trackedLocationCoordinatesObject.driveId = driveId;
 					   //alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
 					   trackedLocationsArray.push(trackedLocationCoordinatesObject);
 					   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocationsArray;

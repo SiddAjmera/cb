@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./location.controller');
+var controller = require('./drive.controller');
 
 var router = express.Router();
 
@@ -9,8 +9,7 @@ router.get('/', controller.index);
 router.get('/:id', controller.show);
 router.post('/', controller.create);
 
-router.post('/CreateOrUpdateLocation', controller.createOrUpdateLocation);
-router.post('/FilterLocation', controller.filterLocation);
+router.post('/FilterDrive', controller.filterDrive);
 
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);

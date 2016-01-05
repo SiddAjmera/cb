@@ -18,7 +18,7 @@ $scope.paths={};
     		$scope.buttonText="STOP SAMPLING";
             if(config.cordova)
             cordova.plugins.backgroundMode.enable();
-    		cordovaUtil.getCoordinates();
+    		cordovaUtil.getCoordinates((new Date()).getTime());
     	}
     	else{
     		$scope.buttonText="START SAMPLING";
