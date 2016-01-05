@@ -4,6 +4,7 @@ var _ = require('lodash');
 var Drive = require('./drive.model');
 var Location = require('../location/location.model');
 var Turf = require('../../utils/turfOperations');
+var moment = require('moment');
 var GeoJSON = require('../../utils/geoJSONify');
 
 // Get list of drives
@@ -66,12 +67,44 @@ exports.destroy = function(req, res) {
 
 // Calculate the stats related to the Location Data provided
 exports.processData = function(req, res){
-    Location.find(req.body).exec(function(err, locations){
-    if(err) console.log('Error fetching locations for processing. Error : ' + err);
-    else{
-      var totalDistance = Turf.calculateTotalDistance( GeoJSON.geoJSONify(locations));
-    }
-  });
+    Location.find(req.body)
+     .sort({'timestamp': 'desc'})
+     .exec(function(err, locations) {
+         if(err) console.log('Error fetching locations for processing. Error : ' + err);
+         else{
+            var drive = new Drive();
+            drive.driveId = locations[0].driveId;
+            drive.userId = locations[0].userId;
+            drive.totalDistance = Turf.calculateTotalDistance( GeoJSON.geoJSONify(locations));
+            drive.distanceUnit = 'km';
+            var then = new Date((locations[locations.length - 1].timestamp) * 1000);
+            //console.log('startDateTime : ' + startDateTime);
+            var now = new Date((locations[0].timestamp) * 1000);
+            //console.log('endDateTime : ' + endDateTime);
+            
+            var ms = moment(now,"DD/MM/YYYY HH:mm:ss").diff(moment(then,"DD/MM/YYYY HH:mm:ss"));
+            console.log('ms : ' + ms);
+            var d = moment.duration(ms);
+            console.log('d : ' + d);
+            drive.totalTime = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
+            console.log('drive.totalTime : ' + drive.totalTime);
+
+
+            //console.log('Drive.totalTime : ' + drive.totalTime);
+            drive.timeUnit = 'hr';
+            drive.averageSpeed = (drive.totalDistance / drive.totalTime);
+            drive.speedUnit = 'km/hr';
+            console.log('Drive Object : ' + JSON.stringify(drive));
+            drive.save(function(err) {
+                if(!err) {
+                    console.log("Drive Addded Successfully");
+                }
+                else {
+                    console.log("Error: could not add Drive Object to MongoDB. Here is the Error : " + JSON.stringify(err));
+                }
+            });
+         }
+     });
 };
 
 function handleError(res, err) {
