@@ -51,7 +51,7 @@ angular.module('cbApp')
 		   		   var mySavedLocationCoordinates = item;
 		   		   var UUID;
 		   		   if(deviceUUID != null) {
-		   		   		alert('The deviceUUID is not null and is : ' + deviceUUID);
+		   		   	//	alert('The deviceUUID is not null and is : ' + deviceUUID);
 		   		   		UUID = deviceUUID;
 		   		   }
 		   		   else UUID = that.getDeviceUUID();

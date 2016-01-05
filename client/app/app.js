@@ -57,7 +57,7 @@ angular.module('cbApp', [
       // Intercept 401s and redirect you to login
       responseError: function(response) {
         if(response.status === 401) {
-          $location.path('/login');
+       //   $location.path('/login');
           // remove any stale tokens
           localStorage.remove('token');
           return $q.reject(response);
