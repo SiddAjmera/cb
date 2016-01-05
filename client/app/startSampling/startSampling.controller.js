@@ -1,18 +1,18 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('StartSamplingCtrl', function ($scope, cordovaUtil,$rootScope,localStorage,filterService) {
+  .controller('StartSamplingCtrl', function (Auth,$scope, cordovaUtil,$rootScope,localStorage,filterService,httpRequest) {
     $scope.message = 'Hello';
     $scope.buttonText="START SAMPLING";
 
-     $scope.defaults={minZoom:10, maxZoom:20,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
-  $scope.center={
+    $scope.defaults={minZoom:10, maxZoom:20,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
+    $scope.center={
         lat : 18.581904504725568,
         lng : 73.68483066558838,
         zoom: 15
     };
     $scope.setCenter=true;
-$scope.paths={};
+    $scope.paths={};
     $scope.startOrStopSampling = function(value){
     	if(value == "START SAMPLING"){
     		$scope.buttonText="STOP SAMPLING";
@@ -54,6 +54,31 @@ $scope.paths={};
            }
             }) 
     });
+    var currentUser = Auth.getCurrentUser();
+    var getLocations = function(){
+        var filterJSON = {};
+        filterJSON.userId = currentUser.userId;
+
+        httpRequest.post(config.apis.filterLocations,filterJSON).
+        then(function(response) {
+            console.log("locations",response);
+            var pathArr=[];
+
+            angular.forEach(response.data, function(location, key){
+                pathArr.push({lat:location.latitude,lng:location.longitude});
+
+            });
+            if($scope.setCenter){
+                    $scope.center=pathArr[0];
+                    $scope.setCenter=false;
+            }
+
+            console.log("filtered data",filterService.filterData(filterService.GDouglasPeucker(pathArr,5),0.5));
+            
+        })    
+        
+    }
+    getLocations();
 /*    $scope.filterData=function(pathArr,threshold){
         var curr,prev;
         var resultArr=[];
