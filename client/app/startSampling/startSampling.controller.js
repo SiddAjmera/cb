@@ -54,7 +54,7 @@ angular.module('cbApp')
            }
             }) 
     });
-    var currentUser = Auth.getCurrentUser();
+/*    var currentUser = Auth.getCurrentUser();
     var getLocations = function(){
         var filterJSON = {};
         filterJSON.userId = currentUser.userId;
@@ -89,8 +89,8 @@ angular.module('cbApp')
 
         })    
         
-    }
-    getLocations();
+    }*/
+   // getLocations();
 /*    $scope.filterData=function(pathArr,threshold){
         var curr,prev;
         var resultArr=[];
