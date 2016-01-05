@@ -3,7 +3,8 @@
 var _ = require('lodash');
 var Drive = require('./drive.model');
 var Location = require('../location/location.model');
-var Turf = require('turf');
+var Turf = require('../../utils/turfOperations');
+var GeoJSON = require('../../utils/geoJSONify');
 
 // Get list of drives
 exports.index = function(req, res) {
@@ -64,14 +65,14 @@ exports.destroy = function(req, res) {
 };
 
 // Calculate the stats related to the Location Data provided
-exports.processData = function(params){
-    Location.find(params).exec(function(err, locations){
+exports.processData = function(req, res){
+    Location.find(req.body).exec(function(err, locations){
     if(err) console.log('Error fetching locations for processing. Error : ' + err);
     else{
-      Turf.totalDistance(locations);
+      var totalDistance = Turf.calculateTotalDistance( GeoJSON.geoJSONify(locations));
     }
   });
-}
+};
 
 function handleError(res, err) {
   return res.send(500, err);
