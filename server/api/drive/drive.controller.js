@@ -2,6 +2,8 @@
 
 var _ = require('lodash');
 var Drive = require('./drive.model');
+var Location = require('../location/location.model');
+var Turf = require('turf');
 
 // Get list of drives
 exports.index = function(req, res) {
@@ -61,9 +63,14 @@ exports.destroy = function(req, res) {
   });
 };
 
-
+// Calculate the stats related to the Location Data provided
 exports.processData = function(params){
-  console.log('called');
+    Location.find(params).exec(function(err, locations){
+    if(err) console.log('Error fetching locations for processing. Error : ' + err);
+    else{
+      Turf.totalDistance(locations);
+    }
+  });
 }
 
 function handleError(res, err) {
