@@ -61,20 +61,32 @@ angular.module('cbApp')
 
         httpRequest.post(config.apis.filterLocations,filterJSON).
         then(function(response) {
-            console.log("locations",response);
-            var pathArr=[];
+             console.log("locations",response);
+            if(response.status==200 && response.data.length > 0){
 
-            angular.forEach(response.data, function(location, key){
-                pathArr.push({lat:location.latitude,lng:location.longitude});
+                    var pathArr=[];
 
-            });
-            if($scope.setCenter){
-                    $scope.center=pathArr[0];
-                    $scope.setCenter=false;
-            }
+                    angular.forEach(response.data, function(location, key){
+                        pathArr.push({lat:location.location.latitude,lng:location.location.longitude});
 
+                    });
+                    console.log("pathArr",pathArr)
+                    if($scope.setCenter){
+                            $scope.center=pathArr[0];
+                            $scope.setCenter=false;
+                    }
+                     $scope.paths={
+                             p1: {
+                        color: '#008000',
+                        weight: 8,
+                        latlngs:filterService.filterData(filterService.GDouglasPeucker(pathArr,5),0.5)
+                        }
+
+                       }
             console.log("filtered data",filterService.filterData(filterService.GDouglasPeucker(pathArr,5),0.5));
-            
+            }
+           
+
         })    
         
     }
