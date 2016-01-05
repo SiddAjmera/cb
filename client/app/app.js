@@ -18,7 +18,8 @@ angular.module('cbApp', [
   'ui.select',
   'ngCordova'
 ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+
+.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
      console.log("In config block");
 
     $urlRouterProvider
