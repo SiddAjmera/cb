@@ -6,6 +6,7 @@ angular.module('cbApp')
   var watchId;
   var deviceUUID;
   var almostFinished = false;
+  var driveId;
    user.get().$promise.
    then(function(user){
    	currentUser = user;
@@ -14,10 +15,10 @@ angular.module('cbApp')
 
 
    return {
-	   getCoordinates:function()
+	   getCoordinates:function(driveId)
 	   {
 		   var that=this;
-		  
+		  	driveId=driveId;
 			   watchId = navigator.geolocation.watchPosition(function(position)
 			   {
 				   // The onSuccess method for  Geolocation
@@ -65,6 +66,7 @@ angular.module('cbApp')
 					   trackedLocationCoordinatesObject.timestamp=position.timestamp;		
 					   trackedLocationCoordinatesObject.uuid=UUID;
 					   trackedLocationCoordinatesObject.userId = currentUser.userId;
+					   trackedLocationCoordinatesObject.driveId = driveId;
 					   console.log('current location object :',trackedLocationCoordinatesObject);
 					   mySavedLocationCoordinates.TrackedLocations.push(trackedLocationCoordinatesObject);
 					  // window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));

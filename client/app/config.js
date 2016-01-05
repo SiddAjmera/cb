@@ -15,9 +15,7 @@ config.apis.syncLocations = "api/locations";
 config.apis.signup = "api/users/"
 
 config.apis.getAllUsers = "api/users/"
-config.cordova=true;
-
-
 /*for filtering*/
 
 config.apis.filterLocations = "api/locations/FilterLocation"
+config.cordova=false;
