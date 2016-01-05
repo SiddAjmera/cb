@@ -10,6 +10,7 @@ router.get('/:id', controller.show);
 router.post('/', controller.create);
 
 router.post('/CreateOrUpdateLocation', controller.createOrUpdateLocation);
+router.post('/FilterLocation', controller.filterLocation);
 
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);

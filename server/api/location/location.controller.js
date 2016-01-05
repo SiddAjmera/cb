@@ -61,6 +61,20 @@ exports.createOrUpdateLocation = function(req, res){
     });*/
 };
 
+// Filters location data based on certain criteria
+/* Here the req.body should be like
+{
+    userId: '962060',
+    uuid: ''
+}
+*/
+exports.filterLocation = function(req, res){
+  Location.find(req.body).exec(function(err, locations){
+    if(err) { return handleError(res, err); }
+    return res.json(200, locations);
+  });
+};
+
 // Updates an existing location in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
