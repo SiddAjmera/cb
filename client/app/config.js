@@ -12,15 +12,12 @@ config.apiBaseURL="http://52.77.218.140:9000/";
 
 config.apis.login = "auth/local";
 config.apis.syncLocations = "api/locations";
-config.apis.signup = "api/users/"
-
-config.apis.getAllUsers = "api/users/"
-
+config.apis.getAllUsers = "api/users/";
 /*for filtering*/
-config.apis.filterLocations = "api/locations/FilterLocation"
+config.apis.filterLocations = "api/locations/FilterLocation";
+config.apis.getStats = "api/drives/ProcessData";
+config.apis.getDrives = "api/drives/LatestDriveId";
+
+
 config.cordova=true;
-
-
-
-
 

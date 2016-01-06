@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SignupCtrl', function ($scope, Auth, $location, $window,parse,$state, $http,$modal,cordovaUtil,httpRequest,localStorage) {
+  .controller('SignupCtrl', function ($scope,$location, $window,$state,$modal,cordovaUtil,httpRequest,localStorage) {
     $scope.user = {vehicle:{}};
     $scope.user.gender = "Female";
     $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",

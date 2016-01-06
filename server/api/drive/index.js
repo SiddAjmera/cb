@@ -10,6 +10,8 @@ router.get('/:id', controller.show);
 router.post('/', controller.create);
 
 router.post('/FilterDrive', controller.filterDrive);
+router.post('/ProcessData', controller.processData);
+router.post('/LatestDriveId', controller.latestDriveId);
 
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);

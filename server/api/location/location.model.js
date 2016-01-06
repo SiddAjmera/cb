@@ -11,6 +11,13 @@ var LocationSchema = new Schema({
   location: {
   	latitude: Number,
   	longitude: Number
+  },
+  coords: {
+  		accuracy: Number,
+		altitude: Number,
+		altitudeAccuracy: Number,
+		heading: String,
+		speed: Number,
   }
 });
 

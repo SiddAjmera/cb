@@ -59,6 +59,14 @@ angular.module('cbApp')
 					   trackedLocationCoordinatesObject.location = {};
 					   trackedLocationCoordinatesObject.location.latitude=position.coords.latitude;
 					   trackedLocationCoordinatesObject.location.longitude=position.coords.longitude;	
+
+					   trackedLocationCoordinatesObject.coords = {};
+					   trackedLocationCoordinatesObject.coords.accuracy = position.coords.accuracy;
+					   trackedLocationCoordinatesObject.coords.altitude = position.coords.altitude;
+					   trackedLocationCoordinatesObject.coords.altitudeAccuracy = position.coords.altitudeAccuracy;
+					   trackedLocationCoordinatesObject.coords.heading = position.coords.heading;
+					   trackedLocationCoordinatesObject.coords.speed = position.coords.speed;
+
 					   trackedLocationCoordinatesObject.timestamp=position.timestamp;		
 					   trackedLocationCoordinatesObject.uuid=UUID;
 					   trackedLocationCoordinatesObject.userId = currentUser.userId;
@@ -79,6 +87,14 @@ angular.module('cbApp')
 					   trackedLocationCoordinatesObject.location = {};
 					   trackedLocationCoordinatesObject.location.latitude=position.coords.latitude;
 					   trackedLocationCoordinatesObject.location.longitude=position.coords.longitude;	
+
+					   trackedLocationCoordinatesObject.coords = {};
+					   trackedLocationCoordinatesObject.coords.accuracy = position.coords.accuracy;
+					   trackedLocationCoordinatesObject.coords.altitude = position.coords.altitude;
+					   trackedLocationCoordinatesObject.coords.altitudeAccuracy = position.coords.altitudeAccuracy;
+					   trackedLocationCoordinatesObject.coords.heading = position.coords.heading;
+					   trackedLocationCoordinatesObject.coords.speed = position.coords.speed;
+					   
 					   trackedLocationCoordinatesObject.timestamp=position.timestamp;
 					   trackedLocationCoordinatesObject.userId = currentUser.userId;
 					   trackedLocationCoordinatesObject.uuid=UUID;			   
