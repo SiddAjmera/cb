@@ -22,5 +22,5 @@ exports.calculateTotalDistance = function(locationsArray){
 	// units	String	can be degrees, radians, miles, or kilometers
 	var length = Turf.lineDistance(driveString, 'kilometers');
 	//console.log('The length of the Drive String is : ' + length + 'kilometers');
-  return length;
+  return Math.ceil(length * 1000);
 };

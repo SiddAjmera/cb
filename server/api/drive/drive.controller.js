@@ -76,33 +76,36 @@ exports.processData = function(req, res){
             drive.driveId = locations[0].driveId;
             drive.userId = locations[0].userId;
             drive.totalDistance = Turf.calculateTotalDistance( GeoJSON.geoJSONify(locations));
-            drive.distanceUnit = 'km';
-            var then = new Date((locations[locations.length - 1].timestamp) * 1000);
-            //console.log('startDateTime : ' + startDateTime);
-            var now = new Date((locations[0].timestamp) * 1000);
-            //console.log('endDateTime : ' + endDateTime);
-            
-            var ms = moment(now,"DD/MM/YYYY HH:mm:ss").diff(moment(then,"DD/MM/YYYY HH:mm:ss"));
-            console.log('ms : ' + ms);
-            var d = moment.duration(ms);
-            console.log('d : ' + d);
-            drive.totalTime = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
-            console.log('drive.totalTime : ' + drive.totalTime);
-
-
-            //console.log('Drive.totalTime : ' + drive.totalTime);
-            drive.timeUnit = 'hr';
+            drive.distanceUnit = 'm';
+            var then = new Date((locations[locations.length - 1].timestamp) *1);
+            var now = new Date((locations[0].timestamp) *1);
+            drive.totalTime = moment(now).diff(moment(then), 'minute');
+            drive.timeUnit = 'min';
             drive.averageSpeed = (drive.totalDistance / drive.totalTime);
-            drive.speedUnit = 'km/hr';
+            drive.speedUnit = 'm/min';
             console.log('Drive Object : ' + JSON.stringify(drive));
             drive.save(function(err) {
-                if(!err) {
-                    console.log("Drive Addded Successfully");
-                }
-                else {
-                    console.log("Error: could not add Drive Object to MongoDB. Here is the Error : " + JSON.stringify(err));
-                }
+              if (err) { return handleError(err); }
+              return res.json(200, drive);
             });
+         }
+     });
+};
+
+// Give this req body as { "userId": "111111" }
+exports.latestDriveId = function(req, res){
+  console.log('Req.body : ' + JSON.stringify(req.body));
+  Drive.find({userId: req.body.userId})
+     .sort({'driveId': 'desc'})
+     .limit(req.body.limit)
+     .exec(function(err, drives) {
+         if (err) { return handleError(err); }
+         else{
+          var obj = [];
+          for(var i=0; i<drives.length; i++){
+            obj.push(drives[i].driveId);
+          }
+          return res.json(200, obj);
          }
      });
 };
