@@ -77,7 +77,9 @@ exports.createOrUpdateLocation = function(req, res){
 }
 */
 exports.filterLocation = function(req, res){
-  Location.find(req.body).exec(function(err, locations){
+  Location.find(req.body)
+          .sort({'timestamp': 'asc'})
+          .exec(function(err, locations){
     if(err) { return handleError(res, err); }
     return res.json(200, locations);
   });
