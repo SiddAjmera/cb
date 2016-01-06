@@ -51,7 +51,7 @@ angular.module('cbApp')
     }
     var drivesArray = [];
     var totalDrives =  0;
-    var currentDrive = 1;
+    var currentDrive = 0;
     var getDrives = function(limit){
       var postJSON = {}
       postJSON.userId = currentUser.userId;
@@ -66,7 +66,8 @@ angular.module('cbApp')
            if(drivesArray.length!=0){
 
               getLocations(drivesArray[currentDrive]);
-              getStats(drivesArray[currentDrive++]);
+              getStats(drivesArray[currentDrive]);
+              currentDrive++;
            }
                
         }
@@ -77,7 +78,7 @@ angular.module('cbApp')
     $scope.getNextDrive = function(){
       console.log("currentDrive in next",currentDrive);
       currentDrive++;
-      if(currentDrive<totalDrives){
+      if(currentDrive<=totalDrives-1){
         getStats(drivesArray[currentDrive])
         getLocations(drivesArray[currentDrive]);
       }else
