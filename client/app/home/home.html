@@ -5,7 +5,7 @@
 	</div>
 	<div class="analyze-wrapper">
 		
-		<div class="tab-section">
+		<!-- <div class="tab-section">
 			<div>
 				<img src="assets/images/3x/ico_analyze_off.png">
 				<p>ANALYTICS</p>
@@ -15,8 +15,8 @@
 				<p>HISTORY</p>
 			</div>
 		</div>
-
-		<div>
+ -->
+		<div class="analyze-map-wrap">
 			<p class="ongoing-journey">ONGOING JOURNEY</p>
 
 			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzeon' defaults="defaults" paths="paths"></leaflet>
@@ -25,11 +25,26 @@
 
 			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzere' defaults="defaults"></leaflet> -->
 		</div>
-		<div>
-			<p>Total Distance: <span></span></p>
-			<p>Stangnant Time:<span></span></p>
-			<p>Total time:<span></span></p>
-			<p>Average Speed:<span></span></p>
+		<div class="analyze-data-wrapper">
+			<div class="each-dimension first-dim">
+				<span class="pull-left dim-img-icon-wrap"><img class="dim-images-icon" src="assets/images/3x/distance.png"></span>
+				<span class="pull-left">Total <span class="dist-highlight">Distance</span></span>
+				<span class="pull-right">{{stats.totalDistance}}{{stats.distanceUnit}}</span>
+			</div>
+			<div class="each-dimension">
+				<span class="pull-left dim-img-icon-wrap"><img class="dim-images-icon" src="assets/images/3x/stagnant_time.png"></span>
+				<span class="pull-left">Stangnant <span class="stan-time">Time</span></span>
+				<span class="pull-right">11:20</span>
+			</div>
+			<div class="each-dimension">
+				<span class="pull-left dim-img-icon-wrap"><img class="dim-images-icon" src="assets/images/3x/time.png"></span>
+				<span class="pull-left">Total <span class="total-time">time</span></span>
+				<span class="pull-right">{{stats.totalTime}}{{stats.timeUnit}}</span>
+			</div>
+			<div class="each-dimension last-dim">
+				<span class="pull-left dim-img-icon-wrap"><img class="dim-images-icon" src="assets/images/3x/speed.png"></span>
+				<span class="pull-left">Average <span class="avg-speed">Speed</span></span>
+				<span class="pull-right">{{stats.averageSpeed | limitTo:5}}{{stats.speedUnit}}</span></div>
 		</div>
 
 		<div class="lower-left-right-buttons">

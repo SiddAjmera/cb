@@ -13,6 +13,7 @@ angular.module('cbApp')
     $scope.paths={};
     var currentUser = Auth.getCurrentUser();
     var getLocations = function(driveId){
+       $scope.paths = {};
         var filterJSON = {};
         filterJSON.driveId = driveId;
         filterJSON.userId = currentUser.userId;
@@ -37,7 +38,7 @@ angular.module('cbApp')
                              p1: {
                         color: '#008000',
                         weight: 8,
-                        latlngs:filterService.filterData(filterService.GDouglasPeucker(pathArr,5),0.5)
+                        latlngs:pathArr
                         }
 
                        }
@@ -50,7 +51,7 @@ angular.module('cbApp')
     }
     var drivesArray = [];
     var totalDrives =  0;
-    var currentDrive = 0;
+    var currentDrive = 1;
     var getDrives = function(limit){
       var postJSON = {}
       postJSON.userId = currentUser.userId;
@@ -64,7 +65,8 @@ angular.module('cbApp')
            totalDrives = drives.data.length;
            if(drivesArray.length!=0){
 
-              getLocations(drivesArray[currentDrive++]);
+              getLocations(drivesArray[currentDrive]);
+              getStats(drivesArray[currentDrive++]);
            }
                
         }
@@ -73,9 +75,39 @@ angular.module('cbApp')
     }
 
     $scope.getNextDrive = function(){
-      if(currentDrive<totalDrives)
-        getLocations(drivesArray[currentDrive++]);
+      console.log("currentDrive in next",currentDrive);
+      currentDrive++;
+      if(currentDrive<totalDrives){
+        getStats(drivesArray[currentDrive])
+        getLocations(drivesArray[currentDrive]);
+      }else
+        currentDrive--;
+    }
 
+    $scope.getPrevDrive = function(){
+       console.log("currentDrive in prev",currentDrive);
+       currentDrive--;
+      if(currentDrive>=0){
+
+        getStats(drivesArray[currentDrive])
+        getLocations(drivesArray[currentDrive])
+
+       }else
+        currentDrive=0;
+    }
+
+    var getStats = function(driveId){
+        var filterJSON = {};
+        $scope.stats = {}
+        filterJSON.driveId = driveId;
+        filterJSON.userId = currentUser.userId;
+
+        httpRequest.post(config.apis.getStats,filterJSON).
+        then(function(stats){
+            if(stats.status==200){
+              $scope.stats = stats.data;
+            }
+        })
     }
 
     getDrives(10);

@@ -1454,10 +1454,16 @@ input[type=number]::-webkit-outer-spin-button {
     background: none;
     background-color: #000;
 }
+.analyze-wrapper{
+    margin-top: 46px;
+}
 .analyze-wrapper .ongoing-journey{
     margin-left: 5px;
     color: #4ecd99;
     text-transform: capitalize;
+    margin: 0px;
+    font-size: 12px;
+    padding-left: 4px;
 }
 .analyze-wrapper .return-journey{
     margin-left: 5px;
@@ -1466,22 +1472,73 @@ input[type=number]::-webkit-outer-spin-button {
     text-transform: capitalize;
 }
 .analyze-wrapper .leaflet{
-    margin: 5px;
-    width: 97%;
-    height: 220px;
+    margin: 2px;
+    margin-left: 0;
+    margin-right: 0px;
+    width: 100%;
+    height: 278px;
+}
+.analyze-data-wrapper{
+    height: 185px;
+    background-color: #fff;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+}
+.analyze-data-wrapper .each-dimension{
+    border-bottom: 1px solid #acacac;
+    padding: 1.7vh;
+    margin: 0px;
+    width: 100%;
+    float: left;
+    font-size: 12px;
+}
+.dim-images-icon{
+    width: 22px;
+}
+.dim-img-icon-wrap{
+    margin-right: 3%;
+}
+.dist-highlight{
+    color: #EC6E3C;
+}
+.stan-time{
+    color: #ff0000;
+}
+.total-time{
+    color: #4ecd99;
+}
+.avg-speed{
+    color: #4FB7EA;
+}
+.analyze-map-wrap{
+    height: 300px;
+}
+.analyze-data-wrapper .each-dimension.first-dim{
+    padding-top: 0px;
+}
+.analyze-data-wrapper .each-dimension.last-dim{
+    border-bottom: none;
 }
 .analyze-wrapper .left-cursor{
     float: left;
-    padding-left: 5px;
+    padding: 5px;
     font-size: 20px;
+    background-color: #212121;
+
 }
 .analyze-wrapper .right-cursor{
     float: right;
-    padding-right: 10px;
+    padding: 5px;
     font-size: 20px;
+    background-color: #212121;
+        color: #464646
 }
 .lower-left-right-buttons{
-    background-color: #273037;
+    background-color: #000;
+    float: left;
+    width: 100%;
+    height: 30px;
+        color: #464646
 }
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
