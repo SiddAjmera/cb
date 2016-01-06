@@ -2,7 +2,14 @@
 
 var _ = require('lodash');
 var Location = require('./location.model');
+var Drive = require('../drive/drive.controller');
 
+var events = require('events');
+var EventEmitter= new events.EventEmitter();
+EventEmitter.on("locationsSaved",function(){
+  console.log("emitted")
+  Drive.processData();
+})
 // Get list of locations
 exports.index = function(req, res) {
   Location.find(function (err, locations) {
@@ -26,6 +33,7 @@ exports.create = function(req, res) {
   Location.create(req.body, function(err, location) {
   	console.log('Got into Location.create. Here is the error : ' + err + ' and the location : ' + location);
     if(err) { return handleError(res, err); }
+    EventEmitter.emit("locationsSaved");
     return res.json(201, location);
   });
 };
@@ -59,6 +67,20 @@ exports.createOrUpdateLocation = function(req, res){
         locations: req.body.locations
       }
     });*/
+};
+
+// Filters location data based on certain criteria
+/* Here the req.body should be like
+{
+    userId: '962060',
+    uuid: ''
+}
+*/
+exports.filterLocation = function(req, res){
+  Location.find(req.body).exec(function(err, locations){
+    if(err) { return handleError(res, err); }
+    return res.json(200, locations);
+  });
 };
 
 // Updates an existing location in the DB.

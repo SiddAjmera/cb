@@ -1,24 +1,24 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('StartSamplingCtrl', function ($scope, cordovaUtil,$rootScope,localStorage) {
+  .controller('StartSamplingCtrl', function (Auth,$scope, cordovaUtil,$rootScope,localStorage,filterService,httpRequest) {
     $scope.message = 'Hello';
     $scope.buttonText="START SAMPLING";
 
-     $scope.defaults={minZoom:10, maxZoom:20,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
-  $scope.center={
+    $scope.defaults={minZoom:10, maxZoom:20,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
+    $scope.center={
         lat : 18.581904504725568,
         lng : 73.68483066558838,
         zoom: 15
     };
     $scope.setCenter=true;
-$scope.paths={};
+    $scope.paths={};
     $scope.startOrStopSampling = function(value){
     	if(value == "START SAMPLING"){
     		$scope.buttonText="STOP SAMPLING";
             if(config.cordova)
             cordova.plugins.backgroundMode.enable();
-    		cordovaUtil.getCoordinates();
+    		cordovaUtil.getCoordinates((new Date()).getTime());
     	}
     	else{
     		$scope.buttonText="START SAMPLING";
@@ -42,19 +42,56 @@ $scope.paths={};
                     $scope.center=pathArr[0];
                     $scope.setCenter=false;
                 }
-               console.log( $scope.filterData($scope.GDouglasPeucker(pathArr,5),0.5))
+               console.log(filterService.filterData(filterService.GDouglasPeucker(pathArr,5),0.5))
                 $scope.paths={
                      p1: {
                 color: '#008000',
                 weight: 8,
-                latlngs:$scope.GDouglasPeucker(pathArr,20)
+                latlngs:filterService.GDouglasPeucker(pathArr,20)
                 }
 
                }
            }
             }) 
     });
-    $scope.filterData=function(pathArr,threshold){
+/*    var currentUser = Auth.getCurrentUser();
+    var getLocations = function(){
+        var filterJSON = {};
+        filterJSON.userId = currentUser.userId;
+
+        httpRequest.post(config.apis.filterLocations,filterJSON).
+        then(function(response) {
+             console.log("locations",response);
+            if(response.status==200 && response.data.length > 0){
+
+                    var pathArr=[];
+
+                    angular.forEach(response.data, function(location, key){
+                        pathArr.push({lat:location.location.latitude,lng:location.location.longitude});
+
+                    });
+                    console.log("pathArr",pathArr)
+                    if($scope.setCenter){
+                            $scope.center=pathArr[0];
+                            $scope.setCenter=false;
+                    }
+                     $scope.paths={
+                             p1: {
+                        color: '#008000',
+                        weight: 8,
+                        latlngs:filterService.filterData(filterService.GDouglasPeucker(pathArr,5),0.5)
+                        }
+
+                       }
+            console.log("filtered data",filterService.filterData(filterService.GDouglasPeucker(pathArr,5),0.5));
+            }
+           
+
+        })    
+        
+    }*/
+   // getLocations();
+/*    $scope.filterData=function(pathArr,threshold){
         var curr,prev;
         var resultArr=[];
         for(var i=0;i<pathArr.length;i++){
@@ -86,54 +123,54 @@ $scope.paths={};
             prev=curr;
         }
         return resultArr;
-    }
-    $scope.GDouglasPeucker=function(source, kink)
-/* source[] Input coordinates in GLatLngs 	*/
+    }*/
+  /*  $scope.GDouglasPeucker=function(source, kink)
+ source[] Input coordinates in GLatLngs 	*/
 /* kink	in metres, kinks above this depth kept  */
-/* kink depth is the height of the triangle abc where a-b and b-c are two consecutive line segments */
+/* kink depth is the height of the triangle abc where a-b and b-c are two consecutive line segments 
 {
     var	n_source, n_stack, n_dest, start, end, i, sig;    
     var dev_sqr, max_dev_sqr, band_sqr;
     var x12, y12, d12, x13, y13, d13, x23, y23, d23;
     var F = ((Math.PI / 180.0) * 0.5 );
-    var index = new Array(); /* aray of indexes of source points to include in the reduced line */
-	var sig_start = new Array(); /* indices of start & end of working section */
+    var index = new Array(); /* aray of indexes of source points to include in the reduced line 
+	var sig_start = new Array(); /* indices of start & end of working section 
     var sig_end = new Array();	
 
-    /* check for simple cases */
+    /* check for simple cases 
 
     if ( source.length < 3 ) 
-        return(source);    /* one or two points */
+        return(source);    /* one or two points 
 
-    /* more complex case. initialize stack */
+    /* more complex case. initialize stack 
 		
 	n_source = source.length;
-    band_sqr = kink * 360.0 / (2.0 * Math.PI * 6378137.0);	/* Now in degrees */
+    band_sqr = kink * 360.0 / (2.0 * Math.PI * 6378137.0);	/* Now in degrees 
     band_sqr *= band_sqr;
     n_dest = 0;
     sig_start[0] = 0;
     sig_end[0] = n_source-1;
     n_stack = 1;
 
-    /* while the stack is not empty  ... */
+    /* while the stack is not empty  ... 
     while ( n_stack > 0 ){
     
-        /* ... pop the top-most entries off the stacks */
+        /* ... pop the top-most entries off the stacks 
 
         start = sig_start[n_stack-1];
         end = sig_end[n_stack-1];
         n_stack--;
 
-        if ( (end - start) > 1 ){  /* any intermediate points ? */        
+        if ( (end - start) > 1 ){  /* any intermediate points ?        
                     
                 /* ... yes, so find most deviant intermediate point to
-                       either side of line joining start & end points */                                   
+                       either side of line joining start & end points                                   
             
             x12 = (source[end].lng - source[start].lng);
             y12 = (source[end].lat - source[start].lat);
             if (Math.abs(x12) > 180.0) 
                 x12 = 360.0 - Math.abs(x12);
-            x12 *= Math.cos(F * (source[end].lat + source[start].lat));/* use avg lat to reduce lng */
+            x12 *= Math.cos(F * (source[end].lat + source[start].lat));/* use avg lat to reduce lng 
             d12 = (x12*x12) + (y12*y12);
 
             for ( i = start + 1, sig = start, max_dev_sqr = -1.0; i < end; i++ ){                                    
@@ -166,12 +203,12 @@ $scope.paths={};
             }
 
             if ( max_dev_sqr < band_sqr ){   /* is there a sig. intermediate point ? */
-                /* ... no, so transfer current start point */
+                /* ... no, so transfer current start point 
                 index[n_dest] = start;
                 n_dest++;
             }
             else{
-                /* ... yes, so push two sub-sections on stack for further processing */
+                /* ... yes, so push two sub-sections on stack for further processing 
                 n_stack++;
                 sig_start[n_stack-1] = sig;
                 sig_end[n_stack-1] = end;
@@ -181,21 +218,21 @@ $scope.paths={};
             }
         }
         else{
-                /* ... no intermediate points, so transfer current start point */
+                /* ... no intermediate points, so transfer current start point 
                 index[n_dest] = start;
                 n_dest++;
         }
     }
 
-    /* transfer last point */
+    /* transfer last point 
     index[n_dest] = n_source-1;
     n_dest++;
 
-    /* make return array */
+    /* make return array 
     var r = new Array();
     for(var i=0; i < n_dest; i++)
         r.push(source[index[i]]);
     return r;
     
-}
+}*/
 });

@@ -4,22 +4,21 @@
 
 'use strict';
 
-var Location = require('./location.model');
+var Drive = require('./drive.model');
+
 exports.register = function(socket) {
-  Location.schema.post('create', function (doc) {
+  Drive.schema.post('save', function (doc) {
     onSave(socket, doc);
   });
-  Location.schema.post('remove', function (doc) {
+  Drive.schema.post('remove', function (doc) {
     onRemove(socket, doc);
   });
 }
 
 function onSave(socket, doc, cb) {
-	console.log('saved called')
-	
-  socket.emit('location:save', doc);
+  socket.emit('drive:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
-  socket.emit('location:remove', doc);
+  socket.emit('drive:remove', doc);
 }

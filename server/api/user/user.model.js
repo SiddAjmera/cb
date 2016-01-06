@@ -10,20 +10,20 @@ var Team = require('../team/team.model');
 var UserSchema = new Schema({
 
 // According to the current scenario - Siddharth Ajmera
-  empId: String,
+  empId: { type: String, index: true },
   empName: String,
   contactNo: String,
-  gender: String,
+  gender: { type: String, index: true },
   homeAddress: String,
-  city: String,
+  city: { type: String, index: true },
   state: String,
-  zipcode: String,
+  zipcode: { type: String, index: true },
   officeAddress: String,
   timeSlot: String,
   username: String,
-  userId: String,
+  userId: { type: String, index: true },
   userPhotoUrl: String,
-  placeID : String,
+  placeID : { type: String, index: true },
   homeLocationCoordinates: {type: [Number], index: '2d'},
   vehicle: {
     capacity: String,
