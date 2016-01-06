@@ -33,7 +33,7 @@ exports.create = function(req, res) {
   Location.create(req.body, function(err, location) {
   	console.log('Got into Location.create. Here is the error : ' + err + ' and the location : ' + location);
     if(err) { return handleError(res, err); }
-    EventEmitter.emit("locationsSaved");
+    //EventEmitter.emit("locationsSaved");
     return res.json(201, location);
   });
 };
