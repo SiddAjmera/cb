@@ -5,9 +5,15 @@ angular.module('cbApp')
     var currentUser = {};
 
   localStorage.retrieve('token').
-    then(function(res){
-      if(res!=null)
+    then(function(res){      
+      if(res!=null){
+         console.log("res",res)  
+         console.log("Getting user from server");
          currentUser = User.get();
+      } 
+      else{
+        console.log("no token found exiting.");
+      }       
         console.log(currentUser)
     });
    // if($cookieStore.get('token')) {
