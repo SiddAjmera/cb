@@ -669,6 +669,7 @@ a.get-started-link:hover{
     font-weight: bold;
     border-bottom: 2px solid #acacac;
     position: fixed;
+    z-index: 10;
    
 }
 .heading{
@@ -1538,7 +1539,10 @@ input[type=number]::-webkit-outer-spin-button {
     float: left;
     width: 100%;
     height: 30px;
-        color: #464646
+    color: #464646;
+}
+.leaflet-top, .leaflet-bottom{
+    z-index: 7;
 }
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
