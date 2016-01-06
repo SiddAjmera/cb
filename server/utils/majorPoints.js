@@ -1,6 +1,9 @@
+//var google = require('google-maps');
+
 exports.getMajorWayPoints = function(source, destination){
-	var start = new google.maps.LatLng(source[0],source[1]);
-	var end = new google.maps.LatLng(destination[0],destination[1]);
+/*	console.log('Google Object : ' + JSON.stringify(google));
+	var start = new google.maps.LatLng(source.latitude, source.longitude);
+	var end = new google.maps.LatLng(destination.latitude, destination.longitude);
 	var request = {
 	  origin:start,
 	  destination:end,
@@ -27,6 +30,6 @@ exports.getMajorWayPoints = function(source, destination){
 	if(pointsArray.length > 0){
 		console.log('The Points Array was Successfully Received. He it is : ' + JSON.stringify(pointsArray));
 		return pointsArray;
-	}
-	
+	}*/
+
 };

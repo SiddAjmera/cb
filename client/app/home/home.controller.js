@@ -12,8 +12,9 @@ angular.module('cbApp')
     $scope.setCenter=true;
     $scope.paths={};
     var currentUser = Auth.getCurrentUser();
-    var getLocations = function(){
+    var getLocations = function(driveId){
         var filterJSON = {};
+        filterJSON.driveId = driveId;
         filterJSON.userId = currentUser.userId;
 
         httpRequest.post(config.apis.filterLocations,filterJSON).
@@ -47,5 +48,36 @@ angular.module('cbApp')
         })    
         
     }
-    getLocations()
+    var drivesArray = [];
+    var totalDrives =  0;
+    var currentDrive = 0;
+    var getDrives = function(limit){
+      var postJSON = {}
+      postJSON.userId = currentUser.userId;
+      postJSON.limit = limit;
+
+      httpRequest.post(config.apis.getDrives,postJSON).
+      then(function(drives){
+        console.log(drives)
+        if(drives.status==200){
+           drivesArray = drives.data;
+           totalDrives = drives.data.length;
+           if(drivesArray.length!=0){
+
+              getLocations(drivesArray[currentDrive++]);
+           }
+               
+        }
+         
+      })
+    }
+
+    $scope.getNextDrive = function(){
+      if(currentDrive<totalDrives)
+        getLocations(drivesArray[currentDrive++]);
+
+    }
+
+    getDrives(10);
+    
   });

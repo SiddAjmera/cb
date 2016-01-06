@@ -21,14 +21,20 @@
 
 			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzeon' defaults="defaults" paths="paths"></leaflet>
 
-			<p class="return-journey">RETURN JOURNEY</p>
+		<!-- 	<p class="return-journey">RETURN JOURNEY</p>
 
-			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzere' defaults="defaults"></leaflet>
+			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzere' defaults="defaults"></leaflet> -->
+		</div>
+		<div>
+			<p>Total Distance: <span></span></p>
+			<p>Stangnant Time:<span></span></p>
+			<p>Total time:<span></span></p>
+			<p>Average Speed:<span></span></p>
 		</div>
 
 		<div class="lower-left-right-buttons">
-			<span class="glyphicon glyphicon-chevron-left cursor-pointer left-cursor"></span>
-			<span class="glyphicon glyphicon-chevron-right cursor-pointer right-cursor"></span>
+			<span class="glyphicon glyphicon-chevron-left cursor-pointer left-cursor" ng-click="getPrevDrive()"></span>
+			<span class="glyphicon glyphicon-chevron-right cursor-pointer right-cursor" ng-click="getNextDrive()"></span>
 		</div>
 	</div>
 </div>

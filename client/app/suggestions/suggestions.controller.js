@@ -1,12 +1,8 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest,User) {
-     User.get().$promise
-    .then(function(userData){
-      $scope.currentUser=userData;
-      console.log($scope.currentUser);
-    });
+  .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest,Auth) {
+     $scope.currentUser=Auth.getCurrentUser();
    $scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
      $scope.markers= [];
     var getAllSuggestions = function(){
