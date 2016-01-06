@@ -6,6 +6,7 @@ var Location = require('../location/location.model');
 var Turf = require('../../utils/turfOperations');
 var moment = require('moment');
 var GeoJSON = require('../../utils/geoJSONify');
+var MajorPoints = require('../../utils/majorPoints');
 
 // Get list of drives
 exports.index = function(req, res) {
@@ -75,6 +76,9 @@ exports.processData = function(req, res){
             var drive = new Drive();
             drive.driveId = locations[0].driveId;
             drive.userId = locations[0].userId;
+            drive.majorPoints = [];
+            drive.majorPoints = MajorPoints.getMajorWayPoints(locations[0].location, locations[locations.length - 1].location);
+            console.log('Drive.MajorPoints : ' + JSON.stringify(drive.majorPoints));
             drive.totalDistance = Turf.calculateTotalDistance( GeoJSON.geoJSONify(locations));
             drive.distanceUnit = 'm';
             var then = new Date((locations[locations.length - 1].timestamp) *1);
