@@ -11,7 +11,13 @@ angular.module('cbApp')
     };
     $scope.setCenter=true;
     $scope.paths={};
-    var currentUser = Auth.getCurrentUser();
+    var currentUser = {};
+     Auth.getCurrentUser().
+     then(function(data){
+        currentUser = data;
+        getDrives(10);
+        console.log(currentUser)
+     });
     var getLocations = function(driveId){
        $scope.paths = {};
         var filterJSON = {};
