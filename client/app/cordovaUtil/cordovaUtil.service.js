@@ -26,7 +26,7 @@ angular.module('cbApp')
 				   // var myoptions = { zoom: 14, center: myLatLag, mapTypeId: google.maps.MapTypeId.ROADMAP};	//Set option for map so that is use latlng center
 				   // var map = new google.maps.Map(document.getElementById("mapCanvas"), myoptions);	//google map instance
 				   // var marker = new google.maps.Marker({ position: myLatLag, map: map });	//add marker for our location
-				   that.saveCoordinates(position);
+				   that.saveCoordinates(position,driveId);
 				   $rootScope.$broadcast("locationCaptured");
 			   }, function(error)
 			   {
@@ -41,7 +41,7 @@ angular.module('cbApp')
 		  
 	   },
 	   
-	   saveCoordinates:function(position)
+	   saveCoordinates:function(position,driveId)
 	   {	
 	   	   var that=this;
 	   	   
@@ -101,6 +101,7 @@ angular.module('cbApp')
 					   
 					   trackedLocationCoordinatesObject.timestamp=position.timestamp;
 					   trackedLocationCoordinatesObject.userId = currentUser.userId;
+					   trackedLocationCoordinatesObject.driveId = driveId;
 					   trackedLocationCoordinatesObject.uuid=UUID;			   
 					   //alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
 					   trackedLocationsArray.push(trackedLocationCoordinatesObject);
@@ -207,7 +208,7 @@ angular.module('cbApp')
 	   					break;
 	   				}
 	   				else{
-	   					httpRequest.post(config.apis.syncLocations,trackedLocations.splice(0, 100)).
+	   					httpRequest.post(config.apis.syncLocations,{trackedLocations:trackedLocations.splice(0, 100),almostFinished:almostFinished}).
 				   		then(function(res){
 				   			if(res.status == 201){
 				   			   var objectToStoreTheTrackedLocationsArray = {};	// Object to store the TrackedLocations Array
@@ -221,7 +222,7 @@ angular.module('cbApp')
 				   		});
 	   				}
 	   			}
-	   			if(almostFinished) that.syncABatch(trackedLocations);
+	   			if(almostFinished) that.syncABatch({trackedLocations:trackedLocations,almostFinished:almostFinished});
 	   		});
 	    },
 
