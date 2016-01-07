@@ -17,7 +17,7 @@ config.apis.getAllUsers = "api/users/";
 config.apis.filterLocations = "api/locations/FilterLocation";
 config.apis.getStats = "api/drives/FilterDrive";
 config.apis.getDrives = "api/drives/LatestDriveId";
-
+config.apis.postRide = "api/rides/"
 
 config.cordova=true;
 

@@ -6,6 +6,7 @@ angular.module('cbApp')
       .state('userHome.postRides', {
         url: '/postRides',
         templateUrl: 'app/postRides/postRides.html',
-        controller: 'PostRidesCtrl'
+        controller: 'PostRidesCtrl',
+        authenticate:"true"
       });
   });

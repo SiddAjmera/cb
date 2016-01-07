@@ -17,14 +17,15 @@ angular.module('cbApp', [
   'leaflet-directive',
   'ui.select',
   'ngCordova',
-  'angular-loading-bar'
+  'angular-loading-bar',
+  'google.places'
 ])
 
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider,cfpLoadingBarProvider) {
      console.log("In config block");
 
     $urlRouterProvider
-      .otherwise('/');
+      .otherwise('/userHome/home');
 
   //  $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
