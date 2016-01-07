@@ -16,10 +16,11 @@ angular.module('cbApp', [
   'LocalForageModule',
   'leaflet-directive',
   'ui.select',
-  'ngCordova'
+  'ngCordova',
+  'angular-loading-bar'
 ])
 
-.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider,cfpLoadingBarProvider) {
      console.log("In config block");
 
     $urlRouterProvider
@@ -27,6 +28,7 @@ angular.module('cbApp', [
 
   //  $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+    cfpLoadingBarProvider.includeSpinner = false;
 
   })
 

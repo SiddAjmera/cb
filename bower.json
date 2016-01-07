@@ -25,7 +25,8 @@
     "json3": "~3.3.1",
     "lodash": "~2.4.1",
     "ngCordova": "~0.1.23-alpha",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "angular-loading-bar": "~0.8.0"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
