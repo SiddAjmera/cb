@@ -7,8 +7,8 @@ angular.module('cbApp')
   var deviceUUID;
   var almostFinished = false;
   var driveId;
-   currentUser=Auth.getCurrentUser();
-
+ // currentUser=Auth.getCurrentUser();
+  Auth.getCurrentUser().then(function(data){currentUser=data;});
 
    return {
 	   getCoordinates:function(driveId)

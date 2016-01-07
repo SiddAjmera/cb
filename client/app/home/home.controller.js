@@ -48,7 +48,7 @@ angular.module('cbApp')
                         }
 
                        }
-            console.log("filtered data",filterService.filterData(filterService.GDouglasPeucker(pathArr,5),0.5));
+            console.log("filtered data",filterService.GDouglasPeucker(pathArr,20));
             }
            
 
