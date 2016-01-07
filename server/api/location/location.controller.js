@@ -93,6 +93,45 @@ exports.filterLocation = function(req, res){
   });
 };
 
+/*exports.driveIdsByUser = function(req, res){
+  Location.find({userId: req.body.userId})
+          .sort({'timestamp': 'desc'})
+          .limit(req.body.limit)
+          .exec(function(err, locations){
+            if(err) { return handleError(res, err); }
+            // TODO: Code to extract the driveIds from locations, store it in an array and send the Array as response
+  });
+};*/
+/*
+exports.driveIdsByUser = function(req, res){
+  Location.find({userId: req.body.userId})
+          .sort({'timestamp': 'desc'})
+          .limit(req.body.limit)
+          .distinct('driveId', function(err, locations){
+              if(err) { return handleError(res, err); }
+              console.log('Locations from driveIdsByUser method : ' + JSON.stringify(locations));
+              return res.json(200, locations);
+    });
+};*/
+
+exports.driveIdsByUser = function(req, res){
+  Location.aggregate(
+    [
+        { $match : { userId : Number(req.body.userId) } },
+        { $group : { _id: "$driveId", total: { $sum: 1 } } },
+        { $sort  : { driveId : -1 } },
+        { $limit : Number(req.body.limit) }
+    ],
+    function(err,locations) {
+       if(err) { return handleError(res, err); }
+       var driveIds = [];
+       for(var i=0; i < locations.length; i++){
+          driveIds.push(locations[i]._id);
+       }
+       return res.json(200, driveIds);
+    });
+};
+
 // Updates an existing location in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
