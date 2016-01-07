@@ -17,7 +17,7 @@ config.apis.signup = "api/users/";
 config.apis.getAllUsers = "api/users/";
 /*for filtering*/
 config.apis.filterLocations = "api/locations/FilterLocation";
-config.apis.getStats = "api/drives/ProcessData";
+config.apis.getStats = "api/drives/FilterDrive";
 config.apis.getDrives = "api/drives/LatestDriveId";
 
 

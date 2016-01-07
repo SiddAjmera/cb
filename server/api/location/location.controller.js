@@ -6,9 +6,11 @@ var Drive = require('../drive/drive.controller');
 
 var events = require('events');
 var EventEmitter= new events.EventEmitter();
-EventEmitter.on("locationsSaved",function(){
-  console.log("emitted")
-  Drive.processData();
+EventEmitter.on("locationsSaved",function(obj){
+  console.log("inside emitter")
+  console.log("emitted object"+JSON.stringify(obj))
+  console.log("emitted=========================="+obj.driveId)
+  Drive.processData({calledfromSync:true,userId:obj.userId,driveId:obj.driveId});
 })
 // Get list of locations
 exports.index = function(req, res) {
@@ -30,10 +32,16 @@ exports.show = function(req, res) {
 // Creates a new location in the DB.
 exports.create = function(req, res) {
   console.log('Request.body : ' + JSON.stringify(req.body) );
-  Location.create(req.body, function(err, location) {
+
+  var trackedLocations=req.body.trackedLocations
+  var almostFinished=req.body.almostFinished
+
+  Location.create(trackedLocations, function(err, location) {
   	console.log('Got into Location.create. Here is the error : ' + err + ' and the location : ' + location);
     if(err) { return handleError(res, err); }
-    //EventEmitter.emit("locationsSaved");
+    if(almostFinished)
+    EventEmitter.emit("locationsSaved",{userId:trackedLocations[0].userId,driveId:trackedLocations[0].driveId});
+
     return res.json(201, location);
   });
 };
