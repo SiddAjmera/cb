@@ -2,7 +2,7 @@
 
 angular.module('cbApp')
   .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest,Auth) {
-     $scope.currentUser=Auth.getCurrentUser();
+     Auth.getCurrentUser(function(data){$scope.currentUser=data;getAllSuggestions();});
    $scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
      $scope.markers= [];
     var getAllSuggestions = function(){
@@ -41,7 +41,7 @@ angular.module('cbApp')
         })
     }    
 
-    getAllSuggestions();
+    
 
    
     $scope.center={

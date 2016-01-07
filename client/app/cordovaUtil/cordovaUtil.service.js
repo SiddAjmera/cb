@@ -1,17 +1,13 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaUtil',['parse','User','httpRequest','localStorage','$q','$rootScope',function (parse,user,httpRequest,localStorage,$q,$rootScope) {
+  .service('cordovaUtil',['parse','Auth','httpRequest','localStorage','$q','$rootScope',function (parse,Auth,httpRequest,localStorage,$q,$rootScope) {
   var currentUser = {};
   var watchId;
   var deviceUUID;
   var almostFinished = false;
   var driveId;
-   user.get().$promise.
-   then(function(user){
-   	currentUser = user;
-   	console.log("currentUser",currentUser)
-   });
+   currentUser=Auth.getCurrentUser();
 
 
    return {
@@ -52,7 +48,7 @@ angular.module('cbApp')
 		   		   var mySavedLocationCoordinates = item;
 		   		   var UUID;
 		   		   if(deviceUUID != null) {
-		   		   		alert('The deviceUUID is not null and is : ' + deviceUUID);
+		   		   	//	alert('The deviceUUID is not null and is : ' + deviceUUID);
 		   		   		UUID = deviceUUID;
 		   		   }
 		   		   else UUID = that.getDeviceUUID();
@@ -103,6 +99,7 @@ angular.module('cbApp')
 					   trackedLocationCoordinatesObject.userId = currentUser.userId;
 					   trackedLocationCoordinatesObject.driveId = driveId;
 					   trackedLocationCoordinatesObject.uuid=UUID;			   
+					   trackedLocationCoordinatesObject.driveId = driveId;
 					   //alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
 					   trackedLocationsArray.push(trackedLocationCoordinatesObject);
 					   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocationsArray;
