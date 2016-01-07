@@ -112,7 +112,7 @@ angular.module('cbApp')
         httpRequest.post(config.apis.getStats,filterJSON).
         then(function(stats){
             if(stats.status==200){
-              $scope.stats = stats.data;
+              $scope.stats = stats.data[0];
             }
         })
     }
