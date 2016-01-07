@@ -27,6 +27,7 @@ angular.module('cbApp')
           if(response.status==200){
              console.log(response)
             // Logged in, redirect to home
+            
              $state.go('userHome.home');
           }
           else{

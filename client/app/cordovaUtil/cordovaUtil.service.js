@@ -97,6 +97,7 @@ angular.module('cbApp')
 					   
 					   trackedLocationCoordinatesObject.timestamp=position.timestamp;
 					   trackedLocationCoordinatesObject.userId = currentUser.userId;
+					   trackedLocationCoordinatesObject.driveId = driveId;
 					   trackedLocationCoordinatesObject.uuid=UUID;			   
 					   trackedLocationCoordinatesObject.driveId = driveId;
 					   //alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
@@ -204,7 +205,7 @@ angular.module('cbApp')
 	   					break;
 	   				}
 	   				else{
-	   					httpRequest.post(config.apis.syncLocations,trackedLocations.splice(0, 100)).
+	   					httpRequest.post(config.apis.syncLocations,{trackedLocations:trackedLocations.splice(0, 100),almostFinished:almostFinished}).
 				   		then(function(res){
 				   			if(res.status == 201){
 				   			   var objectToStoreTheTrackedLocationsArray = {};	// Object to store the TrackedLocations Array
@@ -218,7 +219,7 @@ angular.module('cbApp')
 				   		});
 	   				}
 	   			}
-	   			if(almostFinished) that.syncABatch(trackedLocations);
+	   			if(almostFinished) that.syncABatch({trackedLocations:trackedLocations,almostFinished:almostFinished});
 	   		});
 	    },
 

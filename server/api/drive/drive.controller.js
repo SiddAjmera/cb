@@ -30,7 +30,7 @@ exports.create = function(req, res) {
   Drive.create(req.body, function(err, drive) {
     if(err) { return handleError(res, err); }
     return res.json(201, drive);
-  });
+  }); 
 };
 
 exports.filterDrive = function(req, res){
@@ -68,7 +68,20 @@ exports.destroy = function(req, res) {
 
 // Calculate the stats related to the Location Data provided
 exports.processData = function(req, res){
-    Location.find(req.body)
+ var userId=""
+ var driveId=""
+  if(req.calledfromSync){
+     userId=req.userId
+     driveId=req.driveId
+  }
+   
+ else{
+ userId=req.body.userId;
+ driveId=req.body.driveId;
+ }
+ 
+
+    Location.find({userId:userId,driveId:driveId})
      .sort({'timestamp': 'desc'})
      .exec(function(err, locations) {
          if(err) console.log('Error fetching locations for processing. Error : ' + err);
@@ -77,8 +90,8 @@ exports.processData = function(req, res){
             drive.driveId = locations[0].driveId;
             drive.userId = locations[0].userId;
             drive.majorPoints = [];
-            drive.majorPoints = MajorPoints.getMajorWayPoints(locations[0].location, locations[locations.length - 1].location);
-            console.log('Drive.MajorPoints : ' + JSON.stringify(drive.majorPoints));
+       //     drive.majorPoints = MajorPoints.getMajorWayPoints(locations[0].location, locations[locations.length - 1].location);
+            console.log('locations : ' +  drive.driveId);
             drive.totalDistance = Turf.calculateTotalDistance( GeoJSON.geoJSONify(locations));
             drive.distanceUnit = 'm';
             var then = new Date((locations[locations.length - 1].timestamp) *1);
@@ -90,6 +103,7 @@ exports.processData = function(req, res){
             console.log('Drive Object : ' + JSON.stringify(drive));
             drive.save(function(err) {
               if (err) { return handleError(err); }
+              if(res)
               return res.json(200, drive);
             });
          }

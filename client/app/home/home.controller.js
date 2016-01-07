@@ -11,7 +11,13 @@ angular.module('cbApp')
     };
     $scope.setCenter=true;
     $scope.paths={};
-    var currentUser = Auth.getCurrentUser();
+    var currentUser = {};
+     Auth.getCurrentUser().
+     then(function(data){
+        currentUser = data;
+        getDrives(10);
+        console.log(currentUser)
+     });
     var getLocations = function(driveId){
        $scope.paths = {};
         var filterJSON = {};
@@ -106,7 +112,7 @@ angular.module('cbApp')
         httpRequest.post(config.apis.getStats,filterJSON).
         then(function(stats){
             if(stats.status==200){
-              $scope.stats = stats.data;
+              $scope.stats = stats.data[0];
             }
         })
     }

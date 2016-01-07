@@ -4,21 +4,78 @@ angular.module('cbApp')
   .factory('Auth', function Auth($location, $rootScope, User,$q,httpRequest,localStorage) {
     var currentUser = {};
 
-  localStorage.retrieve('token').
-    then(function(res){      
-      if(res!=null){
-         console.log("res",res)  
-         console.log("Getting user from server");
-         currentUser = User.get();
-      } 
-      else{
-        console.log("no token found exiting.");
-      }       
-        console.log(currentUser)
-    });
    // if($cookieStore.get('token')) {
    //    currentUser = User.get();
    //  }
+  var fetchUserFromLocalStorage=function(){
+    var deffered= $q.defer();
+    localStorage.retrieve('currentUser').
+    then(function(obj){
+      if(obj)
+        deffered.resolve(obj);
+      else
+        deffered.reject(obj);
+    },function(err){
+      deffered.reject(obj);
+    });
+    return deffered.promise;
+  };
+
+  var fetchUserFromDB=function(){
+      var deffered= $q.defer();
+      localStorage.retrieve('token').
+        then(function(res){
+        if(res!=null){
+           //currentUser = User.get();
+           User.get().$promise.
+           then(function(data){
+              deffered.resolve(data);
+           },
+            function(error){
+              deffered.reject(error);
+            });
+        } 
+        else{
+          //if token is null.
+          console.log("no token found exiting.");
+          deffered.reject("No auth token");
+        }
+      },
+      function(err){
+        //if error while retriving token.
+        deffered.reject(err);
+      });
+      return deffered.promise;
+  }; 
+
+  var fetchUser=function(){
+    var deffered= $q.defer();
+    //if in cache
+    if(currentUser.userId){
+      deffered.resolve(currentUser);
+    }
+    else{
+      //not in cahe then check local
+      fetchUserFromLocalStorage().
+      then(function(user){
+        currentUser=user;
+        deffered.resolve(currentUser);
+      },
+        function(err){
+          //not in local go to DB
+          fetchUserFromDB().
+          then(function(user){
+            currentUser=user;
+            deffered.resolve(user);
+            //TODO: store in local
+            localStorage.store('currentUser',user);
+          },function(err){
+            deffered.reject();
+          })
+      });
+    }
+    return deffered.promise;       
+  }
 
     return {
 
@@ -32,29 +89,30 @@ angular.module('cbApp')
       login: function(user, callback) {
         var cb = callback || angular.noop;
         var deferred = $q.defer();
-
         var tempUser = {};
         tempUser.userId = user.empId;
         tempUser.password = user.password;
         httpRequest.post(config.apis.login,tempUser).
         then(function(data){
           if(data.status==200){
-            localStorage.store('token',data.data.token).
+            //console.log("data.data",data.data)
              /*$localForage.setItem('token', data.data.token).*/
-             then(function(){
-                currentUser = User.get();
-                console.log("currentUser",currentUser)
-                deferred.resolve(data);
-                return cb();
-             });
-            
+            localStorage.store('token',data.data.token).            
+            then(function(){
+              currentUser = User.get();
+              console.log("currentUser in login service",currentUser)
+              //fetch user & store in cache & local storage
+              fetchUser().then(function(userData){
+                  deferred.resolve(data);
+                  return cb();
+              });         
+            });          
           }
         },function(err){
            this.logout();
           deferred.reject(err);
           return cb(err);
         }.bind(this));
-
         return deferred.promise;
       },
 
@@ -66,6 +124,7 @@ angular.module('cbApp')
       logout: function() {
         console.log(localStorage.retrieve('token'))
         localStorage.remove('token');
+        localStorage.remove('currentUser');
         currentUser = {};
       },
 
@@ -118,7 +177,19 @@ angular.module('cbApp')
        * @return {Object} user
        */
       getCurrentUser: function() {
-        return currentUser;
+        var deffered=$q.defer();        
+        fetchUser().then(function(user){
+          deffered.resolve(user);
+        },
+          function(err){
+            deffered.reject(err);
+          }
+        );
+        return deffered.promise;
+      },
+
+      setCurrentUser:function(user){
+        currentUser = user;
       },
 
       /**
@@ -143,17 +214,26 @@ angular.module('cbApp')
        * Waits for currentUser to resolve before checking if user is logged in
        */
       isLoggedInAsync: function(cb) {
-        if(currentUser.hasOwnProperty('$promise')) {
-          currentUser.$promise.then(function() {
+        //changed 
+        fetchUser().then(function(user){
+          if(user.hasOwnProperty('userId'))
             cb(true);
-          }).catch(function() {
+          else
             cb(false);
-          });
-        } else if(currentUser.hasOwnProperty('role')) {
-          cb(true);
-        } else {
-          cb(false);
-        }
+        },function(err){
+          cb(false)
+        });
+        // if(currentUser.hasOwnProperty('$promise')) {
+        //   currentUser.$promise.then(function() {
+        //     cb(true);
+        //   }).catch(function() {
+        //     cb(false);
+        //   });
+        // } else if(currentUser.hasOwnProperty('role')) {
+        //   cb(true);
+        // } else {
+        //   cb(false);
+        // }
       },
 
       /**
