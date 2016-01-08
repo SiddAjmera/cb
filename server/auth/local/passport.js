@@ -31,12 +31,12 @@ exports.setup = function (User, config) {
     },
     function(userId, password, done) {
       User.findOne({
-        empId: userId
+        userId: userId
       }, function(err, user) {
         if (err) return done(err);
 
         if (!user) {
-          return done(null, false, { message: 'This email is not registered.' });
+          return done(null, false, { message: 'This empId/userId is not registered.' });
         }
         if (!user.authenticate(password)) {
           return done(null, false, { message: 'This password is not correct.' });

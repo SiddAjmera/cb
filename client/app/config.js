@@ -23,5 +23,5 @@ config.apis.getStats = "api/drives/FilterDrive";
 config.apis.getDrives = "api/drives/LatestDriveId";
 config.apis.postRide = "api/rides/"
 
-config.cordova=true;
+config.cordova=false;
 
