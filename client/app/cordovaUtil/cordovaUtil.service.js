@@ -273,6 +273,38 @@ angular.module('cbApp')
 				});
 			});
 			return deferred.promise;
+	   },
+	   
+	   backbuttonImpl:function(){
+		 
+ var exitApp = false;
+                 
+                 var intval = setInterval(function (){exitApp = false;}, 
+1000);
+    document.addEventListener("backbutton", function (e){
+        e.preventDefault();
+        if (exitApp) {
+            clearInterval(intval) 
+            navigator.notification.confirm("Are you sure you want to exit ?", onConfirm, "Confirmation", "Yes,No"); 
+        }
+        else {
+            exitApp = true
+            history.back(1);
+        } 
+    }, false);
+        
+ 
+           function onConfirm(button) {
+    if(button==2){//If User selected No, then we just do nothing
+    exitApp=false;
+        return;
+    }else{
+      //  navigator.app.exitApp();// Otherwise we quit the app.
+      (navigator.app && navigator.app.exitApp()) || (device && 
+device.exitApp())
+    }
+}
+            
 	   }
    }
   }]);

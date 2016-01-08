@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SignupCtrl', function ($scope,$location, $window,$state,$modal,cordovaUtil,httpRequest,localStorage) {
+  .controller('SignupCtrl', function ($scope,$location, $window,$state,$modal,$rootScope,cordovaUtil,httpRequest,localStorage,pushnotification) {
     $scope.user = {vehicle:{}};
     $scope.user.gender = "Female";
     $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",
@@ -104,8 +104,41 @@ angular.module('cbApp')
         /*else save the data*/
     
         // Function to save the UserObject in MongoDB
-        var url = config.apis.signup;
-        httpRequest.post(url,$scope.user).
+        
+          if(config.cordova){
+            pushnotification.registerPushNotification();
+             $rootScope.$on('$cordovaPush:notificationReceived', function(event, notification) {
+      switch(notification.event) {
+        case 'registered':
+          if (notification.regid.length > 0 ) {
+            $scope.user.redgId=notification.regid;
+            $scope.signupPost();
+          }
+          break;
+
+        case 'message':
+          // this is the actual push notification. its format depends on the data model from the push server
+          alert('message = ' + notification.message + ' msgCount = ' + notification.msgcnt);
+          break;
+
+        case 'error':
+          alert('GCM error = ' + notification.msg);
+          break;
+
+        default:
+          alert('An unknown GCM event has occurred');
+          break;
+      }
+    });
+          }
+          else
+          $scope.signupPost();
+            
+       
+       
+       $scope.signupPost=function(){ 
+         var url = config.apis.signup;
+         httpRequest.post(url,$scope.user).
         then(function(response){
               /*if(response.status==)*/
               if(response.status==200){
@@ -122,7 +155,7 @@ angular.module('cbApp')
              $scope.error = err;
         });
        
-
+       }
 
     };
 
@@ -139,7 +172,8 @@ angular.module('cbApp')
           cordovaUtil.getUserHomeCoordinates().then(function(address){
            $scope.user.homeAddress = address.homeAddress;
             $scope.user.city = address.city;
-            $scope.user.zipcode = address.zipcode;
+            if(address.zipcode)
+            $scope.user.zipcode = parseInt(address.zipcode);
             $scope.user.placeID = address.placeID;
             $scope.user.homelocationCoordinates = [];
             $scope.user.homelocationCoordinates.push(address.homeLocationCoordinates.lat);

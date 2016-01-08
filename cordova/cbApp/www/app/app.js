@@ -1,3 +1,2739 @@
-"use strict";angular.module("cbApp",["ngCookies","ngResource","ngSanitize","btford.socket-io","ui.router","ui.bootstrap","ngAnimate","ngMessages","ngTouch","slick","ui.bootstrap","ngHamburger","LocalForageModule","leaflet-directive","ui.select","ngCordova","angular-loading-bar"]).config(["$stateProvider","$urlRouterProvider","$locationProvider","$httpProvider","cfpLoadingBarProvider",function(a,b,c,d,e){console.log("In config block"),b.otherwise("/"),d.interceptors.push("authInterceptor"),e.includeSpinner=!1}]).factory("authInterceptor",["$rootScope","$q","$location","localStorage",function(a,b,c,d){return{request:function(a){var c=b.defer();return a.headers=a.headers||{},d.retrieve("token").then(function(b){console.log("header",b),null!=b&&(a.headers.Authorization="Bearer "+b),c.resolve(a)}),c.promise},responseError:function(a){return 401===a.status?(d.remove("token"),b.reject(a)):b.reject(a)}}}]).run(["$rootScope","$location","Auth","localStorage","$state",function(a,b,c,d,e){d.isInitialized().then(function(a){a||(d.initialize(),b.path("/intro"))}),a.$on("$stateChangeStart",function(a,e,f,g){c.isLoggedInAsync(function(a){console.log("loggedIn",a),console.log("next",e),console.log("prev",g),e.authenticate&&!a&&b.path("/login"),"intro"==e.name&&d.isInitialized().then(function(a){a?b.path("/userHome/home"):d.initialize()})})})}]);var onDeviceReady=function(){angular.bootstrap(document,["cbApp"]),$.getScript("http://maps.google.com/maps/api/js?sensor=false"),document.addEventListener("backbutton",function(a){"#/userHome/home"==window.location.hash&&(a.preventDefault(),navigator.app.exitApp())},!1)};if(document.addEventListener("deviceready",onDeviceReady),angular.module("cbApp").config(["$stateProvider",function(a){a.state("login",{url:"/login",templateUrl:"app/account/login/login.html",controller:"LoginCtrl"}).state("signup",{url:"/signup","abstract":!0,templateUrl:"app/account/signup/signup.html",controller:"SignupCtrl"}).state("settings",{url:"/settings",templateUrl:"app/account/settings/settings.html",controller:"SettingsCtrl",authenticate:!0})}]),angular.module("cbApp").controller("LoginCtrl",["$scope","Auth","$location","$window","$state",function(a,b,c,d,e){a.user={},a.loginForm={},a.errorMsg="",a.showErrorMessage=!1,a.login=function(){return a.errorMsg="",a.showErrorMessage=!0,a.loginForm.$valid?void(a.loginForm.$valid&&(console.log(a.loginForm),b.login({empId:a.user.empId,password:a.user.password}).then(function(b){200==b.status?(console.log(b),e.go("userHome.home")):a.errorMsg="Please check Employee id or password"},function(b){a.errorMsg="Please check Employee id or password"})["catch"](function(b){a.errorMsg="Please check Employee id or password"}))):(console.log(a.loginForm),$("input.ng-invalid").eq(0).focus(),console.log("----------",$("input.ng-invalid")),!1)},a.loginOauth=function(a){d.location.href="/auth/"+a}}]),angular.module("cbApp").controller("SettingsCtrl",["$scope","User","Auth",function(a,b,c){a.errors={},a.changePassword=function(b){a.submitted=!0,b.$valid&&c.changePassword(a.user.oldPassword,a.user.newPassword).then(function(){a.message="Password successfully changed."})["catch"](function(){b.password.$setValidity("mongoose",!1),a.errors.other="Incorrect password",a.message=""})}}]),angular.module("cbApp").controller("SignupCtrl",["$scope","$location","$window","$state","$modal","cordovaUtil","httpRequest","localStorage",function(a,b,c,d,e,f,g,h){a.user={vehicle:{}},a.user.gender="Female",a.timeSlotJSON=["8:00 AM - 5:00 PM","9:00 AM - 6:00 PM","10:00 AM - 7:00 PM","11:00 AM - 8:00 PM","12:00 AM - 9:00 PM"],a.officeAddressJSON=["BIRLA AT&T, PUNE","BT TechM Collocation","Bhosari MIDC Non STP","Bhosari MIDC STP","CMC-Pune","CRL - Hinjewadi","Cerebrum IT Park","KIRLOSKAR","Millenium Bldg, Pune","NAVLAKHA COMP.-PUNE","Nashik Centre NSTP","Nashik PSK Sites","Nyati Tiara","Pune - Commerzone","Pune PSK Sites","Pune Sahyadri Park","Pune(QuadraII) STP","Pune(QuadraII)NonSTP","Pune-Sun Suzlon-NSTP","QBPL -Pune SEZ","SP - A1 - Rajgad","SP - S1 - Poorna","SP - S2 - Torna","SP - S3 - Tikona","SahyadriPark SEZ - I","Sp-S1-Poorna-BPO","Sp-S2-Torna-BPO","TRDDC HADAPSAR, PUNE","VSNL - Pune"],a.vehicleCapacityJSON=["2","3","4","5","6"],a.showErrorMessage=!0;var i=1;a.signupForm={},a.step=1,d.go("signup.stepOne"),a.goToStep=function(b){if(b!=i)if(b>i){if(!a.signupForm.$valid)return void(a.showErrorMessage=!1);a.showErrorMessage=!0,a.step=b,i=b,1==b&&d.go("signup.stepOne"),2==b&&d.go("signup.stepTwo"),3==b&&d.go("signup.stepThree")}else a.step=b,i=b,a.showErrorMessage=!0,1==b&&d.go("signup.stepOne"),2==b&&d.go("signup.stepTwo")},a.register=function(){if(a.showErrorMessage=!1,!a.signupForm.$valid)return console.log(a.signupForm),$("input.ng-invalid").eq(0).focus(),console.log("----------",$("input.ng-invalid")),!1;var b=config.apis.signup;g.post(b,a.user).then(function(a){200==a.status&&(console.log("User Stored in the MongoDB Successfully. Here is the Response : ",a),h.store("token",a.data.token).then(function(){d.go("userHome.home")}))},function(b){console.log("Error Storing the User to the MongoDB. Here is the Error: "+b),a.error=b})},a.getLocation=function(){var b=e.open({animation:!0,templateUrl:"components/modal/modal.html",controller:"ModalCtrl",size:"sm"});b.result.then(function(b){"yes"==b&&f.getUserHomeCoordinates().then(function(b){a.user.homeAddress=b.homeAddress,a.user.city=b.city,a.user.zipcode=b.zipcode,a.user.placeID=b.placeID,a.user.homelocationCoordinates=[],a.user.homelocationCoordinates.push(b.homeLocationCoordinates.lat),a.user.homelocationCoordinates.push(b.homeLocationCoordinates.lng),a.user.state=b.state})})},a.loginOauth=function(a){c.location.href="/auth/"+a}}]),angular.module("cbApp").controller("StepOneCtrl",["$scope",function(a){a.message="Hello"}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("signup.stepOne",{url:"/stepOne",templateUrl:"app/account/signup/stepOne/stepOne.html"})}]),angular.module("cbApp").controller("StepThreeCtrl",["$scope",function(a){a.message="Hello"}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("signup.stepThree",{url:"/stepThree",templateUrl:"app/account/signup/stepThree/stepThree.html"})}]),angular.module("cbApp").controller("StepTwoCtrl",["$scope",function(a){a.message="Hello"}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("signup.stepTwo",{url:"/stepTwo",templateUrl:"app/account/signup/stepTwo/stepTwo.html"})}]),angular.module("cbApp").controller("AdminCtrl",["$scope","$http","Auth","User",function(a,b,c,d){a.users=d.query(),a["delete"]=function(b){d.remove({id:b._id}),angular.forEach(a.users,function(c,d){c===b&&a.users.splice(d,1)})}}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("admin",{url:"/admin",templateUrl:"app/admin/admin.html",controller:"AdminCtrl"})}]),angular.module("cbApp").controller("AvailableRidesCtrl",["$scope",function(a){a.message="Hello"}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("userHome.availableRides",{url:"/availableRides",templateUrl:"app/availableRides/availableRides.html",controller:"AvailableRidesCtrl"})}]),angular.isUndefined(config)){var config={};config.apis={}}config.apiBaseURL="http://52.77.218.140:9000/",config.apis.login="auth/local",config.apis.syncLocations="api/locations",config.apis.getAllUsers="api/users/",config.apis.filterLocations="api/locations/FilterLocation",config.apis.getStats="api/drives/FilterDrive",config.apis.getDrives="api/drives/LatestDriveId",config.cordova=!0,angular.module("cbApp").service("cordovaInit",["$document","$q",function(a,b){var c=b.defer(),d=!1;this.ready=c.promise,document.addEventListener("deviceready",function(){d=!0,c.resolve(window.cordova)}),setTimeout(function(){d||window.cordova&&c.resolve(window.cordova)},3e3)}]),angular.module("cbApp").service("cordovaUtil",["parse","Auth","httpRequest","localStorage","$q","$rootScope",function(a,b,c,d,e,f){var g,h,i={},j=!1;return b.getCurrentUser().then(function(a){i=a}),{getCoordinates:function(a){var b=this;a=a,g=navigator.geolocation.watchPosition(function(c){b.saveCoordinates(c,a),f.$broadcast("locationCaptured")},function(a){console.log("Error Code: "+a.code+" Error Message: "+a.message),alert("Error Code: "+a.code+" Error Message: "+a.message)},{enableHighAccuracy:!0,timeout:1e4,frequency:5e3})},saveCoordinates:function(a,b){var c=this;console.log("My cordinates ",a),d.retrieve("SavedLocationCoordinates").then(function(e){var f,g=e;if(f=null!=h?h:c.getDeviceUUID(),null!=g){g=JSON.parse(g);var j={};j.location={},j.location.latitude=a.coords.latitude,j.location.longitude=a.coords.longitude,j.coords={},j.coords.accuracy=a.coords.accuracy,j.coords.altitude=a.coords.altitude,j.coords.altitudeAccuracy=a.coords.altitudeAccuracy,j.coords.heading=a.coords.heading,j.coords.speed=a.coords.speed,j.timestamp=a.timestamp,j.uuid=f,j.userId=i.userId,j.driveId=b,console.log("current location object :",j),g.TrackedLocations.push(j),d.store("SavedLocationCoordinates",JSON.stringify(g)),console.log("This is the trackedLocationCoordinatesObject : "+JSON.stringify(j))}else{var k={},l=[],j={};j.location={},j.location.latitude=a.coords.latitude,j.location.longitude=a.coords.longitude,j.coords={},j.coords.accuracy=a.coords.accuracy,j.coords.altitude=a.coords.altitude,j.coords.altitudeAccuracy=a.coords.altitudeAccuracy,j.coords.heading=a.coords.heading,j.coords.speed=a.coords.speed,j.timestamp=a.timestamp,j.userId=i.userId,j.driveId=b,j.uuid=f,j.driveId=b,l.push(j),k.TrackedLocations=l,d.store("SavedLocationCoordinates",JSON.stringify(k)).then(function(a){var b=window.localStorage.getItem("SavedLocationCoordinates");b=JSON.parse(b),console.log("This is the trackedLocationCoordinatesObject : "+JSON.stringify(j)),console.log("This is the trackedLocationsArray : "+JSON.stringify(l))})}})},stopSampling:function(){navigator.geolocation.clearWatch(g)},saveDeviceDetails:function(){d.store("Device",JSON.stringify(device)).then(function(a){return a})},getDeviceUUID:function(){d.retrieve("DeviceUUID").then(function(a){return null!=a?(h=a,a):void 0}),d.store("DeviceUUID",device.uuid).then(function(a){return h=a,a})},getAllCoordinates:function(){a.getObjects().then(function(a){var b=_.map(a,function(a){return a.toJSON()});return b},function(a){console.log(a)})},syncCoordinates:function(){d.retrieve("SavedLocationCoordinates").then(function(a){var b=a;null!=b&&(b=JSON.parse(b),c.post(config.apis.syncLocations,b.TrackedLocations).then(function(a){201==a.status&&(d.remove("SavedLocationCoordinates"),alert("Data Synced Successfully"))}))})},syncABatch:function(a){c.post(config.apis.syncLocations,a).then(function(a){201==a.status&&(d.remove("SavedLocationCoordinates"),j&&(alert("Data Synced Successfully"),j=!1))})},batchSync:function(){var a=this;d.retrieve("SavedLocationCoordinates").then(function(b){var e=b;if(null!=e){e=JSON.parse(e);for(var f=e.TrackedLocations;f.length>0;){if(f.length<=100){j=!0;break}c.post(config.apis.syncLocations,{trackedLocations:f.splice(0,100),almostFinished:j}).then(function(b){if(201==b.status){var c={};c.TrackedLocations=[],c.TrackedLocations=f,d.store("SavedLocationCoordinates",JSON.stringify(c)).then(function(b){a.batchSync()})}})}j&&a.syncABatch({trackedLocations:f,almostFinished:j})}})},getUserHomeCoordinates:function(){var a=e.defer();if(navigator.geolocation)return navigator.geolocation.getCurrentPosition(function(b){var c=new google.maps.Geocoder,d={lat:b.coords.latitude,lng:b.coords.longitude};c.geocode({location:d},function(b,c){if(c==google.maps.GeocoderStatus.OK){for(var e=b[0],f=e.formatted_address,g="",h="",i="",j=e.place_id,k=0,l=e.address_components.length;l>k;k++){var m=e.address_components[k];console.log(m),m.types.indexOf("administrative_area_level_2")>=0&&(g=m.long_name),m.types.indexOf("administrative_area_level_1")>=0&&(h=m.long_name),m.types.indexOf("postal_code")>=0&&(i=m.long_name)}if(""!=f&&""!=g&&""!=i&&""!=j&&""!=h){var n={};n.homeAddress=f,n.city=g,n.zipcode=i,n.placeID=j,n.homeLocationCoordinates=d,n.state=h,a.resolve(n)}}else console.log(c)})}),a.promise}}}]),angular.module("cbApp").service("filterService",function(){return{filterData:function(a,b){for(var c,d,e=[],f=0;f<a.length;f++){if(c=a[f],d){var g={type:"Feature",properties:{},geometry:{type:"Point",coordinates:[c.lng,c.lat]}},h={type:"Feature",properties:{},geometry:{type:"Point",coordinates:[d.lng,d.lat]}},i=turf.distance(g,h);b>i&&e.push(c)}d=c}return e},GDouglasPeucker:function(a,b){var c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v=Math.PI/180*.5,w=new Array,x=new Array,y=new Array;if(a.length<3)return a;for(c=a.length,l=360*b/(2*Math.PI*6378137),l*=l,e=0,x[0]=0,y[0]=c-1,d=1;d>0;)if(f=x[d-1],g=y[d-1],d--,g-f>1){for(m=a[g].lng-a[f].lng,n=a[g].lat-a[f].lat,Math.abs(m)>180&&(m=360-Math.abs(m)),m*=Math.cos(v*(a[g].lat+a[f].lat)),o=m*m+n*n,h=f+1,i=f,k=-1;g>h;h++)p=a[h].lng-a[f].lng,q=a[h].lat-a[f].lat,Math.abs(p)>180&&(p=360-Math.abs(p)),p*=Math.cos(v*(a[h].lat+a[f].lat)),r=p*p+q*q,s=a[h].lng-a[g].lng,t=a[h].lat-a[g].lat,Math.abs(s)>180&&(s=360-Math.abs(s)),s*=Math.cos(v*(a[h].lat+a[g].lat)),u=s*s+t*t,j=r>=o+u?u:u>=o+r?r:(p*n-q*m)*(p*n-q*m)/o,j>k&&(i=h,k=j);l>k?(w[e]=f,e++):(d++,x[d-1]=i,y[d-1]=g,d++,x[d-1]=f,y[d-1]=i)}else w[e]=f,e++;w[e]=c-1,e++;for(var z=new Array,h=0;e>h;h++)z.push(a[w[h]]);return z}}}),angular.module("cbApp").controller("HomeCtrl",["$scope","Auth","httpRequest","filterService",function(a,b,c,d){a.defaults={minZoom:10,maxZoom:15,tap:!0,tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"},a.center={lat:18.581904504725568,lng:73.68483066558838,zoom:15},a.setCenter=!0,a.paths={};var e={};b.getCurrentUser().then(function(a){e=a,j(10),console.log(e)});var f=function(b){a.paths={};var f={};f.driveId=b,f.userId=e.userId,c.post(config.apis.filterLocations,f).then(function(b){if(console.log("locations",b),200==b.status&&b.data.length>0){var c=[];angular.forEach(b.data,function(a,b){c.push({lat:a.location.latitude,lng:a.location.longitude})}),console.log("pathArr",c),a.setCenter&&(a.center=c[0],a.setCenter=!1),a.paths={p1:{color:"#008000",weight:8,latlngs:c}},console.log("filtered data",d.GDouglasPeucker(c,20))}})},g=[],h=0,i=0,j=function(a){var b={};b.userId=e.userId,b.limit=a,c.post(config.apis.getDrives,b).then(function(a){console.log(a),200==a.status&&(g=a.data,h=a.data.length,0!=g.length&&(f(g[i]),k(g[i]),i++))})};a.getNextDrive=function(){console.log("currentDrive in next",i),i++,h-1>=i?(k(g[i]),f(g[i])):i--},a.getPrevDrive=function(){console.log("currentDrive in prev",i),i--,i>=0?(k(g[i]),f(g[i])):i=0};var k=function(b){var d={};a.stats={},d.driveId=b,d.userId=e.userId,c.post(config.apis.getStats,d).then(function(b){200==b.status&&(a.stats=b.data[0])})};j(10)}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("userHome.home",{url:"/home",templateUrl:"app/home/home.html",controller:"HomeCtrl",authenticate:!0})}]),angular.module("cbApp").factory("httpRequest",["$http",function(a){return{get:function(b,c){var d,e={};if(c){var f=queryString.stringify(c);e.url=config.apiBaseURL+b+"?"+f}else e.url=config.apiBaseURL+b;return e.method="GET",d=a(e).then(function(a){return a})},post:function(b,c){var d,e={};return e.data=c,e.url=config.apiBaseURL+b,e.method="POST",d=a(e).then(function(a){return a})}}}]),angular.module("cbApp").controller("IntroCtrl",["$scope",function(a){a.message="Hello"}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("intro",{url:"/intro",templateUrl:"app/intro/intro.html",controller:"IntroCtrl"})}]),function(a){function b(a){return new RegExp("(^|\\s+)"+a+"(\\s+|$)")}function c(a,b){var c=d(a,b)?f:e;c(a,b)}var d,e,f;"classList"in document.documentElement?(d=function(a,b){return a.classList.contains(b)},e=function(a,b){a.classList.add(b)},f=function(a,b){a.classList.remove(b)}):(d=function(a,c){return b(c).test(a.className)},e=function(a,b){d(a,b)||(a.className=a.className+" "+b)},f=function(a,c){a.className=a.className.replace(b(c)," ")});var g={hasClass:d,addClass:e,removeClass:f,toggleClass:c,has:d,add:e,remove:f,toggle:c};"function"==typeof define&&define.amd?define(g):a.classie=g}(window),!window.addEventListener&&window.Element&&function(){function a(a,b){Window.prototype[a]=HTMLDocument.prototype[a]=Element.prototype[a]=b}var b=[];a("addEventListener",function(a,c){var d=this;b.unshift({__listener:function(a){a.currentTarget=d,a.pageX=a.clientX+document.documentElement.scrollLeft,a.pageY=a.clientY+document.documentElement.scrollTop,a.preventDefault=function(){a.returnValue=!1},a.relatedTarget=a.fromElement||null,a.stopPropagation=function(){a.cancelBubble=!0},a.relatedTarget=a.fromElement||null,a.target=a.srcElement||d,a.timeStamp=+new Date,c.call(d,a)},listener:c,target:d,type:a}),this.attachEvent("on"+a,b[0].__listener)}),a("removeEventListener",function(a,c){for(var d=0,e=b.length;e>d;++d)if(b[d].target==this&&b[d].type==a&&b[d].listener==c)return this.detachEvent("on"+a,b.splice(d,1)[0].__listener)}),a("dispatchEvent",function(a){try{return this.fireEvent("on"+a.type,a)}catch(c){for(var d=0,e=b.length;e>d;++d)b[d].target==this&&b[d].type==a.type&&b[d].call(this,a)}})}(),angular.module("cbApp").service("localStorage",["$localForage",function(a){return{isInitialized:function(){var a=this;return a.retrieve("init").then(function(a){return console.log("item",a),a})},initialize:function(){var a=this;a.store("init",!0)},store:function(b,c){return a.setItem(b,c)},retrieve:function(b){return a.getItem(b)},remove:function(b){return a.removeItem(b)}}}]),angular.module("cbApp").controller("MainCtrl",["$scope","$http","socket","cordovaUtil","$state","localStorage",function(a,b,c,d,e,f){a.saveDeviceInfo=function(){d.saveDeviceDetails()},a.openMap=function(){e.go("map")},a.startTracking=function(){d.getCoordinates()},a.fetch=function(){console.log("Syncing"),d.batchSync()},a.openSignupForm=function(){e.go("signup.stepOne")}}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("main",{url:"/",templateUrl:"app/main/main.html",controller:"MainCtrl"})}]),angular.module("cbApp").controller("MapCtrl",["$scope","cordovaUtil",function(a,b){a.startTracking=function(){b.getCoordinates()}}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("map",{url:"/map",templateUrl:"app/map/map.html",controller:"MapCtrl"})}]),angular.module("cbApp").service("parse",["$q",function(a){return{saveObject:function(a,b){console.log(a,b);var c=Parse.Object.extend(a),d=new c;return d.save(b)},getObjects:function(a){var b=(Parse.Object.extend("coordinatesObj"),new Parse.Query("coordinatesObj"));return b.find()},addObjects:function(a,b){var c=Parse.Object.extend(a),d=new c;return d.add("coordinates",b),d.save()}}}]),angular.module("cbApp").controller("PostRidesCtrl",["$scope",function(a){a.message="Hello",a.leavingInJSON=["5 MIN.","10 MIN.","15 MIN.","20 MIN.","25 MIN.","30 MIN.","35 MIN.","40 MIN.","45 MIN.","50 MIN.","55 MIN.","60 MIN."],a.availableSeatsJSON=["1","2","3","4","5","6"]}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("userHome.postRides",{url:"/postRides",templateUrl:"app/postRides/postRides.html",controller:"PostRidesCtrl"})}]),angular.module("cbApp").controller("StartSamplingCtrl",["Auth","$scope","cordovaUtil","$rootScope","localStorage","filterService","httpRequest",function(a,b,c,d,e,f,g){b.message="Hello",b.buttonText="START SAMPLING",b.defaults={minZoom:10,maxZoom:20,tap:!0,tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"},b.center={lat:18.581904504725568,lng:73.68483066558838,zoom:15},b.setCenter=!0,b.paths={},b.startOrStopSampling=function(a){"START SAMPLING"==a?(b.buttonText="STOP SAMPLING",config.cordova&&cordova.plugins.backgroundMode.enable(),c.getCoordinates((new Date).getTime())):(b.buttonText="START SAMPLING",config.cordova&&cordova.plugins.backgroundMode.disable(),c.stopSampling())},d.$on("locationCaptured",function(){e.retrieve("SavedLocationCoordinates").then(function(a){var c=JSON.parse(a);if(null!=c){var d=[];c.TrackedLocations.forEach(function(a){d.push({lat:a.location.latitude,lng:a.location.longitude})}),b.setCenter&&(b.center=d[0],b.setCenter=!1),console.log(f.filterData(f.GDouglasPeucker(d,5),.5)),b.paths={p1:{color:"#008000",weight:8,latlngs:f.GDouglasPeucker(d,20)}}}})})}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("userHome.startSampling",{url:"/startSampling",templateUrl:"app/startSampling/startSampling.html",controller:"StartSamplingCtrl"})}]),angular.module("cbApp").controller("SuggestionsCtrl",["$scope","leafletMarkerEvents","$timeout","httpRequest","Auth",function(a,b,c,d,e){e.getCurrentUser().then(function(b){a.currentUser=b,f()}),a.defaults={minZoom:10,maxZoom:15,tap:!0,tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"},a.markers=[];var f=function(){d.get(config.apis.getAllUsers).then(function(b){console.log("res",b),200==b.status&&(a.suggestedUsers=b.data,angular.forEach(a.suggestedUsers,function(b,c){var d={};d.lat=parseFloat(b.homeLocationCoordinates[0]),d.lng=parseFloat(b.homeLocationCoordinates[1]),d.enable=["click","touch"];var e="";e=a.currentUser.empId==b.empId?"map-user-marker user-own":"map-user-marker";var f=angular.element("<img>",{src:b.userPhotoUrl,"class":e}),g=angular.element("<p>",{"class":"map-user-name-sec",html:b.empName});console.log(f.outerHTML),d.icon={type:"div",iconSize:[25,60],popupAnchor:[0,-50],iconAnchor:[10,45],html:f[0].outerHTML+g[0].outerHTML},d.message='<user-marker contactno="'+b.contactNo+'"></user-marker',a.markers.push(d)}),console.log(a.markers))})};a.center={lat:18.581904504725568,lng:73.68483066558838,zoom:15};var g="leafletDirectiveMarker.myMap.click",h="leafletDirectiveMarker.myMap.touch";a.$on(g,function(a,b){c(function(){var a=document.getElementById("cn-wrapper");classie.add(a,"opened-nav")},100)}),a.$on(h,function(a,b){c(function(){var a=document.getElementById("cn-wrapper");classie.add(a,"opened-nav")},100)})}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("userHome.suggestions",{url:"/suggestions",templateUrl:"app/suggestions/suggestions.html",controller:"SuggestionsCtrl"})}]),angular.module("cbApp").controller("UserHomeCtrl",["$scope","Auth","$state","User",function(a,b,c,d){a.message="Hello",a.tgState=!1,b.getCurrentUser().then(function(b){return a.currentUser=b}),a.toggleHamburger=function(){a.tgState=!a.tgState},a.logout=function(){b.logout(),c.go("login")}}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("userHome",{url:"/userHome",templateUrl:"app/userHome/userHome.html",controller:"UserHomeCtrl",authenticate:!0})}]),angular.module("cbApp").directive("userMarker",function(){return{templateUrl:"app/userMarker/userMarker.html",restrict:"E",scope:{contactno:"="},link:function(a,b,c){console.log(a.contactno),a.callMe=function(){alert("directive function called!")}}}}),angular.module("cbApp").controller("UserProfileCtrl",["$scope","$modal","cordovaUtil","$cordovaImagePicker",function(a,b,c,d){a.message="Hello",a.getLocation=function(){var d=b.open({animation:!0,templateUrl:"components/modal/modal.html",controller:"ModalCtrl",size:"sm"});d.result.then(function(b){"yes"==b&&c.getUserHomeCoordinates().then(function(b){alert("Promise was returned successfully. Address is : "+b),a.user.homeAddress=b.homeAddress,a.user.city=b.city,a.user.zipcode=b.zipcode,a.user.placeID=b.placeID})})},a.getImageSaveContact=function(){var b={maximumImagesCount:1,width:800,height:800,quality:80};d.getPictures(b).then(function(b){for(var c=0;c<b.length;c++)a.selectedImage=b[c],window.plugins.Base64.encodeFile(a.selectedImage,function(b){a.selectedImage=b,console.log(a.selectedImage)})},function(a){console.log("Error: "+JSON.stringify(a))})},a.syncUserLocationData=function(){c.syncCoordinates()}}]),angular.module("cbApp").config(["$stateProvider",function(a){a.state("userHome.userProfile",{url:"/userProfile",templateUrl:"app/userProfile/userProfile.html",controller:"UserProfileCtrl"})}]),angular.module("cbApp").factory("Auth",["$location","$rootScope","User","$q","httpRequest","localStorage",function(a,b,c,d,e,f){var g={},h=function(){var a=d.defer();return f.retrieve("currentUser").then(function(b){b?a.resolve(b):a.reject(b)},function(b){a.reject(obj)}),a.promise},i=function(){var a=d.defer();return f.retrieve("token").then(function(b){null!=b?c.get().$promise.then(function(b){a.resolve(b)},function(b){a.reject(b)}):(console.log("no token found exiting."),a.reject("No auth token"))},function(b){a.reject(b)}),a.promise},j=function(){var a=d.defer();return g.userId?a.resolve(g):h().then(function(b){g=b,a.resolve(g)},function(b){i().then(function(b){g=b,a.resolve(b),f.store("currentUser",b)},function(b){a.reject()})}),a.promise};return{login:function(a,b){var h=b||angular.noop,i=d.defer(),k={};return k.userId=a.empId,k.password=a.password,e.post(config.apis.login,k).then(function(a){200==a.status&&f.store("token",a.data.token).then(function(){g=c.get(),console.log("currentUser in login service",g),j().then(function(b){return i.resolve(a),h()})})},function(a){return this.logout(),i.reject(a),h(a)}.bind(this)),i.promise},logout:function(){console.log(f.retrieve("token")),f.remove("token"),f.remove("currentUser"),g={}},createUser:function(a,b){var d=b||angular.noop;return c.save(a,function(b){return f.store("token",b.token),g=c.get(),d(a)},function(a){return this.logout(),d(a)}.bind(this)).$promise},changePassword:function(a,b,d){var e=d||angular.noop;return c.changePassword({id:g._id},{oldPassword:a,newPassword:b},function(a){return e(a)},function(a){return e(a)}).$promise},getCurrentUser:function(){var a=d.defer();return j().then(function(b){a.resolve(b)},function(b){a.reject(b)}),a.promise},setCurrentUser:function(a){g=a},isLoggedIn:function(){f.retrieve("token").then(function(a){return console.log(a),null==a?!1:!0})},isLoggedInAsync:function(a){j().then(function(b){a(b.hasOwnProperty("userId")?!0:!1)},function(b){a(!1)})},isAdmin:function(){return"admin"===g.role},getToken:function(){return f.retrieve("token")}}}]),angular.module("cbApp").factory("User",["$resource",function(a){var b=config.apiBaseURL;return a(b+"api/users/:id/:controller",{id:"@_id"},{changePassword:{method:"PUT",params:{controller:"password"}},get:{method:"GET",params:{id:"me"}}})}]),angular.module("cbApp").controller("ModalCtrl",["$scope","$modalInstance",function(a,b){a.message="Hello",a.homeAddressModalOk=function(){b.close("yes")},a.homeAddressModalCancel=function(){b.close()}}]),angular.module("cbApp").factory("Modal",["$rootScope","$modal",function(a,b){function c(c,d){var e=a.$new();return c=c||{},d=d||"modal-default",angular.extend(e,c),b.open({templateUrl:"components/modal/modal.html",windowClass:d,scope:e})}return{confirm:{"delete":function(a){return a=a||angular.noop,function(){var b,d=Array.prototype.slice.call(arguments),e=d.shift();b=c({modal:{dismissable:!0,title:"Confirm Delete",html:"<p>Are you sure you want to delete <strong>"+e+"</strong> ?</p>",buttons:[{classes:"btn-danger",text:"Delete",click:function(a){b.close(a)}},{classes:"btn-default",text:"Cancel",click:function(a){b.dismiss(a)}}]}},"modal-danger"),b.result.then(function(b){a.apply(b,d)})}}}}}]),angular.module("cbApp").directive("mongooseError",function(){return{restrict:"A",require:"ngModel",link:function(a,b,c,d){b.on("keydown",function(){return d.$setValidity("mongoose",!0)})}}}),angular.module("cbApp").controller("NavbarCtrl",["$scope","$location","Auth",function(a,b,c){a.menu=[{title:"Home",link:"/"}],a.isCollapsed=!0,a.isLoggedIn=c.isLoggedIn,a.isAdmin=c.isAdmin,a.getCurrentUser=c.getCurrentUser,a.logout=function(){c.logout(),b.path("/login")},a.isActive=function(a){return a===b.path()}}]),angular.module("cbApp").factory("socket",["socketFactory",function(a){return{socket:{},syncUpdates:function(){},unsyncUpdates:function(){}}}]),angular.module("cbApp").run(["$templateCache",function(a){a.put("app/account/login/login.html",'<!-- Login by Siddharth Ajmera --><div class="page-wrapper login-wrapper"><div class="container login-container"><div class=form-section><p class=error-msg>{{errorMsg}}</p><form class=form name=loginForm novalidate><div class="each-row login-page"><div><span><img class=icon-style src=assets/images/icon_username.png></span></div><div><input ng-class="{\'error-border\':showErrorMessage}" class="form-control input-boxes login-input-box" type=number name=empId placeholder="EMPLOYEE ID" ng-model=user.empId required ng-pattern="/^[0-9]*$/"><div ng-show=showErrorMessage ng-messages=loginForm.empId.$error class=error-msg-edit><p ng-message=required class=error-msg>Please enter Employee number</p><p ng-message=pattern class=error-msg>Please enter valid Employee number</p></div></div></div><div class="each-row login-page"><div><span><img class=icon-style src=assets/images/icon_password.png></span></div><div><input ng-class="{\'error-border\':showErrorMessage}" class="form-control pwd-boxes login-input-box" type=password name=password placeholder=PASSWORD ng-model=user.password required><div ng-show=showErrorMessage ng-messages=loginForm.password.$error class=error-msg-edit><p ng-message=required class=error-msg>Please enter password</p></div></div></div><div class="each-row login-page"><input type=button name=continue value=LOGIN ng-click=login()></div></form><a>Forgot password?</a> <a ui-sref=signup.stepOne>Register</a></div></div></div>'),a.put("app/account/settings/settings.html",'<div ng-include="\'components/navbar/navbar.html\'"></div><div class=container><div class=row><div class=col-sm-12><h1>Change Password</h1></div><div class=col-sm-12><form class=form name=form ng-submit=changePassword(form) novalidate><div class=form-group><label>Current Password</label><input type=password name=password class=form-control ng-model=user.oldPassword mongoose-error><p class=help-block ng-show=form.password.$error.mongoose>{{ errors.other }}</p></div><div class=form-group><label>New Password</label><input type=password name=newPassword class=form-control ng-model=user.newPassword ng-minlength=3 required><p class=help-block ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && (form.newPassword.$dirty || submitted)">Password must be at least 3 characters.</p></div><p class=help-block>{{ message }}</p><button class="btn btn-lg btn-primary" type=submit>Save changes</button></form></div></div></div>'),a.put("app/account/signup/signup.html",'<div class=page-wrapper><div class="container login-container"><div class=timeline-section><!-- progressbar --><ul id=progressbar><li ng-class="{\'active\':step==1}" ng-click=goToStep(1)><a href="">1</a></li><li ng-class="{\'active\':step==2}" ng-click=goToStep(2)><a href="">2</a></li><li ng-class="{\'active\':step==3}" ng-click=goToStep(3)><a href="">3</a></li></ul></div><form name=signupForm class=animation-form-signup ng-submit=register() novalidate><div ui-view></div></form></div></div>'),a.put("app/account/signup/stepOne/stepOne.html",'<div class="form-section signup-section-form"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_employee_ID.png></span></div><div><input type=number max=9999999 ng-class="{\'error-border\':!showErrorMessage}" class="form-control input-boxes login-input-box" ng-model=user.empId name=empid placeholder="EMPLOYEE ID" required ng-pattern="/^[1-9]\\d*$/"><div ng-show=!showErrorMessage ng-messages=signupForm.empid.$error class=error-msg-edit><p ng-message=required class=error-msg>Employee ID is required</p><p ng-message=pattern class=error-msg>Invalid Employee ID</p></div></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_username.png></span></div><div><input ng-class="{\'error-border\':!showErrorMessage}" name=empName class="form-control input-boxes login-input-box" ng-model=user.empName placeholder=NAME required><div ng-show=!showErrorMessage ng-messages=signupForm.empName.$error class=error-msg-edit><p ng-message=required class=error-msg>Name is required</p><p ng-message=pattern class=error-msg>Invalid Name</p></div></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_mobile_number.png></span></div><div><input maxlength=10 class="form-control input-boxes login-input-box" ng-class="{\'error-border\':!showErrorMessage}" ng-model=user.contactNo type=tel name=contactNo required ng-pattern="/^[789]\\d{9}$/" placeholder="MOBILE NUMBER"><div ng-show=!showErrorMessage ng-messages=signupForm.contactNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Contact Number is required</p><p ng-message=pattern class=error-msg>Invalid Contact Number</p></div></div></div><div id=sites class="each-row gender-section"><div class="radio gender-radio"><label class=rad><input type=radio name=optradio value=Female ng-model="user.gender"><i></i> FEMALE</label></div><div class="radio gender-radio"><label class=rad><input type=radio name=optradio value=Male ng-model="user.gender"><i></i> MALE</label></div></div><div class=each-row><input type=button class=input-buttons name=continue value=CONTINUE ng-click=goToStep(2)></div></div>'),
-a.put("app/account/signup/stepThree/stepThree.html",'<div class="form-section signup-section-form"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_username.png></span></div><div><input type=number maxlength=9999999 ng-class="{\'error-border\':!showErrorMessage}" class="form-control input-boxes login-input-box" ng-model=user.username name=username placeholder=USERNAME required ng-pattern="/^[1-9]\\d*$/"><div ng-show=!showErrorMessage ng-messages=signupForm.username.$error class=error-msg-edit><p ng-message=required class=error-msg>Username is required</p><p ng-message=pattern class=error-msg>Invalid Username</p></div></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_password.png></span></div><div><input class="form-control pwd-boxes login-input-box" ng-class="{\'error-border\':!showErrorMessage}" required type=password ng-model=user.password name=password placeholder=PASSWORD><div ng-show=!showErrorMessage ng-messages=signupForm.password.$error class=error-msg-edit><p ng-message=required class=error-msg>Please enter password</p></div></div></div><div class=each-row><p class=terms-cond-text>By Signing up, I agree to TCS\'s <a href=# class="global-link float-none">Terms of Service</a> and <a href=# class="global-link float-none">Privacy Policy</a></p></div><div class=each-row><input type=submit class=submit-buttons name=continue value=REGISTER></div></div>'),a.put("app/account/signup/stepTwo/stepTwo.html",'<div class="form-section signup-section-form signup-two-wrap"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_home_address.png></span></div><div class="input-fields address-fields"><input ng-class="{\'error-border\':!showErrorMessage}" name=homeAddress class="form-control input-boxes" ng-model=user.homeAddress placeholder="HOME ADDRESS" required></div><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div ng-show=!showErrorMessage ng-messages=signupForm.homeAddress.$error class=error-msg-edit><p ng-message=required class=error-msg>Home Address is required</p></div></div><div class=each-row><span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_city.png></span></div><div class=input-fields><input ng-class="{\'error-border\':!showErrorMessage}" name=city class="form-control input-boxes login-input-box" ng-model=user.city placeholder=CITY required ng-pattern="/^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$/"></div><div ng-show=!showErrorMessage ng-messages=signupForm.city.$error class=error-msg-edit><p ng-message=required class=error-msg>City is required</p><p ng-message=pattern class=error-msg>Invalid City</p></div></span> <span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_zipcode.png></span></div><div class=input-fields><input type=number ng-class="{\'error-border\':!showErrorMessage}" name=zipcode class="form-control input-boxes login-input-box" ng-model=user.zipcode placeholder=ZIPCODE max=999999 required ng-pattern="/^[123456789]\\d{5}$/"></div><div ng-show=!showErrorMessage ng-messages=signupForm.homeAddress.$error class=error-msg-edit><p ng-message=required class=error-msg>Zipcode is required</p><p ng-message=pattern class=error-msg>Invalid Zipcode</p></div></span></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_office_address.png></span></div><div class="input-fields office-address-select-wrap"><!-- <select ui-select2  name="officeAddress" class="office-address-select" ng-model="user.officeAddress" ng-class="{\'error-border\':!showErrorMessage}" required  data-placeholder="OFFICE ADDRESS">\n					<option value="">OFFICE ADDRESS</option>\n				 <option ng-repeat="oa in officeAddressJSON" value="{{oa}}">{{oa}}</option>   \n			</select> --><ui-select ng-model=user.officeAddress class=office-address-select><ui-select-match placeholder="OFFICE ADDRESS"><span ng-bind=$select.selected></span></ui-select-match><ui-select-choices repeat="item in (officeAddressJSON | filter: $select.search)"><span ng-bind=item></span></ui-select-choices></ui-select></div><div ng-show=!showErrorMessage ng-messages=signupForm.officeAddress.$error class=error-msg-edit><p ng-message=required class=error-msg>Please select an office address</p></div></div><div class=each-row><span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_time.png></span></div><div class=input-fields><select name=timeSlot class="timeslot login-input-box" ng-model=user.timeSlot ng-class="{\'error-border\':!showErrorMessage}" required ng-options="t as t for t in timeSlotJSON"><option style=display:none value="">TIMESLOT</option></select></div><div ng-show=!showErrorMessage ng-messages=signupForm.timeSlot.$error class=error-msg-edit><p ng-message=required class=error-msg>Please select a timeslot</p></div></span> <span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_seat.png></span></div><div class=input-fields><select class="seater-select login-input-box" name=capacity ng-class="{\'error-border\':!showErrorMessage}" required ng-model=user.vehicle.capacity ng-options="c as c for c in vehicleCapacityJSON"><option style=display:none value="">SEAT</option></select></div><div ng-show=!showErrorMessage ng-messages=signupForm.capacity.$error class=error-msg-edit><p ng-message=required class=error-msg>Please select available seats</p></div></span></div><div class="each-row seater-section"><div><span><img class=icon-style src=assets/images/icon_car.png></span></div><div class=input-fields><input class="form-control input-boxes" ng-class="{\'error-border\':!showErrorMessage}" maxlength=13 name=vehicleNo required ng-pattern="/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/" ng-model=user.vehicle.vehicleNo placeholder="VEHICLE REGISTRATION NUMBER"></div><div ng-show=!showErrorMessage ng-messages=signupForm.vehicleNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Registration Number is required</p><p ng-message=pattern class=error-msg>Invalid Registration Number</p></div></div><div class=each-row><input type=button class="input-buttons login-input-box" name=continue value=CONTINUE ng-click=goToStep(3)></div></div>'),a.put("app/admin/admin.html",'<div ng-include="\'components/navbar/navbar.html\'"></div><div class=container><p>The delete user and user index api routes are restricted to users with the \'admin\' role.</p><ul class=list-group><li class=list-group-item ng-repeat="user in users"><strong>{{user.name}}</strong><br><span class=text-muted>{{user.email}}</span> <a ng-click=delete(user) class=trash><span class="glyphicon glyphicon-trash pull-right"></span></a></li></ul></div>'),a.put("app/availableRides/availableRides.html",'<div class=page-wrapper><div class="container login-container user-home-container pad-R-none pad-L-none"><div class="col-md-12 col-sm-12 col-xs-12 header-section"><span class="glyphicon glyphicon-chevron-left cursor-pointer" ng-click=toggleHamburger()></span> <span class=heading>Avaialble Rides</span></div><div class="form-section functionality-wrap avail-list-wrap"><div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride"><div class="col-md-3 col-sm-3 col-xs-3 avail-list-img-sec"><img src=assets/images/user-image.jpg class=avail-user-img></div><div class="col-md-9 col-sm-9 col-xs-9"><div class="col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none"><span class="pull-left input-labels">Bob Martin</span> <span class="pull-right input-labels">01/01/2015</span></div><div class="col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none"><div class=availability-label>Availability</div><div class="avail-seat-wrap field-gap-top field-gap-bottom"><span class="each-seat available"></span> <span class="each-seat occupied"></span> <span class="each-seat occupied"></span> <span class="each-seat available selected"></span></div></div></div></div><div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride"><div class="col-md-3 col-sm-3 col-xs-3 avail-list-img-sec"><img src=assets/images/user-image.jpg class=avail-user-img></div><div class="col-md-9 col-sm-9 col-xs-9"><div class="col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none"><span class="pull-left input-labels">Bob Martin</span> <span class="pull-right input-labels">01/01/2015</span></div><div class="col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none"><div class=availability-label>Availability</div><div class="avail-seat-wrap field-gap-top field-gap-bottom"><span class="each-seat available"></span> <span class="each-seat occupied"></span> <span class="each-seat occupied"></span> <span class="each-seat available selected"></span></div></div></div></div><div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride"><div class="col-md-3 col-sm-3 col-xs-3 avail-list-img-sec"><img src=assets/images/user-image.jpg class=avail-user-img></div><div class="col-md-9 col-sm-9 col-xs-9"><div class="col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none"><span class="pull-left input-labels">Bob Martin</span> <span class="pull-right input-labels">01/01/2015</span></div><div class="col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none"><div class=availability-label>Availability</div><div class="avail-seat-wrap field-gap-top field-gap-bottom"><span class="each-seat available"></span> <span class="each-seat occupied"></span> <span class="each-seat occupied"></span> <span class="each-seat available selected"></span></div></div></div></div><div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride"><div class="col-md-3 col-sm-3 col-xs-3 avail-list-img-sec"><img src=assets/images/user-image.jpg class=avail-user-img></div><div class="col-md-9 col-sm-9 col-xs-9"><div class="col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none"><span class="pull-left input-labels">Bob Martin</span> <span class="pull-right input-labels">01/01/2015</span></div><div class="col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none"><div class=availability-label>Availability</div><div class="avail-seat-wrap field-gap-top field-gap-bottom"><span class="each-seat available"></span> <span class="each-seat occupied"></span> <span class="each-seat occupied"></span> <span class="each-seat available selected"></span></div></div></div></div></div></div></div>'),a.put("app/home/home.html",'<div class="page-wrapper analyze-page"><div class="col-md-12 col-sm-12 col-xs-12 header-section"><span class="glyphicon glyphicon-chevron-left cursor-pointer" ng-click=toggleHamburger()></span> <span class=heading>Analyze</span></div><div class=analyze-wrapper><!-- <div class="tab-section">\n			<div>\n				<img src="assets/images/3x/ico_analyze_off.png">\n				<p>ANALYTICS</p>\n			</div>\n			<div>\n				<img src="assets/images/3x/ico_post_ride_off.png">\n				<p>HISTORY</p>\n			</div>\n		</div>\n --><div class=analyze-map-wrap><p class=ongoing-journey>ONGOING JOURNEY</p><leaflet class=leaflet markers=markers lf-center=center event-broadcast=events id=analyzeon defaults=defaults paths=paths></leaflet><!-- 	<p class="return-journey">RETURN JOURNEY</p>\n\n			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id=\'analyzere\' defaults="defaults"></leaflet> --></div><div class=analyze-data-wrapper><div class="each-dimension first-dim"><span class="pull-left dim-img-icon-wrap"><img class=dim-images-icon src=assets/images/3x/distance.png></span> <span class=pull-left>Total <span class=dist-highlight>Distance</span></span> <span class=pull-right>{{stats.totalDistance}}{{stats.distanceUnit}}</span></div><div class=each-dimension><span class="pull-left dim-img-icon-wrap"><img class=dim-images-icon src=assets/images/3x/stagnant_time.png></span> <span class=pull-left>Stangnant <span class=stan-time>Time</span></span> <span class=pull-right>11:20</span></div><div class=each-dimension><span class="pull-left dim-img-icon-wrap"><img class=dim-images-icon src=assets/images/3x/time.png></span> <span class=pull-left>Total <span class=total-time>time</span></span> <span class=pull-right>{{stats.totalTime}}{{stats.timeUnit}}</span></div><div class="each-dimension last-dim"><span class="pull-left dim-img-icon-wrap"><img class=dim-images-icon src=assets/images/3x/speed.png></span> <span class=pull-left>Average <span class=avg-speed>Speed</span></span> <span class=pull-right>{{stats.averageSpeed | limitTo:5}}{{stats.speedUnit}}</span></div></div><div class=lower-left-right-buttons><span class="glyphicon glyphicon-chevron-left cursor-pointer left-cursor" ng-click=getPrevDrive()></span> <span class="glyphicon glyphicon-chevron-right cursor-pointer right-cursor" ng-click=getNextDrive()></span></div></div></div>'),a.put("app/intro/intro.html",'<section id=features class=blue ng-init="index=2"><div class=content><slick dots=true infinite=false speed=300 slides-to-show=1 touch-move=false slides-to-scroll=1 class="slider one-time"><div class=slide-wrap><div class="slide-info-section slide-1"><div class=icon-img-wrap><img class=slide-icons src=assets/images/intro-slider/ico_search.png></div><p>Find a companion</p><p>to commute with</p></div></div><div class=slide-wrap><div class="slide-info-section slide-2"><div class=icon-img-wrap><img class=slide-icons src=assets/images/intro-slider/ico_save_exp.png></div><p>Share fuel costs</p><p>and experiences</p></div></div><div class=slide-wrap><div class="slide-info-section slide-3"><div class=icon-img-wrap><img class=slide-icons src=assets/images/intro-slider/ico_make_friend.png></div><p>Make new friends</p><p>while commuting</p></div></div><div class=slide-wrap><div class="slide-info-section slide-4"><div class=icon-img-wrap><img class=slide-icons src=assets/images/intro-slider/ico_make_friend.png></div><p>Save fuel, reduce traffic</p><p>and save earth</p><div class=get-started-section><a class=get-started-link ui-sref=userHome.home>Get Started</a></div></div></div></slick><!-- <p ng-click="index=4">Change index to 4</p>\n    <br> --><!-- <hr/> --><!--   <h2>Multiple Items</h2>\n    <slick slides-to-show=3 slides-to-scroll=3 init-onload=true data="awesomeThings" class="slider multiple-items">\n      <div ng-repeat="thing in awesomeThings"><h3>{{ thing }}</h3></div>\n    </slick>\n    <hr/>\n\n\n    <h2>One At A Time</h2>\n    <slick dots="true" infinite="false" speed=300 slides-to-show=5 touch-move="false" slides-to-scroll=1 class="slider one-time">\n      <div><h3>1</h3></div>\n      <div><h3>2</h3></div>\n      <div><h3>3</h3></div>\n      <div><h3>4</h3></div>\n      <div><h3>5</h3></div>\n      <div><h3>6</h3></div>\n    </slick>\n    \n\n    <br>\n    <hr/>\n    <h2>Lazy Loading</h2>\n    <slick lazy-load=\'ondemand\' slides-to-show=3 slides-to-scroll=1 class="slider lazy">\n      <div><div class="image"><img data-lazy="images/lazyfonz1.png"/></div></div>\n      <div><div class="image"><img data-lazy="images/lazyfonz2.png"/></div></div>\n      <div><div class="image"><img data-lazy="images/lazyfonz3.png"/></div></div>\n      <div><div class="image"><img data-lazy="images/lazyfonz4.png"/></div></div>\n      <div><div class="image"><img data-lazy="images/lazyfonz5.png"/></div></div>\n      <div><div class="image"><img data-lazy="images/lazyfonz6.png"/></div></div>\n    </slick> --></div></section>'),a.put("app/main/introductionCarousel.html",'<section id=features class=blue ng-init="index=2"><div class=content><h2>Single Item</h2><slick class="slider single-item" current-index=index responsive=breakpoints slides-to-show=3 slides-to-scroll=3><div ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]"><h3>{{ i }}</h3></div><p>Current index: {{ index }}</p></slick><p ng-click="index=4">Change index to 4</p><br><hr><!--   <h2>Multiple Items</h2>\n    <slick slides-to-show=3 slides-to-scroll=3 init-onload=true data="awesomeThings" class="slider multiple-items">\n      <div ng-repeat="thing in awesomeThings"><h3>{{ thing }}</h3></div>\n    </slick>\n    <hr/>\n    <h2>One At A Time</h2>\n    <slick dots="true" infinite="false" speed=300 slides-to-show=5 touch-move="false" slides-to-scroll=1 class="slider one-time">\n      <div><h3>1</h3></div>\n      <div><h3>2</h3></div>\n      <div><h3>3</h3></div>\n      <div><h3>4</h3></div>\n      <div><h3>5</h3></div>\n      <div><h3>6</h3></div>\n    </slick>\n    <br>\n    <hr/>\n    <h2>Lazy Loading</h2>\n    <slick lazy-load=\'ondemand\' slides-to-show=3 slides-to-scroll=1 class="slider lazy">\n      <div><div class="image"><img data-lazy="images/lazyfonz1.png"/></div></div>\n      <div><div class="image"><img data-lazy="images/lazyfonz2.png"/></div></div>\n      <div><div class="image"><img data-lazy="images/lazyfonz3.png"/></div></div>\n      <div><div class="image"><img data-lazy="images/lazyfonz4.png"/></div></div>\n      <div><div class="image"><img data-lazy="images/lazyfonz5.png"/></div></div>\n      <div><div class="image"><img data-lazy="images/lazyfonz6.png"/></div></div>\n    </slick> --></div></section>'),a.put("app/main/main.html",'<div class=main-page-wrapper><div><div class="col-md-12 col-sm-12 col-xs-12 location-section"><div class="col-md-12 col-sm-12 col-xs-12 content-wrapper map-content-wrapper"><svg class=map-svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink version=1.1 x=0px y=0px viewbox="0 0 100 125" style="enable-background:new 0 0 100 100" xml:space=preserve><path class=path-0 d="M73.5,48.3l-1.4,2.4l5.9,2.5l-7.8,4.5l-1.6-0.9l-0.3,0.5l1.3,0.7L67,59.4l-0.6,1.1l3.8-2.2l8.6,4.7l-8.9,5.5  L62,63l1.1-0.7l-0.3-0.5l-1.4,0.8l-5.9-4.1l4.1-2.2l-0.3-0.5L55,58.1l-4.7-3.3l6.6-3.4L56,49.9l-3-1.6l1.6-0.8l-0.3-0.5l-1.9,1  L48.9,46l3.8-1.8l-0.3-0.5l-4.2,2L45,43.9l5.5-2.6l0.7,0.3l-1.1-1.9l-12.9,5.9l-14.3-3.6L5,50.3l10.2,41.3l36.6-22.1l21.3,1.4  L95,56.9L73.5,48.3z M54.8,58.9l0.1-0.1l5.3,3.7l-7.3-1l-5-4l6.9,1.2L54.8,58.9z M41.8,53.5l3.8,3L37.2,55l-0.1-0.1l-0.1,0l-3.2-3  L41.8,53.5z M33.1,51.1L33,51l-0.1,0l-2.4-2.2l7.3,1.6l2.9,2.3L33.1,51.1z M39.2,50.6l5.9,1.3l0.1,0.1l0.1-0.1l3,2.1L42,52.9  L39.2,50.6z M38.1,49.8L36,48.1l5.5,1.3l0.1,0.1l0.1-0.1l2.3,1.6L38.1,49.8z M36.7,49.5l-7-1.5l-0.1-0.1l-0.1,0l-1.8-1.7l6.7,1.6  L36.7,49.5z M29,48.1l-8.2,4l-1.7-2.5l7.6-3.6L29,48.1z M29.5,48.6l2.9,2.7l-9.1,4.6l-2.1-3.2L29.5,48.6z M32.8,51.7l3.7,3.5  l-10.2,5.3l-2.7-4.2L32.8,51.7z M37,55.7l4.8,4.6l-11.5,6.4l-3.6-5.5L37,55.7z M38,55.8l8.6,1.5l5.1,4L42.5,60l-0.1-0.1l-0.1,0  L38,55.8z M53.7,57.9l-6.8-1.2l-3.8-3l6.4,1.3l0.1,0.1l0.1-0.1L53.7,57.9z M56.5,50.9l-6.8,3.5l-3.8-2.7l6.4-3.2L56.5,50.9z   M51.6,48.2l-6.3,3.1l-3.1-2.2l5.9-2.8L51.6,48.2z M44.3,44.2l3.2,1.7l-5.8,2.8l-2.8-2L44.3,44.2z M38.2,46.8L38.1,47l2.1,1.4  l-5.3-1.3l-2.2-1.7L38.2,46.8z M31.6,45.2l-0.1,0.1l1.9,1.5L27,45.3l-0.1-0.1l-0.1,0l-1.7-1.7L31.6,45.2z M24.2,43.6l2.1,1.9  l-7.5,3.5l-1.5-2.3L24.2,43.6z M9.1,50.5l7.6-3.5l1.5,2.3l-8.2,3.9L9.1,50.5z M10.1,53.8l8.4-4l1.7,2.5l-9.1,4.4L10.1,53.8z   M11.3,57.4l9.2-4.5l2.1,3.2l-10.1,5.1L11.3,57.4z M12.8,61.8L23,56.7l2.7,4.2l-11.3,5.9L12.8,61.8z M14.6,67.4l11.5-6l3.6,5.6  l-12.9,7.1L14.6,67.4z M20.1,84.3L17,74.7l13.1-7.2l5.2,7.9L20.1,84.3z M35.7,75l-5.1-7.9l11.7-6.4l6.8,6.4L35.7,75z M49.7,67  L49.7,67l-6.5-6.2l9.4,1.3l7.4,5.8L49.7,67z M60.9,68L60.9,68l-7.1-5.7l7.4,1l0.1,0.1l0.1-0.1l7.6,5.3L60.9,68z M70.8,58l7.9-4.5  l9.2,4l-8.5,5.2L70.8,58z"><g><path class=path-1 fill=#02A554 d="M78.9,16.9c-3-5.2-8.6-8.5-14.7-8.5c-6,0-11.6,3.2-14.7,8.5c-3,5.2-3,11.7,0,16.9c4.9,8.5,9.8,16.9,14.7,25.4   c4.9-8.5,9.8-16.9,14.7-25.4C82,28.6,82,22.2,78.9,16.9z M64.3,34.9c-5.3,0-9.5-4.3-9.5-9.5c0-5.3,4.3-9.5,9.5-9.5   c5.3,0,9.5,4.3,9.5,9.5C73.8,30.7,69.5,34.9,64.3,34.9z"></g></svg><div class="col-md-12 col-sm-12 col-xs-12"><input type=button class=locate-me value="LOCATE ME" ng-click=openMap()> <input type=button class=locate-me value=SYNC ng-click=fetch()></div></div></div><div class="col-md-12 col-sm-12 col-xs-12 mainpage-signup-section"><div class="col-md-12 col-sm-12 col-xs-12 content-wrapper"><svg class=signup-main-svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink version=1.1 x=0px y=0px viewbox="0 0 100 125" enable-background="new 0 0 100 100" xml:space=preserve><g><path class=path-0 d="M95.438,80.064H33.325V68.491l12.114-5.922c0.251-1.752,0.938-4.743,2.756-5.828v-3.81   c-0.067-0.41-0.265-1.121-0.566-1.498c-0.932-1.165-2.117-4.371-2.561-6.852c-0.423-0.493-1.016-1.379-1.311-2.703   c-0.035-0.159-0.081-0.349-0.132-0.562c-0.601-2.493-1.053-4.842,0.001-6.182c0.183-0.232,0.401-0.421,0.646-0.564   c-0.357-3.267-0.914-10.742,1.024-13.812c2.468-3.907,8.334-8.259,12.807-8.259h2.645c4.473,0,10.34,4.353,12.808,8.259   c1.938,3.07,1.382,10.545,1.024,13.812c0.245,0.143,0.463,0.333,0.646,0.564c1.055,1.339,0.602,3.688,0,6.182   c-0.052,0.213-0.098,0.403-0.133,0.561c-0.294,1.324-0.886,2.209-1.309,2.703c-0.444,2.486-1.631,5.693-2.562,6.854   c-0.298,0.373-0.495,1.081-0.563,1.497v3.808c1.796,1.073,2.487,4.006,2.745,5.767c2.253,0.929,8.825,3.633,14.924,6.101   c8.072,3.27,9.745,8.237,9.812,8.447c0.168,0.511,0.177,1.309-0.312,1.985C97.488,79.507,96.799,80.064,95.438,80.064z    M36.325,77.064h58.491c-0.813-1.308-2.874-3.756-7.615-5.676c-7.518-3.043-15.754-6.443-15.754-6.443l-0.835-0.345l-0.086-0.901   c-0.205-2.149-0.942-4.151-1.416-4.377h-1.5l0.048-1.49l0.012-5.194c0.023-0.189,0.259-1.885,1.21-3.077   c0.488-0.609,1.673-3.515,2.015-5.896l0.084-0.586l0.462-0.371l0,0c-0.003,0,0.498-0.462,0.725-1.481   c0.038-0.173,0.088-0.381,0.145-0.614c0.364-1.512,0.553-2.588,0.562-3.215l-1.713,0.49l0.271-2.27   c0.557-3.993,0.938-11.124-0.41-13.259c-1.963-3.107-6.983-6.86-10.271-6.86h-2.645c-3.288,0-8.307,3.753-10.271,6.861   c-1.348,2.135-0.967,9.265-0.41,13.258l0.319,2.283l-1.761-0.503c0.009,0.626,0.197,1.703,0.561,3.215   c0.056,0.233,0.106,0.441,0.145,0.613c0.228,1.024,0.733,1.485,0.755,1.505l0.407,0.364l0.11,0.569   c0.34,2.376,1.525,5.284,2.013,5.894c0.953,1.192,1.188,2.888,1.212,3.078l0.012,0.186v6.509h-1.5   c-0.426,0.216-1.164,2.219-1.37,4.368l-0.08,0.836l-11.919,5.828V77.064z"><path class=path-1 fill=#02A554 d="M21.687,90.104H11.403v-10.06H1.343V69.76h10.06V59.699h10.284V69.76h10.06v10.284h-10.06V90.104z M14.403,87.104h4.284   v-10.06h10.06V72.76h-10.06V62.699h-4.284V72.76H4.343v4.284h10.06V87.104z"></g></svg><div class="col-md-12 col-sm-12 col-xs-12"><input type=button class=locate-me value="SIGN UP" ng-click=openSignupForm()> <input type=button class=locate-me value="Test App" ui-sref=userHome.home></div></div></div></div></div>'),a.put("app/main/trackMyLocation.html","<p>Locate Me</p><div id=mapCanvas style=width:500px;height:380px></div><button ng-click=startTracking()>Find my Location</button>"),a.put("app/map/map.html","<p>Locate Me</p><div id=mapCanvas style=width:500px;height:380px></div><button ng-click=startTracking()>Find my Location</button>"),a.put("app/postRides/postRides.html",'<div class=page-wrapper><div class="col-md-12 col-sm-12 col-xs-12 header-section"><span class="glyphicon glyphicon-chevron-left cursor-pointer" ng-click=toggleHamburger()></span> <span class=heading>Post Ride</span></div><div class="container login-container"><form name=userProfileUpdateForm class=animation-form-signup ng-submit=updateUserData() novalidate><div class="form-section signup-section-form"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_home_address.png></span></div><div class="input-fields address-fields"><input ng-class="{\'error-border\':!showErrorMessage}" name=rideSource class="form-control input-boxes ride-source-field" ng-model=ride.source placeholder="LEAVING FROM" required></div><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div ng-show=!showErrorMessage ng-messages=postRideForm.rideSource.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride source is required</p></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_office_address.png></span></div><div class="input-fields address-fields"><input ng-class="{\'error-border\':!showErrorMessage}" name=rideDestination class="form-control input-boxes home-address-changer" ng-model=ride.destination placeholder="LEAVING FOR" required></div><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div ng-show=!showErrorMessage ng-messages=postRideForm.rideDestination.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride destination is required</p></div></div><div class=each-row><span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_time.png></span></div><div class=input-fields><select name=leavingIn class="timeslot login-input-box" ng-model=ride.leavingIn ng-class="{\'error-border\':!showErrorMessage}" required ng-options="t as t for t in leavingInJSON"><option style=display:none value="">LEAVING IN</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.leavingIn.$error class=error-msg-edit><p ng-message=required class=error-msg>Leaving in min. is required</p></div></span> <span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_seat.png></span></div><div class=input-fields><select class="seater-select login-input-box" name=availableSeats ng-class="{\'error-border\':!showErrorMessage}" required ng-model=ride.availableSeats ng-options="c as c for c in availableSeatsJSON"><option style=display:none value="">SEATS AVAILABLE</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></span></div><div class=each-row><input type=button class=input-buttons name=syncData value="POST RIDE" ng-click=postRide()></div></div></form></div></div>'),a.put("app/startSampling/startSampling.html",'<div class=page-wrapper><div class="col-md-12 col-sm-12 col-xs-12 header-section"><span class="glyphicon glyphicon-chevron-left cursor-pointer" ng-click=toggleHamburger()></span> <span class=heading>Start Sampling</span></div><div class="container login-container"><form name=userProfileUpdateForm class=animation-form-signup ng-submit=updateUserData() novalidate><div class="form-section signup-section-form"><div class=each-row><input type=button class=input-buttons name=syncData value={{buttonText}} ng-click=startOrStopSampling(buttonText)></div></div></form><leaflet event-broadcast=events id=myMap defaults=defaults center=center paths=paths></leaflet></div></div>'),a.put("app/suggestions/suggestions.html",'<div class="col-md-12 col-sm-12 col-xs-12 header-section"><span class="glyphicon glyphicon-chevron-left cursor-pointer" ng-click=toggleHamburger()></span> <span class=heading>Get Suggestions</span></div><div class=suggestion-map-wrap><leaflet markers=markers lf-center=center event-broadcast=events id=myMap defaults=defaults></leaflet></div>'),a.put("app/userHome/userHome.html",'<div class=main-page-wrapper><!-- Hamburger Content --><div class="show-none hamburger-content" ng-class="{show : tgState}"><div class="col-md-11 col-sm-11 col-xs-11 pad-R-none pad-L-none ham-con-wrap"><div class="col-md-12 col-sm-12 col-xs-12 hamburger-image-section"><div class="col-md-12 col-sm-12 col-xs-12"><svg ng-click=toggleHamburger() class=close-hamburger-menu xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink height=32px id=Layer_1 style="enable-background:new 0 0 32 32" version=1.1 viewbox="0 0 32 32" width=32px xml:space=preserve><path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z"></svg></div><div class=user-image-hamburger-wrap><a ui-sref=userHome.userProfile><img src={{currentUser.userPhotoUrl}} ng-click=toggleHamburger() class=avail-user-img><!-- {{currentUser.userPhotoUrl}} --><div class=user-indication-image-wrap><img class=user-indication-image src=assets/images/3x/ico_available.png></div><!-- <svg>\n						  <circle cx="50" cy="50" r="5" class="indicator-circle"/>\n						</svg> --></a></div><p class=hamburger-username>{{currentUser.empName}}</p><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 user-locationham-wrap"><span class="glyphicon glyphicon-map-marker"></span> <span class=user-location-ham>{{currentUser.city}}, {{currentUser.state}}</span></div></div><div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none"><ul class=functionality-ham-list><li><img src=assets/images/3x/ico_analyze_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.home ng-click=toggleHamburger()>ANALYZE</a></li><li><img src=assets/images/3x/ico_post_ride_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.postRides ng-click=toggleHamburger()>POST RIDE</a></li><li><img src=assets/images/3x/ico_get_sugg_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.suggestions ng-click=toggleHamburger()>GET SUGGESTIONS</a></li><li><img src=assets/images/3x/ico_sampling_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.availableRides ng-click=toggleHamburger()>AVAILABLE RIDES</a></li><li><img src=assets/images/3x/ico_sampling_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.startSampling ng-click=toggleHamburger()>START SAMPLING</a></li><li><img src=assets/images/3x/ico_analyze_off.png class=ham-menu-icon> <a class=function-links ui-sref=main>TEST APP</a></li><li><img src=assets/images/3x/ico_login_off.png class=ham-menu-icon> <a class=function-links ng-click=logout()>LOGOUT</a></li></ul></div></div><div class="col-md-1 col-sm-1 col-xs-1 pad-R-none pad-L-none hamburger-overlay" ng-click=toggleHamburger()></div></div><!-- page content --><div class=main-content ng-class="{show : tgState}"><!-- <hamburger-toggle state="tgState"></hamburger-toggle> --><ui-view></ui-view></div></div>'),a.put("app/userMarker/userMarker.html",'<div class=cn-wrapper id=cn-wrapper>{{contactno}}<ul><li><a ng-href="tel: {{contactno}}"><img class=calling-icon-map src=assets/images/map-icons/icon_call.png></a></li><li><a href=#><img src=assets/images/map-icons/icon_contact_rollover.png></a></li><li><a href=#><img src=assets/images/map-icons/icon_favorite.png></a></li><li><a href=#><img class=add-icon-map src=assets/images/map-icons/icon_add.png></a></li></ul></div>'),a.put("app/userProfile/userProfile.html",'<div class=page-wrapper><div class="col-md-12 col-sm-12 col-xs-12 header-section"><span class="glyphicon glyphicon-chevron-left cursor-pointer" ng-click=toggleHamburger()></span> <span class=heading>User Profile</span></div><div class="container login-container"><form name=userProfileUpdateForm class=animation-form-signup ng-submit=updateUserData() novalidate><div class="form-section signup-section-form"><div class=image-update-wrap><div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-L-none pad-R-none user-image-update"><img ng-if=selectedImage class=profile-image-update-sec ng-src={{selectedImage}} alt=user-image> <img ng-if=!selectedImage class=profile-image-update-sec src=https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png alt=user-image></div><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 image-update-btn"><span class="glyphicon glyphicon-pencil" ng-click=getImageSaveContact()></span></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_home_address.png></span></div><div class="input-fields address-fields"><input ng-class="{\'error-border\':!showErrorMessage}" name=homeAddress class="form-control input-boxes home-address-changer" ng-model=user.homeAddress placeholder="HOME ADDRESS" required></div><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div ng-show=!showErrorMessage ng-messages=signupForm.homeAddress.$error class=error-msg-edit><p ng-message=required class=error-msg>Home Address is required</p></div></div><div class=each-row><input type=button class=input-buttons name=syncData value="SYNC DATA" ng-click=syncUserLocationData()></div></div></form></div></div>'),
-a.put("components/modal/modal.html",'<!-- <div class="modal-header">\n  <button ng-if="modal.dismissable" type="button" ng-click="$dismiss()" class="close">&times;</button>\n  <h4 ng-if="modal.title" ng-bind="modal.title" class="modal-title"></h4>\n</div>\n<div class="modal-body">\n  <p ng-if="modal.text" ng-bind="modal.text"></p>\n  <div ng-if="modal.html" ng-bind-html="modal.html"></div>\n</div>\n<div class="modal-footer">\n  <button ng-repeat="button in modal.buttons" ng-class="button.classes" ng-click="button.click($event)" ng-bind="button.text" class="btn"></button>\n</div> --><div class=modal-header><!--    <h3 class="modal-title">I\'m a modal!</h3> --></div><div class=modal-body><p>Please make sure that you click this icon at exact home location, otherwise suggestions will be inaccurate.</p></div><div class=modal-footer><button class="btn btn-primary" type=button ng-click=homeAddressModalOk()>OK</button> <button class="btn btn-warning" type=button ng-click=homeAddressModalCancel()>Cancel</button></div>'),a.put("components/navbar/navbar.html",'<div class="navbar navbar-default navbar-static-top" ng-controller=NavbarCtrl><div class=container><div class=navbar-header><button class=navbar-toggle type=button ng-click="isCollapsed = !isCollapsed"><span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span></button> <a href="/" class=navbar-brand>cb</a></div><div collapse=isCollapsed class="navbar-collapse collapse" id=navbar-main><ul class="nav navbar-nav"><li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}"><a ng-href={{item.link}}>{{item.title}}</a></li><li ng-show=isAdmin() ng-class="{active: isActive(\'/admin\')}"><a href=/admin>Admin</a></li></ul><ul class="nav navbar-nav navbar-right"><li ng-hide=isLoggedIn() ng-class="{active: isActive(\'/signup\')}"><a ui-sref=signup.stepOne>Sign up</a></li><li ng-hide=isLoggedIn() ng-class="{active: isActive(\'/login\')}"><a href=/login>Login</a></li><li ng-show=isLoggedIn()><p class=navbar-text>Hello {{ getCurrentUser().name }}</p></li><li ng-show=isLoggedIn() ng-class="{active: isActive(\'/settings\')}"><a href=/settings><span class="glyphicon glyphicon-cog"></span></a></li><li ng-show=isLoggedIn() ng-class="{active: isActive(\'/logout\')}"><a href="" ng-click=logout()>Logout</a></li></ul></div></div></div>')}]);
+'use strict';
+
+angular.module('cbApp', [
+  'ngCookies',
+  'ngResource',
+  'ngSanitize',
+  'btford.socket-io',
+  'ui.router',
+  'ui.bootstrap',
+  'ngAnimate',
+  'ngMessages',
+  'ngTouch',
+  'slick',
+  'ui.bootstrap',
+  'ngHamburger',
+  'LocalForageModule',
+  'leaflet-directive',
+  'ui.select',
+  'ngCordova',
+  'angular-loading-bar',
+  'google.places'
+])
+
+.config(["$stateProvider", "$urlRouterProvider", "$locationProvider", "$httpProvider", "cfpLoadingBarProvider", function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider,cfpLoadingBarProvider) {
+     console.log("In config block");
+
+    $urlRouterProvider
+      .otherwise('/userHome/home');
+
+  //  $locationProvider.html5Mode(true);
+    $httpProvider.interceptors.push('authInterceptor');
+    cfpLoadingBarProvider.includeSpinner = false;
+
+  }])
+
+  .factory('authInterceptor', ["$rootScope", "$q", "$location", "localStorage", function ($rootScope, $q,$location,localStorage) {
+    return {
+      // Add authorization token to headers
+      request: function (config) {
+        var deferred = $q.defer();
+
+        config.headers = config.headers || {};
+        localStorage.retrieve('token').
+        then(function(res){
+          console.log("header",res);
+          if(res!=null)
+             config.headers.Authorization = 'Bearer ' + res;
+          /*console.log("config",config);
+          return config;*/
+          deferred.resolve(config);
+        });
+        return deferred.promise;
+
+        /*if($cookieStore.get('token')) {
+          config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
+        }*/
+
+         //return config;
+      },
+
+      // Intercept 401s and redirect you to login
+      responseError: function(response) {
+        if(response.status === 401) {
+       //   $location.path('/login');
+          // remove any stale tokens
+          localStorage.remove('token');
+          return $q.reject(response);
+        }
+        else {
+          return $q.reject(response);
+        }
+      }
+    };
+  }])
+
+  .run(["$rootScope", "$location", "Auth", "localStorage", "$state", function ($rootScope, $location, Auth,localStorage,$state) {
+    ///console.log("In run block",localStorage.isInitialized());
+    
+   localStorage.isInitialized().then(function(val){
+            if(val){
+              // $location.path('/userHome/home');
+            }
+              
+            else{
+              localStorage.initialize();
+              $location.path('/intro');
+            }
+          })
+
+    // Redirect to login if route requires auth and you're not logged in
+    $rootScope.$on('$stateChangeStart', function (event, next,nextPara,prev) {
+      Auth.isLoggedInAsync(function(loggedIn) {
+        console.log("loggedIn",loggedIn);
+         console.log("next",next);
+         console.log("prev",prev);
+
+        if(next.authenticate && !loggedIn) {
+          $location.path('/login');
+        }
+         //logic to check if app is already initialized
+        if(next.name=="intro"){
+          localStorage.isInitialized().then(function(val){
+            if(val)
+               $location.path('/userHome/home');
+            else{
+              localStorage.initialize();
+              //$location.path('/intro');
+            }
+         });
+        }
+
+      });
+    });
+  }]);
+
+var onDeviceReady = function() {
+    angular.bootstrap( document, ['cbApp']);
+    $.getScript('http://maps.google.com/maps/api/js?sensor=false&libraries=places');
+     document.addEventListener("backbutton", function(e){
+        if(window.location.hash=='#/userHome/home'){
+            e.preventDefault();
+            navigator.app.exitApp();
+        } /*else {
+            navigator.app.backHistory()
+        }*/
+    }, false);
+}
+document.addEventListener('deviceready', 
+onDeviceReady);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('login', {
+        url: '/login',
+        templateUrl: 'app/account/login/login.html',
+        controller: 'LoginCtrl'
+      })
+      .state('signup', {
+        url: '/signup',
+        abstract: true,
+        templateUrl: 'app/account/signup/signup.html',
+        controller: 'SignupCtrl'
+      })
+      .state('settings', {
+        url: '/settings',
+        templateUrl: 'app/account/settings/settings.html',
+        controller: 'SettingsCtrl',
+        authenticate: true
+      });
+  }]);
+'use strict';
+
+angular.module('cbApp')
+  .controller('LoginCtrl', ["$scope", "Auth", "$location", "$window", "$state", function ($scope, Auth, $location, $window,$state) {
+    $scope.user = {};
+    $scope.loginForm = {};
+    $scope.errorMsg = '';
+    $scope.showErrorMessage = false;
+    $scope.login = function() {
+       $scope.errorMsg = '';
+      $scope.showErrorMessage = true;
+      if(!$scope.loginForm.$valid){   /*if form is invalid,return and show error messages */
+            console.log($scope.loginForm) ;
+            $("input.ng-invalid").eq(0).focus();      
+            console.log("----------",$("input.ng-invalid"))
+            return false;
+       } 
+    
+
+      else if($scope.loginForm.$valid) {
+        console.log($scope.loginForm)
+        Auth.login({
+          empId: $scope.user.empId,
+          password: $scope.user.password
+        })
+        .then(function(response) {
+          if(response.status==200){
+             console.log(response)
+            // Logged in, redirect to home
+            
+             $state.go('userHome.home');
+          }
+          else{
+            $scope.errorMsg = "Please check Employee id or password"
+          }
+         
+        },function(err){
+           $scope.errorMsg = "Please check Employee id or password"
+        })
+        .catch( function(err) {
+         $scope.errorMsg = "Please check Employee id or password"
+        });
+      }
+    };
+
+    $scope.loginOauth = function(provider) {
+      $window.location.href = '/auth/' + provider;
+    };
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .controller('SettingsCtrl', ["$scope", "User", "Auth", function ($scope, User, Auth) {
+    $scope.errors = {};
+
+    $scope.changePassword = function(form) {
+      $scope.submitted = true;
+      if(form.$valid) {
+        Auth.changePassword( $scope.user.oldPassword, $scope.user.newPassword )
+        .then( function() {
+          $scope.message = 'Password successfully changed.';
+        })
+        .catch( function() {
+          form.password.$setValidity('mongoose', false);
+          $scope.errors.other = 'Incorrect password';
+          $scope.message = '';
+        });
+      }
+		};
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .controller('SignupCtrl', ["$scope", "$location", "$window", "$state", "$modal", "$rootScope", "cordovaUtil", "httpRequest", "localStorage", "pushnotification", function ($scope,$location, $window,$state,$modal,$rootScope,cordovaUtil,httpRequest,localStorage,pushnotification) {
+    $scope.user = {vehicle:{}};
+    $scope.user.gender = "Female";
+    $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",
+                                "9:00 AM - 6:00 PM",
+                                "10:00 AM - 7:00 PM",
+                                "11:00 AM - 8:00 PM",
+                                "12:00 AM - 9:00 PM"
+                               ];
+
+    $scope.officeAddressJSON = ["BIRLA AT&T, PUNE",
+                                "BT TechM Collocation",
+                                "Bhosari MIDC Non STP",
+                                "Bhosari MIDC STP",
+                                "CMC-Pune",
+                                "CRL - Hinjewadi",
+                                "Cerebrum IT Park",
+                                "KIRLOSKAR",
+                                "Millenium Bldg, Pune",
+                                "NAVLAKHA COMP.-PUNE",
+                                "Nashik Centre NSTP",
+                                "Nashik PSK Sites",
+                                "Nyati Tiara",
+                                "Pune - Commerzone",
+                                "Pune PSK Sites",
+                                "Pune Sahyadri Park",
+                                "Pune(QuadraII) STP",
+                                "Pune(QuadraII)NonSTP",
+                                "Pune-Sun Suzlon-NSTP",
+                                "QBPL -Pune SEZ",
+                                "SP - A1 - Rajgad",
+                                "SP - S1 - Poorna",
+                                "SP - S2 - Torna",
+                                "SP - S3 - Tikona",
+                                "SahyadriPark SEZ - I",
+                                "Sp-S1-Poorna-BPO",
+                                "Sp-S2-Torna-BPO",
+                                "TRDDC HADAPSAR, PUNE",
+                                "VSNL - Pune"
+                               ];
+
+    $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
+    $scope.showErrorMessage = true;
+    var currentStep = 1;
+   
+    $scope.signupForm = {};
+    
+    //by default, or on page refresh, redirect to first step.
+    $scope.step = 1;
+    $state.go("signup.stepOne");
+
+
+    /*function for traversing between steps*/
+    $scope.goToStep = function(step){
+        if(step==currentStep)
+          return;
+
+        if(step>currentStep){
+             if(!$scope.signupForm.$valid){
+                $scope.showErrorMessage = false;
+                return;
+              }
+              else{
+                  $scope.showErrorMessage = true;
+                  $scope.step = step;
+                  currentStep = step;
+                  if(step==1)
+                    $state.go("signup.stepOne");
+                  if(step==2)
+                    $state.go("signup.stepTwo");
+                  if(step==3)
+                    $state.go("signup.stepThree");
+              }
+        }
+        else{
+             $scope.step = step;
+             currentStep = step;
+             $scope.showErrorMessage = true;
+             if(step==1)
+                  $state.go("signup.stepOne");
+             if(step==2)
+                  $state.go("signup.stepTwo");
+        }
+
+   }
+
+
+   /*signup function called on form submit*/
+
+    $scope.register = function() {
+     
+         $scope.showErrorMessage = false;
+         
+         if(!$scope.signupForm.$valid){   /*if form is invalid,return and show error messages */
+              console.log($scope.signupForm) ;
+              $("input.ng-invalid").eq(0).focus();      
+              console.log("----------",$("input.ng-invalid"))
+              return false;
+         } 
+
+        /*else save the data*/
+    
+        // Function to save the UserObject in MongoDB
+        
+          if(config.cordova){
+            pushnotification.registerPushNotification();
+             $rootScope.$on('$cordovaPush:notificationReceived', function(event, notification) {
+      switch(notification.event) {
+        case 'registered':
+          if (notification.regid.length > 0 ) {
+            $scope.user.redgId=notification.regid;
+            $scope.signupPost();
+          }
+          break;
+
+        case 'message':
+          // this is the actual push notification. its format depends on the data model from the push server
+          alert('message = ' + notification.message + ' msgCount = ' + notification.msgcnt);
+          break;
+
+        case 'error':
+          alert('GCM error = ' + notification.msg);
+          break;
+
+        default:
+          alert('An unknown GCM event has occurred');
+          break;
+      }
+    });
+          }
+          else
+          $scope.signupPost();
+            
+       
+       
+       $scope.signupPost=function(){ 
+         var url = config.apis.signup;
+         httpRequest.post(url,$scope.user).
+        then(function(response){
+              /*if(response.status==)*/
+              if(response.status==200){
+                 console.log('User Stored in the MongoDB Successfully. Here is the Response : ',response);
+                  //$scope.response = response;
+                  localStorage.store('token',response.data.token).then(function(){
+                      $state.go("userHome.home");
+              })
+              }
+             
+            
+        },function(err){
+             console.log('Error Storing the User to the MongoDB. Here is the Error: ' + err);
+             $scope.error = err;
+        });
+       
+       }
+
+    };
+
+    $scope.getLocation=function(){
+         var modalInstance = $modal.open({
+          animation: true,
+          templateUrl: 'components/modal/modal.html',
+          controller: 'ModalCtrl',
+          size: 'sm'
+        });
+        
+        modalInstance.result.then(function(option){
+          if(option == "yes")
+          cordovaUtil.getUserHomeCoordinates().then(function(address){
+           $scope.user.homeAddress = address.homeAddress;
+            $scope.user.city = address.city;
+            $scope.user.zipcode = address.zipcode;
+            $scope.user.placeID = address.placeID;
+            $scope.user.homelocationCoordinates = [];
+            $scope.user.homelocationCoordinates.push(address.homeLocationCoordinates.lat);
+            $scope.user.homelocationCoordinates.push(address.homeLocationCoordinates.lng);
+            $scope.user.state = address.state;
+          });
+        });
+    };
+
+    $scope.loginOauth = function(provider) {
+      $window.location.href = '/auth/' + provider;
+    };
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .controller('StepOneCtrl', ["$scope", function ($scope) {
+    $scope.message = 'Hello';
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('signup.stepOne', {
+        url: '/stepOne',
+        templateUrl: 'app/account/signup/stepOne/stepOne.html'
+      });
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .controller('StepThreeCtrl', ["$scope", function ($scope) {
+    $scope.message = 'Hello';
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('signup.stepThree', {
+        url: '/stepThree',
+        templateUrl: 'app/account/signup/stepThree/stepThree.html'
+      });
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .controller('StepTwoCtrl', ["$scope", function ($scope) {
+    $scope.message = 'Hello';
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('signup.stepTwo', {
+        url: '/stepTwo',
+        templateUrl: 'app/account/signup/stepTwo/stepTwo.html'
+      });
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .controller('AdminCtrl', ["$scope", "$http", "Auth", "User", function ($scope, $http, Auth, User) {
+
+    // Use the User $resource to fetch all users
+    $scope.users = User.query();
+
+    $scope.delete = function(user) {
+      User.remove({ id: user._id });
+      angular.forEach($scope.users, function(u, i) {
+        if (u === user) {
+          $scope.users.splice(i, 1);
+        }
+      });
+    };
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('admin', {
+        url: '/admin',
+        templateUrl: 'app/admin/admin.html',
+        controller: 'AdminCtrl'
+      });
+  }]);
+'use strict';
+
+angular.module('cbApp')
+  .controller('AvailableRidesCtrl', ["$scope", function ($scope) {
+    $scope.message = 'Hello';
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('userHome.availableRides', {
+        url: '/availableRides',
+        templateUrl: 'app/availableRides/availableRides.html',
+        controller: 'AvailableRidesCtrl'
+      });
+  }]);
+
+if(angular.isUndefined(config)){
+	var config={};
+	config.apis={};
+}
+
+
+//base URL for API
+//config.apiBaseURL="http://localhost:9000/";
+//config.apiBaseURL="http://52.77.218.140:9000/";
+config.apiBaseURL="http://192.168.1.100:9000/"
+
+/*apis start from here*/
+
+config.apis.login = "auth/local";
+config.apis.syncLocations = "api/locations";
+config.apis.getAllUsers = "api/users/";
+config.apis.signup = "api/users/";
+/*for filtering*/
+config.apis.filterLocations = "api/locations/FilterLocation";
+config.apis.getStats = "api/drives/FilterDrive";
+config.apis.getDrives = "api/drives/LatestDriveId";
+config.apis.postRide = "api/rides/"
+
+config.cordova=true;
+
+
+'use strict';
+
+angular.module('cbApp')
+  .service('cordovaInit', ["$document", "$q", function($document, $q) {
+
+	    var d = $q.defer(),
+	        resolved = false;
+
+	    var self = this;
+	    this.ready = d.promise;
+
+	    document.addEventListener('deviceready', function() {
+	      resolved = true;
+	      d.resolve(window.cordova);
+	    });
+
+	    // Check to make sure we didn't miss the 
+	    // event (just in case)
+	    setTimeout(function() {
+	      if (!resolved) {
+	        if (window.cordova) d.resolve(window.cordova);
+	      }
+	    }, 3000);
+	}]);
+
+'use strict';
+
+angular.module('cbApp')
+  .service('cordovaUtil',['parse','Auth','httpRequest','localStorage','$q','$rootScope',function (parse,Auth,httpRequest,localStorage,$q,$rootScope) {
+  var currentUser = {};
+  var watchId;
+  var deviceUUID;
+  var almostFinished = false;
+  var driveId;
+ // currentUser=Auth.getCurrentUser();
+  Auth.getCurrentUser().then(function(data){currentUser=data;});
+
+   return {
+	   getCoordinates:function(driveId)
+	   {
+		   var that=this;
+		  	driveId=driveId;
+			   watchId = navigator.geolocation.watchPosition(function(position)
+			   {
+				   // The onSuccess method for  Geolocation
+				   // var myLatLag = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);	//Create a Google MAP
+				   // var myoptions = { zoom: 14, center: myLatLag, mapTypeId: google.maps.MapTypeId.ROADMAP};	//Set option for map so that is use latlng center
+				   // var map = new google.maps.Map(document.getElementById("mapCanvas"), myoptions);	//google map instance
+				   // var marker = new google.maps.Marker({ position: myLatLag, map: map });	//add marker for our location
+				   that.saveCoordinates(position,driveId);
+				   $rootScope.$broadcast("locationCaptured");
+			   }, function(error)
+			   {
+				   // The  Callback use to  receive a PositionError object
+				   console.log('Error Code: ' + error.code +  ' Error Message: ' + error.message);
+				   alert('Error Code: ' + error.code +  ' Error Message: ' + error.message);
+			   },{
+				   enableHighAccuracy: true,
+				   timeout: 10000,
+				   frequency:5000
+			   });
+		  
+	   },
+	   
+	   saveCoordinates:function(position,driveId)
+	   {	
+	   	   var that=this;
+	   	   
+	   	   console.log("My cordinates ",position);
+		  
+		   localStorage.retrieve('SavedLocationCoordinates').
+		   then(function(item){
+		   		   var mySavedLocationCoordinates = item;
+		   		   var UUID;
+		   		   if(deviceUUID != null) {
+		   		   	//	alert('The deviceUUID is not null and is : ' + deviceUUID);
+		   		   		UUID = deviceUUID;
+		   		   }
+		   		   else UUID = that.getDeviceUUID();
+				   if(mySavedLocationCoordinates != null)
+				   {
+				   	   mySavedLocationCoordinates = JSON.parse(mySavedLocationCoordinates);	
+					   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
+					   trackedLocationCoordinatesObject.location = {};
+					   trackedLocationCoordinatesObject.location.latitude=position.coords.latitude;
+					   trackedLocationCoordinatesObject.location.longitude=position.coords.longitude;	
+
+					   trackedLocationCoordinatesObject.coords = {};
+					   trackedLocationCoordinatesObject.coords.accuracy = position.coords.accuracy;
+					   trackedLocationCoordinatesObject.coords.altitude = position.coords.altitude;
+					   trackedLocationCoordinatesObject.coords.altitudeAccuracy = position.coords.altitudeAccuracy;
+					   trackedLocationCoordinatesObject.coords.heading = position.coords.heading;
+					   trackedLocationCoordinatesObject.coords.speed = position.coords.speed;
+
+					   trackedLocationCoordinatesObject.timestamp=position.timestamp;		
+					   trackedLocationCoordinatesObject.uuid=UUID;
+					   trackedLocationCoordinatesObject.userId = currentUser.userId;
+					   trackedLocationCoordinatesObject.driveId = driveId;
+					   console.log('current location object :',trackedLocationCoordinatesObject);
+					   mySavedLocationCoordinates.TrackedLocations.push(trackedLocationCoordinatesObject);
+					  // window.localStorage.setItem('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
+					   localStorage.store('SavedLocationCoordinates',JSON.stringify(mySavedLocationCoordinates));
+					
+					   console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
+				   }
+				   else
+				   {
+					   var objectToStoreTheTrackedLocationsArray = {};	// Object to store the TrackedLocations Array
+					   var trackedLocationsArray = [];	// Attribute in the ObjectToStoreTheTrackedLocationsArray to store array of Tracked Locations			   
+					   var trackedLocationCoordinatesObject = {};	// Object to store the latitudes and longitudes of the current location
+					  
+					   trackedLocationCoordinatesObject.location = {};
+					   trackedLocationCoordinatesObject.location.latitude=position.coords.latitude;
+					   trackedLocationCoordinatesObject.location.longitude=position.coords.longitude;	
+
+					   trackedLocationCoordinatesObject.coords = {};
+					   trackedLocationCoordinatesObject.coords.accuracy = position.coords.accuracy;
+					   trackedLocationCoordinatesObject.coords.altitude = position.coords.altitude;
+					   trackedLocationCoordinatesObject.coords.altitudeAccuracy = position.coords.altitudeAccuracy;
+					   trackedLocationCoordinatesObject.coords.heading = position.coords.heading;
+					   trackedLocationCoordinatesObject.coords.speed = position.coords.speed;
+					   
+					   trackedLocationCoordinatesObject.timestamp=position.timestamp;
+					   trackedLocationCoordinatesObject.userId = currentUser.userId;
+					   trackedLocationCoordinatesObject.driveId = driveId;
+					   trackedLocationCoordinatesObject.uuid=UUID;			   
+					   trackedLocationCoordinatesObject.driveId = driveId;
+					   //alert('current location object : ' + JSON.stringify(trackedLocationCoordinatesObject));
+					   trackedLocationsArray.push(trackedLocationCoordinatesObject);
+					   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocationsArray;
+					   localStorage.store('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray)).
+					   then(function(val){
+					   	   var locationsObjectForMongoDB = window.localStorage.getItem('SavedLocationCoordinates');
+						   //alert('This is the Current Location Object when localStorageObject is null: ' + val);
+						   locationsObjectForMongoDB = JSON.parse(locationsObjectForMongoDB);
+
+						   console.log('This is the trackedLocationCoordinatesObject : ' + JSON.stringify(trackedLocationCoordinatesObject));
+						   console.log('This is the trackedLocationsArray : ' + JSON.stringify(trackedLocationsArray));
+
+					   });
+				 }
+			 });
+	
+	   },
+
+	   stopSampling: function(){
+	   		navigator.geolocation.clearWatch(watchId);
+	   		;
+	   },
+
+	   saveDeviceDetails:function()
+	   {
+		   localStorage.store('Device', JSON.stringify(device)).then(function(device){
+				return device;
+			});
+	   },
+
+	   getDeviceUUID:function()
+	   {
+	   	   	localStorage.retrieve('DeviceUUID').then(function(uuid){
+	   			if(uuid != null){ 
+	   				//alert('This is the UUID : ' + uuid);
+	   				deviceUUID = uuid;
+	   				return uuid;
+	   			}
+	   		});
+
+	   	   	localStorage.store('DeviceUUID', device.uuid).then(function(uuid){
+	   	   		//alert('This is the UUID : ' + uuid);
+	   	   		deviceUUID = uuid;
+				return uuid;
+			});
+
+		   // var deviceDetails = window.localStorage.getItem('DeviceInformation');
+		   // deviceDetails = JSON.parse(deviceDetails);
+		   // if(deviceDetails != undefined)	return deviceDetails.uuid;
+		   // else	return device.uuid;
+		   // return "ThisIsASampleDeviceUUID";
+	   },
+
+	   getAllCoordinates:function(){
+	   	parse.getObjects().
+	   	then(function(res){
+	   		
+	   		var coordinates = _.map(res,function(d){return d.toJSON()});
+	   		return coordinates;
+	   	},function(err){
+			  console.log(err);
+		});
+	   },
+
+	   syncCoordinates:function(){
+	   		 localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
+	   			var storedlocations = locations;
+	   			if(storedlocations==null) return;
+	   			storedlocations = JSON.parse(storedlocations);
+	   			httpRequest.post(config.apis.syncLocations,storedlocations.TrackedLocations).
+		   		then(function(res){
+		   			if(res.status==201){
+		   				localStorage.remove('SavedLocationCoordinates');
+		   				alert('Data Synced Successfully');
+		   			}
+		   		});
+	   		});		 
+	   },
+
+	   syncABatch: function(aBatch){
+	   		httpRequest.post(config.apis.syncLocations, aBatch).
+		   		then(function(res){
+		   			if(res.status==201){
+		   				localStorage.remove('SavedLocationCoordinates');
+		   				if(almostFinished){
+		   					alert('Data Synced Successfully');
+		   					almostFinished =false;
+		   				}
+		   		}
+		   	});
+	   },
+
+	    batchSync:function(){
+	    		var that=this;
+	   			localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
+	   			var storedlocations = locations;
+	   			if(storedlocations == null) return;
+	   			storedlocations = JSON.parse(storedlocations);
+	   			var trackedLocations = storedlocations.TrackedLocations;
+	   			while(trackedLocations.length > 0){
+	   				if(trackedLocations.length <= 100){
+	   					almostFinished = true;
+	   					break;
+	   				}
+	   				else{
+	   					httpRequest.post(config.apis.syncLocations,{trackedLocations:trackedLocations.splice(0, 100),almostFinished:almostFinished}).
+				   		then(function(res){
+				   			if(res.status == 201){
+				   			   var objectToStoreTheTrackedLocationsArray = {};	// Object to store the TrackedLocations Array
+							   objectToStoreTheTrackedLocationsArray.TrackedLocations = [];
+							   objectToStoreTheTrackedLocationsArray.TrackedLocations = trackedLocations;
+							   localStorage.store('SavedLocationCoordinates',JSON.stringify(objectToStoreTheTrackedLocationsArray)).
+							   then(function(val){
+							   	   that.batchSync();
+							   });
+				   			}
+				   		});
+	   				}
+	   			}
+	   			if(almostFinished) that.syncABatch({trackedLocations:trackedLocations,almostFinished:almostFinished});
+	   		});
+	    },
+
+	   getUserHomeCoordinates: function(){
+		   var deferred =$q.defer();
+	   		if(!navigator.geolocation) return;
+			
+			navigator.geolocation.getCurrentPosition(function(pos) {
+				
+				var geocoder = new google.maps.Geocoder();
+				var latlng = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+				// var latlng = new google.maps.LatLng(pos.coords.latitude,pos.coords.longitude);
+				// var latlngStr = latlng.split(',', 2);
+  				// var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+				geocoder.geocode({'location': latlng}, function(results, status) {
+					
+					if (status == google.maps.GeocoderStatus.OK) {
+
+				        //Check result 0
+						var result = results[0];
+						//look for locality tag and administrative_area_level_1
+						
+						var homeAddress = result.formatted_address;
+						var city = "";
+						var state = "";
+						var zipcode = "";
+						var placeID = result.place_id;
+						
+						for(var i=0, len=result.address_components.length; i<len; i++) {
+							var ac = result.address_components[i];
+							console.log(ac);
+							if(ac.types.indexOf("administrative_area_level_2") >= 0) city = ac.long_name;
+							if(ac.types.indexOf("administrative_area_level_1") >= 0) state = ac.long_name;
+							if(ac.types.indexOf("postal_code") >= 0) zipcode = ac.long_name;
+						}
+						//only report if we got Good Stuff
+						if(homeAddress != '' &&  city != '' && zipcode != '' && placeID != '' && state != '') {
+							var addressObject={};
+							addressObject.homeAddress=homeAddress;
+							addressObject.city=city;
+							addressObject.zipcode=zipcode;
+							addressObject.placeID=placeID;
+							addressObject.homeLocationCoordinates = latlng;
+							addressObject.state = state;
+							deferred.resolve(addressObject);
+						}
+					}
+					else{
+						console.log(status)
+					}
+				});
+			});
+			return deferred.promise;
+	   }
+   }
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .service('filterService', function () {
+
+  	return{
+  		filterData:function (pathArr,threshold) {
+  			var curr,prev;
+	        var resultArr=[];
+	        for(var i=0;i<pathArr.length;i++){
+	            curr=pathArr[i];
+	            if(prev){
+	            var p1={
+	            "type": "Feature",
+	            "properties": {},
+	            "geometry": {
+	                "type": "Point",
+	                "coordinates": [curr.lng, curr.lat]
+	            }
+	            }
+	             var p2={
+	            "type": "Feature",
+	            "properties": {},
+	            "geometry": {
+	                "type": "Point",
+	                "coordinates": [prev.lng, prev.lat]
+	            }
+	            }
+	            
+	            var distance = turf.distance(p1, p2);
+	            if(distance<threshold)
+	            {
+	                resultArr.push(curr);
+	            }
+	            }
+	            prev=curr;
+	        }
+	     return resultArr;
+  		},
+  		GDouglasPeucker:function(source, kink) {
+		  	var	n_source, n_stack, n_dest, start, end, i, sig;    
+		    var dev_sqr, max_dev_sqr, band_sqr;
+		    var x12, y12, d12, x13, y13, d13, x23, y23, d23;
+		    var F = ((Math.PI / 180.0) * 0.5 );
+		    var index = new Array(); /* aray of indexes of source points to include in the reduced line */
+			var sig_start = new Array(); /* indices of start & end of working section */
+		    var sig_end = new Array();	
+
+		    /* check for simple cases */
+
+		    if ( source.length < 3 ) 
+		        return(source);    /* one or two points */
+
+		    /* more complex case. initialize stack */
+				
+			n_source = source.length;
+		    band_sqr = kink * 360.0 / (2.0 * Math.PI * 6378137.0);	/* Now in degrees */
+		    band_sqr *= band_sqr;
+		    n_dest = 0;
+		    sig_start[0] = 0;
+		    sig_end[0] = n_source-1;
+		    n_stack = 1;
+
+		    /* while the stack is not empty  ... */
+		    while ( n_stack > 0 ){
+		    
+		        /* ... pop the top-most entries off the stacks */
+
+		        start = sig_start[n_stack-1];
+		        end = sig_end[n_stack-1];
+		        n_stack--;
+
+		        if ( (end - start) > 1 ){  /* any intermediate points ? */        
+		                    
+		                /* ... yes, so find most deviant intermediate point to
+		                       either side of line joining start & end points */                                   
+		            
+		            x12 = (source[end].lng - source[start].lng);
+		            y12 = (source[end].lat - source[start].lat);
+		            if (Math.abs(x12) > 180.0) 
+		                x12 = 360.0 - Math.abs(x12);
+		            x12 *= Math.cos(F * (source[end].lat + source[start].lat));/* use avg lat to reduce lng */
+		            d12 = (x12*x12) + (y12*y12);
+
+		            for ( i = start + 1, sig = start, max_dev_sqr = -1.0; i < end; i++ ){                                    
+
+		                x13 = (source[i].lng - source[start].lng);
+		                y13 = (source[i].lat - source[start].lat);
+		                if (Math.abs(x13) > 180.0) 
+		                    x13 = 360.0 - Math.abs(x13);
+		                x13 *= Math.cos (F * (source[i].lat + source[start].lat));
+		                d13 = (x13*x13) + (y13*y13);
+
+		                x23 = (source[i].lng - source[end].lng);
+		                y23 = (source[i].lat - source[end].lat);
+		                if (Math.abs(x23) > 180.0) 
+		                    x23 = 360.0 - Math.abs(x23);
+		                x23 *= Math.cos(F * (source[i].lat + source[end].lat));
+		                d23 = (x23*x23) + (y23*y23);
+		                                
+		                if ( d13 >= ( d12 + d23 ) )
+		                    dev_sqr = d23;
+		                else if ( d23 >= ( d12 + d13 ) )
+		                    dev_sqr = d13;
+		                else
+		                    dev_sqr = (x13 * y12 - y13 * x12) * (x13 * y12 - y13 * x12) / d12;// solve triangle
+
+		                if ( dev_sqr > max_dev_sqr  ){
+		                    sig = i;
+		                    max_dev_sqr = dev_sqr;
+		                }
+		            }
+
+		            if ( max_dev_sqr < band_sqr ){   /* is there a sig. intermediate point ? */
+		                /* ... no, so transfer current start point */
+		                index[n_dest] = start;
+		                n_dest++;
+		            }
+		            else{
+		                /* ... yes, so push two sub-sections on stack for further processing */
+		                n_stack++;
+		                sig_start[n_stack-1] = sig;
+		                sig_end[n_stack-1] = end;
+		                n_stack++;
+		                sig_start[n_stack-1] = start;
+		                sig_end[n_stack-1] = sig;
+		            }
+		        }
+		        else{
+		                /* ... no intermediate points, so transfer current start point */
+		                index[n_dest] = start;
+		                n_dest++;
+		        }
+		    }
+
+		    /* transfer last point */
+		    index[n_dest] = n_source-1;
+		    n_dest++;
+
+		    /* make return array */
+		    var r = new Array();
+		    for(var i=0; i < n_dest; i++)
+		        r.push(source[index[i]]);
+		    return r;
+  		}
+  	}
+    // AngularJS will instantiate a singleton by calling "new" on this function
+  });
+
+'use strict';
+
+angular.module('cbApp')
+  .controller('HomeCtrl', ["$scope", "Auth", "httpRequest", "filterService", function ($scope,Auth,httpRequest,filterService) {
+     $scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
+  
+       $scope.center={
+        lat : 18.581904504725568,
+        lng : 73.68483066558838,
+        zoom: 15
+    };
+    $scope.setCenter=true;
+    $scope.paths={};
+    var currentUser = {};
+     Auth.getCurrentUser().
+     then(function(data){
+        currentUser = data;
+        getDrives(10);
+        console.log(currentUser)
+     });
+    var getLocations = function(driveId){
+       $scope.paths = {};
+        var filterJSON = {};
+        filterJSON.driveId = driveId;
+        filterJSON.userId = currentUser.userId;
+
+        httpRequest.post(config.apis.filterLocations,filterJSON).
+        then(function(response) {
+             console.log("locations",response);
+            if(response.status==200 && response.data.length > 0){
+
+                    var pathArr=[];
+
+                    angular.forEach(response.data, function(location, key){
+                        pathArr.push({lat:location.location.latitude,lng:location.location.longitude});
+
+                    });
+                    console.log("pathArr",pathArr)
+                    if($scope.setCenter){
+                            $scope.center=pathArr[0];
+                            $scope.setCenter=false;
+                    }
+                     $scope.paths={
+                             p1: {
+                        color: '#008000',
+                        weight: 8,
+                        latlngs:pathArr
+                        }
+
+                       }
+            console.log("filtered data",filterService.GDouglasPeucker(pathArr,20));
+            }
+           
+
+        })    
+        
+    }
+    var drivesArray = [];
+    var totalDrives =  0;
+    var currentDrive = 0;
+    var getDrives = function(limit){
+      var postJSON = {}
+      postJSON.userId = currentUser.userId;
+      postJSON.limit = limit;
+
+      httpRequest.post(config.apis.getDrives,postJSON).
+      then(function(drives){
+        console.log(drives)
+        if(drives.status==200){
+           drivesArray = drives.data;
+           totalDrives = drives.data.length;
+           if(drivesArray.length!=0){
+
+              getLocations(drivesArray[currentDrive]);
+              getStats(drivesArray[currentDrive]);
+              currentDrive++;
+           }
+               
+        }
+         
+      })
+    }
+
+    $scope.getNextDrive = function(){
+      console.log("currentDrive in next",currentDrive);
+      currentDrive++;
+      if(currentDrive<=totalDrives-1){
+        getStats(drivesArray[currentDrive])
+        getLocations(drivesArray[currentDrive]);
+      }else
+        currentDrive--;
+    }
+
+    $scope.getPrevDrive = function(){
+       console.log("currentDrive in prev",currentDrive);
+       currentDrive--;
+      if(currentDrive>=0){
+
+        getStats(drivesArray[currentDrive])
+        getLocations(drivesArray[currentDrive])
+
+       }else
+        currentDrive=0;
+    }
+
+    var getStats = function(driveId){
+        var filterJSON = {};
+        $scope.stats = {}
+        filterJSON.driveId = driveId;
+        filterJSON.userId = currentUser.userId;
+
+        httpRequest.post(config.apis.getStats,filterJSON).
+        then(function(stats){
+            if(stats.status==200){
+              $scope.stats = stats.data[0];
+            }
+        })
+    }
+
+    getDrives(10);
+    
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('userHome.home', {
+        url: '/home',
+        templateUrl: 'app/home/home.html',
+        controller: 'HomeCtrl',
+        authenticate:true
+
+      });
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .factory('httpRequest',['$http',function($http) {
+    // Service logic
+    // ...
+    return{
+       get: function(url,params)
+       {
+          var promise;
+          var req = {};   
+          if(params){
+            var qs=queryString.stringify(params);
+            req.url = config.apiBaseURL+url+"?"+qs;
+          }
+          else{
+              req.url = config.apiBaseURL+url;
+          }
+            
+          //req.url = config.apiBaseURL+url+"?"+qs; //BaseURl+API+?+queryString
+          req.method = 'GET';
+          promise = $http(req).
+                  then(function (response) {
+                    return response ;
+                });
+
+          // Return the promise to the controller
+          return promise;
+       },
+
+        post: function(url,data)
+        {
+            var promise;
+            var req = {};
+            req.data=data;
+            req.url = config.apiBaseURL+url;
+            req.method = 'POST';
+            promise = $http(req).
+                    then(function (response) {
+                      return response ;
+                    });
+            // Return the promise to the controller
+            return promise;
+        }
+    }
+   }
+  ]);
+'use strict';
+
+angular.module('cbApp')
+  .controller('IntroCtrl', ["$scope", function ($scope) {
+    $scope.message = 'Hello';
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('intro', {
+        url: '/intro',
+        templateUrl: 'app/intro/intro.html',
+        controller: 'IntroCtrl'
+      });
+  }]);
+    /*!
+ * classie - class helper functions
+ * from bonzo https://github.com/ded/bonzo
+ * 
+ * classie.has( elem, 'my-class' ) -> true/false
+ * classie.add( elem, 'my-new-class' )
+ * classie.remove( elem, 'my-unwanted-class' )
+ * classie.toggle( elem, 'my-class' )
+ */
+
+/*jshint browser: true, strict: true, undef: true */
+/*global define: false */
+
+( function( window ) {
+
+'use strict';
+
+// class helper functions from bonzo https://github.com/ded/bonzo
+
+function classReg( className ) {
+  return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
+}
+
+// classList support for class management
+// altho to be fair, the api sucks because it won't accept multiple classes at once
+var hasClass, addClass, removeClass;
+
+if ( 'classList' in document.documentElement ) {
+  hasClass = function( elem, c ) {
+    return elem.classList.contains( c );
+  };
+  addClass = function( elem, c ) {
+    elem.classList.add( c );
+  };
+  removeClass = function( elem, c ) {
+    elem.classList.remove( c );
+  };
+}
+else {
+  hasClass = function( elem, c ) {
+    return classReg( c ).test( elem.className );
+  };
+  addClass = function( elem, c ) {
+    if ( !hasClass( elem, c ) ) {
+      elem.className = elem.className + ' ' + c;
+    }
+  };
+  removeClass = function( elem, c ) {
+    elem.className = elem.className.replace( classReg( c ), ' ' );
+  };
+}
+
+function toggleClass( elem, c ) {
+  var fn = hasClass( elem, c ) ? removeClass : addClass;
+  fn( elem, c );
+}
+
+var classie = {
+  // full names
+  hasClass: hasClass,
+  addClass: addClass,
+  removeClass: removeClass,
+  toggleClass: toggleClass,
+  // short names
+  has: hasClass,
+  add: addClass,
+  remove: removeClass,
+  toggle: toggleClass
+};
+
+// transport
+if ( typeof define === 'function' && define.amd ) {
+  // AMD
+  define( classie );
+} else {
+  // browser global
+  window.classie = classie;
+}
+
+})( window );
+// EventListener | @jon_neal | //github.com/jonathantneal/EventListener
+!window.addEventListener && window.Element && (function () {
+    function addToPrototype(name, method) {
+        Window.prototype[name] = HTMLDocument.prototype[name] = Element.prototype[name] = method;
+    }
+ 
+    var registry = [];
+ 
+    addToPrototype("addEventListener", function (type, listener) {
+        var target = this;
+ 
+        registry.unshift({
+            __listener: function (event) {
+                event.currentTarget = target;
+                event.pageX = event.clientX + document.documentElement.scrollLeft;
+                event.pageY = event.clientY + document.documentElement.scrollTop;
+                event.preventDefault = function () { event.returnValue = false };
+                event.relatedTarget = event.fromElement || null;
+                event.stopPropagation = function () { event.cancelBubble = true };
+                event.relatedTarget = event.fromElement || null;
+                event.target = event.srcElement || target;
+                event.timeStamp = +new Date;
+ 
+                listener.call(target, event);
+            },
+            listener: listener,
+            target: target,
+            type: type
+        });
+ 
+        this.attachEvent("on" + type, registry[0].__listener);
+    });
+ 
+    addToPrototype("removeEventListener", function (type, listener) {
+        for (var index = 0, length = registry.length; index < length; ++index) {
+            if (registry[index].target == this && registry[index].type == type && registry[index].listener == listener) {
+                return this.detachEvent("on" + type, registry.splice(index, 1)[0].__listener);
+            }
+        }
+    });
+ 
+    addToPrototype("dispatchEvent", function (eventObject) {
+        try {
+            return this.fireEvent("on" + eventObject.type, eventObject);
+        } catch (error) {
+            for (var index = 0, length = registry.length; index < length; ++index) {
+                if (registry[index].target == this && registry[index].type == eventObject.type) {
+                    registry[index].call(this, eventObject);
+                }
+            }
+        }
+    });
+})();
+
+
+'use strict';
+
+angular.module('cbApp')
+  .service('localStorage', ['$localForage',function ($localForage) {
+    // AngularJS will instantiate a singleton by calling "new" on this function
+    
+    return{
+
+    	isInitialized:function(){
+             var that = this;
+    		 return that.retrieve('init').
+                     then(function(item){
+                        console.log("item",item);
+                        return item;
+                     });
+    	},
+    	initialize:function(){
+            var that = this;
+    		that.store('init',true);
+    	},
+        store:function(key,item){
+            return $localForage.setItem(key,item);
+        },
+        retrieve:function(key){
+            return $localForage.getItem(key);
+        },
+        remove:function(key){
+            return $localForage.removeItem(key);
+        }
+    }
+
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .controller('MainCtrl', ["$scope", "$http", "socket", "cordovaUtil", "$state", "localStorage", function ($scope, $http, socket, cordovaUtil, $state, localStorage) {
+
+   
+	  
+	  $scope.saveDeviceInfo=function()
+	  {
+		  cordovaUtil.saveDeviceDetails();
+	  }
+	  
+
+    $scope.openMap = function(){
+      $state.go('map');
+    }
+
+	  $scope.startTracking=function(){
+		  
+		  cordovaUtil.getCoordinates();
+	  }
+
+    $scope.fetch = function(){
+      console.log("Syncing")
+      cordovaUtil.batchSync();
+    }
+
+    $scope.openSignupForm = function(){
+      $state.go('signup.stepOne');
+    }
+	  
+
+
+  /*  $scope.awesomeThings = [];
+
+    $http.get('/api/things').success(function(awesomeThings) {
+      $scope.awesomeThings = awesomeThings;
+      socket.syncUpdates('thing', $scope.awesomeThings);
+    });
+
+    $scope.addThing = function() {
+      if($scope.newThing === '') {
+        return;
+      }
+      $http.post('/api/things', { name: $scope.newThing });
+      $scope.newThing = '';
+    };
+
+    $scope.deleteThing = function(thing) {
+      $http.delete('/api/things/' + thing._id);
+    };
+
+    $scope.$on('$destroy', function () {
+      socket.unsyncUpdates('thing');
+    }); */
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('main', {
+        url: '/main',
+        templateUrl: 'app/main/main.html',
+        controller: 'MainCtrl',
+        authenticate:"true"
+      });
+  }]);
+'use strict';
+
+angular.module('cbApp')
+  .controller('MapCtrl', ["$scope", "cordovaUtil", function ($scope,cordovaUtil) {
+     $scope.startTracking=function(){
+		  
+		  cordovaUtil.getCoordinates();
+	  }
+
+	  
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('map', {
+        url: '/map',
+        templateUrl: 'app/map/map.html',
+        controller: 'MapCtrl'
+      });
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .service('parse', ["$q", function ($q) {
+   return {
+   		saveObject:function(object,data){
+   			console.log(object,data);
+   			var tmpobj = Parse.Object.extend(object);
+		   	var testObject = new tmpobj();
+			//return testObject.save({"coordinates":[]})
+        return testObject.save(data);
+   		},
+   		getObjects:function(object){
+   			var tmpobj = Parse.Object.extend("coordinatesObj");
+        var query = new Parse.Query("coordinatesObj");
+        return query.find()
+   			/*var testObject = new tmpobj();
+   			return testObject.fetch();*/
+   		},
+   		addObjects:function(object,data){
+   				var tmpobj = Parse.Object.extend(object);
+		   		var testObject = new tmpobj();
+		   		testObject.add("coordinates",data)
+		   		return testObject.save();
+   		}
+   };
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .controller('PostRidesCtrl', ["$scope", "httpRequest", "Auth", function ($scope,httpRequest,Auth) {
+    $scope.message = 'Hello';
+    $scope.ride = {};
+    var currentUser = {};
+    Auth.getCurrentUser().
+    then(function(data){
+        currentUser = data;
+    });
+    $scope.showErrorMessage = false;
+    $scope.leavingInJSON = [
+                                {"text":"5 MIN","value":"5"},
+                                {"text":"10 MIN","value":"10"},
+                                {"text":"15 MIN","value":"15"},
+                                {"text":"20 MIN","value":"20"},
+                                {"text":"25 MIN","value":"25"},
+                                {"text":"30 MIN","value":"30"},
+                                {"text":"35 MIN","value":"35"},
+                                {"text":"40 MIN","value":"40"},
+                                {"text":"45 MIN","value":"45"},
+                                {"text":"50 MIN","value":"50"},
+                                {"text":"55 MIN","value":"55"},
+                                {"text":"60 MIN","value":"60"},
+                          	
+                            ];
+
+    $scope.availableSeatsJSON = ["1",
+    						 "2",
+    						 "3",
+    						 "4",
+    						 "5",
+    						 "6"
+    						];
+
+    $scope.autocompleteOptions = {                        
+                        types: ['(cities)'],
+                        componentRestrictions: { country: 'IND',city:'Pune' },
+                    }
+
+    var calculateRideStartTime = function(leavingIn){
+        return moment().add(leavingIn,"minutes").valueOf();
+
+    }
+
+    $scope.postRide = function(){
+        console.log("ride object",$scope.ride);
+        var ride = {};
+        ride.startLocation = $scope.ride.source.formatted_address;
+        ride.endLocation = $scope.ride.destination.formatted_address;
+        ride.offeredByUserId = currentUser.userId;
+        ride.availableSeats = $scope.ride.availableSeats;
+        ride.rideStartTime = calculateRideStartTime($scope.ride.destination.leavingIn);
+        console.log("final obj",ride)
+        httpRequest.post(config.apis.postRide,ride).
+        then(function(data){
+            if(data.status==201)
+                alert("Ride posted Succesfully!");
+        })
+    }
+
+
+
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('userHome.postRides', {
+        url: '/postRides',
+        templateUrl: 'app/postRides/postRides.html',
+        controller: 'PostRidesCtrl',
+        authenticate:"true"
+      });
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .service('pushnotification', ["$cordovaPush", "$q", "$rootScope", function ($cordovaPush,$q,$rootScope) {
+    return {
+      registerPushNotification:function(){
+        
+        var androidConfig = {
+              "senderID": "463291795017",
+            };
+              $cordovaPush.register(androidConfig).then(function(result) {
+         console.log(result)
+    }, function(err) {
+      console.log(err)
+    })
+    
+      }
+    }
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .controller('StartSamplingCtrl', ["Auth", "$scope", "cordovaUtil", "$rootScope", "localStorage", "filterService", "httpRequest", function (Auth,$scope, cordovaUtil,$rootScope,localStorage,filterService,httpRequest) {
+    $scope.message = 'Hello';
+    $scope.buttonText="START SAMPLING";
+
+    $scope.defaults={minZoom:10, maxZoom:20,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
+    $scope.center={
+        lat : 18.581904504725568,
+        lng : 73.68483066558838,
+        zoom: 15
+    };
+    $scope.setCenter=true;
+    $scope.paths={};
+    $scope.startOrStopSampling = function(value){
+    	if(value == "START SAMPLING"){
+    		$scope.buttonText="STOP SAMPLING";
+            if(config.cordova)
+            cordova.plugins.backgroundMode.enable();
+    		cordovaUtil.getCoordinates((new Date()).getTime());
+    	}
+    	else{
+    		$scope.buttonText="START SAMPLING";
+             if(config.cordova)
+            cordova.plugins.backgroundMode.disable();
+    		cordovaUtil.stopSampling();
+    	}
+    };
+
+    $rootScope.$on("locationCaptured",function(){
+         localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
+                var storedlocations =JSON.parse(locations);
+                if(storedlocations==null)
+                    return;
+               else{
+                var pathArr=[];
+                storedlocations.TrackedLocations.forEach(function(obj){
+                        pathArr.push( { lat: obj.location.latitude, lng: obj.location.longitude })
+                })
+                if($scope.setCenter){
+                    $scope.center=pathArr[0];
+                    $scope.setCenter=false;
+                }
+               console.log(filterService.filterData(filterService.GDouglasPeucker(pathArr,5),0.5))
+                $scope.paths={
+                     p1: {
+                color: '#008000',
+                weight: 8,
+                latlngs:filterService.GDouglasPeucker(pathArr,20)
+                }
+
+               }
+           }
+            }) 
+    });
+/*    var currentUser = Auth.getCurrentUser();
+    var getLocations = function(){
+        var filterJSON = {};
+        filterJSON.userId = currentUser.userId;
+
+        httpRequest.post(config.apis.filterLocations,filterJSON).
+        then(function(response) {
+             console.log("locations",response);
+            if(response.status==200 && response.data.length > 0){
+
+                    var pathArr=[];
+
+                    angular.forEach(response.data, function(location, key){
+                        pathArr.push({lat:location.location.latitude,lng:location.location.longitude});
+
+                    });
+                    console.log("pathArr",pathArr)
+                    if($scope.setCenter){
+                            $scope.center=pathArr[0];
+                            $scope.setCenter=false;
+                    }
+                     $scope.paths={
+                             p1: {
+                        color: '#008000',
+                        weight: 8,
+                        latlngs:filterService.filterData(filterService.GDouglasPeucker(pathArr,5),0.5)
+                        }
+
+                       }
+            console.log("filtered data",filterService.filterData(filterService.GDouglasPeucker(pathArr,5),0.5));
+            }
+           
+
+        })    
+        
+    }*/
+   // getLocations();
+/*    $scope.filterData=function(pathArr,threshold){
+        var curr,prev;
+        var resultArr=[];
+        for(var i=0;i<pathArr.length;i++){
+            curr=pathArr[i];
+            if(prev){
+            var p1={
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "Point",
+                "coordinates": [curr.lng, curr.lat]
+            }
+            }
+             var p2={
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "Point",
+                "coordinates": [prev.lng, prev.lat]
+            }
+            }
+            
+            var distance = turf.distance(p1, p2);
+            if(distance<threshold)
+            {
+                resultArr.push(curr);
+            }
+            }
+            prev=curr;
+        }
+        return resultArr;
+    }*/
+  /*  $scope.GDouglasPeucker=function(source, kink)
+ source[] Input coordinates in GLatLngs 	*/
+/* kink	in metres, kinks above this depth kept  */
+/* kink depth is the height of the triangle abc where a-b and b-c are two consecutive line segments 
+{
+    var	n_source, n_stack, n_dest, start, end, i, sig;    
+    var dev_sqr, max_dev_sqr, band_sqr;
+    var x12, y12, d12, x13, y13, d13, x23, y23, d23;
+    var F = ((Math.PI / 180.0) * 0.5 );
+    var index = new Array(); /* aray of indexes of source points to include in the reduced line 
+	var sig_start = new Array(); /* indices of start & end of working section 
+    var sig_end = new Array();	
+
+    /* check for simple cases 
+
+    if ( source.length < 3 ) 
+        return(source);    /* one or two points 
+
+    /* more complex case. initialize stack 
+		
+	n_source = source.length;
+    band_sqr = kink * 360.0 / (2.0 * Math.PI * 6378137.0);	/* Now in degrees 
+    band_sqr *= band_sqr;
+    n_dest = 0;
+    sig_start[0] = 0;
+    sig_end[0] = n_source-1;
+    n_stack = 1;
+
+    /* while the stack is not empty  ... 
+    while ( n_stack > 0 ){
+    
+        /* ... pop the top-most entries off the stacks 
+
+        start = sig_start[n_stack-1];
+        end = sig_end[n_stack-1];
+        n_stack--;
+
+        if ( (end - start) > 1 ){  /* any intermediate points ?        
+                    
+                /* ... yes, so find most deviant intermediate point to
+                       either side of line joining start & end points                                   
+            
+            x12 = (source[end].lng - source[start].lng);
+            y12 = (source[end].lat - source[start].lat);
+            if (Math.abs(x12) > 180.0) 
+                x12 = 360.0 - Math.abs(x12);
+            x12 *= Math.cos(F * (source[end].lat + source[start].lat));/* use avg lat to reduce lng 
+            d12 = (x12*x12) + (y12*y12);
+
+            for ( i = start + 1, sig = start, max_dev_sqr = -1.0; i < end; i++ ){                                    
+
+                x13 = (source[i].lng - source[start].lng);
+                y13 = (source[i].lat - source[start].lat);
+                if (Math.abs(x13) > 180.0) 
+                    x13 = 360.0 - Math.abs(x13);
+                x13 *= Math.cos (F * (source[i].lat + source[start].lat));
+                d13 = (x13*x13) + (y13*y13);
+
+                x23 = (source[i].lng - source[end].lng);
+                y23 = (source[i].lat - source[end].lat);
+                if (Math.abs(x23) > 180.0) 
+                    x23 = 360.0 - Math.abs(x23);
+                x23 *= Math.cos(F * (source[i].lat + source[end].lat));
+                d23 = (x23*x23) + (y23*y23);
+                                
+                if ( d13 >= ( d12 + d23 ) )
+                    dev_sqr = d23;
+                else if ( d23 >= ( d12 + d13 ) )
+                    dev_sqr = d13;
+                else
+                    dev_sqr = (x13 * y12 - y13 * x12) * (x13 * y12 - y13 * x12) / d12;// solve triangle
+
+                if ( dev_sqr > max_dev_sqr  ){
+                    sig = i;
+                    max_dev_sqr = dev_sqr;
+                }
+            }
+
+            if ( max_dev_sqr < band_sqr ){   /* is there a sig. intermediate point ? */
+                /* ... no, so transfer current start point 
+                index[n_dest] = start;
+                n_dest++;
+            }
+            else{
+                /* ... yes, so push two sub-sections on stack for further processing 
+                n_stack++;
+                sig_start[n_stack-1] = sig;
+                sig_end[n_stack-1] = end;
+                n_stack++;
+                sig_start[n_stack-1] = start;
+                sig_end[n_stack-1] = sig;
+            }
+        }
+        else{
+                /* ... no intermediate points, so transfer current start point 
+                index[n_dest] = start;
+                n_dest++;
+        }
+    }
+
+    /* transfer last point 
+    index[n_dest] = n_source-1;
+    n_dest++;
+
+    /* make return array 
+    var r = new Array();
+    for(var i=0; i < n_dest; i++)
+        r.push(source[index[i]]);
+    return r;
+    
+}*/
+}]);
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('userHome.startSampling', {
+        url: '/startSampling',
+        templateUrl: 'app/startSampling/startSampling.html',
+        controller: 'StartSamplingCtrl'
+      });
+  }]);
+'use strict';
+
+angular.module('cbApp')
+  .controller('SuggestionsCtrl', ["$scope", "leafletMarkerEvents", "$timeout", "httpRequest", "Auth", function ($scope, leafletMarkerEvents, $timeout,httpRequest,Auth) {
+     Auth.getCurrentUser().then(function(data){$scope.currentUser=data;getAllSuggestions();});
+   $scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
+     $scope.markers= [];
+    var getAllSuggestions = function(){
+        httpRequest.get(config.apis.getAllUsers).
+        then(function(res){
+            console.log("res",res);
+            if(res.status==200){
+                $scope.suggestedUsers = res.data;
+
+                angular.forEach($scope.suggestedUsers, function(user, key){
+                        var tempObj = {};
+                        tempObj.lat = parseFloat(user.homeLocationCoordinates[0]);
+                        tempObj.lng = parseFloat(user.homeLocationCoordinates[1]);
+                        tempObj.enable=['click','touch'];
+                        var markerClass ="";
+                        if($scope.currentUser.empId == user.empId)
+                            markerClass = "map-user-marker user-own";
+                        else
+                             markerClass = "map-user-marker";
+                        var image = angular.element('<img>',{src:user.userPhotoUrl,'class':markerClass});
+                        var p = angular.element('<p>',{'class':'map-user-name-sec','html':user.empName});
+                        console.log(image.outerHTML )
+                        /*tempObj.layer="Options";*/
+                        tempObj.icon= {
+                                            type: 'div',
+                                            iconSize: [25, 60],
+                                            popupAnchor:  [0, -50],
+                                            iconAnchor:   [10, 45],
+                                            html: image[0].outerHTML+p[0].outerHTML  
+                                     }
+                        tempObj.message='<user-marker contactno="'+user.contactNo+'"></user-marker';
+                        $scope.markers.push(tempObj)
+                });
+                console.log($scope.markers)
+            }
+        })
+    }    
+
+    
+
+   
+    $scope.center={
+        lat : 18.581904504725568,
+        lng : 73.68483066558838,
+        zoom: 15
+    };
+
+     var eventNameClick = 'leafletDirectiveMarker.myMap.click';
+     var eventNameTouch = 'leafletDirectiveMarker.myMap.touch';
+                $scope.$on(eventNameClick, function(event, args){
+                    
+                $timeout(function(){
+                    var  wrapper = document.getElementById('cn-wrapper');
+                 classie.add(wrapper, 'opened-nav');
+                },100)
+                 
+
+                });
+                $scope.$on(eventNameTouch, function(event, args){
+                    
+
+                  $timeout(function(){
+                    var  wrapper = document.getElementById('cn-wrapper');
+                 classie.add(wrapper, 'opened-nav');
+                },100)
+                 
+
+                });
+    /*{
+            osloMarker: {
+                lat: 59.91,
+                lng: 10.75,
+                message: "I want to travel here!",
+                focus: true,
+                draggable: false
+            }
+        }*/
+
+
+    
+  }]);
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('userHome.suggestions', {
+        url: '/suggestions',
+        templateUrl: 'app/suggestions/suggestions.html',
+        controller: 'SuggestionsCtrl'
+      });
+  }]);
+'use strict';
+
+angular.module('cbApp')
+  .controller('UserHomeCtrl', ["$scope", "Auth", "$state", "User", function ($scope,Auth,$state,User) {
+    $scope.message = 'Hello';
+    $scope.tgState = false;
+    Auth.getCurrentUser().then(function(data){return $scope.currentUser=data});
+    
+    
+    $scope.toggleHamburger = function(){
+    	$scope.tgState = !$scope.tgState;
+    }
+
+    $scope.logout = function(){
+    	Auth.logout();
+      $state.go("login")
+    }
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('userHome', {
+        url: '/userHome',
+        templateUrl: 'app/userHome/userHome.html',
+        controller: 'UserHomeCtrl',
+        authenticate:true
+      });
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .directive('userMarker', function () {
+    return {
+      templateUrl: 'app/userMarker/userMarker.html',
+      restrict: 'E',
+      scope:{
+      	contactno:"="
+      },
+      link: function (scope, element, attrs) {
+      	console.log(scope.contactno);
+      	scope.callMe = function(){
+      		alert("directive function called!")
+      	}
+      }
+    };
+  });
+
+'use strict';
+
+angular.module('cbApp')
+  .controller('UserProfileCtrl', ["$scope", "$modal", "cordovaUtil", "$cordovaImagePicker", function ($scope, $modal, cordovaUtil,$cordovaImagePicker) {
+    $scope.message = 'Hello';
+
+
+    $scope.getLocation=function(){
+         var modalInstance = $modal.open({
+          animation: true,
+          templateUrl: 'components/modal/modal.html',
+          controller: 'ModalCtrl',
+          size: 'sm'
+        });
+        
+        modalInstance.result.then(function(option){
+          if(option == "yes")
+          cordovaUtil.getUserHomeCoordinates().then(function(address){
+          	alert('Promise was returned successfully. Address is : ' + address);
+           	$scope.user.homeAddress=address.homeAddress;
+            $scope.user.city=address.city;
+            $scope.user.zipcode=address.zipcode;
+            $scope.user.placeID=address.placeID;
+          })
+        });
+    };
+    
+    
+    $scope.getImageSaveContact = function() {       
+            // Image picker will load images according to these settings
+            var options = {
+                maximumImagesCount: 1, // Max number of selected images, I'm using only one for this example
+                width: 800,
+                height: 800,
+                quality: 80            // Higher is better
+            };
+ 
+            $cordovaImagePicker.getPictures(options).then(function (results) {
+                // Loop through acquired images
+                for (var i = 0; i < results.length; i++) {
+                    $scope.selectedImage = results[i];   // We loading only one image so we can use it like this
+ 
+                    window.plugins.Base64.encodeFile($scope.selectedImage, function(base64){  // Encode URI to Base64 needed for contacts plugin
+                        $scope.selectedImage = base64;
+                        console.log($scope.selectedImage)
+                    });
+                }
+            }, function(error) {
+                console.log('Error: ' + JSON.stringify(error));    // In case of error
+            });
+        };
+
+    $scope.syncUserLocationData = function(){
+    	cordovaUtil.syncCoordinates();
+    };
+
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+      .state('userHome.userProfile', {
+        url: '/userProfile',
+        templateUrl: 'app/userProfile/userProfile.html',
+        controller: 'UserProfileCtrl'
+      });
+  }]);
+'use strict';
+
+angular.module('cbApp')
+  .factory('Auth', ["$location", "$rootScope", "User", "$q", "httpRequest", "localStorage", function Auth($location, $rootScope, User,$q,httpRequest,localStorage) {
+    var currentUser = {};
+
+   // if($cookieStore.get('token')) {
+   //    currentUser = User.get();
+   //  }
+  var fetchUserFromLocalStorage=function(){
+    var deffered= $q.defer();
+    localStorage.retrieve('currentUser').
+    then(function(obj){
+      if(obj)
+        deffered.resolve(obj);
+      else
+        deffered.reject(obj);
+    },function(err){
+      deffered.reject(obj);
+    });
+    return deffered.promise;
+  };
+
+  var fetchUserFromDB=function(){
+      var deffered= $q.defer();
+      localStorage.retrieve('token').
+        then(function(res){
+        if(res!=null){
+           //currentUser = User.get();
+           User.get().$promise.
+           then(function(data){
+              deffered.resolve(data);
+           },
+            function(error){
+              deffered.reject(error);
+            });
+        } 
+        else{
+          //if token is null.
+          console.log("no token found exiting.");
+          deffered.reject("No auth token");
+        }
+      },
+      function(err){
+        //if error while retriving token.
+        deffered.reject(err);
+      });
+      return deffered.promise;
+  }; 
+
+  var fetchUser=function(){
+    var deffered= $q.defer();
+    //if in cache
+    if(currentUser.userId){
+      deffered.resolve(currentUser);
+    }
+    else{
+      //not in cahe then check local
+      fetchUserFromLocalStorage().
+      then(function(user){
+        currentUser=user;
+        deffered.resolve(currentUser);
+      },
+        function(err){
+          //not in local go to DB
+          fetchUserFromDB().
+          then(function(user){
+            currentUser=user;
+            deffered.resolve(user);
+            //TODO: store in local
+            localStorage.store('currentUser',user);
+          },function(err){
+            deffered.reject();
+          })
+      });
+    }
+    return deffered.promise;       
+  }
+
+    return {
+
+      /**
+       * Authenticate user and save token
+       *
+       * @param  {Object}   user     - login info
+       * @param  {Function} callback - optional
+       * @return {Promise}
+       */
+      login: function(user, callback) {
+        var cb = callback || angular.noop;
+        var deferred = $q.defer();
+        var tempUser = {};
+        tempUser.userId = user.empId;
+        tempUser.password = user.password;
+        httpRequest.post(config.apis.login,tempUser).
+        then(function(data){
+          if(data.status==200){
+            //console.log("data.data",data.data)
+             /*$localForage.setItem('token', data.data.token).*/
+            localStorage.store('token',data.data.token).            
+            then(function(){
+              currentUser = User.get();
+              console.log("currentUser in login service",currentUser)
+              //fetch user & store in cache & local storage
+              fetchUser().then(function(userData){
+                  deferred.resolve(data);
+                  return cb();
+              });         
+            });          
+          }
+        },function(err){
+           this.logout();
+          deferred.reject(err);
+          return cb(err);
+        }.bind(this));
+        return deferred.promise;
+      },
+
+      /**
+       * Delete access token and user info
+       *
+       * @param  {Function}
+       */
+      logout: function() {
+        console.log(localStorage.retrieve('token'))
+        localStorage.remove('token');
+        localStorage.remove('currentUser');
+        currentUser = {};
+      },
+
+      /**
+       * Create a new user
+       *
+       * @param  {Object}   user     - user info
+       * @param  {Function} callback - optional
+       * @return {Promise}
+       */
+      createUser: function(user, callback) {
+        var cb = callback || angular.noop;
+
+        return User.save(user,
+          function(data) {
+            localStorage.store('token', data.token);
+            currentUser = User.get();
+            return cb(user);
+          },
+          function(err) {
+            this.logout();
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+
+      /**
+       * Change password
+       *
+       * @param  {String}   oldPassword
+       * @param  {String}   newPassword
+       * @param  {Function} callback    - optional
+       * @return {Promise}
+       */
+      changePassword: function(oldPassword, newPassword, callback) {
+        var cb = callback || angular.noop;
+
+        return User.changePassword({ id: currentUser._id }, {
+          oldPassword: oldPassword,
+          newPassword: newPassword
+        }, function(user) {
+          return cb(user);
+        }, function(err) {
+          return cb(err);
+        }).$promise;
+      },
+
+      /**
+       * Gets all available info on authenticated user
+       *
+       * @return {Object} user
+       */
+      getCurrentUser: function() {
+        var deffered=$q.defer();        
+        fetchUser().then(function(user){
+          deffered.resolve(user);
+        },
+          function(err){
+            deffered.reject(err);
+          }
+        );
+        return deffered.promise;
+      },
+
+      setCurrentUser:function(user){
+        currentUser = user;
+      },
+
+      /**
+       * Check if a user is logged in
+       *
+       * @return {Boolean}
+       */
+      isLoggedIn: function() {
+      localStorage.retrieve('token').then(function(res){
+          console.log(res);
+          //console.log("token",token)
+          if(res==null)
+            return false;
+
+        return true;
+       });
+        
+        //return currentUser.hasOwnProperty('role');
+      },
+
+      /**
+       * Waits for currentUser to resolve before checking if user is logged in
+       */
+      isLoggedInAsync: function(cb) {
+        //changed 
+        fetchUser().then(function(user){
+          if(user.hasOwnProperty('userId'))
+            cb(true);
+          else
+            cb(false);
+        },function(err){
+          cb(false)
+        });
+        // if(currentUser.hasOwnProperty('$promise')) {
+        //   currentUser.$promise.then(function() {
+        //     cb(true);
+        //   }).catch(function() {
+        //     cb(false);
+        //   });
+        // } else if(currentUser.hasOwnProperty('role')) {
+        //   cb(true);
+        // } else {
+        //   cb(false);
+        // }
+      },
+
+      /**
+       * Check if a user is an admin
+       *
+       * @return {Boolean}
+       */
+      isAdmin: function() {
+        return currentUser.role === 'admin';
+      },
+
+      /**
+       * Get auth token
+       */
+      getToken: function() {
+        return localStorage.retrieve('token');
+      }
+    };
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .factory('User', ["$resource", function ($resource) {
+    var api = config.apiBaseURL;
+    return $resource(api+'api/users/:id/:controller', {
+      id: '@_id'
+    },
+    {
+      changePassword: {
+        method: 'PUT',
+        params: {
+          controller:'password'
+        }
+      },
+      get: {
+        method: 'GET',
+        params: {
+          id:'me'
+        }
+      }
+	  });
+  }]);
+
+'use strict';
+
+angular.module('cbApp')
+  .controller('ModalCtrl', ["$scope", "$modalInstance", function ($scope, $modalInstance) {
+    $scope.message = 'Hello';
+
+    $scope.homeAddressModalOk = function(){
+ 
+    //	cordovaUtil.getUserHomeCoordinates();
+    	$modalInstance.close('yes');
+    };
+
+    $scope.homeAddressModalCancel = function(){
+    	
+    	$modalInstance.close();
+    };
+
+
+  }]);
+'use strict';
+
+angular.module('cbApp')
+  .factory('Modal', ["$rootScope", "$modal", function ($rootScope, $modal) {
+    /**
+     * Opens a modal
+     * @param  {Object} scope      - an object to be merged with modal's scope
+     * @param  {String} modalClass - (optional) class(es) to be applied to the modal
+     * @return {Object}            - the instance $modal.open() returns
+     */
+    function openModal(scope, modalClass) {
+      var modalScope = $rootScope.$new();
+      scope = scope || {};
+      modalClass = modalClass || 'modal-default';
+
+      angular.extend(modalScope, scope);
+
+      return $modal.open({
+        templateUrl: 'components/modal/modal.html',
+        windowClass: modalClass,
+        scope: modalScope
+      });
+    }
+
+    // Public API here
+    return {
+
+      /* Confirmation modals */
+      confirm: {
+
+        /**
+         * Create a function to open a delete confirmation modal (ex. ng-click='myModalFn(name, arg1, arg2...)')
+         * @param  {Function} del - callback, ran when delete is confirmed
+         * @return {Function}     - the function to open the modal (ex. myModalFn)
+         */
+        delete: function(del) {
+          del = del || angular.noop;
+
+          /**
+           * Open a delete confirmation modal
+           * @param  {String} name   - name or info to show on modal
+           * @param  {All}           - any additional args are passed staight to del callback
+           */
+          return function() {
+            var args = Array.prototype.slice.call(arguments),
+                name = args.shift(),
+                deleteModal;
+
+            deleteModal = openModal({
+              modal: {
+                dismissable: true,
+                title: 'Confirm Delete',
+                html: '<p>Are you sure you want to delete <strong>' + name + '</strong> ?</p>',
+                buttons: [{
+                  classes: 'btn-danger',
+                  text: 'Delete',
+                  click: function(e) {
+                    deleteModal.close(e);
+                  }
+                }, {
+                  classes: 'btn-default',
+                  text: 'Cancel',
+                  click: function(e) {
+                    deleteModal.dismiss(e);
+                  }
+                }]
+              }
+            }, 'modal-danger');
+
+            deleteModal.result.then(function(event) {
+              del.apply(event, args);
+            });
+          };
+        }
+      }
+    };
+  }]);
+
+'use strict';
+
+/**
+ * Removes server error when user updates input
+ */
+angular.module('cbApp')
+  .directive('mongooseError', function () {
+    return {
+      restrict: 'A',
+      require: 'ngModel',
+      link: function(scope, element, attrs, ngModel) {
+        element.on('keydown', function() {
+          return ngModel.$setValidity('mongoose', true);
+        });
+      }
+    };
+  });
+'use strict';
+
+angular.module('cbApp')
+  .controller('NavbarCtrl', ["$scope", "$location", "Auth", function ($scope, $location, Auth) {
+    $scope.menu = [{
+      'title': 'Home',
+      'link': '/'
+    }];
+
+    $scope.isCollapsed = true;
+    $scope.isLoggedIn = Auth.isLoggedIn;
+    $scope.isAdmin = Auth.isAdmin;
+    $scope.getCurrentUser = Auth.getCurrentUser;
+
+    $scope.logout = function() {
+      Auth.logout();
+      $location.path('/login');
+    };
+
+    $scope.isActive = function(route) {
+      return route === $location.path();
+    };
+  }]);
+/* global io */
+'use strict';
+
+angular.module('cbApp')
+  .factory('socket', ["socketFactory", function(socketFactory) {
+
+    // socket.io now auto-configures its connection when we ommit a connection url
+    /*var ioSocket = io('', {
+      // Send auth token on connection, you will need to DI the Auth service above
+      // 'query': 'token=' + Auth.getToken()
+      path: '/socket.io-client'
+    });
+
+    var socket = socketFactory({
+      ioSocket: ioSocket
+    });*/
+
+    return {
+      socket: {},//socket,
+
+      /**
+       * Register listeners to sync an array with updates on a model
+       *
+       * Takes the array we want to sync, the model name that socket updates are sent from,
+       * and an optional callback function after new items are updated.
+       *
+       * @param {String} modelName
+       * @param {Array} array
+       * @param {Function} cb
+       */
+      syncUpdates: function () { },
+      // syncUpdates: function (modelName, array, cb) {
+      //   cb = cb || angular.noop;
+
+      //   /**
+      //    * Syncs item creation/updates on 'model:save'
+      //    */
+      //   socket.on(modelName + ':save', function (item) {
+      //     var oldItem = _.find(array, {_id: item._id});
+      //     var index = array.indexOf(oldItem);
+      //     var event = 'created';
+
+      //     // replace oldItem if it exists
+      //     // otherwise just add item to the collection
+      //     if (oldItem) {
+      //       array.splice(index, 1, item);
+      //       event = 'updated';
+      //     } else {
+      //       array.push(item);
+      //     }
+
+      //     cb(event, item, array);
+      //   });
+
+      //   /**
+      //    * Syncs removed items on 'model:remove'
+      //    */
+      //   socket.on(modelName + ':remove', function (item) {
+      //     var event = 'deleted';
+      //     _.remove(array, {_id: item._id});
+      //     cb(event, item, array);
+      //   });
+      // },
+
+      /**
+       * Removes listeners for a models updates on the socket
+       *
+       * @param modelName
+       */
+      unsyncUpdates: function () {} 
+      // unsyncUpdates: function (modelName) {
+      //   socket.removeAllListeners(modelName + ':save');
+      //   socket.removeAllListeners(modelName + ':remove');
+      // }
+    };
+  }]);
+
+angular.module('cbApp').run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('app/account/login/login.html',
+    "<!-- Login by Siddharth Ajmera --><div class=\"page-wrapper login-wrapper\"><div class=\"container login-container\"><div class=form-section><p class=error-msg>{{errorMsg}}</p><form class=form name=loginForm novalidate><div class=\"each-row login-page\"><div><span><img class=icon-style src=assets/images/icon_username.png></span></div><div><input ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" type=number name=empId placeholder=\"EMPLOYEE ID\" ng-model=user.empId required ng-pattern=\"/^[0-9]*$/\"><div ng-show=showErrorMessage ng-messages=loginForm.empId.$error class=error-msg-edit><p ng-message=required class=error-msg>Please enter Employee number</p><p ng-message=pattern class=error-msg>Please enter valid Employee number</p></div></div></div><div class=\"each-row login-page\"><div><span><img class=icon-style src=assets/images/icon_password.png></span></div><div><input ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control pwd-boxes login-input-box\" type=password name=password placeholder=PASSWORD ng-model=user.password required><div ng-show=showErrorMessage ng-messages=loginForm.password.$error class=error-msg-edit><p ng-message=required class=error-msg>Please enter password</p></div></div></div><div class=\"each-row login-page\"><input type=button name=continue value=LOGIN ng-click=login()></div></form><a>Forgot password?</a> <a ui-sref=signup.stepOne>Register</a></div></div></div>"
+  );
+
+
+  $templateCache.put('app/account/settings/settings.html',
+    "<div ng-include=\"'components/navbar/navbar.html'\"></div><div class=container><div class=row><div class=col-sm-12><h1>Change Password</h1></div><div class=col-sm-12><form class=form name=form ng-submit=changePassword(form) novalidate><div class=form-group><label>Current Password</label><input type=password name=password class=form-control ng-model=user.oldPassword mongoose-error><p class=help-block ng-show=form.password.$error.mongoose>{{ errors.other }}</p></div><div class=form-group><label>New Password</label><input type=password name=newPassword class=form-control ng-model=user.newPassword ng-minlength=3 required><p class=help-block ng-show=\"(form.newPassword.$error.minlength || form.newPassword.$error.required) && (form.newPassword.$dirty || submitted)\">Password must be at least 3 characters.</p></div><p class=help-block>{{ message }}</p><button class=\"btn btn-lg btn-primary\" type=submit>Save changes</button></form></div></div></div>"
+  );
+
+
+  $templateCache.put('app/account/signup/signup.html',
+    "<div class=page-wrapper><div class=\"container login-container\"><div class=timeline-section><!-- progressbar --><ul id=progressbar><li ng-class=\"{'active':step==1}\" ng-click=goToStep(1)><a href=\"\">1</a></li><li ng-class=\"{'active':step==2}\" ng-click=goToStep(2)><a href=\"\">2</a></li><li ng-class=\"{'active':step==3}\" ng-click=goToStep(3)><a href=\"\">3</a></li></ul></div><form name=signupForm class=animation-form-signup ng-submit=register() novalidate><div ui-view></div></form></div></div>"
+  );
+
+
+  $templateCache.put('app/account/signup/stepOne/stepOne.html',
+    "<div class=\"form-section signup-section-form\"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_employee_ID.png></span></div><div><input type=number max=9999999 ng-class=\"{'error-border':!showErrorMessage}\" class=\"form-control input-boxes login-input-box\" ng-model=user.empId name=empid placeholder=\"EMPLOYEE ID\" required ng-pattern=\"/^[1-9]\\d*$/\"><div ng-show=!showErrorMessage ng-messages=signupForm.empid.$error class=error-msg-edit><p ng-message=required class=error-msg>Employee ID is required</p><p ng-message=pattern class=error-msg>Invalid Employee ID</p></div></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_username.png></span></div><div><input ng-class=\"{'error-border':!showErrorMessage}\" name=empName class=\"form-control input-boxes login-input-box\" ng-model=user.empName placeholder=NAME required><div ng-show=!showErrorMessage ng-messages=signupForm.empName.$error class=error-msg-edit><p ng-message=required class=error-msg>Name is required</p><p ng-message=pattern class=error-msg>Invalid Name</p></div></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_mobile_number.png></span></div><div><input maxlength=10 class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" ng-model=user.contactNo type=tel name=contactNo required ng-pattern=\"/^[789]\\d{9}$/\" placeholder=\"MOBILE NUMBER\"><div ng-show=!showErrorMessage ng-messages=signupForm.contactNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Contact Number is required</p><p ng-message=pattern class=error-msg>Invalid Contact Number</p></div></div></div><div id=sites class=\"each-row gender-section\"><div class=\"radio gender-radio\"><label class=rad><input type=radio name=optradio value=Female ng-model=\"user.gender\"><i></i> FEMALE</label></div><div class=\"radio gender-radio\"><label class=rad><input type=radio name=optradio value=Male ng-model=\"user.gender\"><i></i> MALE</label></div></div><div class=each-row><input type=button class=input-buttons name=continue value=CONTINUE ng-click=goToStep(2)></div></div>"
+  );
+
+
+  $templateCache.put('app/account/signup/stepThree/stepThree.html',
+    "<div class=\"form-section signup-section-form\"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_username.png></span></div><div><input type=number maxlength=9999999 ng-class=\"{'error-border':!showErrorMessage}\" class=\"form-control input-boxes login-input-box\" ng-model=user.username name=username placeholder=USERNAME required ng-pattern=\"/^[1-9]\\d*$/\"><div ng-show=!showErrorMessage ng-messages=signupForm.username.$error class=error-msg-edit><p ng-message=required class=error-msg>Username is required</p><p ng-message=pattern class=error-msg>Invalid Username</p></div></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_password.png></span></div><div><input class=\"form-control pwd-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" required type=password ng-model=user.password name=password placeholder=PASSWORD><div ng-show=!showErrorMessage ng-messages=signupForm.password.$error class=error-msg-edit><p ng-message=required class=error-msg>Please enter password</p></div></div></div><div class=each-row><p class=terms-cond-text>By Signing up, I agree to TCS's <a href=# class=\"global-link float-none\">Terms of Service</a> and <a href=# class=\"global-link float-none\">Privacy Policy</a></p></div><div class=each-row><input type=submit class=submit-buttons name=continue value=REGISTER></div></div>"
+  );
+
+
+  $templateCache.put('app/account/signup/stepTwo/stepTwo.html',
+    "<div class=\"form-section signup-section-form signup-two-wrap\"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_home_address.png></span></div><div class=\"input-fields address-fields\"><input ng-class=\"{'error-border':!showErrorMessage}\" name=homeAddress class=\"form-control input-boxes\" ng-model=user.homeAddress placeholder=\"HOME ADDRESS\" required></div><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div ng-show=!showErrorMessage ng-messages=signupForm.homeAddress.$error class=error-msg-edit><p ng-message=required class=error-msg>Home Address is required</p></div></div><div class=each-row><span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_city.png></span></div><div class=input-fields><input ng-class=\"{'error-border':!showErrorMessage}\" name=city class=\"form-control input-boxes login-input-box\" ng-model=user.city placeholder=CITY required ng-pattern=\"/^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$/\"></div><div ng-show=!showErrorMessage ng-messages=signupForm.city.$error class=error-msg-edit><p ng-message=required class=error-msg>City is required</p><p ng-message=pattern class=error-msg>Invalid City</p></div></span> <span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_zipcode.png></span></div><div class=input-fields><input type=number ng-class=\"{'error-border':!showErrorMessage}\" name=zipcode class=\"form-control input-boxes login-input-box\" ng-model=user.zipcode placeholder=ZIPCODE max=999999 required ng-pattern=\"/^[123456789]\\d{5}$/\"></div><div ng-show=!showErrorMessage ng-messages=signupForm.homeAddress.$error class=error-msg-edit><p ng-message=required class=error-msg>Zipcode is required</p><p ng-message=pattern class=error-msg>Invalid Zipcode</p></div></span></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_office_address.png></span></div><div class=\"input-fields office-address-select-wrap\"><!-- <select ui-select2  name=\"officeAddress\" class=\"office-address-select\" ng-model=\"user.officeAddress\" ng-class=\"{'error-border':!showErrorMessage}\" required  data-placeholder=\"OFFICE ADDRESS\">\n" +
+    "\t\t\t\t\t<option value=\"\">OFFICE ADDRESS</option>\n" +
+    "\t\t\t\t <option ng-repeat=\"oa in officeAddressJSON\" value=\"{{oa}}\">{{oa}}</option>   \n" +
+    "\t\t\t</select> --><ui-select ng-model=user.officeAddress class=office-address-select><ui-select-match placeholder=\"OFFICE ADDRESS\"><span ng-bind=$select.selected></span></ui-select-match><ui-select-choices repeat=\"item in (officeAddressJSON | filter: $select.search)\"><span ng-bind=item></span></ui-select-choices></ui-select></div><div ng-show=!showErrorMessage ng-messages=signupForm.officeAddress.$error class=error-msg-edit><p ng-message=required class=error-msg>Please select an office address</p></div></div><div class=each-row><span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_time.png></span></div><div class=input-fields><select name=timeSlot class=\"timeslot login-input-box\" ng-model=user.timeSlot ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t for t in timeSlotJSON\"><option style=display:none value=\"\">TIMESLOT</option></select></div><div ng-show=!showErrorMessage ng-messages=signupForm.timeSlot.$error class=error-msg-edit><p ng-message=required class=error-msg>Please select a timeslot</p></div></span> <span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_seat.png></span></div><div class=input-fields><select class=\"seater-select login-input-box\" name=capacity ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=user.vehicle.capacity ng-options=\"c as c for c in vehicleCapacityJSON\"><option style=display:none value=\"\">SEAT</option></select></div><div ng-show=!showErrorMessage ng-messages=signupForm.capacity.$error class=error-msg-edit><p ng-message=required class=error-msg>Please select available seats</p></div></span></div><div class=\"each-row seater-section\"><div><span><img class=icon-style src=assets/images/icon_car.png></span></div><div class=input-fields><input class=\"form-control input-boxes\" ng-class=\"{'error-border':!showErrorMessage}\" maxlength=13 name=vehicleNo required ng-pattern=\"/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/\" ng-model=user.vehicle.vehicleNo placeholder=\"VEHICLE REGISTRATION NUMBER\"></div><div ng-show=!showErrorMessage ng-messages=signupForm.vehicleNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Registration Number is required</p><p ng-message=pattern class=error-msg>Invalid Registration Number</p></div></div><div class=each-row><input type=button class=\"input-buttons login-input-box\" name=continue value=CONTINUE ng-click=goToStep(3)></div></div>"
+  );
+
+
+  $templateCache.put('app/admin/admin.html',
+    "<div ng-include=\"'components/navbar/navbar.html'\"></div><div class=container><p>The delete user and user index api routes are restricted to users with the 'admin' role.</p><ul class=list-group><li class=list-group-item ng-repeat=\"user in users\"><strong>{{user.name}}</strong><br><span class=text-muted>{{user.email}}</span> <a ng-click=delete(user) class=trash><span class=\"glyphicon glyphicon-trash pull-right\"></span></a></li></ul></div>"
+  );
+
+
+  $templateCache.put('app/availableRides/availableRides.html',
+    "<div class=page-wrapper><div class=\"container login-container user-home-container pad-R-none pad-L-none\"><div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><span class=\"glyphicon glyphicon-chevron-left cursor-pointer\" ng-click=toggleHamburger()></span> <span class=heading>Avaialble Rides</span></div><div class=\"form-section functionality-wrap avail-list-wrap\"><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\"><div class=\"col-md-3 col-sm-3 col-xs-3 avail-list-img-sec\"><img src=assets/images/user-image.jpg class=avail-user-img></div><div class=\"col-md-9 col-sm-9 col-xs-9\"><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><span class=\"pull-left input-labels\">Bob Martin</span> <span class=\"pull-right input-labels\">01/01/2015</span></div><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><div class=availability-label>Availability</div><div class=\"avail-seat-wrap field-gap-top field-gap-bottom\"><span class=\"each-seat available\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat available selected\"></span></div></div></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\"><div class=\"col-md-3 col-sm-3 col-xs-3 avail-list-img-sec\"><img src=assets/images/user-image.jpg class=avail-user-img></div><div class=\"col-md-9 col-sm-9 col-xs-9\"><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><span class=\"pull-left input-labels\">Bob Martin</span> <span class=\"pull-right input-labels\">01/01/2015</span></div><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><div class=availability-label>Availability</div><div class=\"avail-seat-wrap field-gap-top field-gap-bottom\"><span class=\"each-seat available\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat available selected\"></span></div></div></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\"><div class=\"col-md-3 col-sm-3 col-xs-3 avail-list-img-sec\"><img src=assets/images/user-image.jpg class=avail-user-img></div><div class=\"col-md-9 col-sm-9 col-xs-9\"><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><span class=\"pull-left input-labels\">Bob Martin</span> <span class=\"pull-right input-labels\">01/01/2015</span></div><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><div class=availability-label>Availability</div><div class=\"avail-seat-wrap field-gap-top field-gap-bottom\"><span class=\"each-seat available\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat available selected\"></span></div></div></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\"><div class=\"col-md-3 col-sm-3 col-xs-3 avail-list-img-sec\"><img src=assets/images/user-image.jpg class=avail-user-img></div><div class=\"col-md-9 col-sm-9 col-xs-9\"><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><span class=\"pull-left input-labels\">Bob Martin</span> <span class=\"pull-right input-labels\">01/01/2015</span></div><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><div class=availability-label>Availability</div><div class=\"avail-seat-wrap field-gap-top field-gap-bottom\"><span class=\"each-seat available\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat available selected\"></span></div></div></div></div></div></div></div>"
+  );
+
+
+  $templateCache.put('app/home/home.html',
+    "<div class=\"page-wrapper analyze-page\"><div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><span class=\"glyphicon glyphicon-chevron-left cursor-pointer\" ng-click=toggleHamburger()></span> <span class=heading>Analyze</span></div><div class=analyze-wrapper><!-- <div class=\"tab-section\">\n" +
+    "\t\t\t<div>\n" +
+    "\t\t\t\t<img src=\"assets/images/3x/ico_analyze_off.png\">\n" +
+    "\t\t\t\t<p>ANALYTICS</p>\n" +
+    "\t\t\t</div>\n" +
+    "\t\t\t<div>\n" +
+    "\t\t\t\t<img src=\"assets/images/3x/ico_post_ride_off.png\">\n" +
+    "\t\t\t\t<p>HISTORY</p>\n" +
+    "\t\t\t</div>\n" +
+    "\t\t</div>\n" +
+    " --><div class=analyze-map-wrap><p class=ongoing-journey>ONGOING JOURNEY</p><leaflet class=leaflet markers=markers lf-center=center event-broadcast=events id=analyzeon defaults=defaults paths=paths></leaflet><!-- \t<p class=\"return-journey\">RETURN JOURNEY</p>\n" +
+    "\n" +
+    "\t\t\t<leaflet class=\"leaflet\" markers=\"markers\" lf-center=\"center\"  event-broadcast=\"events\" id='analyzere' defaults=\"defaults\"></leaflet> --></div><div class=analyze-data-wrapper><div class=\"each-dimension first-dim\"><span class=\"pull-left dim-img-icon-wrap\"><img class=dim-images-icon src=assets/images/3x/distance.png></span> <span class=pull-left>Total <span class=dist-highlight>Distance</span></span> <span class=pull-right>{{stats.totalDistance}}{{stats.distanceUnit}}</span></div><div class=each-dimension><span class=\"pull-left dim-img-icon-wrap\"><img class=dim-images-icon src=assets/images/3x/stagnant_time.png></span> <span class=pull-left>Stangnant <span class=stan-time>Time</span></span> <span class=pull-right>11:20</span></div><div class=each-dimension><span class=\"pull-left dim-img-icon-wrap\"><img class=dim-images-icon src=assets/images/3x/time.png></span> <span class=pull-left>Total <span class=total-time>time</span></span> <span class=pull-right>{{stats.totalTime}}{{stats.timeUnit}}</span></div><div class=\"each-dimension last-dim\"><span class=\"pull-left dim-img-icon-wrap\"><img class=dim-images-icon src=assets/images/3x/speed.png></span> <span class=pull-left>Average <span class=avg-speed>Speed</span></span> <span class=pull-right>{{stats.averageSpeed | limitTo:5}}{{stats.speedUnit}}</span></div></div><div class=lower-left-right-buttons><span class=\"glyphicon glyphicon-chevron-left cursor-pointer left-cursor\" ng-click=getPrevDrive()></span> <span class=\"glyphicon glyphicon-chevron-right cursor-pointer right-cursor\" ng-click=getNextDrive()></span></div></div></div>"
+  );
+
+
+  $templateCache.put('app/intro/intro.html',
+    "<section id=features class=blue ng-init=\"index=2\"><div class=content><slick dots=true infinite=false speed=300 slides-to-show=1 touch-move=false slides-to-scroll=1 class=\"slider one-time\"><div class=slide-wrap><div class=\"slide-info-section slide-1\"><div class=icon-img-wrap><img class=slide-icons src=assets/images/intro-slider/ico_search.png></div><p>Find a companion</p><p>to commute with</p></div></div><div class=slide-wrap><div class=\"slide-info-section slide-2\"><div class=icon-img-wrap><img class=slide-icons src=assets/images/intro-slider/ico_save_exp.png></div><p>Share fuel costs</p><p>and experiences</p></div></div><div class=slide-wrap><div class=\"slide-info-section slide-3\"><div class=icon-img-wrap><img class=slide-icons src=assets/images/intro-slider/ico_make_friend.png></div><p>Make new friends</p><p>while commuting</p></div></div><div class=slide-wrap><div class=\"slide-info-section slide-4\"><div class=icon-img-wrap><img class=slide-icons src=assets/images/intro-slider/ico_make_friend.png></div><p>Save fuel, reduce traffic</p><p>and save earth</p><div class=get-started-section><a class=get-started-link ui-sref=userHome.home>Get Started</a></div></div></div></slick><!-- <p ng-click=\"index=4\">Change index to 4</p>\n" +
+    "    <br> --><!-- <hr/> --><!--   <h2>Multiple Items</h2>\n" +
+    "    <slick slides-to-show=3 slides-to-scroll=3 init-onload=true data=\"awesomeThings\" class=\"slider multiple-items\">\n" +
+    "      <div ng-repeat=\"thing in awesomeThings\"><h3>{{ thing }}</h3></div>\n" +
+    "    </slick>\n" +
+    "    <hr/>\n" +
+    "\n" +
+    "\n" +
+    "    <h2>One At A Time</h2>\n" +
+    "    <slick dots=\"true\" infinite=\"false\" speed=300 slides-to-show=5 touch-move=\"false\" slides-to-scroll=1 class=\"slider one-time\">\n" +
+    "      <div><h3>1</h3></div>\n" +
+    "      <div><h3>2</h3></div>\n" +
+    "      <div><h3>3</h3></div>\n" +
+    "      <div><h3>4</h3></div>\n" +
+    "      <div><h3>5</h3></div>\n" +
+    "      <div><h3>6</h3></div>\n" +
+    "    </slick>\n" +
+    "    \n" +
+    "\n" +
+    "    <br>\n" +
+    "    <hr/>\n" +
+    "    <h2>Lazy Loading</h2>\n" +
+    "    <slick lazy-load='ondemand' slides-to-show=3 slides-to-scroll=1 class=\"slider lazy\">\n" +
+    "      <div><div class=\"image\"><img data-lazy=\"images/lazyfonz1.png\"/></div></div>\n" +
+    "      <div><div class=\"image\"><img data-lazy=\"images/lazyfonz2.png\"/></div></div>\n" +
+    "      <div><div class=\"image\"><img data-lazy=\"images/lazyfonz3.png\"/></div></div>\n" +
+    "      <div><div class=\"image\"><img data-lazy=\"images/lazyfonz4.png\"/></div></div>\n" +
+    "      <div><div class=\"image\"><img data-lazy=\"images/lazyfonz5.png\"/></div></div>\n" +
+    "      <div><div class=\"image\"><img data-lazy=\"images/lazyfonz6.png\"/></div></div>\n" +
+    "    </slick> --></div></section>"
+  );
+
+
+  $templateCache.put('app/main/introductionCarousel.html',
+    "<section id=features class=blue ng-init=\"index=2\"><div class=content><h2>Single Item</h2><slick class=\"slider single-item\" current-index=index responsive=breakpoints slides-to-show=3 slides-to-scroll=3><div ng-repeat=\"i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]\"><h3>{{ i }}</h3></div><p>Current index: {{ index }}</p></slick><p ng-click=\"index=4\">Change index to 4</p><br><hr><!--   <h2>Multiple Items</h2>\n" +
+    "    <slick slides-to-show=3 slides-to-scroll=3 init-onload=true data=\"awesomeThings\" class=\"slider multiple-items\">\n" +
+    "      <div ng-repeat=\"thing in awesomeThings\"><h3>{{ thing }}</h3></div>\n" +
+    "    </slick>\n" +
+    "    <hr/>\n" +
+    "    <h2>One At A Time</h2>\n" +
+    "    <slick dots=\"true\" infinite=\"false\" speed=300 slides-to-show=5 touch-move=\"false\" slides-to-scroll=1 class=\"slider one-time\">\n" +
+    "      <div><h3>1</h3></div>\n" +
+    "      <div><h3>2</h3></div>\n" +
+    "      <div><h3>3</h3></div>\n" +
+    "      <div><h3>4</h3></div>\n" +
+    "      <div><h3>5</h3></div>\n" +
+    "      <div><h3>6</h3></div>\n" +
+    "    </slick>\n" +
+    "    <br>\n" +
+    "    <hr/>\n" +
+    "    <h2>Lazy Loading</h2>\n" +
+    "    <slick lazy-load='ondemand' slides-to-show=3 slides-to-scroll=1 class=\"slider lazy\">\n" +
+    "      <div><div class=\"image\"><img data-lazy=\"images/lazyfonz1.png\"/></div></div>\n" +
+    "      <div><div class=\"image\"><img data-lazy=\"images/lazyfonz2.png\"/></div></div>\n" +
+    "      <div><div class=\"image\"><img data-lazy=\"images/lazyfonz3.png\"/></div></div>\n" +
+    "      <div><div class=\"image\"><img data-lazy=\"images/lazyfonz4.png\"/></div></div>\n" +
+    "      <div><div class=\"image\"><img data-lazy=\"images/lazyfonz5.png\"/></div></div>\n" +
+    "      <div><div class=\"image\"><img data-lazy=\"images/lazyfonz6.png\"/></div></div>\n" +
+    "    </slick> --></div></section>"
+  );
+
+
+  $templateCache.put('app/main/main.html',
+    "<div class=main-page-wrapper><div><div class=\"col-md-12 col-sm-12 col-xs-12 location-section\"><div class=\"col-md-12 col-sm-12 col-xs-12 content-wrapper map-content-wrapper\"><svg class=map-svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink version=1.1 x=0px y=0px viewbox=\"0 0 100 125\" style=\"enable-background:new 0 0 100 100\" xml:space=preserve><path class=path-0 d=\"M73.5,48.3l-1.4,2.4l5.9,2.5l-7.8,4.5l-1.6-0.9l-0.3,0.5l1.3,0.7L67,59.4l-0.6,1.1l3.8-2.2l8.6,4.7l-8.9,5.5  L62,63l1.1-0.7l-0.3-0.5l-1.4,0.8l-5.9-4.1l4.1-2.2l-0.3-0.5L55,58.1l-4.7-3.3l6.6-3.4L56,49.9l-3-1.6l1.6-0.8l-0.3-0.5l-1.9,1  L48.9,46l3.8-1.8l-0.3-0.5l-4.2,2L45,43.9l5.5-2.6l0.7,0.3l-1.1-1.9l-12.9,5.9l-14.3-3.6L5,50.3l10.2,41.3l36.6-22.1l21.3,1.4  L95,56.9L73.5,48.3z M54.8,58.9l0.1-0.1l5.3,3.7l-7.3-1l-5-4l6.9,1.2L54.8,58.9z M41.8,53.5l3.8,3L37.2,55l-0.1-0.1l-0.1,0l-3.2-3  L41.8,53.5z M33.1,51.1L33,51l-0.1,0l-2.4-2.2l7.3,1.6l2.9,2.3L33.1,51.1z M39.2,50.6l5.9,1.3l0.1,0.1l0.1-0.1l3,2.1L42,52.9  L39.2,50.6z M38.1,49.8L36,48.1l5.5,1.3l0.1,0.1l0.1-0.1l2.3,1.6L38.1,49.8z M36.7,49.5l-7-1.5l-0.1-0.1l-0.1,0l-1.8-1.7l6.7,1.6  L36.7,49.5z M29,48.1l-8.2,4l-1.7-2.5l7.6-3.6L29,48.1z M29.5,48.6l2.9,2.7l-9.1,4.6l-2.1-3.2L29.5,48.6z M32.8,51.7l3.7,3.5  l-10.2,5.3l-2.7-4.2L32.8,51.7z M37,55.7l4.8,4.6l-11.5,6.4l-3.6-5.5L37,55.7z M38,55.8l8.6,1.5l5.1,4L42.5,60l-0.1-0.1l-0.1,0  L38,55.8z M53.7,57.9l-6.8-1.2l-3.8-3l6.4,1.3l0.1,0.1l0.1-0.1L53.7,57.9z M56.5,50.9l-6.8,3.5l-3.8-2.7l6.4-3.2L56.5,50.9z   M51.6,48.2l-6.3,3.1l-3.1-2.2l5.9-2.8L51.6,48.2z M44.3,44.2l3.2,1.7l-5.8,2.8l-2.8-2L44.3,44.2z M38.2,46.8L38.1,47l2.1,1.4  l-5.3-1.3l-2.2-1.7L38.2,46.8z M31.6,45.2l-0.1,0.1l1.9,1.5L27,45.3l-0.1-0.1l-0.1,0l-1.7-1.7L31.6,45.2z M24.2,43.6l2.1,1.9  l-7.5,3.5l-1.5-2.3L24.2,43.6z M9.1,50.5l7.6-3.5l1.5,2.3l-8.2,3.9L9.1,50.5z M10.1,53.8l8.4-4l1.7,2.5l-9.1,4.4L10.1,53.8z   M11.3,57.4l9.2-4.5l2.1,3.2l-10.1,5.1L11.3,57.4z M12.8,61.8L23,56.7l2.7,4.2l-11.3,5.9L12.8,61.8z M14.6,67.4l11.5-6l3.6,5.6  l-12.9,7.1L14.6,67.4z M20.1,84.3L17,74.7l13.1-7.2l5.2,7.9L20.1,84.3z M35.7,75l-5.1-7.9l11.7-6.4l6.8,6.4L35.7,75z M49.7,67  L49.7,67l-6.5-6.2l9.4,1.3l7.4,5.8L49.7,67z M60.9,68L60.9,68l-7.1-5.7l7.4,1l0.1,0.1l0.1-0.1l7.6,5.3L60.9,68z M70.8,58l7.9-4.5  l9.2,4l-8.5,5.2L70.8,58z\"><g><path class=path-1 fill=#02A554 d=\"M78.9,16.9c-3-5.2-8.6-8.5-14.7-8.5c-6,0-11.6,3.2-14.7,8.5c-3,5.2-3,11.7,0,16.9c4.9,8.5,9.8,16.9,14.7,25.4   c4.9-8.5,9.8-16.9,14.7-25.4C82,28.6,82,22.2,78.9,16.9z M64.3,34.9c-5.3,0-9.5-4.3-9.5-9.5c0-5.3,4.3-9.5,9.5-9.5   c5.3,0,9.5,4.3,9.5,9.5C73.8,30.7,69.5,34.9,64.3,34.9z\"></g></svg><div class=\"col-md-12 col-sm-12 col-xs-12\"><input type=button class=locate-me value=\"LOCATE ME\" ng-click=openMap()> <input type=button class=locate-me value=SYNC ng-click=fetch()></div></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 mainpage-signup-section\"><div class=\"col-md-12 col-sm-12 col-xs-12 content-wrapper\"><svg class=signup-main-svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink version=1.1 x=0px y=0px viewbox=\"0 0 100 125\" enable-background=\"new 0 0 100 100\" xml:space=preserve><g><path class=path-0 d=\"M95.438,80.064H33.325V68.491l12.114-5.922c0.251-1.752,0.938-4.743,2.756-5.828v-3.81   c-0.067-0.41-0.265-1.121-0.566-1.498c-0.932-1.165-2.117-4.371-2.561-6.852c-0.423-0.493-1.016-1.379-1.311-2.703   c-0.035-0.159-0.081-0.349-0.132-0.562c-0.601-2.493-1.053-4.842,0.001-6.182c0.183-0.232,0.401-0.421,0.646-0.564   c-0.357-3.267-0.914-10.742,1.024-13.812c2.468-3.907,8.334-8.259,12.807-8.259h2.645c4.473,0,10.34,4.353,12.808,8.259   c1.938,3.07,1.382,10.545,1.024,13.812c0.245,0.143,0.463,0.333,0.646,0.564c1.055,1.339,0.602,3.688,0,6.182   c-0.052,0.213-0.098,0.403-0.133,0.561c-0.294,1.324-0.886,2.209-1.309,2.703c-0.444,2.486-1.631,5.693-2.562,6.854   c-0.298,0.373-0.495,1.081-0.563,1.497v3.808c1.796,1.073,2.487,4.006,2.745,5.767c2.253,0.929,8.825,3.633,14.924,6.101   c8.072,3.27,9.745,8.237,9.812,8.447c0.168,0.511,0.177,1.309-0.312,1.985C97.488,79.507,96.799,80.064,95.438,80.064z    M36.325,77.064h58.491c-0.813-1.308-2.874-3.756-7.615-5.676c-7.518-3.043-15.754-6.443-15.754-6.443l-0.835-0.345l-0.086-0.901   c-0.205-2.149-0.942-4.151-1.416-4.377h-1.5l0.048-1.49l0.012-5.194c0.023-0.189,0.259-1.885,1.21-3.077   c0.488-0.609,1.673-3.515,2.015-5.896l0.084-0.586l0.462-0.371l0,0c-0.003,0,0.498-0.462,0.725-1.481   c0.038-0.173,0.088-0.381,0.145-0.614c0.364-1.512,0.553-2.588,0.562-3.215l-1.713,0.49l0.271-2.27   c0.557-3.993,0.938-11.124-0.41-13.259c-1.963-3.107-6.983-6.86-10.271-6.86h-2.645c-3.288,0-8.307,3.753-10.271,6.861   c-1.348,2.135-0.967,9.265-0.41,13.258l0.319,2.283l-1.761-0.503c0.009,0.626,0.197,1.703,0.561,3.215   c0.056,0.233,0.106,0.441,0.145,0.613c0.228,1.024,0.733,1.485,0.755,1.505l0.407,0.364l0.11,0.569   c0.34,2.376,1.525,5.284,2.013,5.894c0.953,1.192,1.188,2.888,1.212,3.078l0.012,0.186v6.509h-1.5   c-0.426,0.216-1.164,2.219-1.37,4.368l-0.08,0.836l-11.919,5.828V77.064z\"><path class=path-1 fill=#02A554 d=\"M21.687,90.104H11.403v-10.06H1.343V69.76h10.06V59.699h10.284V69.76h10.06v10.284h-10.06V90.104z M14.403,87.104h4.284   v-10.06h10.06V72.76h-10.06V62.699h-4.284V72.76H4.343v4.284h10.06V87.104z\"></g></svg><div class=\"col-md-12 col-sm-12 col-xs-12\"><input type=button class=locate-me value=\"SIGN UP\" ng-click=openSignupForm()> <input type=button class=locate-me value=\"Test App\" ui-sref=userHome.home></div></div></div></div></div>"
+  );
+
+
+  $templateCache.put('app/main/trackMyLocation.html',
+    "<p>Locate Me</p><div id=mapCanvas style=width:500px;height:380px></div><button ng-click=startTracking()>Find my Location</button>"
+  );
+
+
+  $templateCache.put('app/map/map.html',
+    "<p>Locate Me</p><div id=mapCanvas style=width:500px;height:380px></div><button ng-click=startTracking()>Find my Location</button>"
+  );
+
+
+  $templateCache.put('app/postRides/postRides.html',
+    "<div class=page-wrapper><div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><span class=\"glyphicon glyphicon-chevron-left cursor-pointer\" ng-click=toggleHamburger()></span> <span class=heading>Post Ride</span></div><div class=\"container login-container\"><form name=userProfileUpdateForm class=animation-form-signup novalidate><div class=\"form-section signup-section-form\"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_home_address.png></span></div><div class=\"input-fields address-fields\"><input ng-class=\"{'error-border':!showErrorMessage}\" name=rideSource class=\"form-control input-boxes ride-source-field\" ng-model=ride.source placeholder=\"LEAVING FROM\" required g-places-autocomplete><!-- force-selection=\"true\" options=\"autocompleteOptions\" --></div><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div ng-show=!showErrorMessage ng-messages=postRideForm.rideSource.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride source is required</p></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_office_address.png></span></div><div class=\"input-fields address-fields\"><input ng-class=\"{'error-border':!showErrorMessage}\" name=rideDestination class=\"form-control input-boxes home-address-changer\" ng-model=ride.destination placeholder=\"LEAVING FOR\" required g-places-autocomplete></div><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div ng-show=!showErrorMessage ng-messages=postRideForm.rideDestination.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride destination is required</p></div></div><div class=each-row><span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_time.png></span></div><div class=input-fields><select name=leavingIn class=\"timeslot login-input-box\" ng-model=ride.leavingIn ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t.value as t.text for t in leavingInJSON\"><option style=display:none value=\"\">LEAVING IN</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.leavingIn.$error class=error-msg-edit><p ng-message=required class=error-msg>Leaving in min. is required</p></div></span> <span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_seat.png></span></div><div class=input-fields><select class=\"seater-select login-input-box\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=ride.availableSeats ng-options=\"c as c for c in availableSeatsJSON\"><option style=display:none value=\"\">SEATS AVAILABLE</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></span></div><div class=each-row><input type=button class=input-buttons name=syncData value=\"POST RIDE\" ng-click=postRide()></div></div></form></div></div>"
+  );
+
+
+  $templateCache.put('app/startSampling/startSampling.html',
+    "<div class=page-wrapper><div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><span class=\"glyphicon glyphicon-chevron-left cursor-pointer\" ng-click=toggleHamburger()></span> <span class=heading>Start Sampling</span></div><div class=\"container login-container\"><form name=userProfileUpdateForm class=animation-form-signup ng-submit=updateUserData() novalidate><div class=\"form-section signup-section-form\"><div class=each-row><input type=button class=input-buttons name=syncData value={{buttonText}} ng-click=startOrStopSampling(buttonText)></div></div></form><leaflet event-broadcast=events id=myMap defaults=defaults center=center paths=paths></leaflet></div></div>"
+  );
+
+
+  $templateCache.put('app/suggestions/suggestions.html',
+    "<div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><span class=\"glyphicon glyphicon-chevron-left cursor-pointer\" ng-click=toggleHamburger()></span> <span class=heading>Get Suggestions</span></div><div class=suggestion-map-wrap><leaflet markers=markers lf-center=center event-broadcast=events id=myMap defaults=defaults></leaflet></div>"
+  );
+
+
+  $templateCache.put('app/userHome/userHome.html',
+    "<div class=main-page-wrapper><!-- Hamburger Content --><div class=\"show-none hamburger-content\" ng-class=\"{show : tgState}\"><div class=\"col-md-11 col-sm-11 col-xs-11 pad-R-none pad-L-none ham-con-wrap\"><div class=\"col-md-12 col-sm-12 col-xs-12 hamburger-image-section\"><div class=\"col-md-12 col-sm-12 col-xs-12\"><svg ng-click=toggleHamburger() class=close-hamburger-menu xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink height=32px id=Layer_1 style=\"enable-background:new 0 0 32 32\" version=1.1 viewbox=\"0 0 32 32\" width=32px xml:space=preserve><path d=\"M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z\"></svg></div><div class=user-image-hamburger-wrap><a ui-sref=userHome.userProfile><img src={{currentUser.userPhotoUrl}} ng-click=toggleHamburger() class=avail-user-img><!-- {{currentUser.userPhotoUrl}} --><div class=user-indication-image-wrap><img class=user-indication-image src=assets/images/3x/ico_available.png></div><!-- <svg>\n" +
+    "\t\t\t\t\t\t  <circle cx=\"50\" cy=\"50\" r=\"5\" class=\"indicator-circle\"/>\n" +
+    "\t\t\t\t\t\t</svg> --></a></div><p class=hamburger-username>{{currentUser.empName}}</p><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 user-locationham-wrap\"><span class=\"glyphicon glyphicon-map-marker\"></span> <span class=user-location-ham>{{currentUser.city}}, {{currentUser.state}}</span></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none\"><ul class=functionality-ham-list><li><img src=assets/images/3x/ico_analyze_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.home ng-click=toggleHamburger()>ANALYZE</a></li><li><img src=assets/images/3x/ico_post_ride_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.postRides ng-click=toggleHamburger()>POST RIDE</a></li><li><img src=assets/images/3x/ico_get_sugg_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.suggestions ng-click=toggleHamburger()>GET SUGGESTIONS</a></li><li><img src=assets/images/3x/ico_sampling_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.availableRides ng-click=toggleHamburger()>AVAILABLE RIDES</a></li><li><img src=assets/images/3x/ico_sampling_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.startSampling ng-click=toggleHamburger()>START SAMPLING</a></li><li><img src=assets/images/3x/ico_analyze_off.png class=ham-menu-icon> <a class=function-links ui-sref=main>TEST APP</a></li><li><img src=assets/images/3x/ico_login_off.png class=ham-menu-icon> <a class=function-links ng-click=logout()>LOGOUT</a></li></ul></div></div><div class=\"col-md-1 col-sm-1 col-xs-1 pad-R-none pad-L-none hamburger-overlay\" ng-click=toggleHamburger()></div></div><!-- page content --><div class=main-content ng-class=\"{show : tgState}\"><!-- <hamburger-toggle state=\"tgState\"></hamburger-toggle> --><ui-view></ui-view></div></div>"
+  );
+
+
+  $templateCache.put('app/userMarker/userMarker.html',
+    "<div class=cn-wrapper id=cn-wrapper>{{contactno}}<ul><li><a ng-href=\"tel: {{contactno}}\"><img class=calling-icon-map src=assets/images/map-icons/icon_call.png></a></li><li><a href=#><img src=assets/images/map-icons/icon_contact_rollover.png></a></li><li><a href=#><img src=assets/images/map-icons/icon_favorite.png></a></li><li><a href=#><img class=add-icon-map src=assets/images/map-icons/icon_add.png></a></li></ul></div>"
+  );
+
+
+  $templateCache.put('app/userProfile/userProfile.html',
+    "<div class=page-wrapper><div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><span class=\"glyphicon glyphicon-chevron-left cursor-pointer\" ng-click=toggleHamburger()></span> <span class=heading>User Profile</span></div><div class=\"container login-container\"><form name=userProfileUpdateForm class=animation-form-signup ng-submit=updateUserData() novalidate><div class=\"form-section signup-section-form\"><div class=image-update-wrap><div class=\"col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-L-none pad-R-none user-image-update\"><img ng-if=selectedImage class=profile-image-update-sec ng-src={{selectedImage}} alt=user-image> <img ng-if=!selectedImage class=profile-image-update-sec src=https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png alt=user-image></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 image-update-btn\"><span class=\"glyphicon glyphicon-pencil\" ng-click=getImageSaveContact()></span></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_home_address.png></span></div><div class=\"input-fields address-fields\"><input ng-class=\"{'error-border':!showErrorMessage}\" name=homeAddress class=\"form-control input-boxes home-address-changer\" ng-model=user.homeAddress placeholder=\"HOME ADDRESS\" required></div><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div ng-show=!showErrorMessage ng-messages=signupForm.homeAddress.$error class=error-msg-edit><p ng-message=required class=error-msg>Home Address is required</p></div></div><div class=each-row><input type=button class=input-buttons name=syncData value=\"SYNC DATA\" ng-click=syncUserLocationData()></div></div></form></div></div>"
+  );
+
+
+  $templateCache.put('components/modal/modal.html',
+    "<!-- <div class=\"modal-header\">\n" +
+    "  <button ng-if=\"modal.dismissable\" type=\"button\" ng-click=\"$dismiss()\" class=\"close\">&times;</button>\n" +
+    "  <h4 ng-if=\"modal.title\" ng-bind=\"modal.title\" class=\"modal-title\"></h4>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "  <p ng-if=\"modal.text\" ng-bind=\"modal.text\"></p>\n" +
+    "  <div ng-if=\"modal.html\" ng-bind-html=\"modal.html\"></div>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "  <button ng-repeat=\"button in modal.buttons\" ng-class=\"button.classes\" ng-click=\"button.click($event)\" ng-bind=\"button.text\" class=\"btn\"></button>\n" +
+    "</div> --><div class=modal-header><!--    <h3 class=\"modal-title\">I'm a modal!</h3> --></div><div class=modal-body><p>Please make sure that you click this icon at exact home location, otherwise suggestions will be inaccurate.</p></div><div class=modal-footer><button class=\"btn btn-primary\" type=button ng-click=homeAddressModalOk()>OK</button> <button class=\"btn btn-warning\" type=button ng-click=homeAddressModalCancel()>Cancel</button></div>"
+  );
+
+
+  $templateCache.put('components/navbar/navbar.html',
+    "<div class=\"navbar navbar-default navbar-static-top\" ng-controller=NavbarCtrl><div class=container><div class=navbar-header><button class=navbar-toggle type=button ng-click=\"isCollapsed = !isCollapsed\"><span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span></button> <a href=\"/\" class=navbar-brand>cb</a></div><div collapse=isCollapsed class=\"navbar-collapse collapse\" id=navbar-main><ul class=\"nav navbar-nav\"><li ng-repeat=\"item in menu\" ng-class=\"{active: isActive(item.link)}\"><a ng-href={{item.link}}>{{item.title}}</a></li><li ng-show=isAdmin() ng-class=\"{active: isActive('/admin')}\"><a href=/admin>Admin</a></li></ul><ul class=\"nav navbar-nav navbar-right\"><li ng-hide=isLoggedIn() ng-class=\"{active: isActive('/signup')}\"><a ui-sref=signup.stepOne>Sign up</a></li><li ng-hide=isLoggedIn() ng-class=\"{active: isActive('/login')}\"><a href=/login>Login</a></li><li ng-show=isLoggedIn()><p class=navbar-text>Hello {{ getCurrentUser().name }}</p></li><li ng-show=isLoggedIn() ng-class=\"{active: isActive('/settings')}\"><a href=/settings><span class=\"glyphicon glyphicon-cog\"></span></a></li><li ng-show=isLoggedIn() ng-class=\"{active: isActive('/logout')}\"><a href=\"\" ng-click=logout()>Logout</a></li></ul></div></div></div>"
+  );
+
+}]);
+

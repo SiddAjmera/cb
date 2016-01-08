@@ -25,6 +25,7 @@ var UserSchema = new Schema({
   userPhotoUrl: String,
   placeID : { type: String, index: true },
   homeLocationCoordinates: {type: [Number], index: '2d'},
+  redgId:{type:String},
   vehicle: {
     capacity: String,
     vehicleNo: String
