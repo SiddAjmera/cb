@@ -1,5 +1,6 @@
 var gcm = require('node-gcm');
 var User = require('../api/user/user.controller');
+
 var messageText="This is a sample message";
 var message = new gcm.Message({
     priority: 'high',
@@ -28,12 +29,19 @@ sender.send(message, { registrationIds: regIds }, function (err, result) {
 });
 
 exports.newRideNotification = function(ride){
-     console.log('Got to newRideNotification with Ride Object : ' + ride.offeredByUserId);
-     User.regIdsForOtherUsers(ride.offeredByUserId).then(function(redgIds){
-        console.log('RegIds for Other Users : ' + JSON.stringify(redgIds));
-        sender.send(message, { registrationIds: redgIds }, function (err, result) {
-            if(err) console.error(err);
-            else    console.log(result);
+     var userId = ride.offeredByUserId;
+     User.regIdsForOtherUsers(userId).then(function(redgIds){
+        //console.log('\nGot redgIds as : ' + JSON.stringify(redgIds));
+        User.nameByUserId(userId).then(function(empName){
+            //console.log('\nGot empName as : ' + JSON.stringify(empName));
+            //console.log('\nThe Message Object : ' + JSON.stringify(message));
+            message.params.data.message = "A new ride has been posted by " + empName + " from " + ride.startLocation + " to " + ride.endLocation;
+            //console.log('\nThis is the Notification Message : ' + JSON.stringify(message.params.data.message));
+            sender.send(message, { registrationIds: redgIds }, function (err, result) {
+                if(err) console.error(err);
+                else    console.log(result);
+            });
         });
+
      });
 };

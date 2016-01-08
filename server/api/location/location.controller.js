@@ -67,14 +67,6 @@ exports.createOrUpdateLocation = function(req, res){
         });
     }
   });
-
-  /*console.log('Request Object Body : ' + JSON.stringify(req.body));
-  Location.update({ userId: req.body.userId },
-    { $set:
-      {
-        locations: req.body.locations
-      }
-    });*/
 };
 
 // Filters location data based on certain criteria
@@ -92,27 +84,6 @@ exports.filterLocation = function(req, res){
     return res.json(200, locations);
   });
 };
-
-/*exports.driveIdsByUser = function(req, res){
-  Location.find({userId: req.body.userId})
-          .sort({'timestamp': 'desc'})
-          .limit(req.body.limit)
-          .exec(function(err, locations){
-            if(err) { return handleError(res, err); }
-            // TODO: Code to extract the driveIds from locations, store it in an array and send the Array as response
-  });
-};*/
-/*
-exports.driveIdsByUser = function(req, res){
-  Location.find({userId: req.body.userId})
-          .sort({'timestamp': 'desc'})
-          .limit(req.body.limit)
-          .distinct('driveId', function(err, locations){
-              if(err) { return handleError(res, err); }
-              console.log('Locations from driveIdsByUser method : ' + JSON.stringify(locations));
-              return res.json(200, locations);
-    });
-};*/
 
 exports.driveIdsByUser = function(req, res){
   Location.aggregate(

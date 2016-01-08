@@ -107,39 +107,40 @@ angular.module('cbApp')
         
           if(config.cordova){
             pushnotification.registerPushNotification();
-             $rootScope.$on('$cordovaPush:notificationReceived', function(event, notification) {
-      switch(notification.event) {
-        case 'registered':
-          if (notification.regid.length > 0 ) {
-            $scope.user.redgId=notification.regid;
-            $scope.signupPost();
-          }
-          break;
+            $rootScope.$on('$cordovaPush:notificationReceived', function(event, notification) {
+                  switch(notification.event) {
+                    case 'registered':
+                      if (notification.regid.length > 0 ) {
+                        $scope.user.redgId=notification.regid;
+                        $scope.signupPost();
+                      }
+                      break;
 
-        case 'message':
-          // this is the actual push notification. its format depends on the data model from the push server
-          alert('message = ' + notification.message + ' msgCount = ' + notification.msgcnt);
-          break;
+                    case 'message':
+                      // this is the actual push notification. its format depends on the data model from the push server
+                      alert('message = ' + notification.message + ' msgCount = ' + notification.msgcnt);
+                      break;
 
-        case 'error':
-          alert('GCM error = ' + notification.msg);
-          break;
+                    case 'error':
+                      alert('GCM error = ' + notification.msg);
+                      break;
 
-        default:
-          alert('An unknown GCM event has occurred');
-          break;
-      }
-    });
-          }
-          else
+                    default:
+                      alert('An unknown GCM event has occurred');
+                      break;
+                  }
+           });
+         }
+         else
           $scope.signupPost();
             
-       
+       }
        
        $scope.signupPost=function(){ 
          var url = config.apis.signup;
+         $scope.user.empId = $scope.user.userId;
          httpRequest.post(url,$scope.user).
-        then(function(response){
+          then(function(response){
               /*if(response.status==)*/
               if(response.status==200){
                  console.log('User Stored in the MongoDB Successfully. Here is the Response : ',response);
@@ -157,7 +158,7 @@ angular.module('cbApp')
        
        }
 
-    };
+   
 
     $scope.getLocation=function(){
          var modalInstance = $modal.open({

@@ -117,6 +117,6 @@ angular.module('cbApp')
         })
     }
 
-    getDrives(10);
+   
     
   });

@@ -30,8 +30,12 @@ exports.create = function (req, res, next) {
   newUser.provider = 'local';
   newUser.role = 'user';
   newUser.save(function(err, user) {
-    console.log('Error creating a User. Here is the error ', err);
-    if (err) return validationError(res, err);
+
+    
+    if(err){
+        console.log('Error creating a User. Here is the error ', err);
+        return validationError(res, err);
+     }
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
     res.json({ token: token });
   });
@@ -121,10 +125,24 @@ exports.regIdsForOtherUsers = function(userId){
       });
       deffered.resolve(redgIds)
     }
-    console.log(JSON.stringify(redgIds));
   });
   return deffered.promise;
 };
+
+exports.nameByUserId = function(userId){
+  var deffered=q.defer();
+  User.find({userId: userId}, 'empName', function(err, empName){
+    if(err){
+      console.log('Error Getting User Name by User ID. Error : ' + JSON.stringify(err));
+      deffered.reject(err)
+    } 
+    else{
+      deffered.resolve(empName[0].empName);
+    }
+  });
+  return deffered.promise;
+};
+
 /**
  * Get my info
  */
