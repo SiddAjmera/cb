@@ -16,6 +16,10 @@
 	.container.login-container{
 	    width: 100%;
 	}
+	.container.login-container.post-ride-container{
+		position: absolute;
+		bottom: 12px;
+	}
 	.each-row div:first-child{
 		width: 15%;
 	}
