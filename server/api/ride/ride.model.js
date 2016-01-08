@@ -16,7 +16,8 @@ var RideSchema = new Schema({
   rideStartTime: Date,
   rideStatus: { type: String, $in: [ 'Active', 'Started', 'Completed', 'Cancelled' ] },
   createdDate: { type: Date, default: Date.now },
-  modifiedDate: { type: Date, default: Date.now }
+  modifiedDate: { type: Date, default: Date.now },
+  availableSeats: Number
 });
 
 module.exports = mongoose.model('Ride', RideSchema);
