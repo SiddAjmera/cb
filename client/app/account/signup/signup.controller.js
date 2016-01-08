@@ -106,30 +106,10 @@ angular.module('cbApp')
         // Function to save the UserObject in MongoDB
         
           if(config.cordova){
-            pushnotification.registerPushNotification();
-            $rootScope.$on('$cordovaPush:notificationReceived', function(event, notification) {
-                  switch(notification.event) {
-                    case 'registered':
-                      if (notification.regid.length > 0 ) {
-                        $scope.user.redgId=notification.regid;
-                        $scope.signupPost();
-                      }
-                      break;
-
-                    case 'message':
-                      // this is the actual push notification. its format depends on the data model from the push server
-                      alert('message = ' + notification.message + ' msgCount = ' + notification.msgcnt);
-                      break;
-
-                    case 'error':
-                      alert('GCM error = ' + notification.msg);
-                      break;
-
-                    default:
-                      alert('An unknown GCM event has occurred');
-                      break;
-                  }
-           });
+            pushnotification.registerPushNotification().then(function(redgId){
+               $scope.user.redgId=redgId;
+                $scope.signupPost();
+            });          
          }
          else
           $scope.signupPost();
