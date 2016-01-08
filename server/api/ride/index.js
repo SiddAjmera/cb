@@ -14,6 +14,7 @@ router.post('/', auth.isAuthenticated(), controller.create);
 router.post('/GetRideByRideAttribute', auth.isAuthenticated(), controller.getRideByRideAttribute);
 router.post('/GetAvailableRides', auth.isAuthenticated(), controller.getAvailableRides);
 router.post('/GetRideHistoryForCurrentUser', auth.isAuthenticated(), controller.getRideHistoryForCurrentUser);
+router.post('FilterRide', controller.filterRide);
 // End of routes
 
 router.put('/:id', controller.update);
