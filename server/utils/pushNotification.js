@@ -1,3 +1,20 @@
+/*{
+    "params": {
+        "priority":"high",
+        "contentAvailable":true,
+        "timeToLive":3,
+        "data": {
+            "message":"This is a sample message",
+            "key2":"message2"
+        },
+        "notification":{
+            "title":"Commute buddy",
+            "icon":"ic_launcher",
+            "body":"This is a notification that will be displayed ASAP."
+        }
+    }
+}*/
+
 var gcm = require('node-gcm');
 var User = require('../api/user/user.controller');
 
