@@ -305,6 +305,39 @@ device.exitApp())
     }
 }
             
+	   },
+	   
+	   checkNetConnection:function(){
+		   var networkState = navigator.connection.type;
+		   	 var states = {};
+    states["Connection.UNKNOWN"]  = 'Unknown connection';
+    states["Connection.ETHERNET"] = 'Ethernet connection';
+    states["wifi"]     = 'WiFi connection';
+    states["Connection.CELL_2G"]  = 'Cell 2G connection';
+    states["Connection.CELL_3G"]  = 'Cell 3G connection';
+    states["Connection.CELL_4G"]  = 'Cell 4G connection';
+    states["Connection.CELL"]     = 'Cell generic connection';
+    states["none"]     = 'No network connection';
+	
+	return states[networkState];
+	   },
+	   
+	   showToastMessage:function(msg){
+		   window.plugins.toast.showWithOptions(
+    {
+      message: msg,
+      duration: "long",
+      position: "center",
+      addPixelsY: -40  // added a negative value to move it up a bit (default 0)
+    },
+    function(res){
+		console.log(res)
+	}, // optional
+    function(err){
+		console.log(err)
+	}    // optional
+  );
 	   }
+	   
    }
   }]);

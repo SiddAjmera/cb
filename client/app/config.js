@@ -6,8 +6,8 @@ if(angular.isUndefined(config)){
 
 //base URL for API
 
-config.apiBaseURL="http://localhost:9000/";
-//config.apiBaseURL="http://52.77.218.140:9000/";
+//config.apiBaseURL="http://localhost:9000/";
+config.apiBaseURL="http://52.77.218.140:9000/";
 //config.apiBaseURL="http://192.168.1.100:9000/"
 
 
@@ -23,5 +23,5 @@ config.apis.getStats = "api/drives/FilterDrive";
 config.apis.getDrives = "api/drives/LatestDriveId";
 config.apis.postRide = "api/rides/"
 
-config.cordova=false;
+config.cordova=true;
 

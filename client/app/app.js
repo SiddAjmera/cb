@@ -73,7 +73,15 @@ angular.module('cbApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth,localStorage,$state) {
+  .run(function ($rootScope, $location, Auth,localStorage,$state,cordovaUtil) {
+    //put all the cordova specific functionality
+    if(config.cordova)
+    {
+      console.log(cordovaUtil.checkNetConnection())
+      if(cordovaUtil.checkNetConnection()=='No network connection'){
+        cordovaUtil.showToastMessage("Please check internet connection")
+      }
+    }
     ///console.log("In run block",localStorage.isInitialized());
     
    localStorage.isInitialized().then(function(val){
@@ -116,14 +124,7 @@ angular.module('cbApp', [
 var onDeviceReady = function() {
     angular.bootstrap( document, ['cbApp']);
     $.getScript('http://maps.google.com/maps/api/js?sensor=false&libraries=places');
-     document.addEventListener("backbutton", function(e){
-        if(window.location.hash=='#/userHome/home'){
-            e.preventDefault();
-            navigator.app.exitApp();
-        } /*else {
-            navigator.app.backHistory()
-        }*/
-    }, false);
+     
 }
 document.addEventListener('deviceready', 
 onDeviceReady);
