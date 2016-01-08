@@ -1,19 +1,29 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('pushnotification', function ($cordovaPush,$q,$rootScope) {
+  .service('pushnotification', function ($q) {
     return {
       registerPushNotification:function(){
-        
+        var deferred= $q.defer();
         var androidConfig = {
               "senderID": "463291795017",
             };
-              $cordovaPush.register(androidConfig).then(function(result) {
-         console.log(result)
-    }, function(err) {
-      console.log(err)
-    })
-    
+              var push = PushNotification.init({
+    android: {
+        senderID: "463291795017"
+    },
+    ios: {
+        alert: "true",
+        badge: true,
+        sound: 'false'
+    },
+    windows: {}
+});
+      push.on('registration', function(data) {
+          console.log(data.registrationId);
+          deferred.resolve(data.registrationId)
+      });
+    return deferred.promise;
       }
     }
   });
