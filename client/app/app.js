@@ -115,7 +115,7 @@ angular.module('cbApp', [
 
 var onDeviceReady = function() {
     angular.bootstrap( document, ['cbApp']);
-    $.getScript('http://maps.google.com/maps/api/js?sensor=false');
+    $.getScript('http://maps.google.com/maps/api/js?sensor=false&libraries=places');
      document.addEventListener("backbutton", function(e){
         if(window.location.hash=='#/userHome/home'){
             e.preventDefault();

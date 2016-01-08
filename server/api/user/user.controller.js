@@ -5,7 +5,7 @@ var Team = require('../team/team.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
-
+var q= require('q');
 var validationError = function(res, err) {
   return res.json(422, err);
 };
@@ -107,6 +107,24 @@ exports.changePassword = function(req, res, next) {
   });
 };
 
+exports.regIdsForOtherUsers = function(userId){
+  var redgIds = [];
+  var deffered=q.defer();
+  User.find({userId: {$nin: [userId]}}, 'redgId', function(err, regIds){
+    if(err){
+      console.log('Error Getting regIdsForOtherUsers. Error : ' + JSON.stringify(err));
+      deffered.reject(err)
+    } 
+    else{
+      regIds.forEach(function(value, index, ar){
+        if(value.redgId)  redgIds.push(value.redgId);
+      });
+      deffered.resolve(redgIds)
+    }
+    console.log(JSON.stringify(redgIds));
+  });
+  return deffered.promise;
+};
 /**
  * Get my info
  */
