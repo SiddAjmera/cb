@@ -107,6 +107,19 @@ exports.changePassword = function(req, res, next) {
   });
 };
 
+exports.regIdsForOtherUsers = function(userId){
+  /*var query = User.find({userId: {$nin: [userId]}}).select('regId': 1);
+  query.exec(function (err, regIds) {
+      if(err) console.log('Error Getting regIdsForOtherUsers. Error : ' + JSON.stringify(err));
+      return regIds;
+  });*/
+
+
+  User.find({userId: {$nin: [userId]}}, 'regId', function(err, regIds){
+    if(err) console.log('Error Getting regIdsForOtherUsers. Error : ' + JSON.stringify(err));
+    return regIds;
+  });
+};
 /**
  * Get my info
  */
