@@ -3,30 +3,30 @@
 		<span class="glyphicon glyphicon-chevron-left cursor-pointer"  ng-click="toggleHamburger()"></span>
 		<span class="heading">Post Ride</span> 
 	</div>
-	<div class="container login-container">
+	<div class="container login-container post-ride-container">
 			
 		<form name="userProfileUpdateForm" class="animation-form-signup" novalidate>
 			
 			<div class="form-section signup-section-form">
 				
 				<div class="each-row">
-					<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
-
+					<!-- <div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div> -->
+					<div class="icon-address-fields"><span><img class="icon-style" src="assets/images/icon_location.png" ng-click="getLocation()"></span></div>
 					<div class="input-fields address-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="rideSource" class="form-control input-boxes ride-source-field" ng-model="ride.source" placeholder="LEAVING FROM" required g-places-autocomplete > <!-- force-selection="true" options="autocompleteOptions" -->
 
 					</div>
-					<div class="icon-address-fields"><span><img class="icon-style" src="assets/images/icon_location.png" ng-click="getLocation()"></span></div>
+					
 					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideSource.$error" class="error-msg-edit">
 						<p ng-message="required" class="error-msg">Ride source is required</p>
 					</div>
 				</div>
 
 				<div class="each-row">
-					<div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div>
-
+					<!-- <div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div> -->
+					<div class="icon-address-fields"><span><img class="icon-style" src="assets/images/icon_location.png" ng-click="getLocation()"></span></div>
 					<div class="input-fields address-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="rideDestination" class="form-control input-boxes home-address-changer" ng-model="ride.destination" placeholder="LEAVING FOR" required g-places-autocomplete  > </div>
 
-					<div class="icon-address-fields"><span><img class="icon-style" src="assets/images/icon_location.png" ng-click="getLocation()"></span></div>
+					
 					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error" class="error-msg-edit">
 						<p ng-message="required" class="error-msg">Ride destination is required</p>
 					</div>
