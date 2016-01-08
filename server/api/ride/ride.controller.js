@@ -4,6 +4,14 @@ var _ = require('lodash');
 var Ride = require('./ride.model');
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
+var Push = require('../../utils/pushNotification');
+
+var events = require('events');
+var EventEmitter = new events.EventEmitter();
+EventEmitter.on("ridePosted", function(ride){
+  //console.log('Ride posted. Here is the Ride Object : ' + JSON.stringify(ride));
+  Push.newRideNotification(ride);
+});
 
 // Get list of rides
 exports.index = function(req, res) {
@@ -26,7 +34,10 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   Ride.create(req.body, function(err, ride) {
     if(err) { return handleError(res, err); }
-    return res.json(201, ride);
+    if(ride){
+      EventEmitter.emit("ridePosted", ride);
+      return res.json(201, ride);
+    }
   });
 };
 

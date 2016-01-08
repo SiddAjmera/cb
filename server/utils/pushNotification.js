@@ -1,5 +1,6 @@
 var gcm = require('node-gcm');
- var messageText="this is a sample message";
+var User = require('../api/user/user.controller');
+var messageText="This is a sample message";
 var message = new gcm.Message({
     priority: 'high',
     contentAvailable: true,
@@ -25,4 +26,14 @@ sender.send(message, { registrationIds: regIds }, function (err, result) {
     if(err) console.error(err);
     else    console.log(result);
 });
- 
+
+exports.newRideNotification = function(ride){
+     console.log('Got to newRideNotification with Ride Object : ' + ride.offeredByUserId);
+     User.regIdsForOtherUsers(ride.offeredByUserId).then(function(redgIds){
+        console.log('RegIds for Other Users : ' + JSON.stringify(redgIds));
+        sender.send(message, { registrationIds: redgIds }, function (err, result) {
+            if(err) console.error(err);
+            else    console.log(result);
+        });
+     });
+};
