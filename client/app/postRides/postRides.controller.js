@@ -8,6 +8,7 @@ angular.module('cbApp')
     Auth.getCurrentUser().
     then(function(data){
         currentUser = data;
+        console.log("currentUser",currentUser)
     });
     $scope.showErrorMessage = false;
     $scope.leavingInJSON = [
@@ -44,16 +45,33 @@ angular.module('cbApp')
 
     }
     $scope.address='default'
-    $scope.optionAddressOptions=function(){
-        $scope.open=true;
+    $scope.addressTo='default'
+    $scope.optionAddressOptions=function(option){
+        $scope.open=option;
+        if(option=="from")
         $scope.ride.source=undefined;
+    else
+         $scope.ride.destination=undefined;
     }
-     $scope.showAddress=function(option){
+     $scope.showAddressFrom=function(option){
         console.log(option)
         $scope.address=option;
 
         if($scope.address == "home"){
            $scope.ride.source= currentUser.homeAddress
+           
+        }
+
+        $scope.otherAddress=true;
+        $scope.open=false;
+    }
+
+    $scope.showAddressTo=function(option){
+        console.log(option)
+        $scope.addressTo=option;
+
+        if($scope.addressTo == "homeTo"){
+           $scope.ride.destination= currentUser.homeAddress
         }
 
         $scope.otherAddress=true;
