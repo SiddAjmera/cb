@@ -1,27 +1,41 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('AvailableRidesCtrl', function ($scope,httpRequest,Auth) {
-
+  .controller('AvailableRidesCtrl', function ($scope,httpRequest,Auth,socket) {
+    console.log("Loading");
   	var currentUser = {};
   	$scope.rides = [];
-  	Auth.getCurrentUser().then(function(user){currentUser = user;getAvailableRides();})
+    var rides=[];
 
+    Auth.getCurrentUser().then(function(user){currentUser = user;getAvailableRides();})
+    var populateSeats = function(ride){
+      var seatMap = [];
+      for(var i=0;i<ride.offeredByUser.totalNumberOfSeats;i++){       
+        var seat = {};
+        if(ride.companions[i])
+          seat._id = ride.companions[i]._id;        
+        seatMap.push(angular.copy(seat));
+        ride.seatMap=seatMap;        
+      }
+      return ride;
+    }
 
-  	var populateSeats = function(ride){
-  		var seatMap = [];
-  		for(var i=0;i<ride.offeredByUser.totalNumberOfSeats;i++){  			
-  			var seat = {};
-  			if(ride.companions[i])
-  				seat._id = ride.companions[i]._id;  			
-  			seatMap.push(angular.copy(seat));
-  			ride.seatMap=seatMap;
-  			
-  		}
-  		$scope.rides.push(ride);	
-  	}
+    var updateRideStatus=function(event,item){
+        var newRide=populateSeats(item);
+        var oldRide=_.findWhere($scope.rides,{'_id':item._id});
+        console.log("newRide,oldRide ",newRide,oldRide);
+        if(oldRide){
+          $scope.rides=_.reject($scope.rides,function(obj){
+            return obj._id==oldRide._id;
+          });                    
+        }        
+        $scope.rides.push(newRide);        
+    };
 
-
+    socket.syncUpdates('ride',[],function(event,item,array){
+        console.log('item  ',item,event);
+        updateRideStatus(event,item);
+    });
   	var getAvailableRides = function(){
   		var apis = config.apis.filterRides;
   		var requestJSON = {};
@@ -29,10 +43,11 @@ angular.module('cbApp')
   		httpRequest.post(apis,requestJSON).
   		then(function(rides){
   			if(rides.status==200){
-  				var rides = rides.data;
+  				rides = rides.data;
   				//$scope.rides = rides;
   				angular.forEach(rides, function(ride, key){
-  					populateSeats(ride)
+  					var r=populateSeats(ride)
+            $scope.rides.push(r);  
   				});
   				console.log($scope.rides);
   			}
@@ -60,8 +75,7 @@ angular.module('cbApp')
   		httpRequest.put(apis,requestJSON).
   		then(function(response){
   			if(response.status==200){
-  				getAvailableRides();
-
+  				//getAvailableRides();
   				/*ride selected successfully. Show notification to ride owner*/
   			}
   		})

@@ -43,12 +43,12 @@ angular.module('cbApp')
 
           // replace oldItem if it exists
           // otherwise just add item to the collection
-          if (oldItem) {
+         /* if (oldItem) {
             array.splice(index, 1, item);
             event = 'updated';
           } else {
             array.push(item);
-          }
+          }*/
 
           cb(event, item, array);
         });
