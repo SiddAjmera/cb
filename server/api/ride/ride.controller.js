@@ -88,7 +88,7 @@ exports.filterRide = function(req, res){
 
   Ride.paginate(query, options).then(function(rides) {
     console.log('Rides : ' + JSON.stringify(rides));
-    return res.json(200, rides);
+    return res.json(200, rides[0]);
   });
 };
 

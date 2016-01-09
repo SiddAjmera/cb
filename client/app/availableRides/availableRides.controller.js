@@ -4,8 +4,23 @@ angular.module('cbApp')
   .controller('AvailableRidesCtrl', function ($scope,httpRequest,Auth) {
 
   	var currentUser = {};
-
+  	$scope.rides = [];
   	Auth.getCurrentUser().then(function(user){currentUser = user;getAvailableRides();})
+
+
+  	var populateSeats = function(ride){
+  		var seatMap = [];
+  		for(var i=0;i<ride.availableSeats;i++){  			
+  			var seat = {};
+  			if(ride.companions[i])
+  				seat._id = ride.companions[i]._id;  			
+  			seatMap.push(angular.copy(seat));
+  			ride.seatMap=seatMap;
+  			
+  		}
+  		$scope.rides.push(ride);	
+  	}
+
 
   	var getAvailableRides = function(){
   		var apis = config.apis.filterRides;
@@ -13,12 +28,18 @@ angular.module('cbApp')
 
   		httpRequest.post(apis,requestJSON).
   		then(function(rides){
-  			$scope.rides = rides.data;
+  			if(rides.status==200){
+  				var rides = rides.data;
+  				//$scope.rides = rides;
+  				angular.forEach(rides, function(ride, key){
+  					populateSeats(ride)
+  				});
+  				console.log($scope.rides);
+  			}
+  			
   		})
   		
   	};
-
-
 
   	$scope.selectRide = function(ride){
   		var apis = config.apis.postRide+ride._id;
@@ -31,6 +52,7 @@ angular.module('cbApp')
   		then(function(response){
   			if(response.status==200){
   				getAvailableRides();
+
   				/*ride selected successfully. Show notification to ride owner*/
   			}
   		})

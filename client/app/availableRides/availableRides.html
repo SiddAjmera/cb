@@ -17,7 +17,7 @@
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-rides-lists-wrap">
 
-				<div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride" ng-repeat="ride in rides">
+				<div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride" ng-repeat="ride in rides track by $index">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-list-img-sec">
 						<img src="assets/images/user-image.jpg" class="avail-user-img pull-left">
 						<p class="avail-user-name">{{ride.offeredByUser.userName}}</p>
@@ -46,17 +46,18 @@
 							<span>Select a seat</span>
 						</div>
 						<div class="avail-right-info">
-							<img class="seat-info-img" src="assets/images/available-rides/filled_seat.png">
-							<img class="seat-info-img" src="assets/images/available-rides/Tap_seat.png">
+							<!-- <img class="seat-info-img" ng-src="assets/images/available-rides/filled_seat.png"> -->
+							<img  ng-repeat="seat in ride.seatMap track by $index" class="seat-info-img" ng-src="{{seat._id  && 'assets/images/available-rides/filled_seat.png' || seat.selected && 'assets/images/available-rides/Tap_seat.png' || 'assets/images/available-rides/vacantSeat.png'}}"/>
+							<!-- <img class="seat-info-img" src="assets/images/available-rides/Tap_seat.png">
 							<img class="seat-info-img" src="assets/images/available-rides/vacantSeat.png">
-							<img class="seat-info-img" src="assets/images/available-rides/vacantSeat.png">
+							<img class="seat-info-img" src="assets/images/available-rides/vacantSeat.png"> -->
 						</div>
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-proceed-wrap">
 						<span ng-click="selectRide(ride)">Proceed <img class="avail-proceed-img" src="assets/images/available-rides/Proceed_arrow.png"></span>
 					</div>
 				</div>
-				<div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride">
+				<!-- <div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-list-img-sec">
 						<img src="assets/images/user-image.jpg" class="avail-user-img pull-left">
 						<p class="avail-user-name">Prabhavati Choudary</p>
@@ -172,7 +173,7 @@
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-proceed-wrap">
 						<span>Proceed <img class="avail-proceed-img" src="assets/images/available-rides/Proceed_arrow.png"></span>
 					</div>
-				</div>
+				</div> -->
 				
 			</div>			
 		</div>
