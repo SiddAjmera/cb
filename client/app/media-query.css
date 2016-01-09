@@ -10,16 +10,20 @@
 
 }
 @media(max-width: 580px){
-
-}
-@media(max-width: 480px){
-	.container.login-container{
+	.form-section.functionality-wrap.avail-list-wrap {
+		float: left;
 	    width: 100%;
 	}
 	.container.login-container.post-ride-container{
 		position: absolute;
 		bottom: 12px;
 	}
+}
+@media(max-width: 480px){
+	.container.login-container{
+	    width: 100%;
+	}
+	
 	.each-row div:first-child{
 		width: 15%;
 	}
@@ -31,6 +35,10 @@
 	}
 	.each-row .each-row-half div:first-child{
 		width: 30%;
+	}
+	.form-section.functionality-wrap.avail-list-wrap{
+		float: left;
+	    width: 100%;
 	}
 	
 }

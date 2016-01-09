@@ -27,5 +27,6 @@ config.cordova=false;
 /*ride apis*/
 config.apis.postRide = "api/rides/";
 config.apis.filterRides = "api/rides/FilterRide";
+config.apis.selectRide = "api/rides/AddCompanionToRide/"
 config.cordova=false;
 
