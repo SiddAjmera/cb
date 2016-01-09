@@ -22,10 +22,12 @@ config.apis.filterLocations = "api/locations/FilterLocation";
 config.apis.getStats = "api/drives/FilterDrive";
 config.apis.getDrives = "api/drives/LatestDriveId";
 
-config.cordova=false;
+<<<<<<< HEAD
 
 /*ride apis*/
 config.apis.postRide = "api/rides/";
 config.apis.filterRides = "api/rides/FilterRide";
+=======
+>>>>>>> 45113c18b202f1259831e9b2193366bec566237c
 config.cordova=false;
 

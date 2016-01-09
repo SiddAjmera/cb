@@ -5,12 +5,13 @@ angular.module('cbApp')
   .factory('socket', function(socketFactory) {
 
     // socket.io now auto-configures its connection when we ommit a connection url
-    var ioSocket = io(config.apiBaseURL, {
+    var ioSocket = io.connect(config.apiBaseURL, {
       // Send auth token on connection, you will need to DI the Auth service above
       // 'query': 'token=' + Auth.getToken()
        path: '/socket.io-client'
     });
 
+    /*var ioSocket = io.connect(config.apiBaseURL+'socket.io-client')*/
     var socket = socketFactory({
       ioSocket: ioSocket
     });
