@@ -726,6 +726,7 @@ a.get-started-link:hover{
     margin-top: 35px;
     width: 480px;
     float: none;
+    margin-top: 125px;
 }
 .opp-input-box{
     width: 100%;
@@ -787,7 +788,7 @@ a.get-started-link:hover{
 }
 .each-vailable-ride{
     padding-top: 13px;
-    border-bottom: 1px solid #434343;
+    
 }
 
 
@@ -1547,6 +1548,23 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 /*available ride css*/
+
+.page-wrapper.avail-page-wrapper{
+    background-image: url("../assets/images/available-rides/PostAride_Background.png");
+}
+.header-section.avail-ride-header{
+    background-color: transparent;
+    border-bottom: none;
+    text-align: center;
+}
+.avail-header-back{
+    float: left;
+    padding-top: 3px;
+}
+.avail-header-search{
+    width: 22px;
+    float: right;
+}
 .choose-ride-wrap{
     background-color: #378C7B;
     padding: 10px;
@@ -1564,15 +1582,95 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .avail-rides-lists-wrap{
     background-color: #fff;
+    padding-bottom: 20px;
 }
 .avail-list-img-sec{
     background-color: #EFEFEF;
     height: 70px;
     padding: 10px 15px;
+    border-left: 2px solid #D8D8D8;
+    border-right: 2px solid #D8D8D8;
 }
 .avail-user-name{
     line-height: 50px;
     font-size: 16px;
+    padding-left: 10px;
+    float: left;
+}
+.avail-left-sec{
+    padding: 10px 15px;
+    font-size: 12px;
+    border-left: 2px solid #D8D8D8;
+}
+.avai-ride-info-icon{
+    width: 18px;
+    margin-right: 3%;
+}
+.each-info-line{
+    margin-bottom: 10px;
+}
+.each-info-line.loc-trim{
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.avail-right-sec{
+    font-size: 12px;
+    padding: 10px 10px;
+    border-right: 2px solid #D8D8D8;
+}
+.available-seat-count{
+    background-image: url(../assets/images/available-rides/available_seats_BG.png);
+    background-size: 25px;
+    background-repeat: no-repeat;
+    text-align: center;
+    display: block;
+    width: 25px;
+    height: 25px;
+    font-size: 15px;
+    color: #fff;
+}
+.avail-right-info{
+    float: left;
+    width: 100%;
+    margin-bottom: 7px;
+}
+.seat-avail-label{
+    padding-top: 3px;
+}
+.seat-info-img{
+    float: left;
+    width: 14px;
+    margin-right: 10%;
+    cursor: pointer;
+}
+.avail-proceed-wrap{
+    background-color: #EFEFEF;
+    padding: 5px 15px;
+    font-size: 13px;
+    color: #3191E6;
+    text-align: center;
+    border-bottom: 2px solid #D8D8D8;
+}
+.avail-proceed-img{
+    width: 18px;
+    margin-left: 10px;
+}
+/*Down-left pointing*/
+.triangle-down-left {
+    width: 100%;
+    height: 0;
+    padding-bottom: 20px;
+    overflow: hidden;
+}
+.triangle-down-left:after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-right: 561px solid transparent;
+    border-bottom: 20px solid #378C7B;
 }
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
