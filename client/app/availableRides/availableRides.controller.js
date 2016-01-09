@@ -27,12 +27,19 @@ angular.module('cbApp')
   		requestJSON.companions.push({userId:currentUser.userId});
   		requestJSON.availableSeats=ride.availableSeats-1;
   		
-  		httpRequest.post(apis,requestJSON).
+  		httpRequest.put(apis,requestJSON).
   		then(function(response){
   			if(response.status==200){
+  				getAvailableRides();
   				/*ride selected successfully. Show notification to ride owner*/
   			}
   		})
   	}
+
+  	$scope.selectSeats = function(){
+
+  	}
+
+
     
   });

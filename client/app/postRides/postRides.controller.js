@@ -40,7 +40,7 @@ angular.module('cbApp')
                     }
 
     var calculateRideStartTime = function(leavingIn){
-        return moment().add(leavingIn,"minutes").valueOf();
+        return moment().add(parseInt(leavingIn),"minutes").valueOf();
 
     }
 
@@ -62,7 +62,7 @@ angular.module('cbApp')
        
         ride.offeredByUserId = currentUser.userId;
         ride.availableSeats = $scope.ride.availableSeats;
-        ride.rideStartTime = calculateRideStartTime($scope.ride.destination.leavingIn);
+        ride.rideStartTime = moment().add(parseInt($scope.ride.leavingIn),"minutes").valueOf();
         ride.vehicleLicenseNumber = currentUser.vehicle.vehicleNo;
         console.log("final obj",ride)
         httpRequest.post(config.apis.postRide,ride).
