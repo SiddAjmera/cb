@@ -29,7 +29,7 @@ return {
 		 var interval= $interval(function() {
 	      if (!googleMapLoaded) {
 	        $.getScript('http://maps.google.com/maps/api/js?sensor=false&libraries=places', function( data, textStatus, jqxhr){
-				if(textStatus==200){
+				if(textStatus=="success"){
 					googleMapLoaded=true;
 					$interval.cancel(interval)
 				}

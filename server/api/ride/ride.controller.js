@@ -35,18 +35,29 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   console.log('\nInitial Req Body in Ride.Create : ' + JSON.stringify(req.body));
 
-
   var userId = parseInt(req.body.offeredByUserId);
   User.findOne({userId: userId}, function (err, user) {
     if (err) { return handleError(res, err); }
     if (!user)  { return res.send(404); }
     console.log('\nUser Object Fetched for Ride : ' + JSON.stringify(user));
+
     req.body.offeredByUser = {};
     req.body.offeredByUser.userId = user.empId;
     req.body.offeredByUser.userName = user.empName;
     req.body.offeredByUser.userImage = user.userPhotoUrl;
-    if(user.vehicle) req.body.offeredByUser.totalNumberOfSeats = user.vehicle.capacity;
-    else req.body.offeredByUser.totalNumberOfSeats = 4;
+    if(user.vehicle){
+      console.log('\nUser.Vehicle k if me ghusa');
+      console.log('\nReq.body.offeredByUser.AvailableSeats : ' + req.body.offeredByUser.availableSeats);
+      console.log('\nUser.Vehicle.Capacity : ' + user.vehicle.capacity);
+      if(parseInt(req.body.availableSeats) > parseInt(user.vehicle.capacity)) {
+        console.log('If Available Seats > Vehicle capacity me ghusa');
+        return handleError(res, 'Specified Available Seats is more than the capacity of your Vehicle');
+      }
+    }
+    else{
+      console.log('You dont have a vehicle waale else me ghusa');
+      return handleError(res, 'You cant post a ride as you dont have a vehicle.');
+    }
     console.log('\nFinal Request.Body : ' + JSON.stringify(req.body));
     Ride.create(req.body, function(err, ride) {
       if(err) { return handleError(res, err); }
@@ -75,15 +86,20 @@ exports.getRideByRideAttribute = function(req, res){
 /*{
   "filters" : { 
                   "startLocation": "location1",
-                  "endLocation": "location2" 
+                  "endLocation": "location2",
+                  "offeredByUserId": { $nin: ['111111'] },
+                  "availableSeats": { $nin: ['0']}
               },
   "page" : 1,
   "limit" : 10
 }*/
 
 exports.filterRide = function(req, res){
-  var query = {};
-  if(req.body.filters) query = req.body.filters;
+  var query = {
+    offeredByUserId: { $nin: [req.body.userId] },
+    availableSeats: { $nin: ['0']}
+  };
+  //if(req.body.filters) query = req.body.filters;
   var options = {
       sort:   { createdDate: -1 }
   };
