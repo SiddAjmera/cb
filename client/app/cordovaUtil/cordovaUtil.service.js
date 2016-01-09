@@ -277,11 +277,11 @@ angular.module('cbApp')
 	   
 	   backbuttonImpl:function(){
 		 
- var exitApp = false;
+ 				var exitApp = false;
                  
                  var intval = setInterval(function (){exitApp = false;}, 
 1000);
-    document.addEventListener("backbutton", function (e){
+   		 document.addEventListener("backbutton", function (e){
         e.preventDefault();
         if (exitApp) {
             clearInterval(intval) 
@@ -295,15 +295,15 @@ angular.module('cbApp')
         
  
            function onConfirm(button) {
-    if(button==2){//If User selected No, then we just do nothing
-    exitApp=false;
-        return;
-    }else{
-      //  navigator.app.exitApp();// Otherwise we quit the app.
-      (navigator.app && navigator.app.exitApp()) || (device && 
-device.exitApp())
-    }
-}
+			    if(button==2){//If User selected No, then we just do nothing
+			    exitApp=false;
+			        return;
+			    }else{
+			      //  navigator.app.exitApp();// Otherwise we quit the app.
+			      (navigator.app && navigator.app.exitApp()) || (device && 
+					device.exitApp())
+  	  }
+		}	
             
 	   },
 	   
