@@ -17,6 +17,7 @@
 	.container.login-container.post-ride-container{
 		position: absolute;
 		bottom: 12px;
+		width: 100%;
 	}
 }
 @media(max-width: 480px){
