@@ -4,6 +4,7 @@ var _ = require('lodash');
 var Ride = require('./ride.model');
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
+var User = require('../user/user.model')
 var Push = require('../../utils/pushNotification');
 
 var events = require('events');
@@ -32,22 +33,30 @@ exports.show = function(req, res) {
 
 // Creates a new ride in the DB.
 exports.create = function(req, res) {
-  var userId = req.body.offeredByUser.userId;
-  User.findById(userId, function (err, user) {
+  console.log('\nInitial Req Body in Ride.Create : ' + JSON.stringify(req.body));
+
+
+  var userId = parseInt(req.body.offeredByUserId);
+  User.findOne({userId: userId}, function (err, user) {
     if (err) { return handleError(res, err); }
     if (!user)  { return res.send(404); }
+    console.log('\nUser Object Fetched for Ride : ' + JSON.stringify(user));
+    req.body.offeredByUser = {};
+    req.body.offeredByUser.userId = user.empId;
     req.body.offeredByUser.userName = user.empName;
     req.body.offeredByUser.userImage = user.userPhotoUrl;
-    req.body.offeredByUser.totalNumberOfSeats = user.vehicle.capacity;
-  });
+    if(user.vehicle) req.body.offeredByUser.totalNumberOfSeats = user.vehicle.capacity;
+    else req.body.offeredByUser.totalNumberOfSeats = 4;
+    console.log('\nFinal Request.Body : ' + JSON.stringify(req.body));
+    Ride.create(req.body, function(err, ride) {
+      if(err) { return handleError(res, err); }
+      if(ride){
+        EventEmitter.emit("ridePosted", ride);
+        return res.json(201, ride);
+      }
+    });
 
-  console.log('\nRequest.Body : ' + JSON.stringify(req.body));
-  Ride.create(req.body, function(err, ride) {
-    if(err) { return handleError(res, err); }
-    if(ride){
-      EventEmitter.emit("ridePosted", ride);
-      return res.json(201, ride);
-    }
+
   });
 };
 
@@ -84,10 +93,10 @@ exports.filterRide = function(req, res){
   if(req.body.limit) options.limit = req.body.limit;
   else options.limit = 10;
 
-  console.log('\nQuery : ' + JSON.stringify(query) + '\n Options : ' + JSON.stringify(options));
+  //console.log('\nQuery : ' + JSON.stringify(query) + '\n Options : ' + JSON.stringify(options));
 
   Ride.paginate(query, options).then(function(rides) {
-    console.log('Rides : ' + JSON.stringify(rides));
+    //console.log('Rides : ' + JSON.stringify(rides));
     return res.json(200, rides[0]);
   });
 };
@@ -128,6 +137,32 @@ exports.update = function(req, res) {
       if (err) { return handleError(res, err); }
       return res.json(200, ride);
     });
+  });
+};
+
+exports.addCompanionToRide = function(req, res){
+
+  console.log('\nRequest.Body : ' + JSON.stringify(req.body),req.params);
+
+  if(req.body._id) { delete req.body._id; }
+  Ride.findById(req.params.id, function (err, ride) {
+    if (err) { return handleError(res, err); }
+    if(!ride) { return res.send(404); }   
+
+    console.log('\nRide Object : ' + JSON.stringify(ride));
+
+    ride.companions = ride.companions.concat(req.body.companions);
+    ride.availableSeats = req.body.availableSeats;
+    console.log('Ride.companions : ' + JSON.stringify(ride.companions));
+    console.log('ride after ',ride)
+    ride.save(function(err){
+      if (err) { 
+        console.log(err);
+        return handleError(res, err); 
+      }
+      return res.json(200, ride);
+    });
+
   });
 };
 

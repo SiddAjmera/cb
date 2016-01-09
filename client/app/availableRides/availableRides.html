@@ -1,5 +1,6 @@
 <div class="page-wrapper avail-page-wrapper">
-	<div class="container login-container user-home-container pad-R-none pad-L-none">
+	<div class="container login-container user-home-container pad-R-none pad-L-none" scroll ng-class="{availheaderback:boolChangeClass}">
+
 		<div class="col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header">
 			<span class="glyphicon glyphicon-chevron-left cursor-pointer avail-header-back" ng-click="toggleHamburger()"></span>
 			<span class="heading">Avaialble Rides</span>
@@ -47,7 +48,7 @@
 						</div>
 						<div class="avail-right-info">
 							<!-- <img class="seat-info-img" ng-src="assets/images/available-rides/filled_seat.png"> -->
-							<img  ng-repeat="seat in ride.seatMap track by $index" class="seat-info-img" ng-src="{{seat._id  && 'assets/images/available-rides/filled_seat.png' || seat.selected && 'assets/images/available-rides/Tap_seat.png' || 'assets/images/available-rides/vacantSeat.png'}}"/>
+							<img  ng-repeat="seat in ride.seatMap track by $index" class="seat-info-img" ng-src="{{seat._id  && 'assets/images/available-rides/filled_seat.png' || seat.selected && 'assets/images/available-rides/Tap_seat.png' || 'assets/images/available-rides/vacantSeat.png'}}" ng-click="selectSeat(seat)"/>
 							<!-- <img class="seat-info-img" src="assets/images/available-rides/Tap_seat.png">
 							<img class="seat-info-img" src="assets/images/available-rides/vacantSeat.png">
 							<img class="seat-info-img" src="assets/images/available-rides/vacantSeat.png"> -->

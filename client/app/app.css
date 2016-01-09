@@ -1556,6 +1556,8 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: transparent;
     border-bottom: none;
     text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 .avail-header-back{
     float: left;
@@ -1664,6 +1666,12 @@ input[type=number]::-webkit-outer-spin-button {
     padding-bottom: 20px;
     overflow: hidden;
 }
+.triangle-down-left-post{
+    width: 100%;
+    height: 0;
+    padding-bottom: 20px;
+    overflow: hidden;
+}
 .triangle-down-left:after {
     content: "";
     display: block;
@@ -1671,6 +1679,20 @@ input[type=number]::-webkit-outer-spin-button {
     height: 0;
     border-right: 561px solid transparent;
     border-bottom: 20px solid #378C7B;
+}
+.triangle-down-left-post{
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-right: 561px solid transparent;
+    border-bottom: 20px solid #fff;
+}
+.availheaderback .header-section.avail-ride-header{
+    background-color: #378C7B;
+    border-bottom: 3px solid #acacac;
+    height: 42px;
+    transition: all ease .3s;
 }
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {

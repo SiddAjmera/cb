@@ -143,6 +143,8 @@ exports.nameByUserId = function(userId){
   return deffered.promise;
 };
 
+
+
 /**
  * Get my info
  */
