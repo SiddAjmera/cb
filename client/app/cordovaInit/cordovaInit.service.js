@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaInit', function($document, $q) {
-
-	    var d = $q.defer(),
+  .service('cordovaInit', function($document, $q, $interval) {
+return {
+	deviceready:function(){
+		 var d = $q.defer(),
 	        resolved = false;
 
 	    var self = this;
@@ -21,4 +22,24 @@ angular.module('cbApp')
 	        if (window.cordova) d.resolve(window.cordova);
 	      }
 	    }, 3000);
+	},
+	 loadGoogleMap:function(){
+		 var googleMapLoaded=false;
+		 
+		 var interval= $interval(function() {
+	      if (!googleMapLoaded) {
+	        $.getScript('http://maps.google.com/maps/api/js?sensor=false&libraries=places', function( data, textStatus, jqxhr){
+				if(textStatus==200){
+					googleMapLoaded=true;
+					$interval.cancel(interval)
+				}
+				
+			})
+	      }
+	    }, 3000);
+		 
+	 }
+	
+}
+	   
 	});

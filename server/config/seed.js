@@ -196,7 +196,8 @@ Ride.create({
     destination: "Hinjewadi",
     windowForDeparture: 15,
     availableSeats: 3,
-    active: true
+    active: true,
+    offeredByUserId:"111111"
   },{
     rideId: 23456789,
     offeredByUser : mongoose.Types.ObjectId("56601723647a6dac029d21ea"),
@@ -206,6 +207,7 @@ Ride.create({
     destination: "Sahyadri Park",
     windowForDeparture: 40,
     availableSeats: 1,
+    offeredByUserId:"111112",
     active: true
   }, function(){
     console.log('Finished Populating Rides');

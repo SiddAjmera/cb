@@ -73,10 +73,11 @@ angular.module('cbApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth,localStorage,$state,cordovaUtil) {
+  .run(function ($rootScope, $location, Auth,localStorage,$state,cordovaUtil,cordovaInit) {
     //put all the cordova specific functionality
     if(config.cordova)
     {
+      cordovaInit.loadGoogleMap();
       console.log(cordovaUtil.checkNetConnection())
       if(cordovaUtil.checkNetConnection()=='No network connection'){
         cordovaUtil.showToastMessage("Please check internet connection")
@@ -123,8 +124,7 @@ angular.module('cbApp', [
 
 var onDeviceReady = function() {
     angular.bootstrap( document, ['cbApp']);
-    $.getScript('http://maps.google.com/maps/api/js?sensor=false&libraries=places');
-     
+   
 }
 document.addEventListener('deviceready', 
 onDeviceReady);

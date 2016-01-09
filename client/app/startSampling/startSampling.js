@@ -6,6 +6,7 @@ angular.module('cbApp')
       .state('userHome.startSampling', {
         url: '/startSampling',
         templateUrl: 'app/startSampling/startSampling.html',
-        controller: 'StartSamplingCtrl'
+        controller: 'StartSamplingCtrl',
+        authenticate:true
       });
   });

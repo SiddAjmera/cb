@@ -32,6 +32,16 @@ exports.show = function(req, res) {
 
 // Creates a new ride in the DB.
 exports.create = function(req, res) {
+  var userId = req.body.offeredByUser.userId;
+  User.findById(userId, function (err, user) {
+    if (err) { return handleError(res, err); }
+    if (!user)  { return res.send(404); }
+    req.body.offeredByUser.userName = user.empName;
+    req.body.offeredByUser.userImage = user.userPhotoUrl;
+    req.body.offeredByUser.totalNumberOfSeats = user.vehicle.capacity;
+  });
+
+  console.log('\nRequest.Body : ' + JSON.stringify(req.body));
   Ride.create(req.body, function(err, ride) {
     if(err) { return handleError(res, err); }
     if(ride){
@@ -52,14 +62,38 @@ exports.getRideByRideAttribute = function(req, res){
 };
 
 // Filter rides by ride attribute(s)
-// Post the data to this service like { "startLocation": "location1", "endLocation", "location2" }
+// Post the data to this service like : 
+/*{
+  "filters" : { 
+                  "startLocation": "location1",
+                  "endLocation": "location2" 
+              },
+  "page" : 1,
+  "limit" : 10
+}*/
+
 exports.filterRide = function(req, res){
-  Ride.find(req.body)
+
+  var query;
+  query = req.body.filters;
+  var options = {
+      sort:   { createdDate: -1 },
+      page:   req.body.page, 
+      limit:  req.body.limit
+  };
+
+
+  Ride.paginate( query, options , function(err, rides) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, rides);
+  });
+
+  /*Ride.find(req.body)
           .sort({'createdDate': 'desc'})
           .exec(function(err, rides){
     if(err) { return handleError(res, err); }
     return res.json(200, rides);
-  });
+  });*/
 };
 
 // Gets rides based on certain criteria

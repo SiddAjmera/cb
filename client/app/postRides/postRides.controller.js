@@ -47,11 +47,23 @@ angular.module('cbApp')
     $scope.postRide = function(){
         console.log("ride object",$scope.ride);
         var ride = {};
-        ride.startLocation = $scope.ride.source.formatted_address;
-        ride.endLocation = $scope.ride.destination.formatted_address;
+        ride.startLocation = {
+                                    formatted_address:$scope.ride.source.formatted_address,
+                                    location:[$scope.ride.source.geometry.location.lat(),$scope.ride.source.geometry.location.lng()],
+                                    placeId:$scope.ride.source.place_id,
+                                    icon : $scope.ride.source.icon 
+                             };
+        ride.endLocation = {
+                                    formatted_address:$scope.ride.destination.formatted_address,
+                                    location:[$scope.ride.destination.geometry.location.lat(),$scope.ride.destination.geometry.location.lng()],
+                                    placeId:$scope.ride.destination.place_id,
+                                    icon : $scope.ride.destination.icon 
+                             };                 
+       
         ride.offeredByUserId = currentUser.userId;
         ride.availableSeats = $scope.ride.availableSeats;
         ride.rideStartTime = calculateRideStartTime($scope.ride.destination.leavingIn);
+        ride.vehicleLicenseNumber = currentUser.vehicle.vehicleNo;
         console.log("final obj",ride)
         httpRequest.post(config.apis.postRide,ride).
         then(function(data){
