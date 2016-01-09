@@ -51,6 +51,17 @@ exports.getRideByRideAttribute = function(req, res){
   });
 };
 
+// Filter rides by ride attribute(s)
+// Post the data to this service like { "startLocation": "location1", "endLocation", "location2" }
+exports.filterRide = function(req, res){
+  Ride.find(req.body)
+          .sort({'createdDate': 'desc'})
+          .exec(function(err, rides){
+    if(err) { return handleError(res, err); }
+    return res.json(200, rides);
+  });
+};
+
 // Gets rides based on certain criteria
 exports.getAvailableRides = function(req, res){
   console.log('Got to getAvailableRides with request body : ' + JSON.stringify(req.body));
