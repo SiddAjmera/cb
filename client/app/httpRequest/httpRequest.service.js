@@ -36,6 +36,19 @@ angular.module('cbApp')
             req.url = config.apiBaseURL+url;
             req.method = 'POST';
             promise = $http(req).
+                     then(function (response) {
+                      return response ;
+                    });
+            // Return the promise to the controller
+            return promise;
+        },
+        put:function(url,data){
+           var promise;
+            var req = {};
+            req.data=data;
+            req.url = config.apiBaseURL+url;
+            req.method = 'PUT';
+            promise = $http(req).
                     then(function (response) {
                       return response ;
                     });

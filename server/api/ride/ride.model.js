@@ -32,7 +32,7 @@ var RideSchema = new Schema({
     userImage: String,
     totalNumberOfSeats: Number,
   },
-  companions: [ { companionUserId: Number } ],
+  companions: [ { userId: String } ],
   rideDate: Date,
   rideStatus: { type: String, $in: [ 'Active', 'Started', 'Completed', 'Cancelled' ] },
   createdDate: { type: Date, default: Date.now },
