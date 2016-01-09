@@ -722,7 +722,10 @@ a.get-started-link:hover{
     padding: 0 15px;
 }
 .form-section.functionality-wrap.avail-list-wrap{
+    margin: 0 auto;
     margin-top: 35px;
+    width: 480px;
+    float: none;
 }
 .opp-input-box{
     width: 100%;
@@ -786,18 +789,8 @@ a.get-started-link:hover{
     padding-top: 13px;
     border-bottom: 1px solid #434343;
 }
-.each-vailable-ride:nth-child(odd) div.avail-list-img-sec{
-    float: left;
-}
-.each-vailable-ride:nth-child(odd) div.avail-list-img-sec .avail-user-img{
-    float: left;
-}
-.each-vailable-ride:nth-child(even) div.avail-list-img-sec{
-    float: right;
-}
-.each-vailable-ride:nth-child(even) div.avail-list-img-sec .avail-user-img{
-    float: right;
-}
+
+
 /*Available rides css ends*/
 
 /*Home Css starts*/
@@ -1553,6 +1546,34 @@ input[type=number]::-webkit-outer-spin-button {
     margin-bottom: 0px;
 }
 
+/*available ride css*/
+.choose-ride-wrap{
+    background-color: #378C7B;
+    padding: 10px;
+    color: #fff;
+}
+
+.choose-ride-hand{
+    width: 18px;
+}
+.choose-ride-text{
+
+    padding-top: 4px;
+    padding-left: 8px;
+    float: left;
+}
+.avail-rides-lists-wrap{
+    background-color: #fff;
+}
+.avail-list-img-sec{
+    background-color: #EFEFEF;
+    height: 70px;
+    padding: 10px 15px;
+}
+.avail-user-name{
+    line-height: 50px;
+    font-size: 16px;
+}
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
         width: 4em;
