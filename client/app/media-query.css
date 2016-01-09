@@ -15,9 +15,9 @@
 	    width: 100%;
 	}
 	.container.login-container.post-ride-container{
-		position: absolute;
-		bottom: 12px;
-		width: 100%;
+		float: left;
+	    width: 100%;
+	    margin-top: 177px;
 	}
 }
 @media(max-width: 480px){
