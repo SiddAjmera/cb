@@ -6,6 +6,7 @@ angular.module('cbApp')
       .state('userHome.availableRides', {
         url: '/availableRides',
         templateUrl: 'app/availableRides/availableRides.html',
-        controller: 'AvailableRidesCtrl'
+        controller: 'AvailableRidesCtrl',
+        authenticate:true
       });
   });

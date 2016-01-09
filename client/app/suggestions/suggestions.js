@@ -6,6 +6,7 @@ angular.module('cbApp')
       .state('userHome.suggestions', {
         url: '/suggestions',
         templateUrl: 'app/suggestions/suggestions.html',
-        controller: 'SuggestionsCtrl'
+        controller: 'SuggestionsCtrl',
+         authenticate:true
       });
   });

@@ -25,6 +25,7 @@ var RideSchema = new Schema({
   offeredByUserId: String,
   rideStartTime: String,
   vehicleLicenseNumber: String,
+<<<<<<< HEAD
   // offeredByUserId: { type: Number, index: true },
   offeredByUser: {
     userId: String,
@@ -33,6 +34,9 @@ var RideSchema = new Schema({
     totalNumberOfSeats: Number,
   },
   companions: [ { companionUserId: Number } ],
+=======
+  companions: [ { userId: String } ],
+>>>>>>> c9dd1e82b388ed1ccf867e170bfa01ff39a08b13
   rideDate: Date,
   rideStatus: { type: String, $in: [ 'Active', 'Started', 'Completed', 'Cancelled' ] },
   createdDate: { type: Date, default: Date.now },
