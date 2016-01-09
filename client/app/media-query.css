@@ -10,7 +10,10 @@
 
 }
 @media(max-width: 580px){
-
+	.form-section.functionality-wrap.avail-list-wrap {
+		float: left;
+	    width: 100%;
+	}
 }
 @media(max-width: 480px){
 	.container.login-container{
@@ -31,6 +34,10 @@
 	}
 	.each-row .each-row-half div:first-child{
 		width: 30%;
+	}
+	.form-section.functionality-wrap.avail-list-wrap{
+		float: left;
+	    width: 100%;
 	}
 	
 }
