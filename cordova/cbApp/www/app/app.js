@@ -73,7 +73,15 @@ angular.module('cbApp', [
     };
   }])
 
-  .run(["$rootScope", "$location", "Auth", "localStorage", "$state", function ($rootScope, $location, Auth,localStorage,$state) {
+  .run(["$rootScope", "$location", "Auth", "localStorage", "$state", "cordovaUtil", function ($rootScope, $location, Auth,localStorage,$state,cordovaUtil) {
+    //put all the cordova specific functionality
+    if(config.cordova)
+    {
+      console.log(cordovaUtil.checkNetConnection())
+      if(cordovaUtil.checkNetConnection()=='No network connection'){
+        cordovaUtil.showToastMessage("Please check internet connection")
+      }
+    }
     ///console.log("In run block",localStorage.isInitialized());
     
    localStorage.isInitialized().then(function(val){
@@ -116,14 +124,7 @@ angular.module('cbApp', [
 var onDeviceReady = function() {
     angular.bootstrap( document, ['cbApp']);
     $.getScript('http://maps.google.com/maps/api/js?sensor=false&libraries=places');
-     document.addEventListener("backbutton", function(e){
-        if(window.location.hash=='#/userHome/home'){
-            e.preventDefault();
-            navigator.app.exitApp();
-        } /*else {
-            navigator.app.backHistory()
-        }*/
-    }, false);
+     
 }
 document.addEventListener('deviceready', 
 onDeviceReady);
@@ -331,40 +332,21 @@ angular.module('cbApp')
         // Function to save the UserObject in MongoDB
         
           if(config.cordova){
-            pushnotification.registerPushNotification();
-             $rootScope.$on('$cordovaPush:notificationReceived', function(event, notification) {
-      switch(notification.event) {
-        case 'registered':
-          if (notification.regid.length > 0 ) {
-            $scope.user.redgId=notification.regid;
-            $scope.signupPost();
-          }
-          break;
-
-        case 'message':
-          // this is the actual push notification. its format depends on the data model from the push server
-          alert('message = ' + notification.message + ' msgCount = ' + notification.msgcnt);
-          break;
-
-        case 'error':
-          alert('GCM error = ' + notification.msg);
-          break;
-
-        default:
-          alert('An unknown GCM event has occurred');
-          break;
-      }
-    });
-          }
-          else
+            pushnotification.registerPushNotification().then(function(redgId){
+               $scope.user.redgId=redgId;
+                $scope.signupPost();
+            });          
+         }
+         else
           $scope.signupPost();
             
-       
+       }
        
        $scope.signupPost=function(){ 
          var url = config.apis.signup;
+         $scope.user.empId = $scope.user.userId;
          httpRequest.post(url,$scope.user).
-        then(function(response){
+          then(function(response){
               /*if(response.status==)*/
               if(response.status==200){
                  console.log('User Stored in the MongoDB Successfully. Here is the Response : ',response);
@@ -382,7 +364,7 @@ angular.module('cbApp')
        
        }
 
-    };
+   
 
     $scope.getLocation=function(){
          var modalInstance = $modal.open({
@@ -397,7 +379,8 @@ angular.module('cbApp')
           cordovaUtil.getUserHomeCoordinates().then(function(address){
            $scope.user.homeAddress = address.homeAddress;
             $scope.user.city = address.city;
-            $scope.user.zipcode = address.zipcode;
+            if(address.zipcode)
+            $scope.user.zipcode = parseInt(address.zipcode);
             $scope.user.placeID = address.placeID;
             $scope.user.homelocationCoordinates = [];
             $scope.user.homelocationCoordinates.push(address.homeLocationCoordinates.lat);
@@ -521,9 +504,11 @@ if(angular.isUndefined(config)){
 
 
 //base URL for API
+
 //config.apiBaseURL="http://localhost:9000/";
-//config.apiBaseURL="http://52.77.218.140:9000/";
-config.apiBaseURL="http://192.168.1.100:9000/"
+config.apiBaseURL="http://52.77.218.140:9000/";
+//config.apiBaseURL="http://192.168.1.100:9000/"
+
 
 /*apis start from here*/
 
@@ -840,7 +825,72 @@ angular.module('cbApp')
 				});
 			});
 			return deferred.promise;
+	   },
+	   
+	   backbuttonImpl:function(){
+		 
+ var exitApp = false;
+                 
+                 var intval = setInterval(function (){exitApp = false;}, 
+1000);
+    document.addEventListener("backbutton", function (e){
+        e.preventDefault();
+        if (exitApp) {
+            clearInterval(intval) 
+            navigator.notification.confirm("Are you sure you want to exit ?", onConfirm, "Confirmation", "Yes,No"); 
+        }
+        else {
+            exitApp = true
+            history.back(1);
+        } 
+    }, false);
+        
+ 
+           function onConfirm(button) {
+    if(button==2){//If User selected No, then we just do nothing
+    exitApp=false;
+        return;
+    }else{
+      //  navigator.app.exitApp();// Otherwise we quit the app.
+      (navigator.app && navigator.app.exitApp()) || (device && 
+device.exitApp())
+    }
+}
+            
+	   },
+	   
+	   checkNetConnection:function(){
+		   var networkState = navigator.connection.type;
+		   	 var states = {};
+    states["Connection.UNKNOWN"]  = 'Unknown connection';
+    states["Connection.ETHERNET"] = 'Ethernet connection';
+    states["wifi"]     = 'WiFi connection';
+    states["Connection.CELL_2G"]  = 'Cell 2G connection';
+    states["Connection.CELL_3G"]  = 'Cell 3G connection';
+    states["Connection.CELL_4G"]  = 'Cell 4G connection';
+    states["Connection.CELL"]     = 'Cell generic connection';
+    states["none"]     = 'No network connection';
+	
+	return states[networkState];
+	   },
+	   
+	   showToastMessage:function(msg){
+		   window.plugins.toast.showWithOptions(
+    {
+      message: msg,
+      duration: "long",
+      position: "center",
+      addPixelsY: -40  // added a negative value to move it up a bit (default 0)
+    },
+    function(res){
+		console.log(res)
+	}, // optional
+    function(err){
+		console.log(err)
+	}    // optional
+  );
 	   }
+	   
    }
   }]);
 
@@ -1112,7 +1162,7 @@ angular.module('cbApp')
         })
     }
 
-    getDrives(10);
+   
     
   }]);
 
@@ -1566,19 +1616,29 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .service('pushnotification', ["$cordovaPush", "$q", "$rootScope", function ($cordovaPush,$q,$rootScope) {
+  .service('pushnotification', ["$q", function ($q) {
     return {
       registerPushNotification:function(){
-        
+        var deferred= $q.defer();
         var androidConfig = {
               "senderID": "463291795017",
             };
-              $cordovaPush.register(androidConfig).then(function(result) {
-         console.log(result)
-    }, function(err) {
-      console.log(err)
-    })
-    
+              var push = PushNotification.init({
+    android: {
+        senderID: "463291795017"
+    },
+    ios: {
+        alert: "true",
+        badge: true,
+        sound: 'false'
+    },
+    windows: {}
+});
+      push.on('registration', function(data) {
+          console.log(data.registrationId);
+          deferred.resolve(data.registrationId)
+      });
+    return deferred.promise;
       }
     }
   }]);
@@ -2562,12 +2622,12 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/account/signup/stepOne/stepOne.html',
-    "<div class=\"form-section signup-section-form\"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_employee_ID.png></span></div><div><input type=number max=9999999 ng-class=\"{'error-border':!showErrorMessage}\" class=\"form-control input-boxes login-input-box\" ng-model=user.empId name=empid placeholder=\"EMPLOYEE ID\" required ng-pattern=\"/^[1-9]\\d*$/\"><div ng-show=!showErrorMessage ng-messages=signupForm.empid.$error class=error-msg-edit><p ng-message=required class=error-msg>Employee ID is required</p><p ng-message=pattern class=error-msg>Invalid Employee ID</p></div></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_username.png></span></div><div><input ng-class=\"{'error-border':!showErrorMessage}\" name=empName class=\"form-control input-boxes login-input-box\" ng-model=user.empName placeholder=NAME required><div ng-show=!showErrorMessage ng-messages=signupForm.empName.$error class=error-msg-edit><p ng-message=required class=error-msg>Name is required</p><p ng-message=pattern class=error-msg>Invalid Name</p></div></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_mobile_number.png></span></div><div><input maxlength=10 class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" ng-model=user.contactNo type=tel name=contactNo required ng-pattern=\"/^[789]\\d{9}$/\" placeholder=\"MOBILE NUMBER\"><div ng-show=!showErrorMessage ng-messages=signupForm.contactNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Contact Number is required</p><p ng-message=pattern class=error-msg>Invalid Contact Number</p></div></div></div><div id=sites class=\"each-row gender-section\"><div class=\"radio gender-radio\"><label class=rad><input type=radio name=optradio value=Female ng-model=\"user.gender\"><i></i> FEMALE</label></div><div class=\"radio gender-radio\"><label class=rad><input type=radio name=optradio value=Male ng-model=\"user.gender\"><i></i> MALE</label></div></div><div class=each-row><input type=button class=input-buttons name=continue value=CONTINUE ng-click=goToStep(2)></div></div>"
+    "<div class=\"form-section signup-section-form\"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_employee_ID.png></span></div><div><input type=number max=9999999 ng-class=\"{'error-border':!showErrorMessage}\" class=\"form-control input-boxes login-input-box\" ng-model=user.userId name=empid placeholder=\"EMPLOYEE ID\" required ng-pattern=\"/^[1-9]\\d*$/\"><div ng-show=!showErrorMessage ng-messages=signupForm.empid.$error class=error-msg-edit><p ng-message=required class=error-msg>Employee ID is required</p><p ng-message=pattern class=error-msg>Invalid Employee ID</p></div></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_username.png></span></div><div><input ng-class=\"{'error-border':!showErrorMessage}\" name=empName class=\"form-control input-boxes login-input-box\" ng-model=user.empName placeholder=NAME required><div ng-show=!showErrorMessage ng-messages=signupForm.empName.$error class=error-msg-edit><p ng-message=required class=error-msg>Name is required</p><p ng-message=pattern class=error-msg>Invalid Name</p></div></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_mobile_number.png></span></div><div><input maxlength=10 class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" ng-model=user.contactNo type=tel name=contactNo required ng-pattern=\"/^[789]\\d{9}$/\" placeholder=\"MOBILE NUMBER\"><div ng-show=!showErrorMessage ng-messages=signupForm.contactNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Contact Number is required</p><p ng-message=pattern class=error-msg>Invalid Contact Number</p></div></div></div><div id=sites class=\"each-row gender-section\"><div class=\"radio gender-radio\"><label class=rad><input type=radio name=optradio value=Female ng-model=\"user.gender\"><i></i> FEMALE</label></div><div class=\"radio gender-radio\"><label class=rad><input type=radio name=optradio value=Male ng-model=\"user.gender\"><i></i> MALE</label></div></div><div class=each-row><input type=button class=input-buttons name=continue value=CONTINUE ng-click=goToStep(2)></div></div>"
   );
 
 
   $templateCache.put('app/account/signup/stepThree/stepThree.html',
-    "<div class=\"form-section signup-section-form\"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_username.png></span></div><div><input type=number maxlength=9999999 ng-class=\"{'error-border':!showErrorMessage}\" class=\"form-control input-boxes login-input-box\" ng-model=user.username name=username placeholder=USERNAME required ng-pattern=\"/^[1-9]\\d*$/\"><div ng-show=!showErrorMessage ng-messages=signupForm.username.$error class=error-msg-edit><p ng-message=required class=error-msg>Username is required</p><p ng-message=pattern class=error-msg>Invalid Username</p></div></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_password.png></span></div><div><input class=\"form-control pwd-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" required type=password ng-model=user.password name=password placeholder=PASSWORD><div ng-show=!showErrorMessage ng-messages=signupForm.password.$error class=error-msg-edit><p ng-message=required class=error-msg>Please enter password</p></div></div></div><div class=each-row><p class=terms-cond-text>By Signing up, I agree to TCS's <a href=# class=\"global-link float-none\">Terms of Service</a> and <a href=# class=\"global-link float-none\">Privacy Policy</a></p></div><div class=each-row><input type=submit class=submit-buttons name=continue value=REGISTER></div></div>"
+    "<div class=\"form-section signup-section-form\"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_username.png></span></div><div><input type=number maxlength=9999999 ng-class=\"{'error-border':!showErrorMessage}\" class=\"form-control input-boxes login-input-box\" ng-model=user.userId name=username placeholder=USERNAME required ng-pattern=\"/^[1-9]\\d*$/\" readonly ng-disabled=true><div ng-show=!showErrorMessage ng-messages=signupForm.username.$error class=error-msg-edit><p ng-message=required class=error-msg>Username is required</p><p ng-message=pattern class=error-msg>Invalid Username</p></div></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_password.png></span></div><div><input class=\"form-control pwd-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" required type=password ng-model=user.password name=password placeholder=PASSWORD><div ng-show=!showErrorMessage ng-messages=signupForm.password.$error class=error-msg-edit><p ng-message=required class=error-msg>Please enter password</p></div></div></div><div class=each-row><p class=terms-cond-text>By Signing up, I agree to TCS's <a href=# class=\"global-link float-none\">Terms of Service</a> and <a href=# class=\"global-link float-none\">Privacy Policy</a></p></div><div class=each-row><input type=submit class=submit-buttons name=continue value=REGISTER></div></div>"
   );
 
 
@@ -2685,7 +2745,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/postRides/postRides.html',
-    "<div class=page-wrapper><div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><span class=\"glyphicon glyphicon-chevron-left cursor-pointer\" ng-click=toggleHamburger()></span> <span class=heading>Post Ride</span></div><div class=\"container login-container\"><form name=userProfileUpdateForm class=animation-form-signup novalidate><div class=\"form-section signup-section-form\"><div class=each-row><div><span><img class=icon-style src=assets/images/icon_home_address.png></span></div><div class=\"input-fields address-fields\"><input ng-class=\"{'error-border':!showErrorMessage}\" name=rideSource class=\"form-control input-boxes ride-source-field\" ng-model=ride.source placeholder=\"LEAVING FROM\" required g-places-autocomplete><!-- force-selection=\"true\" options=\"autocompleteOptions\" --></div><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div ng-show=!showErrorMessage ng-messages=postRideForm.rideSource.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride source is required</p></div></div><div class=each-row><div><span><img class=icon-style src=assets/images/icon_office_address.png></span></div><div class=\"input-fields address-fields\"><input ng-class=\"{'error-border':!showErrorMessage}\" name=rideDestination class=\"form-control input-boxes home-address-changer\" ng-model=ride.destination placeholder=\"LEAVING FOR\" required g-places-autocomplete></div><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div ng-show=!showErrorMessage ng-messages=postRideForm.rideDestination.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride destination is required</p></div></div><div class=each-row><span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_time.png></span></div><div class=input-fields><select name=leavingIn class=\"timeslot login-input-box\" ng-model=ride.leavingIn ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t.value as t.text for t in leavingInJSON\"><option style=display:none value=\"\">LEAVING IN</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.leavingIn.$error class=error-msg-edit><p ng-message=required class=error-msg>Leaving in min. is required</p></div></span> <span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_seat.png></span></div><div class=input-fields><select class=\"seater-select login-input-box\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=ride.availableSeats ng-options=\"c as c for c in availableSeatsJSON\"><option style=display:none value=\"\">SEATS AVAILABLE</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></span></div><div class=each-row><input type=button class=input-buttons name=syncData value=\"POST RIDE\" ng-click=postRide()></div></div></form></div></div>"
+    "<div class=page-wrapper><div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><span class=\"glyphicon glyphicon-chevron-left cursor-pointer\" ng-click=toggleHamburger()></span> <span class=heading>Post Ride</span></div><div class=\"container login-container post-ride-container\"><form name=userProfileUpdateForm class=animation-form-signup novalidate><div class=\"form-section signup-section-form\"><div class=each-row><!-- <div><span><img class=\"icon-style\" src=\"assets/images/icon_home_address.png\"></span></div> --><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div class=\"input-fields address-fields\"><input ng-class=\"{'error-border':!showErrorMessage}\" name=rideSource class=\"form-control input-boxes ride-source-field\" ng-model=ride.source placeholder=\"LEAVING FROM\" required g-places-autocomplete><!-- force-selection=\"true\" options=\"autocompleteOptions\" --></div><div ng-show=!showErrorMessage ng-messages=postRideForm.rideSource.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride source is required</p></div></div><div class=each-row><!-- <div><span><img class=\"icon-style\" src=\"assets/images/icon_office_address.png\"></span></div> --><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div class=\"input-fields address-fields\"><input ng-class=\"{'error-border':!showErrorMessage}\" name=rideDestination class=\"form-control input-boxes home-address-changer\" ng-model=ride.destination placeholder=\"LEAVING FOR\" required g-places-autocomplete></div><div ng-show=!showErrorMessage ng-messages=postRideForm.rideDestination.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride destination is required</p></div></div><div class=each-row><span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_time.png></span></div><div class=input-fields><select name=leavingIn class=\"timeslot login-input-box\" ng-model=ride.leavingIn ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t.value as t.text for t in leavingInJSON\"><option style=display:none value=\"\">LEAVING IN</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.leavingIn.$error class=error-msg-edit><p ng-message=required class=error-msg>Leaving in min. is required</p></div></span> <span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_seat.png></span></div><div class=input-fields><select class=\"seater-select login-input-box\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=ride.availableSeats ng-options=\"c as c for c in availableSeatsJSON\"><option style=display:none value=\"\">SEATS AVAILABLE</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></span></div><div class=each-row><input type=button class=input-buttons name=syncData value=\"POST RIDE\" ng-click=postRide()></div></div></form></div></div>"
   );
 
 

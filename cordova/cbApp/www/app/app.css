@@ -1544,6 +1544,15 @@ input[type=number]::-webkit-outer-spin-button {
 .leaflet-top, .leaflet-bottom{
     z-index: 7;
 }
+/*Post ride css*/
+.post-ride-container .ride-source-field,
+.post-ride-container .home-address-changer{
+    width: 85%;
+}
+.post-ride-container .each-row{
+    margin-bottom: 0px;
+}
+
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
         width: 4em;
@@ -1612,6 +1621,10 @@ input[type=number]::-webkit-outer-spin-button {
 @media(max-width: 480px){
 	.container.login-container{
 	    width: 100%;
+	}
+	.container.login-container.post-ride-container{
+		position: absolute;
+		bottom: 12px;
 	}
 	.each-row div:first-child{
 		width: 15%;
