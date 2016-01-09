@@ -73,10 +73,11 @@ angular.module('cbApp', [
     };
   }])
 
-  .run(["$rootScope", "$location", "Auth", "localStorage", "$state", "cordovaUtil", function ($rootScope, $location, Auth,localStorage,$state,cordovaUtil) {
+  .run(["$rootScope", "$location", "Auth", "localStorage", "$state", "cordovaUtil", "cordovaInit", function ($rootScope, $location, Auth,localStorage,$state,cordovaUtil,cordovaInit) {
     //put all the cordova specific functionality
     if(config.cordova)
     {
+      cordovaInit.loadGoogleMap();
       console.log(cordovaUtil.checkNetConnection())
       if(cordovaUtil.checkNetConnection()=='No network connection'){
         cordovaUtil.showToastMessage("Please check internet connection")
@@ -123,8 +124,7 @@ angular.module('cbApp', [
 
 var onDeviceReady = function() {
     angular.bootstrap( document, ['cbApp']);
-    $.getScript('http://maps.google.com/maps/api/js?sensor=false&libraries=places');
-     
+   
 }
 document.addEventListener('deviceready', 
 onDeviceReady);
@@ -481,8 +481,40 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('AvailableRidesCtrl', ["$scope", function ($scope) {
-    $scope.message = 'Hello';
+  .controller('AvailableRidesCtrl', ["$scope", "httpRequest", "Auth", function ($scope,httpRequest,Auth) {
+
+  	var currentUser = {};
+
+  	Auth.getCurrentUser().then(function(user){currentUser = user;getAvailableRides();})
+
+  	var getAvailableRides = function(){
+  		var apis = config.apis.filterRides;
+  		var requestJSON = {};
+
+  		httpRequest.post(apis,requestJSON).
+  		then(function(rides){
+  			$scope.rides = rides.data;
+  		})
+  		
+  	};
+
+
+
+  	$scope.selectRide = function(ride){
+  		var apis = config.apis.postRide+ride._id;
+  		var requestJSON  = {};
+  		requestJSON.companions = [];
+  		requestJSON.companions.push({userId:currentUser.userId});
+  		requestJSON.availableSeats=ride.availableSeats-1;
+  		
+  		httpRequest.post(apis,requestJSON).
+  		then(function(response){
+  			if(response.status==200){
+  				/*ride selected successfully. Show notification to ride owner*/
+  			}
+  		})
+  	}
+    
   }]);
 
 'use strict';
@@ -493,7 +525,8 @@ angular.module('cbApp')
       .state('userHome.availableRides', {
         url: '/availableRides',
         templateUrl: 'app/availableRides/availableRides.html',
-        controller: 'AvailableRidesCtrl'
+        controller: 'AvailableRidesCtrl',
+        authenticate:true
       });
   }]);
 
@@ -506,8 +539,8 @@ if(angular.isUndefined(config)){
 //base URL for API
 
 //config.apiBaseURL="http://localhost:9000/";
-config.apiBaseURL="http://52.77.218.140:9000/";
-//config.apiBaseURL="http://192.168.1.100:9000/"
+//config.apiBaseURL="http://52.77.218.140:9000/";
+config.apiBaseURL="http://192.168.1.101:9000/"
 
 
 /*apis start from here*/
@@ -520,17 +553,20 @@ config.apis.signup = "api/users/";
 config.apis.filterLocations = "api/locations/FilterLocation";
 config.apis.getStats = "api/drives/FilterDrive";
 config.apis.getDrives = "api/drives/LatestDriveId";
-config.apis.postRide = "api/rides/"
 
+/*ride apis*/
+config.apis.postRide = "api/rides/";
+config.apis.filterRides = "api/rides/FilterRide";
 config.cordova=true;
 
 
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaInit', ["$document", "$q", function($document, $q) {
-
-	    var d = $q.defer(),
+  .service('cordovaInit', ["$document", "$q", "$interval", function($document, $q, $interval) {
+return {
+	deviceready:function(){
+		 var d = $q.defer(),
 	        resolved = false;
 
 	    var self = this;
@@ -548,6 +584,26 @@ angular.module('cbApp')
 	        if (window.cordova) d.resolve(window.cordova);
 	      }
 	    }, 3000);
+	},
+	 loadGoogleMap:function(){
+		 var googleMapLoaded=false;
+		 
+		 var interval= $interval(function() {
+	      if (!googleMapLoaded) {
+	        $.getScript('http://maps.google.com/maps/api/js?sensor=false&libraries=places', function( data, textStatus, jqxhr){
+				if(textStatus=="success"){
+					googleMapLoaded=true;
+					$interval.cancel(interval)
+				}
+				
+			})
+	      }
+	    }, 3000);
+		 
+	 }
+	
+}
+	   
 	}]);
 
 'use strict';
@@ -829,11 +885,11 @@ angular.module('cbApp')
 	   
 	   backbuttonImpl:function(){
 		 
- var exitApp = false;
+ 				var exitApp = false;
                  
                  var intval = setInterval(function (){exitApp = false;}, 
 1000);
-    document.addEventListener("backbutton", function (e){
+   		 document.addEventListener("backbutton", function (e){
         e.preventDefault();
         if (exitApp) {
             clearInterval(intval) 
@@ -847,15 +903,15 @@ angular.module('cbApp')
         
  
            function onConfirm(button) {
-    if(button==2){//If User selected No, then we just do nothing
-    exitApp=false;
-        return;
-    }else{
-      //  navigator.app.exitApp();// Otherwise we quit the app.
-      (navigator.app && navigator.app.exitApp()) || (device && 
-device.exitApp())
-    }
-}
+			    if(button==2){//If User selected No, then we just do nothing
+			    exitApp=false;
+			        return;
+			    }else{
+			      //  navigator.app.exitApp();// Otherwise we quit the app.
+			      (navigator.app && navigator.app.exitApp()) || (device && 
+					device.exitApp())
+  	  }
+		}	
             
 	   },
 	   
@@ -1479,7 +1535,7 @@ angular.module('cbApp')
         url: '/main',
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl',
-        authenticate:"true"
+        authenticate:true
       });
   }]);
 'use strict';
@@ -1583,11 +1639,23 @@ angular.module('cbApp')
     $scope.postRide = function(){
         console.log("ride object",$scope.ride);
         var ride = {};
-        ride.startLocation = $scope.ride.source.formatted_address;
-        ride.endLocation = $scope.ride.destination.formatted_address;
+        ride.startLocation = {
+                                    formatted_address:$scope.ride.source.formatted_address,
+                                    location:[$scope.ride.source.geometry.location.lat(),$scope.ride.source.geometry.location.lng()],
+                                    placeId:$scope.ride.source.place_id,
+                                    icon : $scope.ride.source.icon 
+                             };
+        ride.endLocation = {
+                                    formatted_address:$scope.ride.destination.formatted_address,
+                                    location:[$scope.ride.destination.geometry.location.lat(),$scope.ride.destination.geometry.location.lng()],
+                                    placeId:$scope.ride.destination.place_id,
+                                    icon : $scope.ride.destination.icon 
+                             };                 
+       
         ride.offeredByUserId = currentUser.userId;
         ride.availableSeats = $scope.ride.availableSeats;
         ride.rideStartTime = calculateRideStartTime($scope.ride.destination.leavingIn);
+        ride.vehicleLicenseNumber = currentUser.vehicle.vehicleNo;
         console.log("final obj",ride)
         httpRequest.post(config.apis.postRide,ride).
         then(function(data){
@@ -1609,7 +1677,7 @@ angular.module('cbApp')
         url: '/postRides',
         templateUrl: 'app/postRides/postRides.html',
         controller: 'PostRidesCtrl',
-        authenticate:"true"
+        authenticate:true
       });
   }]);
 
@@ -1622,6 +1690,7 @@ angular.module('cbApp')
         var deferred= $q.defer();
         var androidConfig = {
               "senderID": "463291795017",
+             "icon":"logo"
             };
               var push = PushNotification.init({
     android: {
@@ -1643,6 +1712,23 @@ angular.module('cbApp')
     }
   }]);
 
+'use strict';
+
+angular.module('cbApp')
+  .directive('scroll', ["$window", function ($window) {
+     return function(scope, element, attrs) {
+        angular.element($window).bind("scroll", function() {
+             if (this.pageYOffset >= 75) {
+                 scope.boolChangeClass = true;
+                 console.log('Scrolled below header.');
+             } else {
+                 scope.boolChangeClass = false;
+                 console.log('Header is in view.');
+             }
+            scope.$apply();
+        });
+    };
+  }]);
 'use strict';
 
 angular.module('cbApp')
@@ -1889,7 +1975,8 @@ angular.module('cbApp')
       .state('userHome.startSampling', {
         url: '/startSampling',
         templateUrl: 'app/startSampling/startSampling.html',
-        controller: 'StartSamplingCtrl'
+        controller: 'StartSamplingCtrl',
+        authenticate:true
       });
   }]);
 'use strict';
@@ -1986,7 +2073,8 @@ angular.module('cbApp')
       .state('userHome.suggestions', {
         url: '/suggestions',
         templateUrl: 'app/suggestions/suggestions.html',
-        controller: 'SuggestionsCtrl'
+        controller: 'SuggestionsCtrl',
+         authenticate:true
       });
   }]);
 'use strict';
@@ -2106,7 +2194,8 @@ angular.module('cbApp')
       .state('userHome.userProfile', {
         url: '/userProfile',
         templateUrl: 'app/userProfile/userProfile.html',
-        controller: 'UserProfileCtrl'
+        controller: 'UserProfileCtrl',
+         authenticate:true
       });
   }]);
 'use strict';
@@ -2645,7 +2734,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/availableRides/availableRides.html',
-    "<div class=page-wrapper><div class=\"container login-container user-home-container pad-R-none pad-L-none\"><div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><span class=\"glyphicon glyphicon-chevron-left cursor-pointer\" ng-click=toggleHamburger()></span> <span class=heading>Avaialble Rides</span></div><div class=\"form-section functionality-wrap avail-list-wrap\"><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\"><div class=\"col-md-3 col-sm-3 col-xs-3 avail-list-img-sec\"><img src=assets/images/user-image.jpg class=avail-user-img></div><div class=\"col-md-9 col-sm-9 col-xs-9\"><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><span class=\"pull-left input-labels\">Bob Martin</span> <span class=\"pull-right input-labels\">01/01/2015</span></div><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><div class=availability-label>Availability</div><div class=\"avail-seat-wrap field-gap-top field-gap-bottom\"><span class=\"each-seat available\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat available selected\"></span></div></div></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\"><div class=\"col-md-3 col-sm-3 col-xs-3 avail-list-img-sec\"><img src=assets/images/user-image.jpg class=avail-user-img></div><div class=\"col-md-9 col-sm-9 col-xs-9\"><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><span class=\"pull-left input-labels\">Bob Martin</span> <span class=\"pull-right input-labels\">01/01/2015</span></div><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><div class=availability-label>Availability</div><div class=\"avail-seat-wrap field-gap-top field-gap-bottom\"><span class=\"each-seat available\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat available selected\"></span></div></div></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\"><div class=\"col-md-3 col-sm-3 col-xs-3 avail-list-img-sec\"><img src=assets/images/user-image.jpg class=avail-user-img></div><div class=\"col-md-9 col-sm-9 col-xs-9\"><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><span class=\"pull-left input-labels\">Bob Martin</span> <span class=\"pull-right input-labels\">01/01/2015</span></div><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><div class=availability-label>Availability</div><div class=\"avail-seat-wrap field-gap-top field-gap-bottom\"><span class=\"each-seat available\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat available selected\"></span></div></div></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\"><div class=\"col-md-3 col-sm-3 col-xs-3 avail-list-img-sec\"><img src=assets/images/user-image.jpg class=avail-user-img></div><div class=\"col-md-9 col-sm-9 col-xs-9\"><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><span class=\"pull-left input-labels\">Bob Martin</span> <span class=\"pull-right input-labels\">01/01/2015</span></div><div class=\"col-md-12 col-sn-12 col-xs-12 pad-R-none pad-L-none\"><div class=availability-label>Availability</div><div class=\"avail-seat-wrap field-gap-top field-gap-bottom\"><span class=\"each-seat available\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat occupied\"></span> <span class=\"each-seat available selected\"></span></div></div></div></div></div></div></div>"
+    "<div class=\"page-wrapper avail-page-wrapper\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header\"><span class=\"glyphicon glyphicon-chevron-left cursor-pointer avail-header-back\" ng-click=toggleHamburger()></span> <span class=heading>Avaialble Rides</span> <span><img class=avail-header-search src=assets/images/3x/ico_search.png></span></div><div class=\"form-section functionality-wrap avail-list-wrap\"><div><div class=triangle-down-left></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 choose-ride-wrap\"><span class=\"choose-img-wrap pull-left\"><img class=choose-ride-hand src=assets/images/available-rides/tap.png></span> <span class=choose-ride-text>Choose your ride</span></div></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-rides-lists-wrap\"><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\"><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-list-img-sec\"><img src=assets/images/user-image.jpg class=\"avail-user-img pull-left\"><p class=avail-user-name>Prabhavati Choudary</p></div><div class=\"col-md-6 col-sm-6 col-xs-6 avail-left-sec\"><div class=each-info-line><img class=avai-ride-info-icon src=assets/images/available-rides/calendar.png> <span>07-01-16</span></div><div class=\"each-info-line loc-trim\"><img class=avai-ride-info-icon src=assets/images/available-rides/from-icon.png> <span>Wakad, Pune</span></div><div class=each-info-line><img class=avai-ride-info-icon src=assets/images/available-rides/starting-time.png> <span>10.00 AM</span></div></div><div class=\"col-md-6 col-sm-6 col-xs-6 avail-right-sec\"><div class=avail-right-info><span class=\"pull-left seat-avail-label\">Seats Available</span> <span class=\"available-seat-count pull-right\">2</span></div><div class=avail-right-info><span>Select a seat</span></div><div class=avail-right-info><img class=seat-info-img src=assets/images/available-rides/filled_seat.png> <img class=seat-info-img src=assets/images/available-rides/Tap_seat.png> <img class=seat-info-img src=assets/images/available-rides/vacantSeat.png> <img class=seat-info-img src=assets/images/available-rides/vacantSeat.png></div></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-proceed-wrap\"><span>Proceed <img class=avail-proceed-img src=assets/images/available-rides/Proceed_arrow.png></span></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\"><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-list-img-sec\"><img src=assets/images/user-image.jpg class=\"avail-user-img pull-left\"><p class=avail-user-name>Prabhavati Choudary</p></div><div class=\"col-md-6 col-sm-6 col-xs-6 avail-left-sec\"><div class=each-info-line><img class=avai-ride-info-icon src=assets/images/available-rides/calendar.png> <span>07-01-16</span></div><div class=\"each-info-line loc-trim\"><img class=avai-ride-info-icon src=assets/images/available-rides/from-icon.png> <span>Wakad, Pune</span></div><div class=each-info-line><img class=avai-ride-info-icon src=assets/images/available-rides/starting-time.png> <span>10.00 AM</span></div></div><div class=\"col-md-6 col-sm-6 col-xs-6 avail-right-sec\"><div class=avail-right-info><span class=\"pull-left seat-avail-label\">Seats Available</span> <span class=\"available-seat-count pull-right\">2</span></div><div class=avail-right-info><span>Select a seat</span></div><div class=avail-right-info><img class=seat-info-img src=assets/images/available-rides/filled_seat.png> <img class=seat-info-img src=assets/images/available-rides/Tap_seat.png> <img class=seat-info-img src=assets/images/available-rides/vacantSeat.png> <img class=seat-info-img src=assets/images/available-rides/vacantSeat.png></div></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-proceed-wrap\"><span>Proceed <img class=avail-proceed-img src=assets/images/available-rides/Proceed_arrow.png></span></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\"><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-list-img-sec\"><img src=assets/images/user-image.jpg class=\"avail-user-img pull-left\"><p class=avail-user-name>Prabhavati Choudary</p></div><div class=\"col-md-6 col-sm-6 col-xs-6 avail-left-sec\"><div class=each-info-line><img class=avai-ride-info-icon src=assets/images/available-rides/calendar.png> <span>07-01-16</span></div><div class=\"each-info-line loc-trim\"><img class=avai-ride-info-icon src=assets/images/available-rides/from-icon.png> <span>Wakad, Pune</span></div><div class=each-info-line><img class=avai-ride-info-icon src=assets/images/available-rides/starting-time.png> <span>10.00 AM</span></div></div><div class=\"col-md-6 col-sm-6 col-xs-6 avail-right-sec\"><div class=avail-right-info><span class=\"pull-left seat-avail-label\">Seats Available</span> <span class=\"available-seat-count pull-right\">2</span></div><div class=avail-right-info><span>Select a seat</span></div><div class=avail-right-info><img class=seat-info-img src=assets/images/available-rides/filled_seat.png> <img class=seat-info-img src=assets/images/available-rides/Tap_seat.png> <img class=seat-info-img src=assets/images/available-rides/vacantSeat.png> <img class=seat-info-img src=assets/images/available-rides/vacantSeat.png></div></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-proceed-wrap\"><span>Proceed <img class=avail-proceed-img src=assets/images/available-rides/Proceed_arrow.png></span></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\"><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-list-img-sec\"><img src=assets/images/user-image.jpg class=\"avail-user-img pull-left\"><p class=avail-user-name>Prabhavati Choudary</p></div><div class=\"col-md-6 col-sm-6 col-xs-6 avail-left-sec\"><div class=each-info-line><img class=avai-ride-info-icon src=assets/images/available-rides/calendar.png> <span>07-01-16</span></div><div class=\"each-info-line loc-trim\"><img class=avai-ride-info-icon src=assets/images/available-rides/from-icon.png> <span>Wakad, Pune</span></div><div class=each-info-line><img class=avai-ride-info-icon src=assets/images/available-rides/starting-time.png> <span>10.00 AM</span></div></div><div class=\"col-md-6 col-sm-6 col-xs-6 avail-right-sec\"><div class=avail-right-info><span class=\"pull-left seat-avail-label\">Seats Available</span> <span class=\"available-seat-count pull-right\">2</span></div><div class=avail-right-info><span>Select a seat</span></div><div class=avail-right-info><img class=seat-info-img src=assets/images/available-rides/filled_seat.png> <img class=seat-info-img src=assets/images/available-rides/Tap_seat.png> <img class=seat-info-img src=assets/images/available-rides/vacantSeat.png> <img class=seat-info-img src=assets/images/available-rides/vacantSeat.png></div></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-proceed-wrap\"><span>Proceed <img class=avail-proceed-img src=assets/images/available-rides/Proceed_arrow.png></span></div></div></div></div></div></div>"
   );
 
 
@@ -2745,7 +2834,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/postRides/postRides.html',
-    "<div class=page-wrapper><div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><span class=\"glyphicon glyphicon-chevron-left cursor-pointer\" ng-click=toggleHamburger()></span> <span class=heading>Post Ride</span></div><div class=\"container login-container post-ride-container\"><form name=userProfileUpdateForm class=animation-form-signup novalidate><div class=\"form-section signup-section-form\"><div class=each-row><!-- <div><span><img class=\"icon-style\" src=\"assets/images/icon_home_address.png\"></span></div> --><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div class=\"input-fields address-fields\"><input ng-class=\"{'error-border':!showErrorMessage}\" name=rideSource class=\"form-control input-boxes ride-source-field\" ng-model=ride.source placeholder=\"LEAVING FROM\" required g-places-autocomplete><!-- force-selection=\"true\" options=\"autocompleteOptions\" --></div><div ng-show=!showErrorMessage ng-messages=postRideForm.rideSource.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride source is required</p></div></div><div class=each-row><!-- <div><span><img class=\"icon-style\" src=\"assets/images/icon_office_address.png\"></span></div> --><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div class=\"input-fields address-fields\"><input ng-class=\"{'error-border':!showErrorMessage}\" name=rideDestination class=\"form-control input-boxes home-address-changer\" ng-model=ride.destination placeholder=\"LEAVING FOR\" required g-places-autocomplete></div><div ng-show=!showErrorMessage ng-messages=postRideForm.rideDestination.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride destination is required</p></div></div><div class=each-row><span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_time.png></span></div><div class=input-fields><select name=leavingIn class=\"timeslot login-input-box\" ng-model=ride.leavingIn ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t.value as t.text for t in leavingInJSON\"><option style=display:none value=\"\">LEAVING IN</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.leavingIn.$error class=error-msg-edit><p ng-message=required class=error-msg>Leaving in min. is required</p></div></span> <span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_seat.png></span></div><div class=input-fields><select class=\"seater-select login-input-box\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=ride.availableSeats ng-options=\"c as c for c in availableSeatsJSON\"><option style=display:none value=\"\">SEATS AVAILABLE</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></span></div><div class=each-row><input type=button class=input-buttons name=syncData value=\"POST RIDE\" ng-click=postRide()></div></div></form></div></div>"
+    "<div class=page-wrapper><div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><span class=\"glyphicon glyphicon-chevron-left cursor-pointer\" ng-click=toggleHamburger()></span> <span class=heading>Post Ride</span></div><div class=\"container login-container post-ride-container\"><form name=userProfileUpdateForm class=animation-form-signup novalidate><div class=triangle-down-left-post></div><div class=\"form-section signup-section-form\"><div class=each-row><!-- <div><span><img class=\"icon-style\" src=\"assets/images/icon_home_address.png\"></span></div> --><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div class=\"input-fields address-fields\"><input ng-class=\"{'error-border':!showErrorMessage}\" name=rideSource class=\"form-control input-boxes ride-source-field\" ng-model=ride.source placeholder=\"LEAVING FROM\" required g-places-autocomplete><!-- force-selection=\"true\" options=\"autocompleteOptions\" --></div><div ng-show=!showErrorMessage ng-messages=postRideForm.rideSource.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride source is required</p></div></div><div class=each-row><!-- <div><span><img class=\"icon-style\" src=\"assets/images/icon_office_address.png\"></span></div> --><div class=icon-address-fields><span><img class=icon-style src=assets/images/icon_location.png ng-click=getLocation()></span></div><div class=\"input-fields address-fields\"><input ng-class=\"{'error-border':!showErrorMessage}\" name=rideDestination class=\"form-control input-boxes home-address-changer\" ng-model=ride.destination placeholder=\"LEAVING FOR\" required g-places-autocomplete></div><div ng-show=!showErrorMessage ng-messages=postRideForm.rideDestination.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride destination is required</p></div></div><div class=each-row><span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_time.png></span></div><div class=input-fields><select name=leavingIn class=\"timeslot login-input-box\" ng-model=ride.leavingIn ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t.value as t.text for t in leavingInJSON\"><option style=display:none value=\"\">LEAVING IN</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.leavingIn.$error class=error-msg-edit><p ng-message=required class=error-msg>Leaving in min. is required</p></div></span> <span class=each-row-half><div><span><img class=icon-style src=assets/images/icon_seat.png></span></div><div class=input-fields><select class=\"seater-select login-input-box\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=ride.availableSeats ng-options=\"c as c for c in availableSeatsJSON\"><option style=display:none value=\"\">SEATS AVAILABLE</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></span></div><div class=each-row><input type=button class=input-buttons name=syncData value=\"POST RIDE\" ng-click=postRide()></div></div></form></div></div>"
   );
 
 

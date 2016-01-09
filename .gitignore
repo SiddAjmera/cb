@@ -7,3 +7,4 @@ dist
 /server/config/local.env.js
 /cordova/cbApp/platforms
 /cordova/cbApp/plugins
+npm-debug.log

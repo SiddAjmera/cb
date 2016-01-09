@@ -7,6 +7,8 @@ angular.module('cbApp')
         var deferred= $q.defer();
         var androidConfig = {
               "senderID": "463291795017",
+             "icon":"logo",
+             "iconColor":"blue"
             };
               var push = PushNotification.init({
     android: {
