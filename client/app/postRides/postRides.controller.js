@@ -43,6 +43,22 @@ angular.module('cbApp')
         return moment().add(leavingIn,"minutes").valueOf();
 
     }
+    $scope.address='default'
+    $scope.optionAddressOptions=function(){
+        $scope.open=true;
+        $scope.ride.source=undefined;
+    }
+     $scope.showAddress=function(option){
+        console.log(option)
+        $scope.address=option;
+
+        if($scope.address == "home"){
+           $scope.ride.source= currentUser.homeAddress
+        }
+
+        $scope.otherAddress=true;
+        $scope.open=false;
+    }
 
     $scope.postRide = function(){
         console.log("ride object",$scope.ride);
@@ -71,6 +87,38 @@ angular.module('cbApp')
                 alert("Ride posted Succesfully!");
         })
     }
+
+     $scope.officeAddressJSON = ["BIRLA AT&T, PUNE",
+                                "BT TechM Collocation",
+                                "Bhosari MIDC Non STP",
+                                "Bhosari MIDC STP",
+                                "CMC-Pune",
+                                "CRL - Hinjewadi",
+                                "Cerebrum IT Park",
+                                "KIRLOSKAR",
+                                "Millenium Bldg, Pune",
+                                "NAVLAKHA COMP.-PUNE",
+                                "Nashik Centre NSTP",
+                                "Nashik PSK Sites",
+                                "Nyati Tiara",
+                                "Pune - Commerzone",
+                                "Pune PSK Sites",
+                                "Pune Sahyadri Park",
+                                "Pune(QuadraII) STP",
+                                "Pune(QuadraII)NonSTP",
+                                "Pune-Sun Suzlon-NSTP",
+                                "QBPL -Pune SEZ",
+                                "SP - A1 - Rajgad",
+                                "SP - S1 - Poorna",
+                                "SP - S2 - Torna",
+                                "SP - S3 - Tikona",
+                                "SahyadriPark SEZ - I",
+                                "Sp-S1-Poorna-BPO",
+                                "Sp-S2-Torna-BPO",
+                                "TRDDC HADAPSAR, PUNE",
+                                "VSNL - Pune"
+                               ];
+
 
 
 
