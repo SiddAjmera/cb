@@ -73,27 +73,23 @@ exports.getRideByRideAttribute = function(req, res){
 }*/
 
 exports.filterRide = function(req, res){
-
-  var query;
-  query = req.body.filters;
+  var query = {};
+  if(req.body.filters) query = req.body.filters;
   var options = {
-      sort:   { createdDate: -1 },
-      page:   req.body.page, 
-      limit:  req.body.limit
+      sort:   { createdDate: -1 }
   };
+  if(req.body.page) options.page = req.body.page;
+  else options.page = 0;
 
+  if(req.body.limit) options.limit = req.body.limit;
+  else options.limit = 10;
 
-  Ride.paginate( query, options , function(err, rides) {
-    if(err) { return handleError(res, err); }
+  console.log('\nQuery : ' + JSON.stringify(query) + '\n Options : ' + JSON.stringify(options));
+
+  Ride.paginate(query, options).then(function(rides) {
+    console.log('Rides : ' + JSON.stringify(rides));
     return res.json(200, rides);
   });
-
-  /*Ride.find(req.body)
-          .sort({'createdDate': 'desc'})
-          .exec(function(err, rides){
-    if(err) { return handleError(res, err); }
-    return res.json(200, rides);
-  });*/
 };
 
 // Gets rides based on certain criteria
