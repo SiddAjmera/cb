@@ -14,15 +14,16 @@
 		float: left;
 	    width: 100%;
 	}
+	.container.login-container.post-ride-container{
+		position: absolute;
+		bottom: 12px;
+	}
 }
 @media(max-width: 480px){
 	.container.login-container{
 	    width: 100%;
 	}
-	.container.login-container.post-ride-container{
-		position: absolute;
-		bottom: 12px;
-	}
+	
 	.each-row div:first-child{
 		width: 15%;
 	}
