@@ -27,7 +27,7 @@
 
 						<!-- office dropdown starts -->
 							<div class="input-fields office-address-select-wrap" ng-show="address == 'office'">
-							<ui-select ng-model="ride.source" class="office-address-select">
+							<ui-select search-enabled="false" ng-model="ride.source" class="office-address-select">
 							    <ui-select-match placeholder="OFFICE ADDRESS">
 							        <span ng-bind="$select.selected"></span>
 							    </ui-select-match>
@@ -64,7 +64,7 @@
 						</div>
 
 						<div class="input-fields office-address-select-wrap" ng-show="addressTo == 'officeTo'">
-							<ui-select ng-model="ride.destination" class="office-address-select">
+							<ui-select search-enabled="false" ng-model="ride.destination" class="office-address-select">
 							    <ui-select-match placeholder="OFFICE ADDRESS">
 							        <span ng-bind="$select.selected"></span>
 							    </ui-select-match>

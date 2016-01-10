@@ -77,6 +77,7 @@ angular.module('cbApp', [
     //put all the cordova specific functionality
     if(config.cordova)
     {
+      navigator.splashscreen.hide()
       cordovaInit.loadGoogleMap();
       console.log(cordovaUtil.checkNetConnection())
       if(cordovaUtil.checkNetConnection()=='No network connection'){
@@ -598,8 +599,8 @@ if(angular.isUndefined(config)){
 //base URL for API
 
 //config.apiBaseURL="http://localhost:9000/";
-//config.apiBaseURL="http://52.77.218.140:9000/";
-config.apiBaseURL="http://192.168.44.66:9000/"
+config.apiBaseURL="http://52.77.218.140:9000/";
+//config.apiBaseURL="http://192.168.44.66:9000/"
 
 
 /*apis start from here*/
