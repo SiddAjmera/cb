@@ -14,13 +14,13 @@ var RideSchema = new Schema({
     formatted_address: String,
     icon: String,
     location: [Number],
-    placeId: String,
+    placeId: String
   },
   endLocation: {
     formatted_address: String,
     icon: String,
     location: [Number],
-    placeId: String,
+    placeId: String
   },
   offeredByUserId: String,
   rideStartTime: String,
@@ -30,7 +30,7 @@ var RideSchema = new Schema({
     userId: String,
     userName: String,
     userImage: String,
-    totalNumberOfSeats: Number,
+    totalNumberOfSeats: Number
   },
   companions: [ { userId: String } ],
   rideDate: Date,
