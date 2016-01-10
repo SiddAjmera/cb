@@ -52,7 +52,7 @@ exports.newRideNotification = function(ride){
         User.nameByUserId(userId).then(function(empName){
             //console.log('\nGot empName as : ' + JSON.stringify(empName));
             //console.log('\nThe Message Object : ' + JSON.stringify(message));
-            message.params.data.message = "A new ride has been posted by " + empName + " from " + ride.startLocation + " to " + ride.endLocation;
+            message.params.data.message = "A new ride has been posted by " + empName + " from " + ride.startLocation.formatted_address + " to " + ride.endLocation.formatted_address;
             //console.log('\nThis is the Notification Message : ' + JSON.stringify(message.params.data.message));
             sender.send(message, { registrationIds: redgIds }, function (err, result) {
                 if(err) console.error(err);

@@ -39,6 +39,7 @@ angular.module('cbApp')
   	var getAvailableRides = function(){
   		var apis = config.apis.filterRides;
   		var requestJSON = {};
+      requestJSON.userId = currentUser.userId;
   		$scope.rides = [];
   		httpRequest.post(apis,requestJSON).
   		then(function(rides){

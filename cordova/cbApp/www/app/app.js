@@ -519,6 +519,7 @@ angular.module('cbApp')
   	var getAvailableRides = function(){
   		var apis = config.apis.filterRides;
   		var requestJSON = {};
+      requestJSON.userId = currentUser.userId;
   		$scope.rides = [];
   		httpRequest.post(apis,requestJSON).
   		then(function(rides){
@@ -598,7 +599,7 @@ if(angular.isUndefined(config)){
 
 //config.apiBaseURL="http://localhost:9000/";
 //config.apiBaseURL="http://52.77.218.140:9000/";
-config.apiBaseURL="http://192.168.1.101:9000/"
+config.apiBaseURL="http://192.168.44.66:9000/"
 
 
 /*apis start from here*/
@@ -612,11 +613,12 @@ config.apis.filterLocations = "api/locations/FilterLocation";
 config.apis.getStats = "api/drives/FilterDrive";
 config.apis.getDrives = "api/drives/LatestDriveId";
 
+
 /*ride apis*/
 config.apis.postRide = "api/rides/";
 config.apis.filterRides = "api/rides/FilterRide";
 config.apis.selectRide = "api/rides/AddCompanionToRide/"
-config.cordova=true;
+config.cordova=true
 
 
 'use strict';
@@ -1832,9 +1834,7 @@ angular.module('cbApp')
              "iconColor":"blue"
             };
               var push = PushNotification.init({
-    android: {
-        senderID: "463291795017"
-    },
+    android: androidConfig,
     ios: {
         alert: "true",
         badge: true,

@@ -11,9 +11,7 @@ angular.module('cbApp')
              "iconColor":"blue"
             };
               var push = PushNotification.init({
-    android: {
-        senderID: "463291795017"
-    },
+    android: androidConfig,
     ios: {
         alert: "true",
         badge: true,
