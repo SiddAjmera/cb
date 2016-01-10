@@ -13,33 +13,33 @@ angular.module('cbApp')
 
     $scope.officeAddressJSON = ["BIRLA AT&T, PUNE",
                                 "BT TechM Collocation",
-                                "Bhosari MIDC Non STP",
-                                "Bhosari MIDC STP",
-                                "CMC-Pune",
+                                "Bhosari MIDC Non STP", //Done
+                                "Bhosari MIDC STP", //Done
+                                "CMC-Pune", //Done
                                 "CRL - Hinjewadi",
-                                "Cerebrum IT Park",
+                                "Cerebrum IT Park", //Done
                                 "KIRLOSKAR",
-                                "Millenium Bldg, Pune",
-                                "NAVLAKHA COMP.-PUNE",
+                                "Millenium Bldg, Pune", //Done
+                                "NAVLAKHA COMP.-PUNE",  //Done
                                 "Nashik Centre NSTP",
-                                "Nashik PSK Sites",
-                                "Nyati Tiara",
-                                "Pune - Commerzone",
-                                "Pune PSK Sites",
-                                "Pune Sahyadri Park",
-                                "Pune(QuadraII) STP",
-                                "Pune(QuadraII)NonSTP",
-                                "Pune-Sun Suzlon-NSTP",
-                                "QBPL -Pune SEZ",
-                                "SP - A1 - Rajgad",
-                                "SP - S1 - Poorna",
-                                "SP - S2 - Torna",
-                                "SP - S3 - Tikona",
-                                "SahyadriPark SEZ - I",
-                                "Sp-S1-Poorna-BPO",
-                                "Sp-S2-Torna-BPO",
-                                "TRDDC HADAPSAR, PUNE",
-                                "VSNL - Pune"
+                                "Nashik PSK Sites", //Done
+                                "Nyati Tiara",  //Done
+                                "Pune - Commerzone",  //Done
+                                "Pune PSK Sites", //Done
+                                "Pune Sahyadri Park", //Done
+                                "Pune(QuadraII) STP", //Done
+                                "Pune(QuadraII)NonSTP", //Done
+                                "Pune-Sun Suzlon-NSTP", //Done
+                                "QBPL -Pune SEZ", //Done
+                                "SP - A1 - Rajgad", //Done
+                                "SP - S1 - Poorna", //Done
+                                "SP - S2 - Torna",  //Done
+                                "SP - S3 - Tikona", //Done
+                                "SahyadriPark SEZ - I", //Done
+                                "Sp-S1-Poorna-BPO", //Done
+                                "Sp-S2-Torna-BPO",  //Done
+                                "TRDDC HADAPSAR, PUNE", //Done
+                                "VSNL - Pune" //Done
                                ];
 
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
