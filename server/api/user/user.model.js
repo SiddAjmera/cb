@@ -15,10 +15,22 @@ var UserSchema = new Schema({
   contactNo: String,
   gender: { type: String, index: true },
   homeAddress: String,
+  homeAddressLocation: {
+    formatted_address: String,
+    icon: String,
+    location: {type: [Number], index: '2d'},
+    placeId: String
+  },
   city: { type: String, index: true },
   state: String,
   zipcode: { type: String, index: true },
   officeAddress: String,
+  officeAddressLocation: {
+    formatted_address: String,
+    icon: String,
+    location: {type: [Number], index: '2d'},
+    placeId: String
+  },
   timeSlot: String,
   username: String,
   userId: { type: String, index: true },
