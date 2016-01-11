@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SignupCtrl', function ($scope,$location, $window,$state,$modal,$rootScope,cordovaUtil,httpRequest,localStorage,pushnotification) {
+  .controller('SignupCtrl', function ($scope,$location, $window,$state,$modal,$rootScope,cordovaUtil,httpRequest,localStorage,pushnotification,staticData) {
     $scope.user = {vehicle:{}};
     $scope.user.gender = "Female";
     $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",
@@ -11,7 +11,7 @@ angular.module('cbApp')
                                 "12:00 AM - 9:00 PM"
                                ];
 
-    $scope.officeAddressJSON = ["BIRLA AT&T, PUNE",
+    /*$scope.officeAddressJSON = ["BIRLA AT&T, PUNE",
                                 "BT TechM Collocation",
                                 "Bhosari MIDC Non STP", //Done
                                 "Bhosari MIDC STP", //Done
@@ -40,7 +40,13 @@ angular.module('cbApp')
                                 "Sp-S2-Torna-BPO",  //Done
                                 "TRDDC HADAPSAR, PUNE", //Done
                                 "VSNL - Pune" //Done
-                               ];
+                               ];*/
+
+    staticData.getTCSLocations().
+    then(function(locations){
+      console.log("locations",locations)
+      $scope.officeAddressJSON = locations.data;
+    })                           
 
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
     $scope.showErrorMessage = true;
@@ -93,7 +99,7 @@ angular.module('cbApp')
     $scope.register = function() {
      
          $scope.showErrorMessage = false;
-         
+         console.log($scope.signupForm) ;
          if(!$scope.signupForm.$valid){   /*if form is invalid,return and show error messages */
               console.log($scope.signupForm) ;
               $("input.ng-invalid").eq(0).focus();      
@@ -119,6 +125,8 @@ angular.module('cbApp')
        $scope.signupPost=function(){ 
          var url = config.apis.signup;
          $scope.user.empId = $scope.user.userId;
+         $scope.user.officeAddressLocation = $scope.user.officeAddress;
+         $scope.user.officeAddress = $scope.user.officeAddress.displayAddress;
          httpRequest.post(url,$scope.user).
           then(function(response){
               /*if(response.status==)*/

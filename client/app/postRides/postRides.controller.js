@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('PostRidesCtrl', function ($scope,httpRequest,Auth) {
+  .controller('PostRidesCtrl', function ($scope,httpRequest,Auth,cordovaUtil) {
     $scope.message = 'Hello';
     $scope.ride = {};
     var currentUser = {};
@@ -101,8 +101,14 @@ angular.module('cbApp')
         console.log("final obj",ride)
         httpRequest.post(config.apis.postRide,ride).
         then(function(data){
-            if(data.status==201)
-                alert("Ride posted Succesfully!");
+            if(data.status==201){
+                if(config.cordova)
+                    cordovaUtil.showToastMessage("Ride posted succesfully!")
+                else
+                     alert("Ride posted succesfully!");
+            }
+                
+               
         })
     }
 

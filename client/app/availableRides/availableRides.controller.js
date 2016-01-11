@@ -70,6 +70,15 @@ angular.module('cbApp')
   			
   		});
   		
+  		if(requestJSON.companions.length==0){
+  			 if(config.cordova)
+                cordovaUtil.showToastMessage("Select atleast one seat")
+             else
+                alert("Select atleast one seat");
+
+            return;
+
+  		}
   		
   		requestJSON.availableSeats=ride.availableSeats-requestJSON.companions.length;
   		
