@@ -15,6 +15,7 @@ router.get('/me', auth.isAuthenticated(), controller.me);
 router.post('/MyTeams', controller.teamsOfCurrentUser);
 router.post('/GetSuggestions', controller.getSuggestions);
 router.post('/SuggestionsTest', controller.suggestionsTest);
+router.post('/GetUsers', controller.getUsers);
 // End of Routes Created by Siddharth
 
 router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
