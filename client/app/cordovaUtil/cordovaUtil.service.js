@@ -180,12 +180,16 @@ angular.module('cbApp')
 	   },
 
 	   syncABatch: function(aBatch){
+	   	var that = this;
 	   		httpRequest.post(config.apis.syncLocations, aBatch).
 		   		then(function(res){
 		   			if(res.status==201){
 		   				localStorage.remove('SavedLocationCoordinates');
 		   				if(almostFinished){
-		   					alert('Data Synced Successfully');
+		   					if(config.cordova)
+		   						that.showToastMessage("Data Synced Successfully")
+		   					else
+		   						alert('Data Synced Successfully');
 		   					almostFinished =false;
 		   				}
 		   		}
@@ -240,6 +244,7 @@ angular.module('cbApp')
 
 				        //Check result 0
 						var result = results[0];
+						console.log("address reverse geocoder",results);
 						//look for locality tag and administrative_area_level_1
 						
 						var homeAddress = result.formatted_address;
@@ -258,6 +263,10 @@ angular.module('cbApp')
 						//only report if we got Good Stuff
 						if(homeAddress != '' &&  city != '' && zipcode != '' && placeID != '' && state != '') {
 							var addressObject={};
+							addressObject.homeAddressLocation = {};
+							addressObject.homeAddressLocation.location = [result.geometry.location.lat(),result.geometry.location.lng()];
+							addressObject.homeAddressLocation.placeId = placeID;
+							addressObject.homeAddressLocation.formatted_address = result.formatted_address;
 							addressObject.homeAddress=homeAddress;
 							addressObject.city=city;
 							addressObject.zipcode=zipcode;

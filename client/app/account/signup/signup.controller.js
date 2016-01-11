@@ -11,37 +11,7 @@ angular.module('cbApp')
                                 "12:00 AM - 9:00 PM"
                                ];
 
-    /*$scope.officeAddressJSON = ["BIRLA AT&T, PUNE",
-                                "BT TechM Collocation",
-                                "Bhosari MIDC Non STP", //Done
-                                "Bhosari MIDC STP", //Done
-                                "CMC-Pune", //Done
-                                "CRL - Hinjewadi",
-                                "Cerebrum IT Park", //Done
-                                "KIRLOSKAR",
-                                "Millenium Bldg, Pune", //Done
-                                "NAVLAKHA COMP.-PUNE",  //Done
-                                "Nashik Centre NSTP",
-                                "Nashik PSK Sites", //Done
-                                "Nyati Tiara",  //Done
-                                "Pune - Commerzone",  //Done
-                                "Pune PSK Sites", //Done
-                                "Pune Sahyadri Park", //Done
-                                "Pune(QuadraII) STP", //Done
-                                "Pune(QuadraII)NonSTP", //Done
-                                "Pune-Sun Suzlon-NSTP", //Done
-                                "QBPL -Pune SEZ", //Done
-                                "SP - A1 - Rajgad", //Done
-                                "SP - S1 - Poorna", //Done
-                                "SP - S2 - Torna",  //Done
-                                "SP - S3 - Tikona", //Done
-                                "SahyadriPark SEZ - I", //Done
-                                "Sp-S1-Poorna-BPO", //Done
-                                "Sp-S2-Torna-BPO",  //Done
-                                "TRDDC HADAPSAR, PUNE", //Done
-                                "VSNL - Pune" //Done
-                               ];*/
-
+    /*get tcs locations*/
     staticData.getTCSLocations().
     then(function(locations){
       console.log("locations",locations)
@@ -159,14 +129,15 @@ angular.module('cbApp')
         modalInstance.result.then(function(option){
           if(option == "yes")
           cordovaUtil.getUserHomeCoordinates().then(function(address){
-           $scope.user.homeAddress = address.homeAddress;
+            $scope.user.homeAddress = address.homeAddress;
             $scope.user.city = address.city;
             if(address.zipcode)
-            $scope.user.zipcode = parseInt(address.zipcode);
+              $scope.user.zipcode = parseInt(address.zipcode);
             $scope.user.placeID = address.placeID;
             $scope.user.homeLocationCoordinates = [];
             $scope.user.homeLocationCoordinates.push(address.homeLocationCoordinates.lat);
             $scope.user.homeLocationCoordinates.push(address.homeLocationCoordinates.lng);
+            $scope.user.homeAddressLocation = address.homeAddressLocation;
             $scope.user.state = address.state;
           });
         });

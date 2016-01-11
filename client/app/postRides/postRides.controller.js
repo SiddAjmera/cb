@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('PostRidesCtrl', function ($scope,httpRequest,Auth,cordovaUtil) {
+  .controller('PostRidesCtrl', function ($scope,httpRequest,Auth,cordovaUtil,staticData) {
     $scope.message = 'Hello';
     $scope.ride = {};
     var currentUser = {};
@@ -10,6 +10,14 @@ angular.module('cbApp')
         currentUser = data;
         console.log("currentUser",currentUser)
     });
+
+    /*get tcs locations*/
+    staticData.getTCSLocations().
+    then(function(locations){
+      console.log("locations",locations)
+      $scope.officeAddressJSON = locations.data;
+    });
+
     $scope.showErrorMessage = false;
     $scope.leavingInJSON = [
                                 {"text":"5 MIN","value":"5"},
@@ -37,13 +45,10 @@ angular.module('cbApp')
 
     $scope.autocompleteOptions = {                        
                         types: ['(cities)'],
-                        componentRestrictions: { country: 'IND',city:'Pune' },
+                        componentRestrictions: { country: 'IN',city:'Pune' },
                     }
 
-    var calculateRideStartTime = function(leavingIn){
-        return moment().add(parseInt(leavingIn),"minutes").valueOf();
-
-    }
+ 
     $scope.address='default'
     $scope.addressTo='default'
     $scope.optionAddressOptions=function(option){
@@ -81,18 +86,42 @@ angular.module('cbApp')
     $scope.postRide = function(){
         console.log("ride object",$scope.ride);
         var ride = {};
-        ride.startLocation = {
+
+        if($scope.address=="other"){
+            ride.startLocation = {
                                     formatted_address:$scope.ride.source.formatted_address,
                                     location:[$scope.ride.source.geometry.location.lat(),$scope.ride.source.geometry.location.lng()],
                                     placeId:$scope.ride.source.place_id,
                                     icon : $scope.ride.source.icon 
-                             };
-        ride.endLocation = {
+                                };
+        
+        }else if($scope.address=="home"){
+            ride.startLocation = currentUser.homeAddressLocation;
+        }
+        else if($scope.address=="office"){
+             ride.startLocation = $scope.ride.source;
+        }
+           
+
+
+
+        if($scope.addressTo=="other"){
+            ride.endLocation = {
                                     formatted_address:$scope.ride.destination.formatted_address,
                                     location:[$scope.ride.destination.geometry.location.lat(),$scope.ride.destination.geometry.location.lng()],
                                     placeId:$scope.ride.destination.place_id,
                                     icon : $scope.ride.destination.icon 
-                             };                 
+                             };    
+        
+        }else if($scope.addressTo=="home"){
+            ride.endLocation = currentUser.homeAddressLocation;
+        }
+        else if($scope.addressTo=="office"){
+             ride.endLocation = $scope.ride.source;
+        }
+        
+
+                     
        
         ride.offeredByUserId = currentUser.userId;
         ride.availableSeats = $scope.ride.availableSeats;
@@ -112,36 +141,6 @@ angular.module('cbApp')
         })
     }
 
-     $scope.officeAddressJSON = ["BIRLA AT&T, PUNE",
-                                "BT TechM Collocation",
-                                "Bhosari MIDC Non STP",
-                                "Bhosari MIDC STP",
-                                "CMC-Pune",
-                                "CRL - Hinjewadi",
-                                "Cerebrum IT Park",
-                                "KIRLOSKAR",
-                                "Millenium Bldg, Pune",
-                                "NAVLAKHA COMP.-PUNE",
-                                "Nashik Centre NSTP",
-                                "Nashik PSK Sites",
-                                "Nyati Tiara",
-                                "Pune - Commerzone",
-                                "Pune PSK Sites",
-                                "Pune Sahyadri Park",
-                                "Pune(QuadraII) STP",
-                                "Pune(QuadraII)NonSTP",
-                                "Pune-Sun Suzlon-NSTP",
-                                "QBPL -Pune SEZ",
-                                "SP - A1 - Rajgad",
-                                "SP - S1 - Poorna",
-                                "SP - S2 - Torna",
-                                "SP - S3 - Tikona",
-                                "SahyadriPark SEZ - I",
-                                "Sp-S1-Poorna-BPO",
-                                "Sp-S2-Torna-BPO",
-                                "TRDDC HADAPSAR, PUNE",
-                                "VSNL - Pune"
-                               ];
 
 
 

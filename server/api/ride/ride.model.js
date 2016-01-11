@@ -36,7 +36,8 @@ var RideSchema = new Schema({
   rideDate: Date,
   rideStatus: { type: String, $in: [ 'Active', 'Started', 'Completed', 'Cancelled' ] },
   createdDate: { type: Date, default: Date.now },
-  modifiedDate: { type: Date, default: Date.now }
+  modifiedDate: { type: Date, default: Date.now },
+  comments:String
 });
 
 RideSchema.plugin(mongoosePaginate);

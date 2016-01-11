@@ -21,6 +21,8 @@ angular.module('cbApp')
 	  }
 
     $scope.fetch = function(){
+      if(config.cordova)
+        cordovaUtil.showToastMessage("Sync started");
       console.log("Syncing")
       cordovaUtil.batchSync();
     }

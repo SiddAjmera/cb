@@ -30,10 +30,10 @@
 							<div class="input-fields office-address-select-wrap" ng-show="address == 'office'">
 							<ui-select search-enabled="false" ng-model="ride.source" class="office-address-select">
 							    <ui-select-match placeholder="OFFICE ADDRESS">
-							        <span ng-bind="$select.selected"></span>
+							        <span ng-bind="$select.selected.displayAddress"></span>
 							    </ui-select-match>
 							    <ui-select-choices repeat="item in (officeAddressJSON | filter: $select.search)">
-							        <span ng-bind="item"></span>
+							        <span ng-bind="item.displayAddress"></span>
 							    </ui-select-choices>
 							</ui-select>
 
@@ -67,10 +67,10 @@
 						<div class="input-fields office-address-select-wrap" ng-show="addressTo == 'officeTo'">
 							<ui-select search-enabled="false" ng-model="ride.destination" class="office-address-select">
 							    <ui-select-match placeholder="OFFICE ADDRESS">
-							        <span ng-bind="$select.selected"></span>
+							        <span ng-bind="$select.selected.displayAddress"></span>
 							    </ui-select-match>
 							    <ui-select-choices repeat="item in (officeAddressJSON | filter: $select.search)">
-							        <span ng-bind="item"></span>
+							        <span ng-bind="item.displayAddress"></span>
 							    </ui-select-choices>
 							</ui-select>
 
@@ -126,13 +126,13 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/notes.png" ng-click="getLocation()">
 					</div>
 					<div class="from-address-post-wrap">
-						<textarea name="postRideComment" class="input-boxes post-ride-comment"  placeholder="Lets share the ride :)" ></textarea> 
+						<textarea name="postRideComment" ng-model="ride.comments" class="input-boxes post-ride-comment"  placeholder="Lets share the ride :)" ></textarea> 
 					</div>
 
 					
-					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error" class="error-msg-edit">
+					<!-- <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error" class="error-msg-edit">
 						<p ng-message="required" class="error-msg">Ride destination is required</p>
-					</div>
+					</div> -->
 				</div>
 
 
