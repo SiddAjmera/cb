@@ -156,9 +156,9 @@ angular.module('cbApp')
             if(address.zipcode)
             $scope.user.zipcode = parseInt(address.zipcode);
             $scope.user.placeID = address.placeID;
-            $scope.user.homelocationCoordinates = [];
-            $scope.user.homelocationCoordinates.push(address.homeLocationCoordinates.lat);
-            $scope.user.homelocationCoordinates.push(address.homeLocationCoordinates.lng);
+            $scope.user.homeLocationCoordinates = [];
+            $scope.user.homeLocationCoordinates.push(address.homeLocationCoordinates.lat);
+            $scope.user.homeLocationCoordinates.push(address.homeLocationCoordinates.lng);
             $scope.user.state = address.state;
           });
         });
