@@ -20,7 +20,7 @@
 
 				<div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride" ng-repeat="ride in rides track by $index">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-list-img-sec">
-						<img src="assets/images/user-image.jpg" class="avail-user-img pull-left">
+						<img src="{{ride.offeredByUser.userImage}}" class="avail-user-img pull-left">
 						<p class="avail-user-name">{{ride.offeredByUser.userName}}</p>
 					</div>
 

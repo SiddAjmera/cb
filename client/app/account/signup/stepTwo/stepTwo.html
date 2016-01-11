@@ -39,7 +39,7 @@
 				 <option ng-repeat="oa in officeAddressJSON" value="{{oa}}">{{oa}}</option>   
 			</select> -->
 
-			<ui-select ng-model="user.officeAddress" class="office-address-select">
+			<ui-select search-enabled="false" ng-model="user.officeAddress" class="office-address-select">
 			    <ui-select-match placeholder="OFFICE ADDRESS">
 			        <span ng-bind="$select.selected"></span>
 			    </ui-select-match>

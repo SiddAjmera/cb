@@ -16,6 +16,10 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    
+    <preference name="SplashScreen" value="screen"/>
+    <preference name="SplashScreenDelay" value="10000" />
+    
     <icon src="www/img/logo.png" />
     <splash src="www/img/splash.png" />
     <platform name="android">
