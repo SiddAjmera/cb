@@ -41,13 +41,13 @@
 
 			<ui-select search-enabled="false" ng-model="user.officeAddress" class="office-address-select">
 			    <ui-select-match placeholder="OFFICE ADDRESS">
-			        <span ng-bind="$select.selected"></span>
+			        <span ng-bind="$select.selected.displayAddress"></span>
 			    </ui-select-match>
 			    <ui-select-choices repeat="item in (officeAddressJSON | filter: $select.search)">
-			        <span ng-bind="item"></span>
+			        <span ng-bind="item.displayAddress"></span>
 			    </ui-select-choices>
 			</ui-select>
-
+			{{user.officeAddress}}
 		</div>
 		<div ng-show="!showErrorMessage"  ng-messages="signupForm.officeAddress.$error" class="error-msg-edit">
 			<p ng-message="required" class="error-msg">Please select an office address</p>

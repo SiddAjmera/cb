@@ -26,6 +26,7 @@ var UserSchema = new Schema({
   zipcode: { type: String, index: true },
   officeAddress: String,
   officeAddressLocation: {
+    displayAddress:String,
     formatted_address: String,
     icon: String,
     location: {type: [Number], index: '2d'},
