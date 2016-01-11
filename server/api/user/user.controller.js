@@ -144,6 +144,33 @@ exports.nameByUserId = function(userId){
 };
 
 
+// To get a list of Users specifying the following
+/*{
+    "userIds" : [111111, 111112],
+    "fieldsRequired" : {
+        "empId" : 1,
+        "empName" : 1,
+        "contactNo" : 1,
+        "gender" : 1,
+        "homeAddress" : 1,
+        "city" : 1,
+        "state" : 1,
+        "officeAddress" : 1,
+        "timeSlot" : 1,
+        "redgId" : 1,
+        "userId" : 1,
+        "userPhotoUrl" : 1,
+        "email" : 1
+    }
+}*/
+exports.getUsers = function(req, res){
+  console.log('Request.body for getUsers : ' + JSON.stringify(req.body));
+  User.find({userId: {$in: req.body.userIds }}, req.body.fieldsRequired, function(err, users){
+    if(err) return res.send(404, err);
+    res.json(200, users);
+  });
+};
+
 
 /**
  * Get my info
