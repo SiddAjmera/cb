@@ -12,11 +12,9 @@ angular.module('cbApp')
                                ];
 
     /*get tcs locations*/
-    staticData.getTCSLocations().
-    then(function(locations){
-      console.log("locations",locations)
-      $scope.officeAddressJSON = locations.data;
-    })                           
+ 
+     $scope.officeAddressJSON = staticData.getTCSLocations();
+                              
 
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
     $scope.showErrorMessage = true;
