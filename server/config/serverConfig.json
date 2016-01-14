@@ -1,0 +1,13 @@
+exports.config = {
+  "appenders": [
+    {
+      "level" : "DEBUG",
+      "type": "file",
+      "filename": "../logs/serverLogs.log",
+      "maxLogSize": 20480,
+      "backups": 3,
+      "category": "serverLogs"
+    }
+  ],
+  "replaceConsole": "true"
+}

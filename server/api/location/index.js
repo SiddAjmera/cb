@@ -2,19 +2,20 @@
 
 var express = require('express');
 var controller = require('./location.controller');
+var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
-router.get('/', controller.index);
-router.get('/:id', controller.show);
-router.post('/', controller.create);
+router.get('/', auth.isAuthenticated(), controller.index);
+router.get('/:id', auth.isAuthenticated(), controller.show);
+router.post('/', auth.isAuthenticated(), controller.create);
 
-router.post('/CreateOrUpdateLocation', controller.createOrUpdateLocation);
-router.post('/FilterLocation', controller.filterLocation);
-router.post('/DriveIdsByUser', controller.driveIdsByUser);
+router.post('/CreateOrUpdateLocation', auth.isAuthenticated(), controller.createOrUpdateLocation);
+router.post('/FilterLocation', auth.isAuthenticated(), controller.filterLocation);
+router.post('/DriveIdsByUser', auth.isAuthenticated(), controller.driveIdsByUser);
 
-router.put('/:id', controller.update);
-router.patch('/:id', controller.update);
-router.delete('/:id', controller.destroy);
+router.put('/:id', auth.isAuthenticated(), controller.update);
+router.patch('/:id', auth.isAuthenticated(), controller.update);
+router.delete('/:id', auth.isAuthenticated(), controller.destroy);
 
 module.exports = router;

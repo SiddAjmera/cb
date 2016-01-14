@@ -12,10 +12,10 @@ router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.get('/me', auth.isAuthenticated(), controller.me);
 
 // Routes created by Siddharth
-router.post('/MyTeams', controller.teamsOfCurrentUser);
-router.post('/GetSuggestions', controller.getSuggestions);
-router.post('/SuggestionsTest', controller.suggestionsTest);
-router.post('/GetUsers', controller.getUsers);
+router.post('/MyTeams', auth.isAuthenticated(), controller.teamsOfCurrentUser);
+router.post('/GetSuggestions', auth.isAuthenticated(), controller.getSuggestions);
+router.post('/SuggestionsTest', auth.isAuthenticated(), controller.suggestionsTest);
+router.post('/GetUsers', auth.isAuthenticated(), controller.getUsers);
 // End of Routes Created by Siddharth
 
 router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
