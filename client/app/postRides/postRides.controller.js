@@ -12,11 +12,9 @@ angular.module('cbApp')
     });
 
     /*get tcs locations*/
-    staticData.getTCSLocations().
-    then(function(locations){
-      console.log("locations",locations)
-      $scope.officeAddressJSON = locations.data;
-    });
+   
+     $scope.officeAddressJSON = staticData.getTCSLocations();
+    
 
     $scope.showErrorMessage = false;
     $scope.leavingInJSON = [
@@ -105,7 +103,7 @@ angular.module('cbApp')
 
 
 
-        if($scope.addressTo=="other"){
+        if($scope.addressTo=="otherTo"){
             ride.endLocation = {
                                     formatted_address:$scope.ride.destination.formatted_address,
                                     location:[$scope.ride.destination.geometry.location.lat(),$scope.ride.destination.geometry.location.lng()],
@@ -113,16 +111,16 @@ angular.module('cbApp')
                                     icon : $scope.ride.destination.icon 
                              };    
         
-        }else if($scope.addressTo=="home"){
+        }else if($scope.addressTo=="homeTo"){
             ride.endLocation = currentUser.homeAddressLocation;
         }
-        else if($scope.addressTo=="office"){
-             ride.endLocation = $scope.ride.source;
+        else if($scope.addressTo=="officeTo"){
+             ride.endLocation = $scope.ride.destination;
         }
         
 
                      
-       
+        ride.comments = $scope.ride.comments
         ride.offeredByUserId = currentUser.userId;
         ride.availableSeats = $scope.ride.availableSeats;
         ride.rideStartTime = moment().add(parseInt($scope.ride.leavingIn),"minutes").valueOf();
