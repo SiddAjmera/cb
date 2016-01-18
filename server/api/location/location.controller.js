@@ -10,11 +10,12 @@ var logger = log4js.getLogger('server');
 var events = require('events');
 var EventEmitter= new events.EventEmitter();
 EventEmitter.on("locationsSaved",function(obj){
-  logger.trace('locationsSaved Event emitted for user : ' + req.user.userId);
+  logger.trace('locationsSaved Event emitted for user : ' + CurrentUser.userId);
   Drive.processData({calledfromSync:true,userId:obj.userId,driveId:obj.driveId});
 })
 // Get list of locations
 exports.index = function(req, res) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Location.Index');
   Location.find(function (err, locations) {
     if(err) {
@@ -32,6 +33,7 @@ exports.index = function(req, res) {
 
 // Get a single location
 exports.show = function(req, res) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Location.show');
   Location.findById(req.params.id, function (err, location) {
     if(err) {
@@ -49,6 +51,7 @@ exports.show = function(req, res) {
 
 // Creates a new location in the DB.
 exports.create = function(req, res) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Location.create');
   var trackedLocations=req.body.trackedLocations
   var almostFinished=req.body.almostFinished
@@ -72,6 +75,7 @@ exports.create = function(req, res) {
 
 // Create or Update a Location Object
 exports.createOrUpdateLocation = function(req, res){
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Location.createOrUpdateLocation');
   Location.findOne( { userId: req.body.userId }, function(err, location) {
     if(err){
@@ -111,6 +115,7 @@ exports.createOrUpdateLocation = function(req, res){
 }
 */
 exports.filterLocation = function(req, res){
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Location.filterLocation');
   Location.find(req.body)
           .sort({'timestamp': 'asc'})
@@ -129,6 +134,7 @@ exports.filterLocation = function(req, res){
 };
 
 exports.driveIdsByUser = function(req, res){
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Location.driveIdsByUser');
   Location.aggregate(
     [
@@ -157,6 +163,7 @@ exports.driveIdsByUser = function(req, res){
 
 // Updates an existing location in the DB.
 exports.update = function(req, res) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Location.update');
   if(req.body._id) { delete req.body._id; }
   Location.findById(req.params.id, function (err, location) {
@@ -182,6 +189,7 @@ exports.update = function(req, res) {
 
 // Deletes a location from the DB.
 exports.destroy = function(req, res) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Location.destroy');
   Location.findById(req.params.id, function (err, location) {
     if(err) {

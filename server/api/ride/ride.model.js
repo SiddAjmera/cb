@@ -32,12 +32,12 @@ var RideSchema = new Schema({
     userImage: String,
     totalNumberOfSeats: Number
   },
-  companions: [ { userId: String } ],
+  companions: [ String ],
   rideDate: Date,
-  rideStatus: { type: String, $in: [ 'Active', 'Started', 'Completed', 'Cancelled' ] },
+  rideStatus: { type: String, enum: [ 'Active', 'Started', 'Completed', 'Cancelled' ] },
   createdDate: { type: Date, default: Date.now },
   modifiedDate: { type: Date, default: Date.now },
-  comments:String
+  comments: String
 });
 
 RideSchema.plugin(mongoosePaginate);

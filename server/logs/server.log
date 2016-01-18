@@ -1,0 +1,215 @@
+[2016-01-18 14:34:05.432] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-18 14:34:06.243] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 14:35:03.096] [TRACE] server - 111111 requested for Ride.create
+[2016-01-18 14:39:40.922] [TRACE] server - 111111 requested for Ride.create
+[2016-01-18 14:39:40.925] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 14:39:40.936] [TRACE] server - ridePosted Event emitted for user : 111111
+[2016-01-18 14:50:49.930] [TRACE] server - 111111 requested for Ride.create
+[2016-01-18 14:50:49.934] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 14:52:42.534] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-18 14:52:42.544] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 14:53:19.014] [TRACE] server - 111111 requested for Ride.create
+[2016-01-18 14:53:19.053] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 14:53:19.117] [TRACE] server - ridePosted Event emitted for user : 111111
+[2016-01-18 14:53:19.117] [TRACE] server - 111111 requested for User.regIdsForOtherUsers
+[2016-01-18 14:53:19.120] [DEBUG] server - Successfully created ride in Ride.show
+[2016-01-18 14:53:19.366] [DEBUG] server - Successfully got RedgIds for Users in User.regIdsForOtherUsers
+[2016-01-18 14:53:29.915] [TRACE] server - 111111 requested for Ride.create
+[2016-01-18 14:53:29.921] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 14:53:29.921] [TRACE] server - ridePosted Event emitted for user : 111111
+[2016-01-18 14:53:29.921] [TRACE] server - 111111 requested for User.regIdsForOtherUsers
+[2016-01-18 14:53:29.922] [DEBUG] server - Successfully created ride in Ride.show
+[2016-01-18 14:53:29.924] [DEBUG] server - Successfully got RedgIds for Users in User.regIdsForOtherUsers
+[2016-01-18 14:53:51.202] [TRACE] server - 111111 requested for User.me
+[2016-01-18 14:53:51.224] [DEBUG] server - Successfully got User in User.me
+[2016-01-18 14:53:51.231] [TRACE] server - 111111 requested for User.me
+[2016-01-18 14:53:51.233] [DEBUG] server - Successfully got User in User.me
+[2016-01-18 14:53:51.380] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-18 14:53:51.382] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 14:54:23.587] [TRACE] server - 111111 requested for Ride.create
+[2016-01-18 14:54:23.594] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 14:54:23.595] [TRACE] server - ridePosted Event emitted for user : 111111
+[2016-01-18 14:54:23.595] [TRACE] server - 111111 requested for User.regIdsForOtherUsers
+[2016-01-18 14:54:23.596] [DEBUG] server - Successfully created ride in Ride.show
+[2016-01-18 14:54:23.598] [DEBUG] server - Successfully got RedgIds for Users in User.regIdsForOtherUsers
+[2016-01-18 14:54:23.598] [TRACE] server - 111111 requested for User.nameByUserId
+[2016-01-18 14:54:23.601] [DEBUG] server - Successfully got Name for User in User.nameByUserId
+[2016-01-18 14:54:44.368] [TRACE] server - 111111 requested for Ride.create
+[2016-01-18 14:54:44.373] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 14:54:44.374] [TRACE] server - ridePosted Event emitted for user : 111111
+[2016-01-18 14:54:44.374] [TRACE] server - 111111 requested for User.regIdsForOtherUsers
+[2016-01-18 14:54:44.375] [DEBUG] server - Successfully created ride in Ride.show
+[2016-01-18 14:54:44.377] [DEBUG] server - Successfully got RedgIds for Users in User.regIdsForOtherUsers
+[2016-01-18 14:54:44.377] [TRACE] server - 111111 requested for User.nameByUserId
+[2016-01-18 14:54:44.379] [DEBUG] server - Successfully got Name for User in User.nameByUserId
+[2016-01-18 14:57:47.486] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-18 14:57:47.511] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 14:57:58.747] [TRACE] server - 111112 requested for User.me
+[2016-01-18 14:57:58.748] [DEBUG] server - Successfully got User in User.me
+[2016-01-18 14:57:58.758] [TRACE] server - 111112 requested for User.me
+[2016-01-18 14:57:58.761] [DEBUG] server - Successfully got User in User.me
+[2016-01-18 14:57:58.876] [TRACE] server - 111112 requested for Drive.latestDriveId
+[2016-01-18 14:57:58.878] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 14:58:07.591] [TRACE] server - 111112 requested for Drive.latestDriveId
+[2016-01-18 14:58:07.593] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 14:58:07.983] [TRACE] server - 111112 requested for Drive.latestDriveId
+[2016-01-18 14:58:07.984] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 14:58:42.746] [TRACE] server - 111112 requested for Ride.create
+[2016-01-18 14:58:42.756] [TRACE] server - ridePosted Event emitted for user : 111112
+[2016-01-18 14:58:42.756] [TRACE] server - 111112 requested for User.regIdsForOtherUsers
+[2016-01-18 14:58:42.757] [DEBUG] server - Successfully created ride in Ride.show
+[2016-01-18 14:58:42.759] [DEBUG] server - Successfully got RedgIds for Users in User.regIdsForOtherUsers
+[2016-01-18 14:58:42.759] [TRACE] server - 111112 requested for User.nameByUserId
+[2016-01-18 14:58:42.762] [DEBUG] server - Successfully got Name for User in User.nameByUserId
+[2016-01-18 14:59:01.276] [TRACE] server - 111112 requested for Drive.latestDriveId
+[2016-01-18 14:59:01.280] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 14:59:50.316] [TRACE] server - 111112 requested for Ride.create
+[2016-01-18 14:59:50.399] [TRACE] server - ridePosted Event emitted for user : 111112
+[2016-01-18 14:59:50.399] [TRACE] server - 111112 requested for User.regIdsForOtherUsers
+[2016-01-18 14:59:50.401] [DEBUG] server - Successfully created ride in Ride.show
+[2016-01-18 14:59:50.405] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 14:59:50.407] [DEBUG] server - Successfully got RedgIds for Users in User.regIdsForOtherUsers
+[2016-01-18 14:59:50.408] [TRACE] server - 111112 requested for User.nameByUserId
+[2016-01-18 14:59:50.453] [DEBUG] server - Successfully got Name for User in User.nameByUserId
+[2016-01-18 15:02:38.598] [TRACE] server - 111112 requested for Ride.create
+[2016-01-18 15:02:38.601] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 15:02:38.610] [TRACE] server - ridePosted Event emitted for user : 111112
+[2016-01-18 15:02:38.610] [TRACE] server - 111112 requested for User.regIdsForOtherUsers
+[2016-01-18 15:02:38.611] [DEBUG] server - Successfully created ride in Ride.show
+[2016-01-18 15:02:38.612] [DEBUG] server - Successfully got RedgIds for Users in User.regIdsForOtherUsers
+[2016-01-18 15:02:38.612] [TRACE] server - 111112 requested for User.nameByUserId
+[2016-01-18 15:02:38.613] [DEBUG] server - Successfully got Name for User in User.nameByUserId
+[2016-01-18 15:18:02.367] [TRACE] server - 111112 requested for Ride.create
+[2016-01-18 15:18:02.371] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 15:18:02.381] [TRACE] server - ridePosted Event emitted for user : 111112
+[2016-01-18 15:18:02.381] [TRACE] server - 111112 requested for User.regIdsForOtherUsers
+[2016-01-18 15:18:02.383] [DEBUG] server - Successfully created ride in Ride.show
+[2016-01-18 15:18:02.403] [DEBUG] server - Successfully got RedgIds for Users in User.regIdsForOtherUsers
+[2016-01-18 15:18:19.701] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 15:18:19.726] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 15:18:41.370] [TRACE] server - 111112 requested for Ride.addCompanionToRide
+[2016-01-18 15:18:41.871] [DEBUG] server - Successfully added companions to ride in Ride.getRideHistoryForCurrentUser
+[2016-01-18 15:21:06.299] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 15:21:06.321] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 15:21:23.645] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 15:21:23.688] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 15:22:16.249] [TRACE] server - 111112 requested for Ride.addCompanionToRide
+[2016-01-18 15:22:16.263] [DEBUG] server - Successfully added companions to ride in Ride.getRideHistoryForCurrentUser
+[2016-01-18 15:22:21.316] [TRACE] server - 111112 requested for Ride.addCompanionToRide
+[2016-01-18 15:22:21.323] [DEBUG] server - Successfully added companions to ride in Ride.getRideHistoryForCurrentUser
+[2016-01-18 15:24:00.514] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 15:24:00.533] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 15:24:21.758] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 15:24:21.788] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 15:27:39.062] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 15:27:39.078] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 15:28:09.759] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 15:28:09.780] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 15:28:13.685] [TRACE] server - 111112 requested for Ride.addCompanionToRide
+[2016-01-18 15:28:13.695] [DEBUG] server - Successfully added companions to ride in Ride.getRideHistoryForCurrentUser
+[2016-01-18 15:30:08.110] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 15:30:08.138] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 15:33:09.462] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 15:33:09.490] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 15:35:15.811] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 15:35:15.831] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 15:35:26.484] [TRACE] server - 111112 requested for Ride.addCompanionToRide
+[2016-01-18 15:35:26.514] [DEBUG] server - Successfully added companions to ride in Ride.getRideHistoryForCurrentUser
+[2016-01-18 15:50:21.518] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 15:50:21.542] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 15:51:22.827] [TRACE] server - 111112 requested for Drive.latestDriveId
+[2016-01-18 15:51:22.831] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 15:52:14.438] [TRACE] server - 111112 requested for Ride.create
+[2016-01-18 15:52:14.441] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 15:52:28.763] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 15:52:28.784] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 15:52:39.584] [TRACE] server - 111112 requested for Ride.addCompanionToRide
+[2016-01-18 15:52:39.600] [DEBUG] server - Successfully added companions to ride in Ride.getRideHistoryForCurrentUser
+[2016-01-18 16:00:52.795] [TRACE] server - 111112 requested for Drive.latestDriveId
+[2016-01-18 16:00:52.819] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 16:01:59.089] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 16:01:59.179] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 16:03:40.328] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 16:03:40.377] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 16:14:07.440] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 16:14:07.499] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 16:14:43.435] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 16:14:43.458] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 16:35:29.478] [TRACE] server - 111112 requested for Ride.filterRide
+[2016-01-18 16:35:29.516] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 17:04:02.952] [TRACE] server - 111111 requested for User.me
+[2016-01-18 17:04:02.958] [DEBUG] server - Successfully got User in User.me
+[2016-01-18 17:04:02.999] [TRACE] server - 111111 requested for User.me
+[2016-01-18 17:04:03.004] [DEBUG] server - Successfully got User in User.me
+[2016-01-18 17:04:04.360] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-18 17:04:04.374] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 18:06:48.209] [TRACE] server - 111111 requested for Ride.create
+[2016-01-18 18:08:40.616] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 18:09:16.246] [TRACE] server - 111111 requested for Ride.create
+[2016-01-18 18:09:17.321] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 18:09:27.534] [TRACE] server - 111111 requested for Ride.filterRide
+[2016-01-18 18:09:27.568] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 18:09:55.211] [TRACE] server - 111111 requested for Ride.addCompanionToRide
+[2016-01-18 18:17:32.037] [TRACE] server - 111111 requested for Ride.filterRide
+[2016-01-18 18:17:32.109] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 18:32:57.778] [TRACE] server - 111111 requested for Ride.filterRide
+[2016-01-18 18:32:57.827] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 18:34:03.948] [TRACE] server - 111111 requested for Ride.addCompanionToRide
+[2016-01-18 18:34:51.653] [TRACE] server - 111111 requested for Ride.filterRide
+[2016-01-18 18:34:51.680] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 18:37:39.778] [TRACE] server - 111111 requested for Ride.filterRide
+[2016-01-18 18:37:39.907] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 18:48:04.356] [TRACE] server - 111115 requested for User.me
+[2016-01-18 18:48:04.459] [DEBUG] server - Successfully got User in User.me
+[2016-01-18 18:48:04.498] [TRACE] server - 111115 requested for User.me
+[2016-01-18 18:48:04.528] [DEBUG] server - Successfully got User in User.me
+[2016-01-18 18:48:05.893] [TRACE] server - 111115 requested for Drive.latestDriveId
+[2016-01-18 18:48:05.944] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 18:48:14.010] [TRACE] server - 111115 requested for Ride.filterRide
+[2016-01-18 18:48:14.137] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 18:48:27.807] [TRACE] server - 111115 requested for Ride.addCompanionToRide
+[2016-01-18 18:48:27.936] [DEBUG] server - Successfully added companions to ride in Ride.getRideHistoryForCurrentUser
+[2016-01-18 18:48:47.047] [TRACE] server - 111115 requested for Ride.addCompanionToRide
+[2016-01-18 18:48:47.054] [ERROR] server - Error in R
+[2016-01-18 18:49:54.551] [TRACE] server - 111115 requested for Ride.create
+[2016-01-18 18:49:54.557] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 18:52:07.911] [TRACE] server - 111114 requested for User.me
+[2016-01-18 18:52:07.922] [DEBUG] server - Successfully got User in User.me
+[2016-01-18 18:52:07.977] [TRACE] server - 111114 requested for User.me
+[2016-01-18 18:52:07.996] [DEBUG] server - Successfully got User in User.me
+[2016-01-18 18:52:09.141] [TRACE] server - 111114 requested for Drive.latestDriveId
+[2016-01-18 18:52:09.146] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-18 18:52:13.820] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-18 18:52:13.982] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 18:52:26.250] [TRACE] server - 111114 requested for Ride.addCompanionToRide
+[2016-01-18 18:52:26.312] [DEBUG] server - Successfully added companions to ride in Ride.getRideHistoryForCurrentUser
+[2016-01-18 18:52:37.328] [TRACE] server - 111114 requested for Ride.addCompanionToRide
+[2016-01-18 18:52:37.335] [ERROR] server - Error in R
+[2016-01-18 18:54:43.729] [TRACE] server - 111114 requested for Ride.create
+[2016-01-18 18:54:43.735] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 19:00:51.184] [TRACE] server - 111114 requested for Ride.create
+[2016-01-18 19:00:51.209] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 19:01:44.709] [TRACE] server - 111114 requested for Ride.create
+[2016-01-18 19:01:44.718] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 19:02:55.416] [TRACE] server - 111114 requested for Ride.create
+[2016-01-18 19:02:55.424] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 19:03:11.263] [TRACE] server - 111114 requested for Ride.create
+[2016-01-18 19:03:11.270] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 19:04:23.146] [TRACE] server - 111114 requested for Ride.create
+[2016-01-18 19:04:23.154] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 19:05:36.154] [TRACE] server - 111114 requested for Ride.create
+[2016-01-18 19:05:36.159] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 19:06:48.992] [TRACE] server - 111114 requested for Ride.create
+[2016-01-18 19:06:48.995] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 19:07:02.897] [TRACE] server - 111114 requested for Ride.create
+[2016-01-18 19:07:02.901] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 19:08:20.156] [TRACE] server - 111114 requested for Ride.create
+[2016-01-18 19:08:20.157] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-18 19:09:04.771] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-18 19:09:04.783] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-18 19:09:08.105] [TRACE] server - 111114 requested for Ride.addCompanionToRide
+[2016-01-18 19:09:08.106] [ERROR] server - Error in R
+[2016-01-18 19:09:16.578] [TRACE] server - 111114 requested for Ride.addCompanionToRide
+[2016-01-18 19:09:16.580] [ERROR] server - Error in R
+[2016-01-18 19:09:24.569] [TRACE] server - 111114 requested for Ride.create
+[2016-01-18 19:09:24.570] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist

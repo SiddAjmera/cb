@@ -11,8 +11,11 @@ var MajorPoints = require('../../utils/majorPoints');
 var log4js= require('../../utils/serverLogger');
 var logger = log4js.getLogger('server'); 
 
+var CurrentUser;
+
 // Get list of drives
 exports.index = function(req, res) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Drive.Index');
   Drive.find(function (err, drives) {
     if(err) {
@@ -30,6 +33,7 @@ exports.index = function(req, res) {
 
 // Get a single drive
 exports.show = function(req, res) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Drive.Show');
   Drive.findById(req.params.id, function (err, drive) {
     if(err) {
@@ -47,6 +51,7 @@ exports.show = function(req, res) {
 
 // Creates a new drive in the DB.
 exports.create = function(req, res) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Drive.Create');
   Drive.create(req.body, function(err, drive) {
     if(err) {
@@ -63,6 +68,7 @@ exports.create = function(req, res) {
 };
 
 exports.filterDrive = function(req, res){
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Drive.filterDrive');
   Drive.find(req.body).exec(function(err, drives){
     if(err) {
@@ -80,6 +86,7 @@ exports.filterDrive = function(req, res){
 
 // Updates an existing drive in the DB.
 exports.update = function(req, res) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Drive.update');
   if(req.body._id) { delete req.body._id; }
   Drive.findById(req.params.id, function (err, drive) {
@@ -105,6 +112,7 @@ exports.update = function(req, res) {
 
 // Deletes a drive from the DB.
 exports.destroy = function(req, res) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Drive.destroy');
   Drive.findById(req.params.id, function (err, drive) {
     if(err) {
@@ -128,6 +136,7 @@ exports.destroy = function(req, res) {
 
 // Calculate the stats related to the Location Data provided
 exports.processData = function(req, res){
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Drive.processData');
  var userId=""
  var driveId=""
@@ -184,6 +193,7 @@ exports.processData = function(req, res){
 
 // Give this req body as { "userId": "111111",  }
 exports.latestDriveId = function(req, res){
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for Drive.latestDriveId');
   Drive.find({userId: req.body.userId})
      .sort({'driveId': 'desc'})

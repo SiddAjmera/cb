@@ -125,17 +125,27 @@ angular.module('cbApp')
         ride.availableSeats = $scope.ride.availableSeats;
         ride.rideStartTime = moment().add(parseInt($scope.ride.leavingIn),"minutes").valueOf();
         ride.vehicleLicenseNumber = currentUser.vehicle.vehicleNo;
+        ride.rideStatus = "Active";
         console.log("final obj",ride)
         httpRequest.post(config.apis.postRide,ride).
         then(function(data){
+             console.log(data);
             if(data.status==201){
                 if(config.cordova)
                     cordovaUtil.showToastMessage("Ride posted succesfully!")
                 else
                      alert("Ride posted succesfully!");
             }
+           
                 
                
+        },function(err){
+            console.log("err",err);
+
+             if(err.status==409){
+                  if(config.cordova) cordovaUtil.showToastMessage('You are already part of an Active Ride');
+                  else alert('You are already part of an Active Ride');
+            }
         })
     }
 

@@ -10,6 +10,8 @@ var q= require('q');
 var log4js= require('../../utils/serverLogger');
 var logger = log4js.getLogger('server'); 
 
+var CurrentUser;
+
 var validationError = function(res, err) {
   return res.json(422, err);
 };
@@ -19,6 +21,7 @@ var validationError = function(res, err) {
  * restriction: 'admin'
  */
 exports.index = function(req, res) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for User.Index');
   User.find({}, '-salt -hashedPassword', function (err, users) {
     if(err){
@@ -38,6 +41,7 @@ exports.index = function(req, res) {
  * Creates a new user. This will be used to SingUp a new User. This returns an access token that can be userd to log the user in right after signup.
  */
 exports.create = function (req, res, next) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for User.create');
   var newUser = new User(req.body);
   newUser.provider = 'local';
@@ -57,12 +61,14 @@ exports.create = function (req, res, next) {
 
 // Here the req.body should contain { "empId" : 987654 or something }
 exports.teamsOfCurrentUser = function(req, res){
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for User.teamsOfCurrentUser');
   var teamIDsForCurrentUser = User.find( req.body, { _id: 1 } );
 };
 
 // This will return an array of Users with the specified office and home address
 exports.getSuggestions = function(req, res){
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for User.getSuggestions');
   User.find().where("officeAddress", req.body.officeAddress)
              .where("homeAddress", req.body.homeAddress)
@@ -82,6 +88,7 @@ exports.getSuggestions = function(req, res){
 
 
 exports.suggestionsTest = function(req, res){
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for User.suggestionsTest');
 }
 
@@ -89,6 +96,7 @@ exports.suggestionsTest = function(req, res){
  * Get a single user
  */
 exports.show = function (req, res, next) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for User.show');
   var userId = req.params.id;
   User.findById(userId, function (err, user) {
@@ -110,6 +118,7 @@ exports.show = function (req, res, next) {
  * restriction: 'admin'
  */
 exports.destroy = function(req, res) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for User.destroy');
   User.findByIdAndRemove(req.params.id, function(err, user) {
     if(err) {
@@ -125,6 +134,7 @@ exports.destroy = function(req, res) {
  * Change a users password
  */
 exports.changePassword = function(req, res, next) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for User.changePassword');
   var userId = req.user._id;
   var oldPass = String(req.body.oldPassword);
@@ -149,7 +159,7 @@ exports.changePassword = function(req, res, next) {
 };
 
 exports.regIdsForOtherUsers = function(userId){
-  logger.trace(req.user.userId + ' requested for User.regIdsForOtherUsers');
+  logger.trace(userId + ' requested for User.regIdsForOtherUsers');
   var redgIds = [];
   var deffered=q.defer();
   User.find({userId: {$nin: [userId]}}, 'redgId', function(err, regIds){
@@ -169,7 +179,7 @@ exports.regIdsForOtherUsers = function(userId){
 };
 
 exports.nameByUserId = function(userId){
-  logger.trace(req.user.userId + ' requested for User.nameByUserId');
+  logger.trace(CurrentUser.userId + ' requested for User.nameByUserId');
   var deffered=q.defer();
   User.find({userId: userId}, 'empName', function(err, empName){
     if(err){
@@ -205,6 +215,7 @@ exports.nameByUserId = function(userId){
     }
 }*/
 exports.getUsers = function(req, res){
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for User.getUsers');
   User.find({userId: {$in: req.body.userIds }}, req.body.fieldsRequired, function(err, users){
     if(err){
@@ -225,6 +236,7 @@ exports.getUsers = function(req, res){
  * Get my info
  */
 exports.me = function(req, res, next) {
+  CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for User.me');
   var userId = req.user._id;
   User.findOne({
