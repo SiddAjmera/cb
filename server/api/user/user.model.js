@@ -29,7 +29,7 @@ var UserSchema = new Schema({
     displayAddress:String,
     formatted_address: String,
     icon: String,
-    location: {type: [Number], index: '2d'},
+    //location: {type: [Number], index: '2d'},
     placeId: String
   },
   timeSlot: String,
@@ -37,7 +37,7 @@ var UserSchema = new Schema({
   userId: { type: String, index: true },
   userPhotoUrl: String,
   placeID : { type: String, index: true },
-  homeLocationCoordinates: {type: [Number], index: '2d'},
+  //homeLocationCoordinates: {type: [Number], index: '2d'},
   redgId:{type:String},
   vehicle: {
     capacity: String,

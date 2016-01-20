@@ -1,5 +1,5 @@
 'use strict';
-
+var mongoose = require('mongoose')
 var User = require('./user.model');
 var Team = require('../team/team.model');
 var passport = require('passport');
@@ -9,6 +9,23 @@ var q= require('q');
 
 var log4js= require('../../utils/serverLogger');
 var logger = log4js.getLogger('server'); 
+
+var turf = require('turf');
+var driveString = {
+  "type": "Feature",
+  "properties": {},
+  "geometry": {
+    "type": "LineString"/*,
+    "coordinates": [
+      [-77.031669, 38.878605],
+      [-77.029609, 38.881946],
+      [-77.020339, 38.884084],
+      [-77.025661, 38.885821],
+      [-77.021884, 38.889563],
+      [-77.019824, 38.892368]
+    ]*/
+  }
+};
 
 var CurrentUser;
 
@@ -69,8 +86,9 @@ exports.teamsOfCurrentUser = function(req, res){
 // This will return an array of Users with the specified office and home address
 exports.getSuggestions = function(req, res){
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for User.getSuggestions');
-  User.find().where("officeAddress", req.body.officeAddress)
+  var userId = req.user.userId;
+  logger.trace(userId + ' requested for User.getSuggestions');
+  /*User.find().where("officeAddress", req.body.officeAddress)
              .where("homeAddress", req.body.homeAddress)
              .exec(function(err, users) {
     if(err) {
@@ -83,14 +101,88 @@ exports.getSuggestions = function(req, res){
     }
     logger.debug('Successfully got Users in User.getSuggestions');
     return res.json(200, users);
+  });*/
+  User.findOne( { userId: userId }, function(err, user){
+    if(err) {
+      logger.fatal('Error in User.getSuggestions. Error : ' + err);
+      return handleError(res, err);
+    }
+    if(!user){
+      logger.error('Error in User.getSuggestions. Error : Not Found');
+      return res.send(404);
+    }
+
+    /*User.find( { 
+                 "homeAddressLocation.location" : { '$near' : user.homeAddressLocation.location },
+                 "userId"                       : { $ne: userId }
+               })
+        .limit(2)
+        .exec(function(err, users){
+            if(err) {
+              logger.fatal('Error in User.getSuggestions. Error : ' + err);
+              return handleError(res, err);
+            }
+            if(!users){
+              logger.error('Error in User.getSuggestions. Error : Not Found');
+              return res.send(404);
+            }
+            logger.debug('Successfully got Users in User.getSuggestions');
+            return res.json(200, users);
+        });*/
+
+
+
+
+    /*mongoose.connection.db.executeDbCommand({ 
+      geoNear             : "users",                            // the mongo collection
+      near                : user.homeAddressLocation.location,  // the geo point
+      spherical           : true,                               // tell mongo the earth is round, so it calculates based on a spherical location system
+      distanceMultiplier  : 6371,                               // tell mongo how many radians go into one kilometer.
+      maxDistance         : 1/6371,                             // tell mongo the max distance in radians to filter out
+      userId              : { ne : userId }
+    }, function(err, result) {
+      //console.log(result.documents[0].results);
+      if(err) {
+              logger.fatal('Error in User.getSuggestions. Error : ' + err);
+              return handleError(res, err);
+            }
+            if(!users){
+              logger.error('Error in User.getSuggestions. Error : Not Found');
+              return res.send(404);
+            }
+            logger.debug('Successfully got Users in User.getSuggestions');
+            return res.json(200, result.documents[0].results);
+    }); */
+
+
+    User.geoNear( 
+      user.homeAddressLocation.location,
+      {
+          spherical           : true,            // tell mongo the earth is round, so it calculates based on a spherical location system
+          distanceMultiplier  : 6371,            // tell mongo how many radians go into one kilometer.
+          //maxDistance         : 1/6371,        // tell mongo the max distance in radians to filter out
+          userId              : { $ne : userId }
+      },function(err, results, stats){
+          if(err) {
+            logger.fatal('Error in User.getSuggestions. Error : ' + err);
+            return handleError(res, err);
+          }
+          if(!results){
+            logger.error('Error in User.getSuggestions. Error : Not Found');
+            return res.send(404);
+          }
+          logger.debug('Successfully got Users in User.getSuggestions');
+          console.log('Results', results);
+          return res.json(200, results);
+      });
   });
-}
+};
 
 
 exports.suggestionsTest = function(req, res){
   CurrentUser = req.user;
   logger.trace(req.user.userId + ' requested for User.suggestionsTest');
-}
+};
 
 /**
  * Get a single user
@@ -181,19 +273,34 @@ exports.regIdsForOtherUsers = function(userId){
 exports.nameByUserId = function(userId){
   logger.trace(CurrentUser.userId + ' requested for User.nameByUserId');
   var deffered=q.defer();
-  User.find({userId: userId}, 'empName', function(err, empName){
+  User.findOne({userId: userId}, 'empName', function(err, empName){
     if(err){
       logger.fatal('Error in User.nameByUserId. Error : ' + err);
       deffered.reject(err)
     } 
     else{
       logger.debug('Successfully got Name for User in User.nameByUserId');
-      deffered.resolve(empName[0].empName);
+      deffered.resolve(empName);
     }
   });
   return deffered.promise;
 };
 
+exports.userByUserId = function(userId){
+  logger.trace(CurrentUser.userId + ' requested for User.userByUserId');
+  var deffered = q.defer();
+  User.findOne({userId: userId}, function(err, user){
+    if(err){
+      logger.fatal('Error in User.nameByUserId. Error : ' + err);
+      deffered.reject(err)
+    } 
+    else{
+      logger.debug('Successfully got Name for User in User.userByUserId');
+      deffered.resolve(user);
+    }
+  });
+  return deffered.promise;
+};
 
 // To get a list of Users specifying the following
 /*{
@@ -261,3 +368,7 @@ exports.me = function(req, res, next) {
 exports.authCallback = function(req, res, next) {
   res.redirect('/');
 };
+
+function handleError(res, err) {
+  return res.send(500, err);
+}

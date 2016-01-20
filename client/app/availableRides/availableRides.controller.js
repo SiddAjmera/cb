@@ -63,22 +63,18 @@ angular.module('cbApp')
   		requestJSON.companions = [];
   		angular.forEach(ride.seatMap, function(r, key){
   			if(angular.isDefined(r.selected) && r.selected){
-  				/*var o={};
-  				o.userId=currentUser.userId;
-  				requestJSON.companions.push(o);*/
-          requestJSON.companions.push(currentUser.userId);
+  				var o = {};
+  				o.userId = currentUser.userId;
+          o.status = "PENDING";
+  				requestJSON.companions.push(o);
+          //requestJSON.companions.push(currentUser.userId);
   			}
-  			
   		});
   		
   		if(requestJSON.companions.length==0){
-  			 if(config.cordova)
-                cordovaUtil.showToastMessage("Select atleast one seat")
-             else
-                alert("Select atleast one seat");
-
-            return;
-
+  			 if(config.cordova) cordovaUtil.showToastMessage("Select atleast one seat")
+         else alert("Select atleast one seat");
+         return;
   		}
   		
   		requestJSON.availableSeats=ride.availableSeats-requestJSON.companions.length;

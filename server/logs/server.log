@@ -213,3 +213,120 @@
 [2016-01-18 19:09:16.580] [ERROR] server - Error in R
 [2016-01-18 19:09:24.569] [TRACE] server - 111114 requested for Ride.create
 [2016-01-18 19:09:24.570] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-01-19 13:46:52.695] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 13:46:53.371] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 15:02:33.682] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 15:02:33.696] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 15:05:24.674] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 15:05:24.692] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 15:05:57.661] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 15:05:57.796] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 15:07:13.680] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 15:07:13.737] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 15:08:51.692] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 15:08:51.711] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 15:09:15.679] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 15:09:15.743] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 15:09:51.642] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 15:09:51.653] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 15:10:10.638] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 15:10:10.652] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 15:10:26.658] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 15:10:26.662] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 15:10:34.711] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 15:10:34.726] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 15:11:09.635] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 15:11:09.645] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 15:57:50.630] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 15:57:51.224] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:02:23.935] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:02:23.961] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:09:40.018] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:09:40.041] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:11:13.959] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:11:13.978] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:15:12.996] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:15:13.038] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:16:44.057] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:16:44.112] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:17:17.991] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:17:18.007] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:18:23.012] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:18:23.036] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:19:42.022] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:19:42.037] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:24:29.021] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:24:29.036] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:25:46.025] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:25:46.051] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:29:31.027] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:29:31.042] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:30:11.035] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:30:11.053] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:30:45.113] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:30:45.143] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 16:31:58.059] [TRACE] server - 111114 requested for Ride.filterRide
+[2016-01-19 16:31:58.074] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-01-19 17:49:42.024] [TRACE] server - 111114 requested for Drive.latestDriveId
+[2016-01-19 17:49:42.216] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 17:51:29.599] [TRACE] server - 111114 requested for User.getSuggestions
+[2016-01-19 17:51:29.731] [FATAL] server - Error in User.getSuggestions. Error : CastError: Cast to number failed for value "undefined" at path "homeAddressLocation.location"
+[2016-01-19 18:19:16.999] [TRACE] server - 111114 requested for User.getSuggestions
+[2016-01-19 18:19:17.207] [DEBUG] server - Successfully got Users in User.getSuggestions
+[2016-01-19 18:20:45.114] [TRACE] server - 111111 requested for User.me
+[2016-01-19 18:20:45.122] [DEBUG] server - Successfully got User in User.me
+[2016-01-19 18:20:45.168] [TRACE] server - 111111 requested for User.me
+[2016-01-19 18:20:45.175] [DEBUG] server - Successfully got User in User.me
+[2016-01-19 18:20:45.452] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 18:20:45.455] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 18:21:09.159] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 18:21:09.199] [DEBUG] server - Successfully got Users in User.getSuggestions
+[2016-01-19 18:21:37.711] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 18:21:37.747] [DEBUG] server - Successfully got Users in User.getSuggestions
+[2016-01-19 18:21:37.940] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 18:21:37.944] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 18:33:39.507] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 18:33:39.510] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 18:35:53.860] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 18:35:53.865] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 18:36:43.097] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 18:36:43.105] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 18:36:50.782] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 18:36:50.787] [FATAL] server - Error in User.getSuggestions. Error : Error: key $ne must not start with '$'
+[2016-01-19 18:38:04.262] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 18:38:04.273] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 18:38:07.425] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 18:38:07.429] [FATAL] server - Error in User.getSuggestions. Error : Error: key $ne must not start with '$'
+[2016-01-19 18:38:48.046] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 19:37:27.692] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 19:37:27.694] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 19:37:49.283] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 19:37:49.291] [FATAL] server - Error in User.getSuggestions. Error : MongoError: more than one 2d index, not sure which to run geoNear on
+[2016-01-19 19:37:51.709] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 19:37:51.712] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 19:41:37.706] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 19:41:37.710] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 19:41:38.831] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 19:41:38.840] [FATAL] server - Error in User.getSuggestions. Error : MongoError: more than one 2d index, not sure which to run geoNear on
+[2016-01-19 19:42:29.728] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 19:42:29.731] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 19:50:05.810] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 19:50:05.814] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 19:54:51.481] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 19:55:29.796] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 19:55:29.798] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 19:55:29.888] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 19:56:16.594] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 19:56:16.609] [DEBUG] server - Successfully got Users in User.getSuggestions
+[2016-01-19 19:56:18.793] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 19:56:18.795] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 19:58:16.599] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 19:58:16.607] [DEBUG] server - Successfully got Users in User.getSuggestions
+[2016-01-19 19:59:00.806] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 19:59:00.814] [DEBUG] server - Successfully got Users in User.getSuggestions
+[2016-01-19 19:59:25.937] [TRACE] server - 111111 requested for User.getSuggestions
+[2016-01-19 19:59:25.973] [DEBUG] server - Successfully got Users in User.getSuggestions
+[2016-01-19 19:59:28.812] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 19:59:28.863] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-01-19 20:03:07.861] [TRACE] server - 111111 requested for Drive.latestDriveId
+[2016-01-19 20:03:07.865] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId

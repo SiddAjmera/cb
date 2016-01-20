@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var User = require('../user/user.model')
 var Push = require('../../utils/pushNotification');
-
+var Util = require('../../utils/geoJSONify');
 var log4js= require('../../utils/serverLogger');
 var logger = log4js.getLogger('server');
 
@@ -262,8 +262,8 @@ exports.addCompanionToRide = function(req, res){
   //If the Companion is already a part of an Active/Started Ride, he can't be added as a Companion to other rides
   Ride.findOne( { rideStatus: {$in: ['Active', 'Started']},
                   $or:  [ 
-                          { offeredByUserId: {$in: req.body.companions} },
-                          { companions: {$in: req.body.companions} }
+                          { offeredByUserId: {$in: Util.toArrayOfUserIds(req.body.companions) } },
+                          { companions: {$in: Util.toArrayOfUserIds(req.body.companions) } }
                         ]
                 }, function(err, ride){
     if (err) { 
