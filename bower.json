@@ -28,7 +28,8 @@
     "underscore": "~1.8.3",
     "angular-loading-bar": "~0.8.0",
     "angular-google-places-autocomplete": "~0.2.7",
-    "moment": "~2.11.0"
+    "moment": "~2.11.0",
+    "Leaflet.encoded": "https://github.com/jieter/Leaflet.encoded.git#~0.0.7"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
