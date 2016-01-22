@@ -34,9 +34,7 @@ angular.module('cbApp')
     //latArr.push(L.Polyline.fromEncoded("crnsBqtz{LuCc@_Ba@k@[a@a@SCe@?u@?YKy@m@O[ESAa@EK]Qo@OmAQo@A?WDUXm@Fe@Ug@MQEUgCZQm@e@_AGM?MBu@AYUk@c@a@MQACm@Q_BWe@GQxAQh@QRIPGx@@j@Dp@Fl@ALMVc@b@MHMBk@CKDK?wDwAuD_B]GcCOu@GkBOcASa@Ku@]gBo@aDaAUp@G@[KMCwAF{ABCCG[{CSk@uB{At@a@V}@r@i@h@y@`AuBrCg@p@wBzCoCbFQXq@xA_ArAg@d@{ClCw@l@cE~CY`@e@t@Wr@Ul@Kj@KvAI`FMhB_@vB_ApDyAdFw@`DuB~HjEpAlC~@fGnBlBn@n@L\DpIA^ILIP_@AwG@WJ[NWROZId@?nDVRJJJjBMZATPNP@FDpBD`G@tFD~ACRMRm@ZiBAm@DW@uA?s@?[DWJOLU^Il@@hG^rKDjBA|AFbE\pML|BRtB^jCp@hETnBN~KGdB[vF?p@Dl@N~@\z@Zh@b@d@b@^l@Z`CpA`DbApBz@h@Nf@CtP`Ez@Rv@{ApAgCLY").getLatLngs());
     //latArr.push(L.Polyline.fromEncoded("konpBstkaMrCf@AF_@dCEDGAoCe@GCCWOKk@KKfAMnA[nDY|BUdAQf@yCbGBBBF?B?@|AzAhJjJ~BlCfAu@xDmDnDgDhC}BlE_E~@eAvC}DxBwCbAwB`B{DbCkFbCeF|C_FrAiBjC{ChBuBj@k@rOqP|IoJz@kAZoAf@i@nBeB|@_@l@c@|LaLx@q@~CuCnCcBrBcAvAw@~CgBZ[Vc@v@mFRmAJ[PWRORI~@OhFO^CfBg@`FmAvAe@fDoAlDgAxBo@jA_@|CmAdAk@rA_AlQgMxLaIrGcEjKcHfGuD~HoF~JqGpJkGnIwF|B}AfA{@l@u@tAaC|DuGlB_DfFiIzCcFhA{AbGaIxBeDjD}EzA_Cx@mApAaCn@}@xKsQr@kARi@ZyAbAaFpAqHVcB\gCnBeL^gB\sBX_BBq@VqAf@eEBUAIg@gA[a@OM[]Yk@Q{@Cu@I_BES_@ZeBdByCxCMLW]c@i@S]Wq@s@eGeA_KAs@RyC@cBEeBIc@uCqEe@k@]U_@K{A_@}Bq@wFaC}@i@y@u@mDgGs@y@o@k@}@u@}@}@][g@c@eAmAWa@{@gBi@wAm@mBw@_EoCeQg@sCiD{K}BqH_@w@a@]oD{Bs@e@WMNS~@{Ah@y@fB}CNs@Bo@Gs@i@sBUeASsBQyA[oAm@}Ao@mAc@oAYiBEgA?c@^eC?Qc@uDu@yFkAcJk@{Bi@uAi@{@gBaCuAyAiC}BeDwCiBsAqBaBqEgFeBcC{@_Bq@uAM]Ke@_@aBQeA_BiH[mB{BwJs@yC_@sB_BgJ_BmGi@}A[g@y@w@u@_Aa@g@}@kAcAaBkDiGu@{Am@wAsAkEs@{C[cB{@wDyC{K[yAScASHOBiDZ").getLatLngs());
 
-    $scope.mypath = {
-                      "multiPolyline":{type:"multiPolyline",latlngs:latArr}
-                    }
+    
 
 
     var directionsService = new google.maps.DirectionsService();
@@ -51,7 +49,16 @@ angular.module('cbApp')
     directionsService.route(request, function(response, status) {
         console.log("response",response)
           if (status == google.maps.DirectionsStatus.OK) {
-            directionsDisplay.setDirections(response);            
+              var routes = _.map(response.routes,function(r){return r.overview_polyline});
+              console.log("routes",routes);
+              
+              angular.forEach(routes,function(r,key){
+                  latArr=L.Polyline.fromEncoded("konpBstkaMrCf@AF_@dCEDGAoCe@GCCWOKk@KKfAMnA[nDY|BUdAQf@yCbGBBBF?B?@|AzAhJjJ~BlCfAu@xDmDnDgDhC}BlE_E~@eAvC}DxBwCbAwB`B{DbCkFbCeF|C_FrAiBjC{ChBuBj@k@rOqP|IoJz@kAZoAf@i@nBeB|@_@l@c@|LaLx@q@~CuCnCcBrBcAvAw@~CgBZ[Vc@v@mFRmAJ[PWRORI~@OhFO^CfBg@`FmAvAe@fDoAlDgAxBo@jA_@|CmAdAk@rA_AlQgMxLaIrGcEjKcHfGuD~HoF~JqGpJkGnIwF|B}AfA{@l@u@tAaC|DuGlB_DfFiIzCcFhA{AbGaIxBeDjD}EzA_Cx@mApAaCn@}@xKsQr@kARi@ZyAbAaFpAqHVcB\gCnBeL^gB\sBX_BBq@VqAf@eEBUAIg@gA[a@OM[]Yk@Q{@Cu@I_BES_@ZeBdByCxCMLW]c@i@S]Wq@s@eGeA_KAs@RyC@cBEeBIc@uCqEe@k@]U_@K{A_@}Bq@wFaC}@i@y@u@mDgGs@y@o@k@}@u@}@}@][g@c@eAmAWa@{@gBi@wAm@mBw@_EoCeQg@sCiD{K}BqH_@w@a@]oD{Bs@e@WMNS~@{Ah@y@fB}CNs@Bo@Gs@i@sBUeASsBQyA[oAm@}Ao@mAc@oAYiBEgA?c@^eC?Qc@uDu@yFkAcJk@{Bi@uAi@{@gBaCuAyAiC}BeDwCiBsAqBaBqEgFeBcC{@_Bq@uAM]Ke@_@aBQeA_BiH[mB{BwJs@yC_@sB_BgJ_BmGi@}A[g@y@w@u@_Aa@g@}@kAcAaBkDiGu@{Am@wAsAkEs@{C[cB{@wDyC{K[yAScASHOBiDZ").getLatLngs();
+              });
+              
+              $scope.mypath = {type:"t",latlngs:latArr}
+                    console.log($scope.mypath);
+            //directionsDisplay.setDirections(response);            
             console.log('enter!');  
           }
         });
