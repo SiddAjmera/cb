@@ -52,17 +52,27 @@ angular.module('cbApp')
               var routes = _.map(response.routes,function(r){return r.overview_polyline});
               console.log("routes",routes);
               
-              angular.forEach(routes,function(r,key){
-                  latArr=L.Polyline.fromEncoded("konpBstkaMrCf@AF_@dCEDGAoCe@GCCWOKk@KKfAMnA[nDY|BUdAQf@yCbGBBBF?B?@|AzAhJjJ~BlCfAu@xDmDnDgDhC}BlE_E~@eAvC}DxBwCbAwB`B{DbCkFbCeF|C_FrAiBjC{ChBuBj@k@rOqP|IoJz@kAZoAf@i@nBeB|@_@l@c@|LaLx@q@~CuCnCcBrBcAvAw@~CgBZ[Vc@v@mFRmAJ[PWRORI~@OhFO^CfBg@`FmAvAe@fDoAlDgAxBo@jA_@|CmAdAk@rA_AlQgMxLaIrGcEjKcHfGuD~HoF~JqGpJkGnIwF|B}AfA{@l@u@tAaC|DuGlB_DfFiIzCcFhA{AbGaIxBeDjD}EzA_Cx@mApAaCn@}@xKsQr@kARi@ZyAbAaFpAqHVcB\gCnBeL^gB\sBX_BBq@VqAf@eEBUAIg@gA[a@OM[]Yk@Q{@Cu@I_BES_@ZeBdByCxCMLW]c@i@S]Wq@s@eGeA_KAs@RyC@cBEeBIc@uCqEe@k@]U_@K{A_@}Bq@wFaC}@i@y@u@mDgGs@y@o@k@}@u@}@}@][g@c@eAmAWa@{@gBi@wAm@mBw@_EoCeQg@sCiD{K}BqH_@w@a@]oD{Bs@e@WMNS~@{Ah@y@fB}CNs@Bo@Gs@i@sBUeASsBQyA[oAm@}Ao@mAc@oAYiBEgA?c@^eC?Qc@uDu@yFkAcJk@{Bi@uAi@{@gBaCuAyAiC}BeDwCiBsAqBaBqEgFeBcC{@_Bq@uAM]Ke@_@aBQeA_BiH[mB{BwJs@yC_@sB_BgJ_BmGi@}A[g@y@w@u@_Aa@g@}@kAcAaBkDiGu@{Am@wAsAkEs@{C[cB{@wDyC{K[yAScASHOBiDZ").getLatLngs();
+              angular.forEach(routes, function (r, key) {
+                  latArr = L.Polyline.fromEncoded(r).getLatLngs();
               });
               
-              $scope.mypath = {type:"t",latlngs:latArr}
+              $scope.mypath = {};
+             $scope.mypath.polyline={type:"polyline",latlngs:latArr}
                     console.log($scope.mypath);
             //directionsDisplay.setDirections(response);            
             console.log('enter!');  
           }
         });
-
+        
+       var latArr=L.Polyline.fromEncoded("konpBstkaMrCf@AF_@dCEDGAoCe@GCCWOKk@KKfAMnA[nDY|BUdAQf@yCbGBBBF?B?@|AzAhJjJ~BlCfAu@xDmDnDgDhC}BlE_E~@eAvC}DxBwCbAwB`B{DbCkFbCeF|C_FrAiBjC{ChBuBj@k@rOqP|IoJz@kAZoAf@i@nBeB|@_@l@c@|LaLx@q@~CuCnCcBrBcAvAw@~CgBZ[Vc@v@mFRmAJ[PWRORI~@OhFO^CfBg@`FmAvAe@fDoAlDgAxBo@jA_@|CmAdAk@rA_AlQgMxLaIrGcEjKcHfGuD~HoF~JqGpJkGnIwF|B}AfA{@l@u@tAaC|DuGlB_DfFiIzCcFhA{AbGaIxBeDjD}EzA_Cx@mApAaCn@}@xKsQr@kARi@ZyAbAaFpAqHVcB\gCnBeL^gB\sBX_BBq@VqAf@eEBUAIg@gA[a@OM[]Yk@Q{@Cu@I_BES_@ZeBdByCxCMLW]c@i@S]Wq@s@eGeA_KAs@RyC@cBEeBIc@uCqEe@k@]U_@K{A_@}Bq@wFaC}@i@y@u@mDgGs@y@o@k@}@u@}@}@][g@c@eAmAWa@{@gBi@wAm@mBw@_EoCeQg@sCiD{K}BqH_@w@a@]oD{Bs@e@WMNS~@{Ah@y@fB}CNs@Bo@Gs@i@sBUeASsBQyA[oAm@}Ao@mAc@oAYiBEgA?c@^eC?Qc@uDu@yFkAcJk@{Bi@uAi@{@gBaCuAyAiC}BeDwCiBsAqBaBqEgFeBcC{@_Bq@uAM]Ke@_@aBQeA_BiH[mB{BwJs@yC_@sB_BgJ_BmGi@}A[g@y@w@u@_Aa@g@}@kAcAaBkDiGu@{Am@wAsAkEs@{C[cB{@wDyC{K[yAScASHOBiDZ").getLatLngs();
+              
+              
+            /*  $scope.mypath = {};
+              $scope.mypath.polyline={type:"polyline",latlngs:latArr}
+            */  
+                    
+            //directionsDisplay.setDirections(response);            
+            console.log('enter!'); 
     //Multiple Routes Code - end
 
 
