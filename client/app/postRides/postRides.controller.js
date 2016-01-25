@@ -2,9 +2,64 @@
 
 angular.module('cbApp')
   .controller('PostRidesCtrl', function ($scope,httpRequest,Auth,cordovaUtil,staticData) {
+    var directionsService = new google.maps.DirectionsService();
+    var getRoute =function () {
+        var from,to;
+        if(angular.isObject($scope.ride.source)){
+            from=$scope.ride.source.location.join();
+        }
+        else if($scope.ride.source && $scope.ride.source!='office'){
+            from=currentUser.homeLocationCoordinates.join();   
+        }
+        else return;
 
+        if(angular.isObject($scope.ride.destination)){
+            to=$scope.ride.destination.location.join();
+        }
+        else if($scope.ride.destination && $scope.ride.destination!='office'){
+            to=currentUser.homeLocationCoordinates.join();   
+        }
+        else return;
+
+
+        var request = {};
+        request.optimizeWaypoints=true;
+        request.travelMode= google.maps.TravelMode.DRIVING;
+        request.origin=from;
+        request.destination=to;
+        directionsService.route(request, function(response, status) {
+            console.log("response",response)
+            if (status == google.maps.DirectionsStatus.OK) {
+                var routes = _.map(response.routes,function(r){return r.overview_polyline});
+                console.log("routes",routes);              
+                angular.forEach(routes,function(r,key){
+                  latArr=L.Polyline.fromEncoded().getLatLngs();
+                });              
+                $scope.mypath ={};
+                $scope.mypath.polyline={type:"polyline",latlngs:latArr};
+                console.log($scope.mypath);                
+                console.log('enter!');  
+            }
+        });       
+            
+       /* latArr=L.Polyline.fromEncoded("konpBstkaMrCf@AF_@dCEDGAoCe@GCCWOKk@KKfAMnA[nDY|BUdAQf@yCbGBBBF?B?@|AzAhJjJ~BlCfAu@xDmDnDgDhC}BlE_E~@eAvC}DxBwCbAwB`B{DbCkFbCeF|C_FrAiBjC{ChBuBj@k@rOqP|IoJz@kAZoAf@i@nBeB|@_@l@c@|LaLx@q@~CuCnCcBrBcAvAw@~CgBZ[Vc@v@mFRmAJ[PWRORI~@OhFO^CfBg@`FmAvAe@fDoAlDgAxBo@jA_@|CmAdAk@rA_AlQgMxLaIrGcEjKcHfGuD~HoF~JqGpJkGnIwF|B}AfA{@l@u@tAaC|DuGlB_DfFiIzCcFhA{AbGaIxBeDjD}EzA_Cx@mApAaCn@}@xKsQr@kARi@ZyAbAaFpAqHVcB\gCnBeL^gB\sBX_BBq@VqAf@eEBUAIg@gA[a@OM[]Yk@Q{@Cu@I_BES_@ZeBdByCxCMLW]c@i@S]Wq@s@eGeA_KAs@RyC@cBEeBIc@uCqEe@k@]U_@K{A_@}Bq@wFaC}@i@y@u@mDgGs@y@o@k@}@u@}@}@][g@c@eAmAWa@{@gBi@wAm@mBw@_EoCeQg@sCiD{K}BqH_@w@a@]oD{Bs@e@WMNS~@{Ah@y@fB}CNs@Bo@Gs@i@sBUeASsBQyA[oAm@}Ao@mAc@oAYiBEgA?c@^eC?Qc@uDu@yFkAcJk@{Bi@uAi@{@gBaCuAyAiC}BeDwCiBsAqBaBqEgFeBcC{@_Bq@uAM]Ke@_@aBQeA_BiH[mB{BwJs@yC_@sB_BgJ_BmGi@}A[g@y@w@u@_Aa@g@}@kAcAaBkDiGu@{Am@wAsAkEs@{C[cB{@wDyC{K[yAScASHOBiDZ").getLatLngs();
+        $scope.mypath ={};
+        $scope.mypath.polyline={type:"polyline",latlngs:latArr};               
+        console.log($scope.mypath); */   
+        console.log('enter!'); 
+    }
 
     //Multiple Routes Code - start
+    $scope.$watch('ride.destination', function(newValue, oldValue, scope) {
+        console.log("ride.destination ",newValue);
+        getRoute();
+    });
+
+    $scope.$watch('ride.source', function(newValue, oldValue, scope) {
+        console.log("ride.source ",newValue);   
+        getRoute();
+    });
+
 
 
     $scope.defaults = {
@@ -19,26 +74,8 @@ angular.module('cbApp')
       lng : 73.68483066558838,
       zoom: 15
     };
-
-
-
-    //Temp Code for Route
-
-    // var map = new L.Map('map');
-
-    //var polyline = L.Polyline.fromEncoded("crnsBqtz{LuCc@_Ba@k@[a@a@SCe@?u@?YKy@m@O[ESAa@EK]Qo@OmAQo@A?WDUXm@Fe@Ug@MQEUgCZQm@e@_AGM?MBu@AYUk@c@a@MQACm@Q_BWe@GQxAQh@QRIPGx@@j@Dp@Fl@ALMVc@b@MHMBk@CKDK?wDwAe@hAUv@SnA?RNlABfB@r@Cb@E~ANxEAhAIr@Id@mAxDAJ@L@Lc@IoAWcAKi@KgAW_CCy@FsAXwAFmE?iCG_BQiAUcA[k@nBEj@D|DDpAJZGxAGZu@|Cg@rACNH~@Cz@Gj@fA`@\LZ`@sApEQFSJKFEN]pAY^eJBCpAd@?t@BfG?LTJVDlDOj@BjDLv@Ar@Er@?b@Fv@Gd@eC?e@HkBFc@POJMPIf@@vFFjFQf@R|GAvC`@tOFvB\`EbArGZ|BFr@DtAHlIc@jKNvALh@Tf@Zh@fAdArAn@zA|@bA\|Ad@bAf@vAb@f@CrLtC|D~@vC}F");
-    //var lats = polyline.getLatLngs();
     var latArr = [];
-    //latArr.push(lats);
-    //latArr.push(L.Polyline.fromEncoded("crnsBqtz{LuCc@_Ba@k@[a@a@SCe@?u@?YKy@m@O[ESAa@EK]Qo@OmAQo@A?WDUXm@Fe@Ug@MQEUgCZQm@e@_AGM?MBu@AYUk@c@a@MQACm@Q_BWe@GQxAQh@QRIPGx@@j@Dp@Fl@ALMVc@b@MHMBk@CKDK?wDwAe@hAUv@SnA?RNlABfB@r@Cb@E~ANxEAhAIr@Id@mAxDAJ@L@Lc@IoAWcAKi@KgAW_CCy@FsAXwAFmE?iCG_BQiAUcA[k@nBEj@D|DDpAJZGxAGZu@|Cg@rACNH~@Cz@Gj@fA`@\LZ`@sApEQFSJKFEN]pAY^eJBCpAd@?t@BfG?LTJVDlDOj@BjDLv@Ar@Er@?b@Fv@Gd@eC?e@HkBFc@POJMPIf@@vFFjFQf@R|GAvC`@tOFvB\`EbArGZ|BFr@DtAHlIc@jKNvALh@Tf@Zh@fAdArAn@zA|@bA\|Ad@bAf@vAb@f@CrLtC|D~@vC}F").getLatLngs());
-    //latArr.push(L.Polyline.fromEncoded("crnsBqtz{LuCc@_Ba@k@[a@a@SCe@?u@?YKy@m@O[ESAa@EK]Qo@OmAQo@A?WDUXm@Fe@Ug@MQEUgCZQm@e@_AGM?MBu@AYUk@c@a@MQACm@Q_BWe@GQxAQh@QRIPGx@@j@Dp@Fl@ALMVc@b@MHMBk@CKDK?wDwAuD_B]GcCOu@GkBOcASa@Ku@]gBo@aDaAUp@G@[KMCwAF{ABCCG[{CSk@uB{At@a@V}@r@i@h@y@`AuBrCg@p@wBzCoCbFQXq@xA_ArAg@d@{ClCw@l@cE~CY`@e@t@Wr@Ul@Kj@KvAI`FMhB_@vB_ApDyAdFw@`DuB~HjEpAlC~@fGnBlBn@n@L\DpIA^ILIP_@AwG@WJ[NWROZId@?nDVRJJJjBMZATPNP@FDpBD`G@tFD~ACRMRm@ZiBAm@DW@uA?s@?[DWJOLU^Il@@hG^rKDjBA|AFbE\pML|BRtB^jCp@hETnBN~KGdB[vF?p@Dl@N~@\z@Zh@b@d@b@^l@Z`CpA`DbApBz@h@Nf@CtP`Ez@Rv@{ApAgCLY").getLatLngs());
-    //latArr.push(L.Polyline.fromEncoded("konpBstkaMrCf@AF_@dCEDGAoCe@GCCWOKk@KKfAMnA[nDY|BUdAQf@yCbGBBBF?B?@|AzAhJjJ~BlCfAu@xDmDnDgDhC}BlE_E~@eAvC}DxBwCbAwB`B{DbCkFbCeF|C_FrAiBjC{ChBuBj@k@rOqP|IoJz@kAZoAf@i@nBeB|@_@l@c@|LaLx@q@~CuCnCcBrBcAvAw@~CgBZ[Vc@v@mFRmAJ[PWRORI~@OhFO^CfBg@`FmAvAe@fDoAlDgAxBo@jA_@|CmAdAk@rA_AlQgMxLaIrGcEjKcHfGuD~HoF~JqGpJkGnIwF|B}AfA{@l@u@tAaC|DuGlB_DfFiIzCcFhA{AbGaIxBeDjD}EzA_Cx@mApAaCn@}@xKsQr@kARi@ZyAbAaFpAqHVcB\gCnBeL^gB\sBX_BBq@VqAf@eEBUAIg@gA[a@OM[]Yk@Q{@Cu@I_BES_@ZeBdByCxCMLW]c@i@S]Wq@s@eGeA_KAs@RyC@cBEeBIc@uCqEe@k@]U_@K{A_@}Bq@wFaC}@i@y@u@mDgGs@y@o@k@}@u@}@}@][g@c@eAmAWa@{@gBi@wAm@mBw@_EoCeQg@sCiD{K}BqH_@w@a@]oD{Bs@e@WMNS~@{Ah@y@fB}CNs@Bo@Gs@i@sBUeASsBQyA[oAm@}Ao@mAc@oAYiBEgA?c@^eC?Qc@uDu@yFkAcJk@{Bi@uAi@{@gBaCuAyAiC}BeDwCiBsAqBaBqEgFeBcC{@_Bq@uAM]Ke@_@aBQeA_BiH[mB{BwJs@yC_@sB_BgJ_BmGi@}A[g@y@w@u@_Aa@g@}@kAcAaBkDiGu@{Am@wAsAkEs@{C[cB{@wDyC{K[yAScASHOBiDZ").getLatLngs());
-
     
-
-
-    var directionsService = new google.maps.DirectionsService();
-
     var request = {
           origin: "37.891586,-4.7844853",
           destination: "38.891586,-5.7844853",
@@ -46,27 +83,8 @@ angular.module('cbApp')
           travelMode: google.maps.TravelMode.DRIVING
         };
 
-    directionsService.route(request, function(response, status) {
-        console.log("response",response)
-          if (status == google.maps.DirectionsStatus.OK) {
-              var routes = _.map(response.routes,function(r){return r.overview_polyline});
-              console.log("routes",routes);
-              
-              angular.forEach(routes,function(r,key){
-                  latArr=L.Polyline.fromEncoded("konpBstkaMrCf@AF_@dCEDGAoCe@GCCWOKk@KKfAMnA[nDY|BUdAQf@yCbGBBBF?B?@|AzAhJjJ~BlCfAu@xDmDnDgDhC}BlE_E~@eAvC}DxBwCbAwB`B{DbCkFbCeF|C_FrAiBjC{ChBuBj@k@rOqP|IoJz@kAZoAf@i@nBeB|@_@l@c@|LaLx@q@~CuCnCcBrBcAvAw@~CgBZ[Vc@v@mFRmAJ[PWRORI~@OhFO^CfBg@`FmAvAe@fDoAlDgAxBo@jA_@|CmAdAk@rA_AlQgMxLaIrGcEjKcHfGuD~HoF~JqGpJkGnIwF|B}AfA{@l@u@tAaC|DuGlB_DfFiIzCcFhA{AbGaIxBeDjD}EzA_Cx@mApAaCn@}@xKsQr@kARi@ZyAbAaFpAqHVcB\gCnBeL^gB\sBX_BBq@VqAf@eEBUAIg@gA[a@OM[]Yk@Q{@Cu@I_BES_@ZeBdByCxCMLW]c@i@S]Wq@s@eGeA_KAs@RyC@cBEeBIc@uCqEe@k@]U_@K{A_@}Bq@wFaC}@i@y@u@mDgGs@y@o@k@}@u@}@}@][g@c@eAmAWa@{@gBi@wAm@mBw@_EoCeQg@sCiD{K}BqH_@w@a@]oD{Bs@e@WMNS~@{Ah@y@fB}CNs@Bo@Gs@i@sBUeASsBQyA[oAm@}Ao@mAc@oAYiBEgA?c@^eC?Qc@uDu@yFkAcJk@{Bi@uAi@{@gBaCuAyAiC}BeDwCiBsAqBaBqEgFeBcC{@_Bq@uAM]Ke@_@aBQeA_BiH[mB{BwJs@yC_@sB_BgJ_BmGi@}A[g@y@w@u@_Aa@g@}@kAcAaBkDiGu@{Am@wAsAkEs@{C[cB{@wDyC{K[yAScASHOBiDZ").getLatLngs();
-              });
-              
-              $scope.mypath = {type:"t",latlngs:latArr}
-                    console.log($scope.mypath);
-            //directionsDisplay.setDirections(response);            
-            console.log('enter!');  
-          }
-        });
-
+   
     //Multiple Routes Code - end
-
-
-    $scope.message = 'Hello';
     $scope.ride = {};
     var currentUser = {};
     Auth.getCurrentUser().

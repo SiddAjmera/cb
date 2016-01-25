@@ -62,8 +62,7 @@
 						<div class="form-control input-boxes dummy-input-box" ng-show="addressTo == 'default' || addressTo == 'homeTo'" ng-click="optionAddressOptions('to')">
 							<span ng-if ="ride.destination" class="dummy-input-box-text">{{ride.destination}}</span>
 							<span ng-if="!ride.destination" class="dummy-input-box-text">LEAVING FOR</span>
-						</div>
-
+						</div>						
 						<div class="input-fields office-address-select-wrap" ng-show="addressTo == 'officeTo'">
 							<ui-select search-enabled="false" ng-model="ride.destination" class="office-address-select">
 							    <ui-select-match placeholder="OFFICE ADDRESS">
