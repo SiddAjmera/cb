@@ -62,8 +62,7 @@
 						<div class="form-control input-boxes dummy-input-box" ng-show="addressTo == 'default' || addressTo == 'homeTo'" ng-click="optionAddressOptions('to')">
 							<span ng-if ="ride.destination" class="dummy-input-box-text">{{ride.destination}}</span>
 							<span ng-if="!ride.destination" class="dummy-input-box-text">LEAVING FOR</span>
-						</div>
-
+						</div>						
 						<div class="input-fields office-address-select-wrap" ng-show="addressTo == 'officeTo'">
 							<ui-select search-enabled="false" ng-model="ride.destination" class="office-address-select">
 							    <ui-select-match placeholder="OFFICE ADDRESS">
@@ -134,11 +133,12 @@
 						<p ng-message="required" class="error-msg">Ride destination is required</p>
 					</div> -->
 				</div>
-				<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzeon' defaults="defaults" paths="paths"></leaflet>
+				<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzeon' defaults="defaults" paths="mypath"></leaflet>
 
 				<div class="each-row post-ride-continue" name="syncData" ng-click="postRide()">
 					CONTINUE... <img class="post-continue-img" src="assets/images/available-rides/continue_car.png">
 				</div>
+				{{mypath}}
 			</div>
 
 		</form>		
