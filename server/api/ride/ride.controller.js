@@ -23,7 +23,7 @@ EventEmitter.on("ridePosted", function(ride){
 // Get list of rides
 exports.index = function(req, res) {
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for Ride.Index');
+  logger.trace(req.user.empId + ' requested for Ride.Index');
   Ride.find(function (err, rides) {
     if(err) { 
       logger.fatal('Error in Ride.Index. Error : ' + err);
@@ -41,7 +41,7 @@ exports.index = function(req, res) {
 // Get a single ride
 exports.show = function(req, res) {
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for Ride.show');
+  logger.trace(req.user.empId + ' requested for Ride.show');
   Ride.findById(req.params.id, function (err, ride) {
     if(err) { 
       logger.fatal('Error in Ride.show. Error : ' + err);
@@ -59,13 +59,13 @@ exports.show = function(req, res) {
 // Creates a new ride in the DB.
 exports.create = function(req, res) {
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for Ride.create');
-  var userId = parseInt(req.user.userId);
+  logger.trace(req.user.empId + ' requested for Ride.create');
+  var empId = parseInt(req.user.empId);
 
-  Ride.findOne({  rideStatus: "Active",
+  Ride.findOne({  rideStatus: "ACTIVE",
                   $or:  [ 
-                          { offeredByUserId: userId },
-                          { companions: userId }
+                          { "offeredBy.empId": empId },
+                          { "riders.empId": empId }
                         ]}, function(err, ride){
     if(err){
       logger.fatal('Error in Ride.create. Error : ' + err);
@@ -78,10 +78,7 @@ exports.create = function(req, res) {
       return res.send(409);
     }
 
-
-
-
-    User.findOne({userId: userId}, function (err, user) {
+    User.findOne({empId: empId}, function (err, user) {
         if (err) { 
           logger.fatal('Error in Ride.create. Error : ' + err);
           return handleError(res, err);
@@ -90,19 +87,14 @@ exports.create = function(req, res) {
           logger.error('Error in Ride.create. Error : Not Found');
           return res.send(404);
         }
-        req.body.offeredByUser = {};
-        req.body.offeredByUser.userId = user.empId;
-        req.body.offeredByUser.userName = user.empName;
-        req.body.offeredByUser.userImage = user.userPhotoUrl;
-        req.body.offeredByUser.totalNumberOfSeats=user.vehicle.capacity;
+        req.body.offeredBy = {};
+        req.body.offeredBy.empId = user.empId;
+        req.body.offeredBy.empName = user.empName;
+        req.body.offeredBy.contactNo = user.contactNo;
+        req.body.offeredBy.userPhotoUrl = user.userPhotoUrl;
+        req.body.offeredBy.vehicleLicenseNumber = user.vehicle.vehicleLicenseNumber;
         if(user.vehicle){
-          /*console.log('\nUser.Vehicle k if me ghusa');
-          console.log('\nReq.body.offeredByUser.AvailableSeats : ' + req.body.offeredByUser.availableSeats);
-          console.log('\nUser.Vehicle.Capacity : ' + user.vehicle.capacity);*/
-        /*  if(parseInt(req.body.availableSeats) > parseInt(user.vehicle.capacity)) {
-            console.log('If Available Seats > Vehicle capacity me ghusa');
-            return handleError(res, 'Specified Available Seats is more than the capacity of your Vehicle');
-          } */
+          req.body.offeredBy.vehicleLicenseNumber = user.vehicle.vehicleLicenseNumber;
         }
         else{
           return handleError(res, 'You cant post a ride as you dont have a vehicle.');
@@ -123,17 +115,13 @@ exports.create = function(req, res) {
           }
         });
       });
-
-
-
-
   });
 };
 
 // Gets a ride based on any Ride Attribute
 exports.getRideByRideAttribute = function(req, res){
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for Ride.getRideByRideAttribute');
+  logger.trace(req.user.empId + ' requested for Ride.getRideByRideAttribute');
   Ride.findOne( req.body, function(err, ride) {
     if(err) { 
       logger.fatal('Error in Ride.getRideByRideAttribute. Error : ' + err);
@@ -163,10 +151,10 @@ exports.getRideByRideAttribute = function(req, res){
 
 exports.filterRide = function(req, res){
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for Ride.filterRide');
+  logger.trace(req.user.empId + ' requested for Ride.filterRide');
   var query = {
-    offeredByUserId: { $nin: [req.body.userId] },
-    availableSeats: { $nin: ['0']}
+    "offeredBy.empId": { $ne: req.user.empId },
+    currentlyAvailableSeats: { $ne: 0 }
   };
   //if(req.body.filters) query = req.body.filters;
   var options = {
@@ -178,19 +166,18 @@ exports.filterRide = function(req, res){
   if(req.body.limit) options.limit = req.body.limit;
   else options.limit = 10;
 
-  //console.log('\nQuery : ' + JSON.stringify(query) + '\n Options : ' + JSON.stringify(options));
-
   Ride.paginate(query, options).then(function(rides) {
     logger.debug('Successfully got paginated rides in Ride.filterRide');
     return res.json(200, rides[0]);
   });
 };
 
-// Gets rides based on certain criteria
+// Gets rides based on certain criteria.  TODO - Write Logic to get list of available rides
 exports.getAvailableRides = function(req, res){
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for Ride.getAvailableRides');
-  Ride.find().where("destination", req.body.destination)
+  var empId = req.user.empId;
+  logger.trace(empId + ' requested for Ride.getAvailableRides');
+  /*Ride.find().where("destination", req.body.destination)
              .where("source", req.body.source)
              .where("active", req.body.active)
              .exec(function(err, rides) {
@@ -204,34 +191,72 @@ exports.getAvailableRides = function(req, res){
     }
     logger.debug('Successfully got rides in Ride.getAvailableRides');
     return res.json(200, rides);
+  });*/
+
+
+  // Either this
+  /*mongoose.connection.db.executeDbCommand({ 
+    geoNear : "rides",  // the mongo collection
+    near : [4.881213, 52.366455], // the geo point
+    spherical : true,  // tell mongo the earth is round, so it calculates based on a spherical location system
+    distanceMultiplier: 6371, // tell mongo how many radians go into one kilometer.
+    maxDistance : 1/6371, // tell mongo the max distance in radians to filter out
+  }, function(err, result) {
+    console.log('Result: ' + result)
+    console.log(result.documents[0].results);
+  });*/
+
+  // Or this
+  Ride.geoNear( 
+      user.homeAddressLocation.location,  // Or user.officeAddressLocation.location if he is in office
+      {
+          spherical           : true,            // tell mongo the earth is round, so it calculates based on a spherical location system
+          distanceMultiplier  : 6371,            // tell mongo how many radians go into one kilometer.
+          maxDistance         : 1/6371,        // tell mongo the max distance in radians to filter out
+          "offeredBy.empId"   : { $ne : empId }
+      },function(err, results, stats){
+          if(err) {
+            logger.fatal('Error in Ride.getAvailableRides. Error : ' + err);
+            return handleError(res, err);
+          }
+          if(!results){
+            logger.error('Error in Ride.getAvailableRides. Error : Not Found');
+            return res.send(404);
+          }
+          logger.debug('Successfully got rides in Ride.getAvailableRides');
+          console.log('Results', results);
+          return res.json(200, results);
   });
 };
 
 // Gets inactive rides for current user
 exports.getRideHistoryForCurrentUser = function(req, res){
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for Ride.getRideHistoryForCurrentUser');
-  Ride.find().where("offeredByUser", Schema.Types.ObjectId(req.body.userObjectId))
-            // .where("companions.forEachIndex", req.body.userObjectId)  // Some code required to check for ObjectIds in the nested Child Elements as well.
-             .where("active", req.body.active)    // Here req.body.active will be false as we want rides from history and not the ones which are currently active.
-             .exec(function(err, rides){
-    if(err) { 
-      logger.fatal('Error in Ride.getRideHistoryForCurrentUser. Error : ' + err);
-      return handleError(res, err); 
-    }
-    if(!rides) { 
-      logger.error('Error in Ride.getRideHistoryForCurrentUser. Error : Not Found');
-      return res.send(404); 
-    }
-    logger.debug('Successfully got rides in Ride.getRideHistoryForCurrentUser');
-    return res.json(200, rides);
-  });
+  logger.trace(req.user.empId + ' requested for Ride.getRideHistoryForCurrentUser');
+  Ride.find({ 
+                $or:[ 
+                        { "offeredBy.empId": req.user.empId },
+                        { "riders.empId": req.user.empId }
+                    ],
+                rideStatus: 'COMPLETED'
+            }, function(err, rides){
+                  if(err) { 
+                    logger.fatal('Error in Ride.getRideHistoryForCurrentUser. Error : ' + err);
+                    return handleError(res, err); 
+                  }
+                  if(!rides) { 
+                    logger.error('Error in Ride.getRideHistoryForCurrentUser. Error : Not Found');
+                    return res.send(404); 
+                  }
+                  logger.debug('Successfully got rides in Ride.getRideHistoryForCurrentUser');
+                  return res.json(200, rides);
+            });
 };
 
 // Updates an existing ride in the DB.
 exports.update = function(req, res) {
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for Ride.update');
+  logger.trace(req.user.empId + ' requested for Ride.update');
   if(req.body._id) { delete req.body._id; }
   Ride.findById(req.params.id, function (err, ride) {
     if (err) {
@@ -256,54 +281,59 @@ exports.update = function(req, res) {
 
 exports.addCompanionToRide = function(req, res){
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for Ride.addCompanionToRide');
+  logger.trace(req.user.empId + ' requested for Ride.addCompanionToRide');
   if(req.body._id) { delete req.body._id; }
 
   //If the Companion is already a part of an Active/Started Ride, he can't be added as a Companion to other rides
-  Ride.findOne( { rideStatus: {$in: ['Active', 'Started']},
+  Ride.findOne( { rideStatus: {$in: ['ACTIVE', 'STARTED']},
                   $or:  [ 
-                          { offeredByUserId: {$in: Util.toArrayOfUserIds(req.body.companions) } },
-                          { companions: {$in: Util.toArrayOfUserIds(req.body.companions) } }
+                          { "offeredBy.empId": { $in: Util.toArrayOfUserIds(req.body.companions) } },
+                          { "riders.empId": { $in: Util.toArrayOfUserIds(req.body.companions) } }
                         ]
                 }, function(err, ride){
-    if (err) { 
-      logger.fatal('Error in Ride.addCompanionToRide. Error : ' + err);
-      return handleError(res, err); 
-    }
-    if(ride) { 
-      console.log('Error in Ride.addCompanionToRide. Error : User is already a part of an ACTIVE RIDE');
-      logger.error('Error in R')
-      return res.send(409); 
-    }
-    else{
-      Ride.findById(req.params.id, function (err, ride) {
-        if (err) { 
-          logger.fatal('Error in Ride.addCompanionToRide. Error : ' + err);
-          return handleError(res, err); 
-        }
-        if(!ride) { 
-          logger.error('Error in Ride.addCompanionToRide. Error : Not Found');
-          return res.send(404); 
-        }
-        ride.companions = ride.companions.concat(req.body.companions);
-        ride.availableSeats = req.body.availableSeats;
-        ride.save(function(err){
-          if (err) { 
-            logger.fatal('Error in Ride.addCompanionToRide. Error : ' + err);
-            return handleError(res, err); 
-          }
-          logger.debug('Successfully added companions to ride in Ride.getRideHistoryForCurrentUser');
-          return res.json(200, ride);
-        });
-      });
-    }
-  });
+                    if (err) { 
+                      logger.fatal('Error in Ride.addCompanionToRide. Error : ' + err);
+                      return handleError(res, err); 
+                    }
+                    if(ride) { 
+                      console.log('Error in Ride.addCompanionToRide. Error : User is already a part of an ACTIVE RIDE');
+                      logger.error('Error in R')
+                      return res.send(409); 
+                    }
+                    else{
+                      Ride.findById(req.params.id, function (err, ride) {
+                        if (err) { 
+                          logger.fatal('Error in Ride.addCompanionToRide. Error : ' + err);
+                          return handleError(res, err); 
+                        }
+                        if(!ride) { 
+                          logger.error('Error in Ride.addCompanionToRide. Error : Not Found');
+                          return res.send(404); 
+                        }
+
+                        User.find({empId: {$in: req.body.companions}}, {empId: 1, empName: 1, contactNo: 1, userPhotoUrl: 1}, function(err, users){
+                            users.forEach(function(user){
+                                user.riderStatus = "PENDING";
+                            });
+                            ride.riders = ride.riders.concat(users);
+                            ride.save(function(err){
+                                if (err) { 
+                                  logger.fatal('Error in Ride.addCompanionToRide. Error : ' + err);
+                                  return handleError(res, err); 
+                                }
+                                logger.debug('Successfully added companions to ride in Ride.getRideHistoryForCurrentUser');
+                                return res.json(200, ride);
+                              });
+                            });
+                        });
+                  }
+              });
 };
 
 // Deletes a ride from the DB.
 exports.destroy = function(req, res) {
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for Ride.destroy');
+  logger.trace(req.user.empId + ' requested for Ride.destroy');
   Ride.findById(req.params.id, function (err, ride) {
     if(err) { 
       logger.fatal('Error in Ride.destroy. Error : ' + err);

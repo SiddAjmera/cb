@@ -8,5 +8,5 @@ module.exports = {
     uri: 'mongodb://localhost/cb-dev'
   },
 
-  seedDB: false
+  seedDB: true
 };

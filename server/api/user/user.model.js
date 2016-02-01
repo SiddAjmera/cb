@@ -8,13 +8,11 @@ var Vehicle = require('../vehicle/vehicle.model');
 var Team = require('../team/team.model');
 
 var UserSchema = new Schema({
-
-// According to the current scenario - Siddharth Ajmera
+  // Created according to the "Store What You Query For" Principle. Principle's Name is self explainatory
   empId: { type: String, index: true },
   empName: String,
-  contactNo: String,
-  gender: { type: String, index: true },
-  homeAddress: String,
+  contactNo: { type: String, index: true },
+  gender: String,
   homeAddressLocation: {
     formatted_address: String,
     icon: String,
@@ -22,34 +20,28 @@ var UserSchema = new Schema({
     placeId: String
   },
   city: { type: String, index: true },
-  state: String,
+  state: { type: String, index: true },
   zipcode: { type: String, index: true },
-  officeAddress: String,
   officeAddressLocation: {
     displayAddress:String,
     formatted_address: String,
     icon: String,
-    //location: {type: [Number], index: '2d'},
+    location: {type: [Number], index: '2dsphere'},
     placeId: String
   },
-  timeSlot: String,
-  username: String,
-  userId: { type: String, index: true },
+  shiftTimeIn: { type: Date, default: Date.now },
+  shiftTimeout: { type: Date, default: Date.now },
   userPhotoUrl: String,
-  placeID : { type: String, index: true },
-  //homeLocationCoordinates: {type: [Number], index: '2d'},
-  redgId:{type:String},
-  vehicle: {
-    capacity: String,
-    vehicleNo: String
-  },
-  teams : [
-    { teamId: Number }
-  ],
-// End of Code by Siddharth
-
-
-//  name: String,
+  redgId: String,
+  vehicle : [{
+    vehicleLicenseNumber: String,
+    capacity: Number,
+    make: String,
+    model: String,
+    rfid: String,
+    vehiclePhotoUrl: String
+  }],
+  rating: { type: Number, min: 0, max: 5 },
   email: { type: String, lowercase: true },
   role: {
     type: String,
@@ -135,10 +127,10 @@ UserSchema
 
 // Validate userId is not taken
 UserSchema
-  .path('userId')
+  .path('_id')
   .validate(function(value, respond) {
     var self = this;
-    this.constructor.findOne({userId: value}, function(err, user) {
+    this.constructor.findOne({_id: value}, function(err, user) {
       if(err) throw err;
       if(user) {
         if(self.id === user.id) return respond(true);
@@ -146,7 +138,7 @@ UserSchema
       }
       respond(true);
     });
-}, 'The specified email address is already in use.');
+}, 'The specified empId/userId is already in use.');
 
 var validatePresenceOf = function(value) {
   return value && value.length;

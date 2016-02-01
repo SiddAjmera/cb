@@ -4,43 +4,51 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var mongoosePaginate = require('mongoose-paginate');
 
-
 var User = require('../user/user.model');
 
 var RideSchema = new Schema({
-  rideId: { type: Number, index: true },
-  availableSeats: Number,
   startLocation: {
     formatted_address: String,
     icon: String,
-    location: [Number],
+    location: { type: [Number], index: '2d' },
     placeId: String
-  },
+  },  // Filled by Start Location in Post Ride
   endLocation: {
     formatted_address: String,
     icon: String,
-    location: [Number],
+    location: { type: [Number], index: '2d' },
     placeId: String
-  },
-  offeredByUserId: String,
-  rideStartTime: String,
-  vehicleLicenseNumber: String,
-  // offeredByUserId: { type: Number, index: true },
-  offeredByUser: {
-    userId: String,
-    userName: String,
-    userImage: String,
-    totalNumberOfSeats: Number
-  },
-  companions: [ {
-    userId: String,
-    status: { type: String, enum: ["PENDING", "CONFIRMED"] }
-  }],
-  rideDate: Date,
-  rideStatus: { type: String, enum: [ 'Active', 'Started', 'Completed', 'Cancelled' ] },
-  createdDate: { type: Date, default: Date.now },
-  modifiedDate: { type: Date, default: Date.now },
-  comments: String
+  },  // Filled by End Location in Post Ride
+  rideScheduledTime: { type: Date, default: Date.now },  // Filled by Leaving In field in Post Ride
+  offeredBy: {
+    empId: String,
+    empName: String,
+    contactNo: String,
+    userPhotoUrl: String,
+    vehicleLicenseNumber: String
+  }, // Filled by the Details of the User who Posts the Ride
+  riders: [{
+    empId: String,
+    empName: String,
+    contactNo: String,
+    userPhotoUrl: String,
+    riderStatus: { type: String, enum: ["PENDING", "CONFIRMED"] }
+  }], // Filled by the Details of the User who accepts the Ride
+  initiallyAvailableSeats: Number,  // Filled by Seats Available
+  currentlyAvailableSeats: Number,  // Updated by Entry as a Rider
+  rideStatistics: {
+    rideStartTime: { type: Date, default: Date.now },
+    rideEndTime: { type: Date, default: Date.now },
+    totalDistance: Number,
+    totalTime: Number,
+    stagnantTime: Number,
+    averageSpeed: Number
+    // Some other Stats required as well
+  }, // Updated after the ride is started and completed
+  rideStatus: { type: String, enum: [ 'ACTIVE', 'STARTED', 'COMPLETED', 'CANCELLED' ] }, // Updated when a ride is edited
+  createdDate: { type: Date, default: Date.now }, // Time when a ride is created
+  modifiedDate: { type: Date, default: Date.now }, // Updated when a ride is modified
+  comments: String  // Comments field in the Post Ride section
 });
 
 RideSchema.plugin(mongoosePaginate);

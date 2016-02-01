@@ -39,7 +39,7 @@ var validationError = function(res, err) {
  */
 exports.index = function(req, res) {
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for User.Index');
+  logger.trace(req.user.empId + ' requested for User.Index');
   User.find({}, '-salt -hashedPassword', function (err, users) {
     if(err){
       logger.fatal('Error in User.Index. Error : ' + err);
