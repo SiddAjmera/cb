@@ -11,9 +11,9 @@
             <input ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="number" name="empId" placeholder="EMPLOYEE ID"  ng-model="user.empId" required ng-pattern="/^[0-9]*$/">
             <div ng-show="showErrorMessage"  ng-messages="loginForm.empId.$error" class="error-msg-edit">
                     <p ng-message="required" class="error-msg">Please enter
-                      Employee number</p>
+                      Employee ID</p>
                     <p ng-message="pattern" class="error-msg">Please enter
-                      valid Employee number</p>
+                      valid Employee ID</p>
             </div>
           </div>
         </div>
@@ -22,7 +22,7 @@
           <div><input ng-class="{'error-border':showErrorMessage}" class="form-control pwd-boxes login-input-box"   type="password" name="password" placeholder="PASSWORD"  ng-model="user.password" required>
              <div ng-show="showErrorMessage"  ng-messages="loginForm.password.$error" class="error-msg-edit">
                     <p ng-message="required" class="error-msg">Please enter
-                      password</p>
+                      Password</p>
               </div>
           </div>
         </div>
@@ -30,7 +30,7 @@
           <input type="button" name="continue" value="LOGIN" ng-click="login()">
         </div>
       </form>
-        <a >Forgot password?</a>
+        <a >Forgot Password?</a>
         <a ui-sref="signup.stepOne">Register</a>
       </div>
 
