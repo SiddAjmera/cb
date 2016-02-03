@@ -19,6 +19,13 @@
     src: url(../assets/fonts/HelveticaLTStd-Light.otf);
     font-weight: normal;
 }
+@font-face {
+    font-family: HelveticaBold;
+    src: url(../assets/fonts/HelveticaBold.ttf);
+    src: url(../assets/fonts/HelveticaBold.otf);
+    src: url(../assets/fonts/HelveticaBold.woff2);
+    font-weight: normal;
+}
 
 /**
  * App-wide Styles
@@ -1881,6 +1888,55 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .dummy-input-box-text{
    
+}
+.login-signup-comb-wrap{
+    margin: 0 auto;
+    width: 440px;
+    height: 88vh;
+    position: relative;
+}
+.commute-buddy-text{
+    color: #61b37d;
+    font-family: HelveticaBold;
+    font-size: 22px;
+    margin: 35px 0;
+    text-align: center;
+}
+.buddy-text{
+    font-family: helvetica;
+}
+.login-signup-comb-wrap .login-btn-sec{
+    background-color:  #61b37d;
+    height: 48px;
+}
+.new-btn-sec{
+    margin-top: 35px;
+    border-radius: 0px;
+    width: 100%;
+    height: 48px;
+    background-color: #8a8a8a;
+    border: none;
+    color: #fff;
+    outline-color: transparent;
+    text-align: center;
+    cursor: pointer;
+}
+.login-signup-comb-wrap .btn-wrapper{
+    margin-top: 75px;
+}
+.login-signup-comb-wrap .login-car-img{
+    width: 47px;
+}
+.powered-by-text{
+    position: absolute;
+    bottom: 35px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #8a8a8a;
+}
+.tata-text{
+    color: #61b37d;
 }
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {

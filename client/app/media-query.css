@@ -41,5 +41,10 @@
 		float: left;
 	    width: 100%;
 	}
+	.login-signup-comb-wrap{
+	    margin: 0 auto;
+	    width: 90%;
+	}
+	
 	
 }
