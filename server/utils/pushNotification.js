@@ -46,19 +46,43 @@ sender.send(message, { registrationIds: regIds }, function (err, result) {
 });
 
 exports.newRideNotification = function(ride){
-     var userId = ride.offeredByUserId;
-     User.regIdsForOtherUsers(userId).then(function(redgIds){
-        //console.log('\nGot redgIds as : ' + JSON.stringify(redgIds));
-        User.nameByUserId(userId).then(function(empName){
-            //console.log('\nGot empName as : ' + JSON.stringify(empName));
-            //console.log('\nThe Message Object : ' + JSON.stringify(message));
-            message.params.data.message = "A new ride has been posted by " + empName + " from " + ride.startLocation.formatted_address + " to " + ride.endLocation.formatted_address;
-            //console.log('\nThis is the Notification Message : ' + JSON.stringify(message.params.data.message));
-            sender.send(message, { registrationIds: redgIds }, function (err, result) {
-                if(err) console.error(err);
-                else    console.log(result);
-            });
+     var empId = ride.offeredBy.empId;
+     User.regIdsForOtherUsers(empId).then(function(redgIds){
+        message.params.data.message = "A new ride has been posted by " + ride.offeredBy.empName + " from " + ride.startLocation.display_address + " to " + ride.endLocation.display_address;
+        sender.send(message, { registrationIds: redgIds }, function (err, result) {
+            if(err) console.error(err);
+            else    console.log(result);
         });
-
      });
+};
+
+exports.notifyHostAboutANewRiderRequest = function(ride){
+    var hostEmpId = ride.offeredBy.empId;
+    User.redgIdByEmpId(empId).then(function(redgId){
+        var redgIds = [];
+        redgIds.push(redgId);
+        message.params.data.message = ride.riders[(ride.riders.length - 1)].empName + ' has requested to Ride with you from ' + ride.startLocation.display_address + ' to ' + ride.endLocation.display_address;
+        sender.send(message, { registrationIds: redgIds }, function (err, result) {
+            if(err) console.error(err);
+            else    console.log(result);
+        });
+    });
+};
+
+exports.notifyRiderAboutHostResponse = function(ride, riderEmpId){
+    message.params.data.message = null;
+    User.redgIdByEmpId(riderEmpId).then(function(redgId){
+        var redgIds = [];
+        redgIds.push(redgId);
+
+        // Determine if the Rider is in the Riders Array AND with CONFIRMED status
+        ride.riders.forEach(function(rider){
+            if(rider.empId == riderEmpId && rider.riderStatus == "CONFIRMED") message.params.data.message = ride.offeredBy.empName + ' has accepted your ride request.';
+        });
+        if(!message.params.data.message) message.params.data.message = ride.offeredBy.empName + ' has rejected your ride request.';
+        sender.send(message, { registrationIds: redgIds }, function (err, result) {
+            if(err) console.error(err);
+            else    console.log(result);
+        });
+    });
 };
