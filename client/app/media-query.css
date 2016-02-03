@@ -28,8 +28,8 @@
 	.each-row div:first-child{
 		width: 15%;
 	}
-	.each-row div:last-child{
-		width: 85%;
+	.icon-style{
+		width: 90%;
 	}
 	.each-row div.gender-radio{
 		width: 50%;

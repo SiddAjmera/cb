@@ -90,7 +90,7 @@ angular.module('cbApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
         var tempUser = {};
-        tempUser.userId = user.empId;
+        tempUser.empId = user.empId;
         tempUser.password = user.password;
         httpRequest.post(config.apis.login,tempUser).
         then(function(data){

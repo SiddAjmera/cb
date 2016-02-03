@@ -7,38 +7,36 @@ angular.module('cbApp')
     $scope.errorMsg = '';
     $scope.showErrorMessage = false;
     $scope.login = function() {
-       $scope.errorMsg = '';
+      $scope.errorMsg = '';
       $scope.showErrorMessage = true;
       if(!$scope.loginForm.$valid){   /*if form is invalid,return and show error messages */
             console.log($scope.loginForm) ;
             $("input.ng-invalid").eq(0).focus();      
             console.log("----------",$("input.ng-invalid"))
             return false;
-       } 
+      }
     
 
       else if($scope.loginForm.$valid) {
         console.log($scope.loginForm)
         Auth.login({
-          empId: $scope.user.empId,
+          empId: $scope.user.empId.toString(),
           password: $scope.user.password
         })
         .then(function(response) {
-          if(response.status==200){
+          if(response.status == 200){
              console.log(response)
-            // Logged in, redirect to home
-            
+             // Logged in, redirect to home
              $state.go('userHome.home');
           }
           else{
-            $scope.errorMsg = "Please check Employee id or password"
+            $scope.errorMsg = "Please check Employee ID or Password"
           }
-         
         },function(err){
-           $scope.errorMsg = "Please check Employee id or password"
+           $scope.errorMsg = "Please check Employee ID or Password"
         })
         .catch( function(err) {
-         $scope.errorMsg = "Please check Employee id or password"
+         $scope.errorMsg = "Please check Employee ID or Password"
         });
       }
     };

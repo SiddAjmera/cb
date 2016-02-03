@@ -39,7 +39,7 @@ var validationError = function(res, err) {
  */
 exports.index = function(req, res) {
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for User.Index');
+  logger.trace(req.user.empId + ' requested for User.Index');
   User.find({}, '-salt -hashedPassword', function (err, users) {
     if(err){
       logger.fatal('Error in User.Index. Error : ' + err);
@@ -59,11 +59,11 @@ exports.index = function(req, res) {
  */
 exports.create = function (req, res, next) {
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for User.create');
+  logger.trace(req.user.empId + ' requested for User.create');
   var newUser = new User(req.body);
   newUser.provider = 'local';
   newUser.role = 'user';
-  newUser.save(function(err, user) {  
+  newUser.save(function(err, user) {
     if(err){
         logger.fatal('Error in User.create. Error : ' + err);
         return validationError(res, err);
@@ -79,15 +79,15 @@ exports.create = function (req, res, next) {
 // Here the req.body should contain { "empId" : 987654 or something }
 exports.teamsOfCurrentUser = function(req, res){
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for User.teamsOfCurrentUser');
+  logger.trace(req.user.empId + ' requested for User.teamsOfCurrentUser');
   var teamIDsForCurrentUser = User.find( req.body, { _id: 1 } );
 };
 
-// This will return an array of Users with the specified office and home address
+// This will return an array of Users who are near this User's Home i.e. People in a User's 1km Radius
 exports.getSuggestions = function(req, res){
   CurrentUser = req.user;
-  var userId = req.user.userId;
-  logger.trace(userId + ' requested for User.getSuggestions');
+  var empId = req.user.empId;
+  logger.trace(empId + ' requested for User.getSuggestions');
   /*User.find().where("officeAddress", req.body.officeAddress)
              .where("homeAddress", req.body.homeAddress)
              .exec(function(err, users) {
@@ -102,7 +102,7 @@ exports.getSuggestions = function(req, res){
     logger.debug('Successfully got Users in User.getSuggestions');
     return res.json(200, users);
   });*/
-  User.findOne( { userId: userId }, function(err, user){
+  User.findOne( { empId: empId }, function(err, user){
     if(err) {
       logger.fatal('Error in User.getSuggestions. Error : ' + err);
       return handleError(res, err);
@@ -161,7 +161,7 @@ exports.getSuggestions = function(req, res){
           spherical           : true,            // tell mongo the earth is round, so it calculates based on a spherical location system
           distanceMultiplier  : 6371,            // tell mongo how many radians go into one kilometer.
           //maxDistance         : 1/6371,        // tell mongo the max distance in radians to filter out
-          userId              : { $ne : userId }
+          empId              : { $ne : empId }
       },function(err, results, stats){
           if(err) {
             logger.fatal('Error in User.getSuggestions. Error : ' + err);
@@ -181,7 +181,7 @@ exports.getSuggestions = function(req, res){
 
 exports.suggestionsTest = function(req, res){
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for User.suggestionsTest');
+  logger.trace(req.user.empId + ' requested for User.suggestionsTest');
 };
 
 /**
@@ -189,9 +189,9 @@ exports.suggestionsTest = function(req, res){
  */
 exports.show = function (req, res, next) {
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for User.show');
-  var userId = req.params.id;
-  User.findById(userId, function (err, user) {
+  logger.trace(req.user.empId + ' requested for User.show');
+  var user_Id = req.params.id;
+  User.findById(user_Id, function (err, user) {
     if (err) {
       logger.fatal('Error in User.show. Error : ' + err);
       return next(err);
@@ -211,7 +211,7 @@ exports.show = function (req, res, next) {
  */
 exports.destroy = function(req, res) {
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for User.destroy');
+  logger.trace(req.user.empId + ' requested for User.destroy');
   User.findByIdAndRemove(req.params.id, function(err, user) {
     if(err) {
       logger.fatal('Error in User.destroy. Error : ' + err);
@@ -227,12 +227,12 @@ exports.destroy = function(req, res) {
  */
 exports.changePassword = function(req, res, next) {
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for User.changePassword');
-  var userId = req.user._id;
+  logger.trace(req.user.empId + ' requested for User.changePassword');
+  var user_Id = req.user._id;
   var oldPass = String(req.body.oldPassword);
   var newPass = String(req.body.newPassword);
 
-  User.findById(userId, function (err, user) {
+  User.findById(user_Id, function (err, user) {
     if(user.authenticate(oldPass)) {
       user.password = newPass;
       user.save(function(err) {
@@ -250,11 +250,11 @@ exports.changePassword = function(req, res, next) {
   });
 };
 
-exports.regIdsForOtherUsers = function(userId){
-  logger.trace(userId + ' requested for User.regIdsForOtherUsers');
+exports.regIdsForOtherUsers = function(empId){
+  logger.trace(empId + ' requested for User.regIdsForOtherUsers');
   var redgIds = [];
   var deffered=q.defer();
-  User.find({userId: {$nin: [userId]}}, 'redgId', function(err, regIds){
+  User.find({empId: {$nin: [empId]}}, 'redgId', function(err, regIds){
     if(err){
       logger.fatal('Error in User.regIdsForOtherUsers. Error : ' + err);
       deffered.reject(err)
@@ -270,10 +270,10 @@ exports.regIdsForOtherUsers = function(userId){
   return deffered.promise;
 };
 
-exports.nameByUserId = function(userId){
-  logger.trace(CurrentUser.userId + ' requested for User.nameByUserId');
-  var deffered=q.defer();
-  User.findOne({userId: userId}, 'empName', function(err, empName){
+exports.nameByUserId = function(empId){
+  logger.trace(CurrentUser.empId + ' requested for User.nameByUserId');
+  var deffered = q.defer();
+  User.findOne({empId: empId}, 'empName', function(err, empName){
     if(err){
       logger.fatal('Error in User.nameByUserId. Error : ' + err);
       deffered.reject(err)
@@ -286,10 +286,10 @@ exports.nameByUserId = function(userId){
   return deffered.promise;
 };
 
-exports.userByUserId = function(userId){
-  logger.trace(CurrentUser.userId + ' requested for User.userByUserId');
+exports.userByUserId = function(empId){
+  logger.trace(CurrentUser.empId + ' requested for User.userByUserId');
   var deffered = q.defer();
-  User.findOne({userId: userId}, function(err, user){
+  User.findOne({empId: empId}, function(err, user){
     if(err){
       logger.fatal('Error in User.nameByUserId. Error : ' + err);
       deffered.reject(err)
@@ -316,15 +316,14 @@ exports.userByUserId = function(userId){
         "officeAddress" : 1,
         "timeSlot" : 1,
         "redgId" : 1,
-        "userId" : 1,
         "userPhotoUrl" : 1,
         "email" : 1
     }
 }*/
 exports.getUsers = function(req, res){
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for User.getUsers');
-  User.find({userId: {$in: req.body.userIds }}, req.body.fieldsRequired, function(err, users){
+  logger.trace(req.user.empId + ' requested for User.getUsers');
+  User.find({empId: {$in: req.body.userIds }}, req.body.fieldsRequired, function(err, users){
     if(err){
       logger.fatal('Error in User.getUsers. Error : ' + err);
       return res.send(404, err);
@@ -344,10 +343,10 @@ exports.getUsers = function(req, res){
  */
 exports.me = function(req, res, next) {
   CurrentUser = req.user;
-  logger.trace(req.user.userId + ' requested for User.me');
-  var userId = req.user._id;
+  logger.trace(req.user.empId + ' requested for User.me');
+  var user_Id = req.user._id;
   User.findOne({
-    _id: userId
+    _id: user_Id
   }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
     if (err) {
       logger.fatal('Error in User.me. Error : ' + err);

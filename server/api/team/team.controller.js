@@ -8,7 +8,7 @@ var logger = log4js.getLogger('server');
 
 // Get list of teams
 exports.index = function(req, res) {
-	logger.trace(req.user.userId + ' requested for Team.Index');
+	logger.trace(req.user.empId + ' requested for Team.Index');
 	Team.find(function (err, teams) {
 		if(err) { 
 		  logger.fatal('Error in Team.Index. Error : ' + err);
@@ -25,7 +25,7 @@ exports.index = function(req, res) {
 
 // Get a single team
 exports.show = function(req, res) {
-	logger.trace(req.user.userId + ' requested for Team.show');
+	logger.trace(req.user.empId + ' requested for Team.show');
 	Team.findById(req.params.id, function (err, team) {
 		if(err) { 
 		  logger.fatal('Error in Team.show. Error : ' + err);
@@ -42,7 +42,7 @@ exports.show = function(req, res) {
 
 // Creates a new team in the DB.
 exports.create = function(req, res) {
-	logger.trace(req.user.userId + ' requested for Team.create');
+	logger.trace(req.user.empId + ' requested for Team.create');
 	Team.create(req.body, function(err, team) {
 		if(err) { 
 		  logger.fatal('Error in Team.create. Error : ' + err);
@@ -59,7 +59,7 @@ exports.create = function(req, res) {
 
 // Updates an existing team in the DB.
 exports.update = function(req, res) {
-	logger.trace(req.user.userId + ' requested for Team.update');
+	logger.trace(req.user.empId + ' requested for Team.update');
 	if(req.body._id) { delete req.body._id; }
 	Team.findById(req.params.id, function (err, team) {
 		if(err) { 
@@ -84,7 +84,7 @@ exports.update = function(req, res) {
 
 // Deletes a team from the DB.
 exports.destroy = function(req, res) {
-	logger.trace(req.user.userId + ' requested for Team.destroy');
+	logger.trace(req.user.empId + ' requested for Team.destroy');
 	Team.findById(req.params.id, function (err, team) {
 		if(err) { 
 		  logger.fatal('Error in Team.destroy. Error : ' + err);

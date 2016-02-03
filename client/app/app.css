@@ -73,7 +73,74 @@ html,body{
     width: 100%;
     min-height: 100vh;
 }
+.each-row.login-page{
+    margin-bottom: 0px;
+}
+.login-form-wrapper{
+    background-color: #fff;
+    float: left;
+    width: 100%;
+}
 
+.login-form-wrapper p.error-msg{
+    padding-left: 7.2%;
+}
+.login-err-wrap{
+    width: 100%;
+}
+.login-form .icon-style{
+    margin-top: 20px;
+}
+.login-input-box{
+    border: none;
+    box-shadow: none;
+    padding: 33px 10px 10px;
+    border-bottom: 1px solid #e8e8e8;
+}
+.form-control.login-input-box:focus{
+    box-shadow: none;
+    transition:none;
+}
+.each-row.login-page input[type="button"]{
+    border-radius: 0px;
+    width: 100%;
+    height: 60px;
+    background-color: #329d71;
+    border: none;
+    color: #fff;
+    outline-color: transparent;
+}
+
+.user-input-section{
+    float: left;
+    width: 70%;
+}
+.user-input-section .error-border{
+    border: 0.4px solid #FF7847;
+}
+.login-btn-sec{
+    margin-top: 35px;
+    border-radius: 0px;
+    width: 100%;
+    height: 60px;
+    background-color: #329d71;
+    border: none;
+    color: #fff;
+    outline-color: transparent;
+    text-align: center;
+    cursor: pointer;
+}
+.login-car-img{
+    width: 60px;
+}
+.forgot-link{
+    float: left;
+    margin-top: 9px;
+    display: block;
+    text-decoration: underline;
+    color: #fff;
+    cursor: pointer;
+}
 .form-section a{
   text-decoration: none;
   color: #fff;
@@ -118,7 +185,7 @@ html,body{
     text-transform: uppercase;
 }
 .page-wrapper{
-    background-image: url("../assets/images/available-rides/PostAride_Background.png");
+    background-image: url("../assets/images/login_background.png");
     background-size: cover;
     float:left;
     width: 100%;
@@ -175,7 +242,12 @@ html,body{
     margin-top: 36%;
 }
 .form-section.signup-section-form{
-    margin-top: 10%;
+    margin-top: 15%;
+}
+.signup-sec-wrapper{
+    background-color: #fff;
+    float: left;
+    width: 100%;
 }
 .form-section input{
     border-radius: 0px;
@@ -185,29 +257,26 @@ html,body{
     float: left;
     margin-bottom: 5px;
 }
-.each-row div:first-child{
+.field-icon-section{
     float: left;
     width: 15%;
     height: 60px;
     background-color: #fff;
-    /*padding-top: 10px;*/
+    margin-left: 4%;
     text-align: center;
 }
 .each-row div.id-section{
     padding-top: 9px;
 }
-.each-row div:last-child{
-    float: left;
-    width: 85%;
-}
-.each-row div:last-child input[type="text"].input-boxes,.each-row div:last-child input[type="password"].pwd-boxes{
+
+/*.each-row div:last-child input[type="text"].input-boxes,.each-row div:last-child input[type="password"].pwd-boxes{
     width: 100%;
     height: 60px;
     border:none;
     padding: 30px 10px;
     background-color: #fff;
     color: #000;
-}
+}*/
 .login-input-box{
     height: 60px;
 }
@@ -247,6 +316,7 @@ html,body{
     background: #fff;
     height: 60px;
     margin-bottom: 10px;
+    padding-left: 3%;
 }
 .each-row select.timeslot{
     width: 70%;
@@ -260,9 +330,7 @@ html,body{
     /*background-color: #353535;
     transition:all ease 3s;*/
 }
-.each-row.login-page div:first-child{
-    width: 15%;
-}
+
 .each-row div svg{
     width: 20px;
     height: 20px;
@@ -279,15 +347,7 @@ html,body{
 {
     border-radius: 0px;
 }
-.each-row.login-page input[type="button"]{
-    border-radius: 0px;
-    width: 100%;
-    height: 60px;
-    background-color: rgba(30, 104, 165, 0.52);
-    border: none;
-    color: #fff;
-    outline-color: transparent;
-}
+
 
 .each-row select.seater-select{
     width: 70%;
@@ -526,12 +586,7 @@ a.custom-btn{
 
 
 
-.each-row div:last-child input[type="text"].input-boxes.ng-invalid.error-border,
-.each-row div:last-child input[type="password"].pwd-boxes.ng-invalid.error-border,
-.each-row select.timeslot.ng-invalid.error-border,
-.each-row select.seater-select.ng-invalid.error-border {
-        border: 0.4px solid #FF7847;
-}
+
 p.error-msg{
     color: #A94442;
     float: left;
