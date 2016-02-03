@@ -8,19 +8,19 @@
           <p class="error-msg">{{errorMsg}}</p>
           <form class="form" name="loginForm" novalidate>
             <div class="each-row login-page">
-              <div><span><img class="icon-style" src="assets/images/icon_employee_ID.png"></span></div>
-              <div>
+              <div class="field-icon-section"><span><img class="icon-style" src="assets/images/icon_employee_ID.png"></span></div>
+              <div class="user-input-section">
                 <input ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="number" name="empId" placeholder="EMPLOYEE ID"  ng-model="user.empId" required ng-pattern="/^[0-9]*$/">
-                <div ng-show="showErrorMessage"  ng-messages="loginForm.empId.$error" class="error-msg-edit">
+                <div ng-show="showErrorMessage"  ng-messages="loginForm.empId.$error" class="login-err-wrap">
                   <p ng-message="required" class="error-msg">Please enter Employee ID</p>
                   <p ng-message="pattern" class="error-msg">Please enter valid Employee ID</p>
                 </div>
               </div>
             </div>
             <div class="each-row login-page">
-              <div><span><img class="icon-style" src="assets/images/icon_password.png"></span></div>
-              <div><input ng-class="{'error-border':showErrorMessage}" class="form-control pwd-boxes login-input-box"   type="password" name="password" placeholder="PASSWORD"  ng-model="user.password" required>
-                 <div ng-show="showErrorMessage"  ng-messages="loginForm.password.$error" class="error-msg-edit">
+              <div class="field-icon-section"><span><img class="icon-style" src="assets/images/icon_password.png"></span></div>
+              <div class="user-input-section"><input ng-class="{'error-border':showErrorMessage}" class="form-control pwd-boxes login-input-box"   type="password" name="password" placeholder="PASSWORD"  ng-model="user.password" required>
+                 <div ng-show="showErrorMessage"  ng-messages="loginForm.password.$error" class="login-err-wrap">
                         <p ng-message="required" class="error-msg">Please enter
                           Password</p>
                   </div>

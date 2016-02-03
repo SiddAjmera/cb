@@ -81,6 +81,13 @@ html,body{
     float: left;
     width: 100%;
 }
+
+.login-form-wrapper p.error-msg{
+    padding-left: 7.2%;
+}
+.login-err-wrap{
+    width: 100%;
+}
 .login-form .icon-style{
     margin-top: 20px;
 }
@@ -103,12 +110,13 @@ html,body{
     color: #fff;
     outline-color: transparent;
 }
-.each-row.login-page div:first-child{
-    width: 17%;
-    margin-left: 10px;
-}
-.each-row.login-page div:last-child{
+
+.user-input-section{
+    float: left;
     width: 70%;
+}
+.user-input-section .error-border{
+    border: 0.4px solid #FF7847;
 }
 .login-btn-sec{
     margin-top: 35px;
@@ -131,6 +139,7 @@ html,body{
     display: block;
     text-decoration: underline;
     color: #fff;
+    cursor: pointer;
 }
 .form-section a{
   text-decoration: none;
@@ -233,7 +242,12 @@ html,body{
     margin-top: 36%;
 }
 .form-section.signup-section-form{
-    margin-top: 10%;
+    margin-top: 15%;
+}
+.signup-sec-wrapper{
+    background-color: #fff;
+    float: left;
+    width: 100%;
 }
 .form-section input{
     border-radius: 0px;
@@ -243,21 +257,18 @@ html,body{
     float: left;
     margin-bottom: 5px;
 }
-.each-row div:first-child{
+.field-icon-section{
     float: left;
     width: 15%;
     height: 60px;
     background-color: #fff;
-    /*padding-top: 10px;*/
+    margin-left: 4%;
     text-align: center;
 }
 .each-row div.id-section{
     padding-top: 9px;
 }
-.each-row div:last-child{
-    float: left;
-    width: 85%;
-}
+
 /*.each-row div:last-child input[type="text"].input-boxes,.each-row div:last-child input[type="password"].pwd-boxes{
     width: 100%;
     height: 60px;
@@ -305,6 +316,7 @@ html,body{
     background: #fff;
     height: 60px;
     margin-bottom: 10px;
+    padding-left: 3%;
 }
 .each-row select.timeslot{
     width: 70%;
@@ -574,12 +586,7 @@ a.custom-btn{
 
 
 
-.each-row div:last-child input[type="text"].input-boxes.ng-invalid.error-border,
-.each-row div:last-child input[type="password"].pwd-boxes.ng-invalid.error-border,
-.each-row select.timeslot.ng-invalid.error-border,
-.each-row select.seater-select.ng-invalid.error-border {
-        border: 0.4px solid #FF7847;
-}
+
 p.error-msg{
     color: #A94442;
     float: left;
