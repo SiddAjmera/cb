@@ -74,9 +74,32 @@ exports.create = function (req, res, next) {
   });
 };
 
-// Get the teams of the Current User
+// Updates an existing User in the DB. This will be Used for Update Profile and Other Things
+exports.update = function(req, res) {
+  logger.trace(req.user.empId + ' requested for User.update');
+  if(req.body._id) { delete req.body._id; }
+  User.findById(req.params.id, function (err, user) {
+    if (err) {
+     logger.fatal('Error in User.update. Error : ' + err);
+     return handleError(res, err); 
+    }
+    if(!user) { 
+      logger.error('Error in User.update. Error : Not Found');
+      return res.send(404); 
+    }
+    var updated = _.merge(user, req.body);
+    updated.save(function (err) {
+      if (err) { 
+        logger.fatal('Error in User.update.updated.save. Error : ' + err);
+        return handleError(res, err); 
+      }
+      logger.debug('Successfully updated user in User.update');
+      return res.json(200, user);
+    });
+  });
+};
 
-// Here the req.body should contain { "empId" : 987654 or something }
+// Get the teams of the Current User. Here the req.body should contain { "empId" : 987654 or something }
 exports.teamsOfCurrentUser = function(req, res){
   CurrentUser = req.user;
   logger.trace(req.user.empId + ' requested for User.teamsOfCurrentUser');
@@ -295,8 +318,24 @@ exports.userByUserId = function(empId){
       deffered.reject(err)
     } 
     else{
-      logger.debug('Successfully got Name for User in User.userByUserId');
+      logger.debug('Successfully got User in User.userByUserId');
       deffered.resolve(user);
+    }
+  });
+  return deffered.promise;
+};
+
+exports.redgIdByEmpId = function(empId){
+  logger.trace(CurrentUser.empId + ' requested for User.redgIdByEmpId');
+  var deffered = q.defer();
+  User.findOne({ empId: empId }, { _id: 0, redgId: 1 }, function(err, user){
+    if(err){
+      logger.fatal('Error in User.redgIdByEmpId. Error : ' + err);
+      deffered.reject(err)
+    } 
+    else{
+      logger.debug('Successfully got redgId for User in User.redgIdByEmpId');
+      deffered.resolve(user.redgId);
     }
   });
   return deffered.promise;

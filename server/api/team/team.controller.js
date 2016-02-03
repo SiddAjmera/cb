@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Team = require('./team.model');
+var User = require('../user/user.model');
 
 var log4js= require('../../utils/serverLogger');
 var logger = log4js.getLogger('server'); 
@@ -23,7 +24,7 @@ exports.index = function(req, res) {
 	});
 };
 
-// Get a single team
+// Get a single team by Team's _id
 exports.show = function(req, res) {
 	logger.trace(req.user.empId + ' requested for Team.show');
 	Team.findById(req.params.id, function (err, team) {
@@ -101,6 +102,122 @@ exports.destroy = function(req, res) {
 			}
 			logger.debug('Successfully destroyed Team in Team.create');
 			return res.send(204);
+		});
+	});
+};
+
+// To get a list of teams of a specific User
+exports.teamsOfUser = function(req, res){
+	var empId = req.user.empId;
+	logger.trace(empId + ' requested for Team.teamsOfUser');
+
+	var query = { 
+					$or: [ 
+							{ createdBy.empId: empId },
+							{ members.empId: empId } 
+						 ]
+				};
+
+	var projection = {
+						name: 1,
+						createdBy.empName: 1
+					 };
+
+	Team.find(query, projection, function(err, teams){
+		if(err) { 
+		  logger.fatal('Error in Team.teamsOfUser. Error : ' + err);
+		  return handleError(res, err); 
+		}
+		if(!teams){
+	      logger.error('Error in Team.teamsOfUser. Error : Not Found');
+	      return res.send(404);
+	    }
+	    logger.debug('Successfully got Teams in Team.teamsOfUser');
+		return res.json(200, teams);
+	});
+};
+
+// To add team member(s) to an existing Team. Give it an array of empIds to add. And the Team's _id
+exports.addMember = function(req, res){
+	var empId = req.user.empId;
+	logger.trace(empId + ' requested for Team.addMember');
+
+	if(!req.body.members){
+		logger.error('Error in Team.addMember. Client did not give array of empIds to add as members');
+		return res.json(400, {"Error Message": "Array of Members EmpID is mandatory"});
+	}
+
+	Team.findById( req.params.id, function(err, team){
+		if(err) { 
+		  logger.fatal('Error in Team.addMember. Error : ' + err);
+		  return handleError(res, err); 
+		}
+		if(!teams){
+	      logger.error('Error in Team.addMember. Error : Not Found');
+	      return res.send(404);
+	    }
+	    User.find( { empId: { $in: req.body.members } }, { empId: 1, empName: 1, contactNo: 1, userPhotoUrl: 1 }, function(err, users){
+	    	if(err) { 
+			  logger.fatal('Error in Team.addMember. Error : ' + err);
+			  return handleError(res, err); 
+			}
+			if(!users){
+		      logger.error('Error in Team.addMember. Error : Not Found');
+		      return res.send(404);
+		    }
+
+		    users.forEach(function(user){
+                                user.membershipStatus = "PENDING";
+                         });
+
+		    team.members = team.members.concat(users);
+		    team.save(function(err){
+		    	if(err) { 
+				  logger.fatal('Error in Team.addMember. Error : ' + err);
+				  return handleError(res, err); 
+				}
+				logger.debug('Successfully updated Team in Team.addMember');
+				return res.json(200, team);
+		    });
+	    });
+	});
+};
+
+// To update the status of a team member from PENDING to CONFIRMED if User clicks Accept or remove him from Team Members if he clicks Reject
+exports.updateMemberStatus = function(req, res){
+	var empId = req.user.empId;
+	logger.trace(empId + ' requested for Team.updateMemberStatus');
+	var membershipStatus = req.body.membershipStatus;
+	if(!membershipStatus){
+		logger.error('Error in Team.updateMemberStatus. Client did not give membershipStatus: \'ACCEPTED or REJECTED \' ');
+		return res.json(400, {"Error Message": " membershipStatus: \'ACCEPTED or REJECTED \' is mandatory "});
+	}
+	if(membershipStatus != 'ACCEPTED' || membershipStatus != 'REJECTED'){
+		logger.error('Error in Team.updateMemberStatus. Client did not give membershipStatus: \'ACCEPTED or REJECTED \' but something else');
+		return res.json(400, {"Error Message": " membershipStatus can only be ACCEPTED or REJECTED"});
+	}
+
+	Team.findById( req.params.id, function(err, team){
+		if(err) { 
+		  logger.fatal('Error in Team.updateMemberStatus. Error : ' + err);
+		  return handleError(res, err); 
+		}
+		if(!team){
+	      logger.error('Error in Team.updateMemberStatus. Error : Not Found');
+	      return res.send(404);
+	    }
+	    team.members.forEach(function(member){
+	    	if(member.empId == empId){
+	    		(membershipStatus == 'ACCEPTED') ? member.membershipStatus = 'CONFIRMED' : members.splice(members.indexOf(member), 1);
+	    	}
+	    });
+	    team.save(function(err){
+	    	if(err) { 
+			  logger.fatal('Error in Team.updateMemberStatus. Error : ' + err);
+			  return handleError(res, err); 
+			}
+			logger.debug('Successfully updated Team in Team.updateMemberStatus');
+			return res.json(200, team);
 		});
 	});
 };
