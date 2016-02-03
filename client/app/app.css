@@ -76,8 +76,10 @@ html,body{
 .each-row.login-page{
     margin-bottom: 0px;
 }
-.login-form{
+.login-form-wrapper{
     background-color: #fff;
+    float: left;
+    width: 100%;
 }
 .login-form .icon-style{
     margin-top: 20px;
@@ -118,6 +120,7 @@ html,body{
     color: #fff;
     outline-color: transparent;
     text-align: center;
+    cursor: pointer;
 }
 .login-car-img{
     width: 60px;
