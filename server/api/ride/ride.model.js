@@ -30,7 +30,8 @@ var RideSchema = new Schema({
     contactNo: String,
     userPhotoUrl: String,
     vehicleLicenseNumber: String,
-    rating: Number
+    rating: Number,
+    redgId: String
   }, // Filled by the Details of the User who Posts the Ride
   riders: [{
     empId: String,
@@ -38,7 +39,8 @@ var RideSchema = new Schema({
     gender: String,
     contactNo: String,
     userPhotoUrl: String,
-    riderStatus: { type: String, enum: ["PENDING", "CONFIRMED"] }
+    riderStatus: { type: String, enum: ["PENDING", "CONFIRMED"] },
+    redgId: String
   }], // Filled by the Details of the User who accepts the Ride
   initiallyAvailableSeats: Number,  // Filled by Seats Available
   currentlyAvailableSeats: Number,  // Updated by Entry as a Rider
