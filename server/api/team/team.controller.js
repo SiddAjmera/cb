@@ -113,14 +113,14 @@ exports.teamsOfUser = function(req, res){
 
 	var query = { 
 					$or: [ 
-							{ createdBy.empId: empId },
-							{ members.empId: empId } 
+							{ "createdBy.empId": empId },
+							{ "members.empId": empId } 
 						 ]
 				};
 
 	var projection = {
 						name: 1,
-						createdBy.empName: 1
+						"createdBy.empName": 1
 					 };
 
 	Team.find(query, projection, function(err, teams){
