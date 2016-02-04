@@ -45,6 +45,8 @@ sender.send(message, { registrationIds: regIds }, function (err, result) {
     else    console.log(result);
 });
 
+// This was to sent Push Notification to Every User Except the One Who is Posting the Ride.
+// We will not be Using this anymore, as we will not be sending Notification When a Ride is Posted.
 exports.newRideNotification = function(ride){
      var empId = ride.offeredBy.empId;
      User.regIdsForOtherUsers(empId).then(function(redgIds){
@@ -56,33 +58,54 @@ exports.newRideNotification = function(ride){
      });
 };
 
+// This is to Notify the Person who posted a Ride(HOST) about a request by someone who is interested in sharing a ride with the HOST
 exports.notifyHostAboutANewRiderRequest = function(ride){
-    var hostEmpId = ride.offeredBy.empId;
-    User.redgIdByEmpId(empId).then(function(redgId){
-        var redgIds = [];
-        redgIds.push(redgId);
-        message.params.data.message = ride.riders[(ride.riders.length - 1)].empName + ' has requested to Ride with you from ' + ride.startLocation.display_address + ' to ' + ride.endLocation.display_address;
-        sender.send(message, { registrationIds: redgIds }, function (err, result) {
-            if(err) console.error(err);
-            else    console.log(result);
-        });
+    var redgIds = [];
+    redgIds.push(ride.offeredBy.redgId);
+    message.params.data.message = ride.riders[(ride.riders.length - 1)].empName + ' has requested to Ride with you from ' + ride.startLocation.display_address + ' to ' + ride.endLocation.display_address;
+    sender.send(message, { registrationIds: redgIds }, function (err, result) {
+        if(err) console.error(err);
+        else    console.log(result);
     });
 };
 
-exports.notifyRiderAboutHostResponse = function(ride, riderEmpId){
-    message.params.data.message = null;
-    User.redgIdByEmpId(riderEmpId).then(function(redgId){
-        var redgIds = [];
-        redgIds.push(redgId);
+// This is to Notify the Rider who requested a ride about the Host's Response
+exports.notifyRiderAboutHostResponse = function(ride, riderRedgId, riderStatus){
+    var redgIds = [];
+    redgIds.push(riderRedgId);
+    message.params.data.message = ride.offeredBy.empName + ' has ' + riderStatus + ' your Ride Request';
+    sender.send(message, { registrationIds: redgIds }, function (err, result) {
+        if(err) console.error(err);
+        else    console.log(result);
+    });
+};
 
-        // Determine if the Rider is in the Riders Array AND with CONFIRMED status
-        ride.riders.forEach(function(rider){
-            if(rider.empId == riderEmpId && rider.riderStatus == "CONFIRMED") message.params.data.message = ride.offeredBy.empName + ' has accepted your ride request.';
-        });
-        if(!message.params.data.message) message.params.data.message = ride.offeredBy.empName + ' has rejected your ride request.';
-        sender.send(message, { registrationIds: redgIds }, function (err, result) {
-            if(err) console.error(err);
-            else    console.log(result);
-        });
+// Notifies Team Members that they have been requested to be added to the Creator's Team
+exports.teamCreatedNotification = function(team){
+    var redgIds = team.members.map(function(member){ return member.redgId; });
+    message.params.data.message = team.createdBy.empName + ' has requested you to add to his team';
+    sender.send(message, { registrationIds: redgIds }, function (err, result) {
+        if(err) console.error(err);
+        else    console.log(result);
+    });
+};
+
+// Notifies Newly Added Team Members about Team Creator's Request to Add them as a team member to an Existing Team
+exports.notifyRecentlyAddedTeamMembers = function(team, newlyAddedMembersRedgIds){
+    message.params.data.message = team.createdBy.empName + ' has added you as a team member.';
+    sender.send(message, { registrationIds: newlyAddedMembersRedgIds }, function (err, result) {
+        if(err) console.error(err);
+        else    console.log(result);
+    });
+};
+
+// Notifies the host about a potential members response to the Team Creator's Request
+exports.notifyTeamCreatorAboutMemberResponse = function(team, memberName, memberResponse){
+    var redgIds = [];
+    redgIds.push(team.offeredBy.redgId);
+    message.params.data.message = memberName + ' has ' + memberResponse + ' your offer to become a Team Members';
+    sender.send(message, { registrationIds: redgIds }, function (err, result) {
+        if(err) console.error(err);
+        else    console.log(result);
     });
 };

@@ -25,9 +25,9 @@ EventEmitter.on("userRequestedARide", function(ride){
   Push.notifyHostAboutANewRiderRequest(ride);
 });
 
-EventEmitter.on("hostRespondedToRideRequest", function(ride){
+EventEmitter.on("hostRespondedToRideRequest", function(ride, riderRedgId, riderStatus){
   logger.trace('hostRespondedToRideRequest Event emitted for user : ' + CurrentUser.empId);
-  Push.notifyRiderAboutHostResponse(ride, riderUserId);
+  Push.notifyRiderAboutHostResponse(ride, riderRedgId, riderStatus);
 });
 
 // Get list of rides
@@ -98,7 +98,7 @@ exports.create = function(req, res) {
           logger.error('Error in Ride.create. Error : User Not Found');
           return res.send(404);
         }
-        // This means that the user is posting the Ride for the first time.
+        // If there is req.body.user, it means user is posting the Ride for the first time.
         // That's why we are receiving the other required details by the User in the req.body.user
         // Details like Car Number, Seats Available, Office Address, Home Address, Shift Time-in & Shift Time-out will be stored here
         if(req.body.user){
@@ -122,6 +122,7 @@ exports.create = function(req, res) {
         offeredBy.contactNo = user.contactNo;
         offeredBy.userPhotoUrl = user.userPhotoUrl;
         offeredBy.rating = user.rating;
+        offeredBy.redgId = user.redgId;
         // This might be tricky. Since this is Async, this might get executed even before the User Vehicle Details are saved for the first time.
         if(user.vehicle) offeredBy.vehicleLicenseNumber = user.vehicle.vehicleLicenseNumber;
         rideBody.offeredBy = offeredBy;
@@ -339,8 +340,7 @@ exports.addCompanionToRide = function(req, res){
                         }
 
                         User.findOne( { empId: empId },
-                                      { empId: 1, empName: 1, gender:1, contactNo: 1, userPhotoUrl: 1 },
-                                        function(err, user){
+                                      function(err, user){
                                           if (err) { 
                                             logger.fatal('Error in Ride.addCompanionToRide.User.findOne Error : ' + err);
                                             return handleError(res, err); 
@@ -349,19 +349,52 @@ exports.addCompanionToRide = function(req, res){
                                             logger.error('Error in Ride.addCompanionToRide.User.findOne Error : User Not Found');
                                             return res.send(404); 
                                           }
-                                          user.riderStatus = "PENDING";
-                                          ride.riders.push(user);
-                                          ride.save(function(err){
+
+                                          // See if req.body.user exist. If YES, it means User is searching the Ride for the First Time.
+                                          // So we will receive details like Home Address, Office Address, ShiftTimeIn & ShiftTimeOut
+                                          // So we will save the same before doing anything else.
+                                          if(req.body.user){
+                                            var updated = _.merge(user, req.body.user);
+                                            updated.save(function (err) {
                                               if (err) { 
-                                                logger.fatal('Error in Ride.addCompanionToRide. Error : ' + err);
+                                                logger.fatal('Error in Ride.addCompanionToRide.updated.save. Error : ' + err);
                                                 return handleError(res, err); 
                                               }
-                                              logger.debug('Successfully added a companion to ride with PENDING STATUS in Ride.getRideHistoryForCurrentUser');
+                                              logger.debug('Successfully updated user details in Ride.addCompanionToRide');
 
-                                              EventEmitter.emit("userRequestedARide", ride);
-                                              logger.debug('Successfully requested to ride together in Ride.addCompanionToRide');
-                                              return res.json(201, ride);
-                                          });
+                                              user.riderStatus = "PENDING";
+                                              ride.riders.push(user);
+                                              ride.save(function(err){
+                                                  if (err) { 
+                                                    logger.fatal('Error in Ride.addCompanionToRide. Error : ' + err);
+                                                    return handleError(res, err); 
+                                                  }
+                                                  logger.debug('Successfully added a companion to ride with PENDING STATUS in Ride.getRideHistoryForCurrentUser');
+
+                                                  EventEmitter.emit("userRequestedARide", ride);
+                                                  logger.debug('Successfully requested to ride together in Ride.addCompanionToRide');
+                                                  return res.json(201, ride);
+                                              });
+
+                                            });
+                                          }
+                                          // If we go into else, it means the user isn't posting the ride for the 1st time.
+                                          // Which means we already have the required details of the user.
+                                          else{
+                                            user.riderStatus = "PENDING";
+                                            ride.riders.push(user);
+                                            ride.save(function(err){
+                                                if (err) { 
+                                                  logger.fatal('Error in Ride.addCompanionToRide. Error : ' + err);
+                                                  return handleError(res, err); 
+                                                }
+                                                logger.debug('Successfully added a companion to ride with PENDING STATUS in Ride.getRideHistoryForCurrentUser');
+
+                                                EventEmitter.emit("userRequestedARide", ride);
+                                                logger.debug('Successfully requested to ride together in Ride.addCompanionToRide');
+                                                return res.json(201, ride);
+                                            });
+                                          }
                                     });
                       });
                     }
@@ -396,6 +429,7 @@ exports.updateRiderStatus = function(req, res){
     }
     ride.riders.forEach(function(rider){
       if(rider.empId == riderEmpId){
+        var riderRedgId = rider.redgId;
         (riderStatus == 'ACCEPTED') ? rider.riderStatus = 'CONFIRMED' : ride.riders.splice(riders.indexOf(rider), 1);
       }
     });
@@ -406,7 +440,7 @@ exports.updateRiderStatus = function(req, res){
       }
       logger.debug('Successfully updated Rider Status in Ride.updateRiderStatus');
 
-      EventEmitter.emit("hostRespondedToRideRequest", ride, riderEmpId);
+      EventEmitter.emit("hostRespondedToRideRequest", ride, riderRedgId, riderStatus);
       logger.debug('Successfully responded to rider who requested to ride together in Ride.updateRiderStatus');
       return res.json(201, ride);
     });
