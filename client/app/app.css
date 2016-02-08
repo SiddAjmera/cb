@@ -89,7 +89,7 @@ html,body{
     width: 100%;
 }
 
-.login-form-wrapper p.error-msg{
+.login-form-wrapper p.error-msg.for-wrong{
     padding-left: 7.2%;
 }
 .login-err-wrap{
@@ -101,7 +101,7 @@ html,body{
 .login-input-box{
     border: none;
     box-shadow: none;
-    padding: 33px 10px 10px;
+    padding: 5px 10px 5px;
     border-bottom: 1px solid #e8e8e8;
 }
 .form-control.login-input-box:focus{
@@ -122,9 +122,9 @@ html,body{
     float: left;
     width: 70%;
 }
-.user-input-section .error-border{
+/*.user-input-section .error-border{
     border: 0.4px solid #FF7847;
-}
+}*/
 .login-btn-sec{
     margin-top: 35px;
     border-radius: 0px;
@@ -295,8 +295,16 @@ html,body{
     background-color: #fff;
     color: #000;
 }*/
+.moving-label{
+    transform: translate3d(1px,36px,3px) scale(1);
+    transition:transform ease .3s;
+}
+.user-input-section.active .moving-label{
+    transform: translate3d(1px,6px,3px) scale(0.7);
+    transition:transform ease .3s;
+}
 .login-input-box{
-    height: 60px;
+    height: 44px;
 }
 .each-row div span.glyphicon-user,.each-row div span.glyphicon-home,
 .each-row div span.glyphicon-briefcase,
@@ -881,6 +889,13 @@ a.get-started-link:hover{
     color: #fff;
     font-size: 12px;
     margin-bottom: 8%;
+}
+.slide-arrow-sec{
+    text-align: center;
+}
+.slide-arrow-sec img{
+    cursor: pointer;
+    width: 30px;
 }
 /*home Css ends*/
 
@@ -1565,7 +1580,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: 40px;
     color: #fff;
     font-size: 13px;
-    width: 100%;
+    width: 49%;
     border:none;
 }
 .home-take-ride{
@@ -1583,7 +1598,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: 40px;
     color: #fff;
     font-size: 13px;
-    width: 100%;
+    width: 49%;
     border: none;
 }
 .pooling-section{
@@ -1600,10 +1615,15 @@ input[type=number]::-webkit-outer-spin-button {
 .home-page-menu-options{
     width: 100%;
     float: left;
+    height: 70px;    
+    background-color: #4ecd98;
+    display: none;
+}
+.home-menu-swiper-wrap{
+    width: 100%;
+    float: left;
     position: absolute;
     bottom: 0;
-    height: 70px;
-    background-color: #4ecd98;
 }
 .on-the-fly-sec{
     border-bottom: 1px solid #484848;
