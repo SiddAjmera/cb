@@ -1,10 +1,10 @@
-<div class="page-wrapper post-ride-wrap-one">
+<div class="page-wrapper">
 	
 	<div class="container login-container user-home-container pad-R-none pad-L-none"  scroll ng-class="{availheaderback:boolChangeClass}">
 
 		<div class="col-md-12 col-sm-12 col-xs-12 header-section post-ride-header">
 			<span class="glyphicon glyphicon-chevron-left cursor-pointer avail-header-back" ng-click="toggleHamburger()"></span>
-			<span class="heading">Post Ride</span>
+			<span class="heading">Post a Ride</span>
 		</div>
 
 		<form name="userProfileUpdateForm" class="container login-container post-ride-container animation-form-signup" novalidate>
@@ -14,20 +14,28 @@
 				<div class="each-row">
 					<!-- <div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div> -->
 					<div class="icon-address-fields">
-						<img class="post-ride-from-icon" src="assets/images/available-rides/post-from-icon.png" ng-click="optionAddressOptions('from')">
+						<img class="post-ride-from-icon" src="assets/images/available-rides/from-icon.png" ng-click="optionAddressOptions('from')">
 					</div>
-					<div class="from-address-post-wrap">
-						<div class="form-control input-boxes dummy-input-box" ng-show="address == 'default' || address == 'home'" ng-click="optionAddressOptions('from')">
+					<div id="postFromSec" class="from-address-post-wrap">
+						<!-- <label for="#postFrom" class="moving-label" ng-click="moveLabelUp('postFromSec')">
+							Employee Id
+						</label> -->
+		                <input tab-index="1" id="postFrom" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="postFromAdd" placeholder="From"  required ><!-- ng-click="moveLabelUp('postFromSec')"
+		                ng-blur="moveLabelDown('postFromSec','postFrom')" ng-focus="moveLabelUp('postFromSec')" -->
+		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideSource.$error" class="error-msg-edit">
+							<p ng-message="required" class="error-msg">Ride source is required</p>
+						</div>
+						<!-- <div class="form-control input-boxes dummy-input-box" ng-show="address == 'default' || address == 'home'" ng-click="optionAddressOptions('from')">
 							
 							<span ng-if ="ride.source" class="dummy-input-box-text">{{ride.source}}</span>
 							
 							
 							<span ng-if="!ride.source" class="dummy-input-box-text">LEAVING FROM</span>
 							
-						</div>
+						</div> -->
 
 						<!-- office dropdown starts -->
-							<div class="input-fields office-address-select-wrap" ng-show="address == 'office'">
+						<!-- <div class="input-fields office-address-select-wrap" ng-show="address == 'office'">
 							<ui-select search-enabled="false" ng-model="ride.source" class="office-address-select">
 							    <ui-select-match placeholder="OFFICE ADDRESS">
 							        <span ng-bind="$select.selected.displayAddress"></span>
@@ -37,29 +45,34 @@
 							    </ui-select-choices>
 							</ui-select>
 
-						</div>
-							<!-- office dropdown ends -->
-						<input ng-show="address == 'other'" type="text" ng-class="{'error-border':!showErrorMessage}"  name="rideSource" class="form-control input-boxes ride-source-field" ng-model="ride.source" placeholder="LEAVING FROM" required g-places-autocomplete > <!-- force-selection="true" options="autocompleteOptions" -->
-						<ul class="post-loc-option" ng-show="open=='from'">
+						</div> -->
+							<!-- office dropdown ends 
+						<input ng-show="address == 'other'" type="text" ng-class="{'error-border':!showErrorMessage}"  name="rideSource" class="form-control input-boxes ride-source-field" ng-model="ride.source" placeholder="LEAVING FROM" required g-places-autocomplete >--> <!-- force-selection="true" options="autocompleteOptions" -->
+						<!-- <ul class="post-loc-option" ng-show="open=='from'">
 						  <li><img ng-click="showAddressFrom('office')" class="post-loc-img" src="assets/images/icon_office_address.png"></li>
 						  <li><img ng-click="showAddressFrom('home')"class="post-loc-img " src="assets/images/icon_home_address.png"></li>
 						  <li><img ng-click="showAddressFrom('other')" class="post-loc-img img-last" src="assets/images/available-rides/from-icon.png"></li>
-						</ul>
+						</ul> -->
 					</div>
 					
-					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideSource.$error" class="error-msg-edit">
-						<p ng-message="required" class="error-msg">Ride source is required</p>
-					</div>
+					
 				</div>
 
 				<div class="each-row">
 					<!-- <div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div> -->
 					<div class="icon-address-fields">
-						<img class="post-ride-from-icon" src="assets/images/available-rides/post-to-icon.png" ng-click="optionAddressOptions('to')">
+						<img class="post-ride-from-icon" src="assets/images/available-rides/to.png" ng-click="optionAddressOptions('to')">
 					</div>
-					<div class="from-address-post-wrap">
-
-						<div class="form-control input-boxes dummy-input-box" ng-show="addressTo == 'default' || addressTo == 'homeTo'" ng-click="optionAddressOptions('to')">
+					<div id="postToSec" class="from-address-post-wrap">
+						<!-- <label for="#postTo" class="moving-label" ng-click="moveLabelUp('postToSec')">
+							Employee Id
+						</label> -->
+		                <input tab-index="1" id="postTo" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="postToAdd" placeholder="To"  required> <!-- ng-click="moveLabelUp('postToSec')"
+		                ng-blur="moveLabelDown('postToSec','postTo')" ng-focus="moveLabelUp('postToSec')" -->
+		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error" class="error-msg-edit">
+							<p ng-message="required" class="error-msg">Ride destination is required</p>
+						</div>
+						<!-- <div class="form-control input-boxes dummy-input-box" ng-show="addressTo == 'default' || addressTo == 'homeTo'" ng-click="optionAddressOptions('to')">
 							<span ng-if ="ride.destination" class="dummy-input-box-text">{{ride.destination}}</span>
 							<span ng-if="!ride.destination" class="dummy-input-box-text">LEAVING FOR</span>
 						</div>						
@@ -81,66 +94,57 @@
 						  <li><img ng-click="showAddressTo('officeTo')" class="post-loc-img" src="assets/images/icon_office_address.png"></li>
 						  <li><img ng-click="showAddressTo('homeTo')"class="post-loc-img " src="assets/images/icon_home_address.png"></li>
 						  <li><img ng-click="showAddressTo('otherTo')" class="post-loc-img img-last" src="assets/images/available-rides/from-icon.png"></li>
-						</ul>
+						</ul> -->
 
 					</div>
 
 					
-					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error" class="error-msg-edit">
-						<p ng-message="required" class="error-msg">Ride destination is required</p>
-					</div>
+					
 				</div>
 
 
 				<div class="each-row">
-					<div>
+					<div class="icon-address-fields">
 						<img class="post-ride-from-icon" src="assets/images/available-rides/starting-time.png">
 					</div>
 					<div class="from-address-post-wrap">
 						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-model="ride.leavingIn" ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON">
-							<option style="display:none" value="">LEAVING IN</option> 	
+							<option style="display:none" value="">Starting at</option> 	
 						</select>
 						
 					</div>
 					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.leavingIn.$error" class="error-msg-edit">
-						<p ng-message="required" class="error-msg">Leaving in min. is required</p>
+						<p ng-message="required" class="error-msg">Starting time is required</p>
 					</div>
 				</div>
 				<div class="each-row">
-					<div>
+					<div class="icon-address-fields">
 						<img class="post-ride-from-icon" src="assets/images/available-rides/seats_avalaible.png">
 					</div>
 					<div class="from-address-post-wrap">
 						<select class="timeslot post-ride-leaving-in" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="ride.availableSeats" ng-options="c as c for c in availableSeatsJSON">
-							<option style="display:none" value="">SEATS AVAILABLE</option>
+							<option style="display:none" value="">Seats available</option>
 						</select>
 					</div>
 					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.availableSeats.$error" class="error-msg-edit">
 						<p ng-message="required" class="error-msg">Available seats is required</p>
 					</div>
 				</div>
-				<div class="each-row">
+				<!-- <div class="each-row"> -->
 					<!-- <div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div> -->
-					<div class="icon-address-fields">
+					<!-- <div class="icon-address-fields">
 						<img class="post-ride-from-icon" src="assets/images/available-rides/notes.png" ng-click="getLocation()">
 					</div>
 					<div class="from-address-post-wrap">
 						<textarea name="postRideComment" ng-model="ride.comments" class="input-boxes post-ride-comment"  placeholder="Lets share the ride :)" ></textarea> 
-					</div>
-
-					
-					<!-- <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error" class="error-msg-edit">
-						<p ng-message="required" class="error-msg">Ride destination is required</p>
 					</div> -->
-				</div>
-				<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzeon' defaults="defaults" paths="mypath"></leaflet>
+				<!-- </div> -->
+			</div>
+			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzeon' defaults="defaults" paths="mypath"></leaflet>
 
 				<div class="each-row post-ride-continue" name="syncData" ng-click="postRide()">
-					CONTINUE... <img class="post-continue-img" src="assets/images/available-rides/continue_car.png">
+					POST MY RIDE! <img class="post-continue-img" src="assets/images/icon_car.png">
 				</div>
-				{{mypath}}
-			</div>
-
 		</form>		
 	</div>
 </div>

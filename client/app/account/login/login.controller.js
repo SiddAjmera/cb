@@ -44,4 +44,18 @@ angular.module('cbApp')
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };
+
+    /*$scope.moveLabelUp = function(classContainer){
+      //console.log('cc',classContainer);
+
+      $("#"+classContainer).addClass('active');
+      $("#"+classContainer+" input").focus();
+    }
+    $scope.moveLabelDown = function(classContainer,inputField){
+      if($("#"+inputField).val().length<=0){
+        $("#"+classContainer).removeClass('active');
+      }
+    }*/
+    
+
   });

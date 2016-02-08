@@ -33,7 +33,9 @@
 		</div>
 		<div class="each-row">
 			<div class="field-icon-section"><span><img class="icon-style" src="assets/images/icon_password.png"></span></div>
-			<div class="user-input-section"><input class="form-control pwd-boxes login-input-box" ng-class="{'error-border':!showErrorMessage}"  required type="password" ng-model="user.password" name="password" placeholder="Password">
+			<div class="user-input-section">
+				<input class="form-control pwd-boxes login-input-box" ng-class="{'error-border':!showErrorMessage}"  required type="password" ng-model="user.password" name="password" placeholder="Password">
+				
 				<div ng-show="!showErrorMessage"  ng-messages="signupForm.password.$error" class="error-msg-edit">
 					<p ng-message="required" class="error-msg">Please enter password</p>
 				</div>
