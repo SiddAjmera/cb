@@ -10,9 +10,9 @@
             <div class="each-row login-page">
               <div class="field-icon-section"><span><img class="icon-style" src="assets/images/icon_employee_ID.png"></span></div>
               <div id="inputUserWrapepr" class="user-input-section">
-                <label for="#username" class="moving-label" ng-click="moveLabelUp('inputUserWrapepr')">Employee Id</label>
-                <input tab-index="1" id="username" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="number" name="empId" placeholder=""  ng-model="user.empId" required ng-pattern="/^[0-9]*$/" ng-click="moveLabelUp('inputUserWrapepr')"
-                ng-blur="moveLabelDown('inputUserWrapepr','username')" ng-focus="moveLabelUp('inputUserWrapepr')">
+                <!-- <label for="#username" class="moving-label" ng-click="moveLabelUp('inputUserWrapepr')">Employee Id</label> -->
+                <input tab-index="1" id="username" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="number" name="empId" placeholder="Employee Id"  ng-model="user.empId" required ng-pattern="/^[0-9]*$/"><!-- ng-click="moveLabelUp('inputUserWrapepr')"
+                ng-blur="moveLabelDown('inputUserWrapepr','username')" ng-focus="moveLabelUp('inputUserWrapepr')" -->
                 <div ng-show="showErrorMessage"  ng-messages="loginForm.empId.$error" class="login-err-wrap">
                   <p ng-message="required" class="error-msg">Please enter Employee ID</p>
                   <p ng-message="pattern" class="error-msg">Please enter valid Employee ID</p>
@@ -22,8 +22,8 @@
             <div class="each-row login-page">
               <div class="field-icon-section"><span><img class="icon-style" src="assets/images/icon_password.png"></span></div>
               <div id="inputPwdWrapper" class="user-input-section">
-                 <label for="#password" class="moving-label"  ng-click="moveLabelUp('inputPwdWrapper')">Password</label>
-                <input tab-index="2" ng-class="{'error-border':showErrorMessage}" class="form-control pwd-boxes login-input-box"   id="password" type="password" name="password" placeholder=""  ng-model="user.password" ng-click="moveLabelUp('inputPwdWrapper')" ng-focus="moveLabelUp('inputPwdWrapper')" ng-blur="moveLabelDown('inputPwdWrapper','password')" required>
+                 <!-- <label for="#password" class="moving-label"  ng-click="moveLabelUp('inputPwdWrapper')">Password</label> -->
+                <input tab-index="2" ng-class="{'error-border':showErrorMessage}" class="form-control pwd-boxes login-input-box"   id="password" type="password" name="password" placeholder="Password"  ng-model="user.password" required><!-- ng-click="moveLabelUp('inputPwdWrapper')" ng-focus="moveLabelUp('inputPwdWrapper')" ng-blur="moveLabelDown('inputPwdWrapper','password')" -->
                  <div ng-show="showErrorMessage"  ng-messages="loginForm.password.$error" class="login-err-wrap">
                         <p ng-message="required" class="error-msg">Please enter
                           Password</p>

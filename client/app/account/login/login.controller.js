@@ -45,7 +45,7 @@ angular.module('cbApp')
       $window.location.href = '/auth/' + provider;
     };
 
-    $scope.moveLabelUp = function(classContainer){
+    /*$scope.moveLabelUp = function(classContainer){
       //console.log('cc',classContainer);
 
       $("#"+classContainer).addClass('active');
@@ -55,7 +55,7 @@ angular.module('cbApp')
       if($("#"+inputField).val().length<=0){
         $("#"+classContainer).removeClass('active');
       }
-    }
+    }*/
     
 
   });

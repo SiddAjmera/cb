@@ -1,0 +1,105 @@
+<div class="page-wrapper post-ride-wrap-one">
+	
+	<div class="container login-container user-home-container pad-R-none pad-L-none"  scroll ng-class="{availheaderback:boolChangeClass}">
+
+		<div class="col-md-12 col-sm-12 col-xs-12 header-section post-ride-header">
+			<span class="glyphicon glyphicon-chevron-left cursor-pointer avail-header-back" ng-click="toggleHamburger()"></span>
+			<span class="heading">Post Ride</span>
+		</div>
+
+		<form name="userProfileUpdateForm" class="container login-container post-ride-container animation-form-signup" novalidate>
+			<div class="triangle-down-left-post"></div>	
+			<div class="form-section signup-section-form post-ride-form">
+				
+				<div class="each-row">
+					<div class="icon-address-fields">
+						<img class="post-ride-from-icon" src="assets/images/available-rides/from-icon.png" ng-click="optionAddressOptions('from')">
+					</div>
+					<div id="postFromSec" class="from-address-post-wrap">
+		                <input class="form-control input-boxes login-input-box" ng-class="{'error-border':!showErrorMessage}" type="text" maxlength="13" name="vehicleNo" required ng-pattern="/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/" ng-model="user.vehicle.vehicleNo" placeholder="MyCar No.">
+		                <div ng-show="!showErrorMessage"  ng-messages="signupForm.vehicleNo.$error" class="error-msg-edit">
+							<p ng-message="required" class="error-msg">Registration Number is required</p>
+							<p ng-message="pattern" class="error-msg">Invalid Registration Number</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="each-row">
+					<div class="icon-address-fields">
+						<img class="post-ride-from-icon" src="assets/images/available-rides/seats_avalaible.png">
+					</div>
+					<div class="from-address-post-wrap">
+						<select class="timeslot post-ride-leaving-in" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="ride.availableSeats" ng-options="c as c for c in availableSeatsJSON">
+							<option style="display:none" value="">Seats available</option>
+						</select>
+					</div>
+					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.availableSeats.$error" class="error-msg-edit">
+						<p ng-message="required" class="error-msg">Available seats is required</p>
+					</div>
+				</div>
+
+				<div class="each-row">
+					<div class="icon-address-fields">
+						<img class="post-ride-from-icon" src="assets/images/available-rides/from-icon.png" ng-click="optionAddressOptions('from')">
+					</div>
+					<div id="" class="from-address-post-wrap">
+						
+		                <input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="homeAddress" placeholder="Home address"  required >
+		                <div  class="error-msg-edit">
+							<p ng-message="required" class="error-msg">Home address is required</p>
+						</div>
+						
+					</div>
+				</div>	
+				<div class="each-row">
+					<div class="icon-address-fields">
+						<img class="post-ride-from-icon" src="assets/images/available-rides/to.png" ng-click="optionAddressOptions('to')">
+					</div>
+					<div id="" class="from-address-post-wrap">
+		                <input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="officeAddress" placeholder="Office address"  required> <!-- ng-click="moveLabelUp('postToSec')"
+		                ng-blur="moveLabelDown('postToSec','postTo')" ng-focus="moveLabelUp('postToSec')" -->
+		                <div  class="error-msg-edit">
+							<p ng-message="required" class="error-msg">Office address is required</p>
+						</div>
+					</div>
+
+					
+					
+				</div>
+
+
+				<div class="each-row">
+					<div class="icon-address-fields">
+						<img class="post-ride-from-icon" src="assets/images/available-rides/starting-time.png">
+					</div>
+					<div class="from-address-post-wrap">
+						<select name="leavingIn" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON">
+							<option style="display:none" value="">Shift start time</option> 	
+						</select>
+						
+					</div>
+					<div  class="error-msg-edit">
+						<p ng-message="required" class="error-msg">shift time is required</p>
+					</div>
+				</div>
+				<div class="each-row">
+					<div class="icon-address-fields">
+						<img class="post-ride-from-icon" src="assets/images/available-rides/starting-time.png">
+					</div>
+					<div class="from-address-post-wrap">
+						<select name="leavingIn" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON">
+							<option style="display:none" value="">Shift end time</option> 	
+						</select>
+						
+					</div>
+					<div  class="error-msg-edit">
+						<p ng-message="required" class="error-msg">shift time is required</p>
+					</div>
+				</div>
+			</div>
+			<div class="each-row post-ride-continue" name="" ng-click="">
+				TAKE ME AHEAD... <img class="post-continue-img" src="assets/images/icon_car.png">
+			</div>
+		</form>		
+	</div>
+</div>
