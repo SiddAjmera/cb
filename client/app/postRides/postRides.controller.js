@@ -69,7 +69,7 @@ angular.module('cbApp')
         getRoute();
     });
 
-
+    
 
     $scope.defaults = {
       minZoom:0,

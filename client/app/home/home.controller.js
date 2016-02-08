@@ -55,6 +55,13 @@ angular.module('cbApp')
         })    
         
     }
+
+    $scope.toggleFooter = function(){
+     
+      $(".home-page-menu-options").slideToggle(500);
+      
+    }
+
     var drivesArray = [];
     var totalDrives =  0;
     var currentDrive = 0;

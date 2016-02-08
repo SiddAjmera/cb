@@ -89,19 +89,19 @@ html,body{
     width: 100%;
 }
 
-.login-form-wrapper p.error-msg{
+.login-form-wrapper p.error-msg.for-wrong{
     padding-left: 7.2%;
 }
 .login-err-wrap{
     width: 100%;
 }
 .login-form .icon-style{
-    margin-top: 20px;
+    margin-top: 2px;
 }
 .login-input-box{
     border: none;
     box-shadow: none;
-    padding: 33px 10px 10px;
+    padding: 5px 10px 5px;
     border-bottom: 1px solid #e8e8e8;
 }
 .form-control.login-input-box:focus{
@@ -122,9 +122,9 @@ html,body{
     float: left;
     width: 70%;
 }
-.user-input-section .error-border{
+/*.user-input-section .error-border{
     border: 0.4px solid #FF7847;
-}
+}*/
 .login-btn-sec{
     margin-top: 35px;
     border-radius: 0px;
@@ -295,8 +295,16 @@ html,body{
     background-color: #fff;
     color: #000;
 }*/
+.moving-label{
+    transform: translate3d(1px,36px,3px) scale(1);
+    transition:transform ease .3s;
+}
+.active .moving-label{
+    transform: translate3d(1px,6px,3px) scale(0.7);
+    transition:transform ease .3s;
+}
 .login-input-box{
-    height: 60px;
+    height: 44px;
 }
 .each-row div span.glyphicon-user,.each-row div span.glyphicon-home,
 .each-row div span.glyphicon-briefcase,
@@ -882,6 +890,13 @@ a.get-started-link:hover{
     font-size: 12px;
     margin-bottom: 8%;
 }
+.slide-arrow-sec{
+    text-align: center;
+}
+.slide-arrow-sec img{
+    cursor: pointer;
+    width: 30px;
+}
 /*home Css ends*/
 
 /*Main page css starts*/
@@ -1114,7 +1129,7 @@ a.get-started-link:hover{
 }
 .leaflet-container{
     width:100%;
-    height: 93vh;
+    height: 30vh;
 }
 .leaflet-popup-content-wrapper{
     background: transparent;
@@ -1565,7 +1580,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: 40px;
     color: #fff;
     font-size: 13px;
-    width: 100%;
+    width: 49%;
     border:none;
 }
 .home-take-ride{
@@ -1583,7 +1598,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: 40px;
     color: #fff;
     font-size: 13px;
-    width: 100%;
+    width: 49%;
     border: none;
 }
 .pooling-section{
@@ -1600,10 +1615,15 @@ input[type=number]::-webkit-outer-spin-button {
 .home-page-menu-options{
     width: 100%;
     float: left;
+    height: 70px;    
+    background-color: #4ecd98;
+    display: none;
+}
+.home-menu-swiper-wrap{
+    width: 100%;
+    float: left;
     position: absolute;
     bottom: 0;
-    height: 70px;
-    background-color: #4ecd98;
 }
 .on-the-fly-sec{
     border-bottom: 1px solid #484848;
@@ -1890,16 +1910,24 @@ input[type=number]::-webkit-outer-spin-button {
 .form-section.signup-section-form.post-ride-form{
     margin-top: 0px;
     background-color: #fff;
+    padding: 0 30px;
 }
+.post-ride-form .field-icon-section{
+    margin-left: 0%;
+    text-align: left;
+}
+
 .post-ride-from-icon{
     width: 25px;
     padding-top: 12px;
 }
+.post-ride-from-icon-one-time{
+    padding-top: 8px;
+}
 .from-address-post-wrap{
     float:left;
-    width: 85%;
+    width: 80%;
     background-color: #fff;
-    border-bottom: 1px solid #d3d3d3;
     position: relative;
 }
 .each-row select.timeslot.post-ride-leaving-in{
@@ -1909,10 +1937,12 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
     color: #908F8F;
     background-image: url(../assets/images/available-rides/dropdown.png);
+    height: 40px;
+    border-bottom: 1px solid #e8e8e8;
     background-repeat: no-repeat;
     background-size: 20px;
     background-position: 97%;
-    padding: 0px 42px 0px 10px;
+    padding: 0px 42px 0px 6px;
 }
 .post-ride-comment{
     font-size: 16px;
@@ -1927,11 +1957,13 @@ input[type=number]::-webkit-outer-spin-button {
 .post-ride-continue{
     width: 100%;
     text-align: center;
-    background-color: #1E68A5;
+    background-color: #329d71;
     color: #fff;
     height: 60px;
     font-size: 16px;
-    padding: 19px 15px;
+}
+.post-ride-wrap-one .post-ride-continue{
+    background-color: #ec6e3c;
 }
 .post-continue-img{
     width: 60px;
@@ -1964,17 +1996,18 @@ input[type=number]::-webkit-outer-spin-button {
     padding-left: 4px;
 }
 .dummy-input-box{
-    height: 60px;
+    height: 48px;
     border-color: transparent;
     width: 85%!important;
     text-align: left!important;
     color: #908F8F;
     padding-top: 18px;
+    box-shadow: none;
 }
 .container.login-container.post-ride-container {
     margin: 0 auto;
     width: 480px;
-    margin-top: 177px;
+    margin-top: 120px;
 }
 .header-section.post-ride-header{
     background-color: transparent;
@@ -1988,11 +2021,11 @@ input[type=number]::-webkit-outer-spin-button {
     border-bottom: 3px solid #acacac;
     height: 42px;
     transition: all ease .3s;
-        background-image: linear-gradient(bottom, #FFD51A 50%, #FAC815 50%);
-    background-image: -o-linear-gradient(bottom, #FFD51A 50%, #FAC815 50%);
-    background-image: -moz-linear-gradient(bottom, #FFD51A 50%, #FAC815 50%);
-    background-image: -webkit-linear-gradient(bottom, #1E68A5 50%, #1E68A5 50%);
-    background-image: -ms-linear-gradient(bottom, #FFD51A 50%, #FAC815 50%);
+        background-image: linear-gradient(bottom, #329d71 50%, #329d71 50%);
+    background-image: -o-linear-gradient(bottom, #329d71 50%, #329d71 50%);
+    background-image: -moz-linear-gradient(bottom, #329d71 50%, #329d71 50%);
+    background-image: -webkit-linear-gradient(bottom, #329d71 50%, #329d71 50%);
+    background-image: -ms-linear-gradient(bottom, #329d71 50%, #329d71 50%);
 }
 .post-ride-form .office-address-select.ui-select-bootstrap > .ui-select-match > .btn{
 
@@ -2000,6 +2033,7 @@ input[type=number]::-webkit-outer-spin-button {
     background-repeat: no-repeat;
     background-size: 20px;
     background-position: 97%;
+    box-shadow: none
 }
 .dummy-input-box-text{
    
@@ -2052,6 +2086,9 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .tata-text{
     color: #61b37d;
+}
+.leaflet-bar a{
+    color: #000;
 }
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
