@@ -35,10 +35,16 @@ angular.module('cbApp')
                 var routes = _.map(response.routes,function(r){return r.overview_polyline});
                 console.log("routes",routes);              
                 angular.forEach(routes,function(r,key){
-                  latArr.push(L.Polyline.fromEncoded(r).getLatLngs());
+                    var routeObj={};
+                    routeObj.color= '#'+Math.floor(Math.random()*16777215).toString(16);
+                    routeObj.weight= 2;
+                    routeObj.latlngs=L.Polyline.fromEncoded(r).getLatLngs();
+                    routeObj.clickable=true;
+                    $scope.mypath['r'+key]=routeObj; 
+                  //latArr.push(L.Polyline.fromEncoded(r).getLatLngs());
                 });              
                //$scope.mypath ={};
-               $scope.mypath.multiPolyline={type:"multiPolyline",latlngs:latArr};
+               //$scope.mypath.multiPolyline={type:"multiPolyline",latlngs:latArr};
                 console.log('in req ',$scope.mypath);                
                 console.log('enter!');  
             }

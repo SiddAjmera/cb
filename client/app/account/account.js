@@ -10,7 +10,6 @@ angular.module('cbApp')
       })
       .state('signup', {
         url: '/signup',
-        abstract: true,
         templateUrl: 'app/account/signup/signup.html',
         controller: 'SignupCtrl'
       })

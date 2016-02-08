@@ -11,7 +11,7 @@ var message = new gcm.Message({
     notification: {
         title: "Commute buddy",
         icon: "ic_launcher",
-        body: "This is a notification that will be displayed ASAP."
+        body: "Tea."
     }
 });
  

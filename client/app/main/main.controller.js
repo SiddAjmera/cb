@@ -28,7 +28,7 @@ angular.module('cbApp')
     }
 
     $scope.openSignupForm = function(){
-      $state.go('signup.stepOne');
+      $state.go('signup');
     }
 	  
 

@@ -58,8 +58,7 @@ exports.index = function(req, res) {
  * Creates a new user. This will be used to SingUp a new User. This returns an access token that can be userd to log the user in right after signup.
  */
 exports.create = function (req, res, next) {
-  CurrentUser = req.user;
-  logger.trace(req.user.empId + ' requested for User.create');
+  logger.trace(req.body.empId + ' requested for User.create');
   var newUser = new User(req.body);
   newUser.provider = 'local';
   newUser.role = 'user';

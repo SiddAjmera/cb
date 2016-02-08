@@ -93,8 +93,8 @@ angular.module('cbApp')
        $scope.signupPost=function(){ 
          var url = config.apis.signup;
          $scope.user.empId = $scope.user.userId;
-         $scope.user.officeAddressLocation = $scope.user.officeAddress;
-         $scope.user.officeAddress = $scope.user.officeAddress.displayAddress;
+        // $scope.user.officeAddressLocation = $scope.user.officeAddress;
+        //$scope.user.officeAddress = $scope.user.officeAddress.displayAddress;
          httpRequest.post(url,$scope.user).
           then(function(response){
               /*if(response.status==)*/
