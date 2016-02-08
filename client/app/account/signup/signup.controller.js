@@ -2,7 +2,7 @@
 
 angular.module('cbApp')
   .controller('SignupCtrl', function ($scope,$location, $window,$state,$modal,$rootScope,cordovaUtil,httpRequest,localStorage,pushnotification,staticData) {
-    $scope.user = {vehicle:{}};
+    $scope.user = {};
     $scope.user.gender = "Female";
     $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",
                                 "9:00 AM - 6:00 PM",
@@ -92,8 +92,7 @@ angular.module('cbApp')
        
        $scope.signupPost=function(){ 
          var url = config.apis.signup;
-         $scope.user.empId = $scope.user.userId;
-        // $scope.user.officeAddressLocation = $scope.user.officeAddress;
+       // $scope.user.officeAddressLocation = $scope.user.officeAddress;
         //$scope.user.officeAddress = $scope.user.officeAddress.displayAddress;
          httpRequest.post(url,$scope.user).
           then(function(response){
