@@ -74,9 +74,32 @@ exports.create = function (req, res, next) {
   });
 };
 
-// Get the teams of the Current User
+// Updates an existing User in the DB. This will be Used for Update Profile and Other Things
+exports.update = function(req, res) {
+  logger.trace(req.user.empId + ' requested for User.update');
+  if(req.body._id) { delete req.body._id; }
+  User.findById(req.params.id, function (err, user) {
+    if (err) {
+     logger.fatal('Error in User.update. Error : ' + err);
+     return handleError(res, err); 
+    }
+    if(!user) { 
+      logger.error('Error in User.update. Error : Not Found');
+      return res.send(404); 
+    }
+    var updated = _.merge(user, req.body);
+    updated.save(function (err) {
+      if (err) { 
+        logger.fatal('Error in User.update.updated.save. Error : ' + err);
+        return handleError(res, err); 
+      }
+      logger.debug('Successfully updated user in User.update');
+      return res.json(200, user);
+    });
+  });
+};
 
-// Here the req.body should contain { "empId" : 987654 or something }
+// Get the teams of the Current User. Here the req.body should contain { "empId" : 987654 or something }
 exports.teamsOfCurrentUser = function(req, res){
   CurrentUser = req.user;
   logger.trace(req.user.empId + ' requested for User.teamsOfCurrentUser');
@@ -84,56 +107,13 @@ exports.teamsOfCurrentUser = function(req, res){
 };
 
 // This will return an array of Users who are near this User's Home i.e. People in a User's 1km Radius
+// This will be helpful as Suggestions for a User who is forming a Team.
 exports.getSuggestions = function(req, res){
   CurrentUser = req.user;
   var empId = req.user.empId;
   logger.trace(empId + ' requested for User.getSuggestions');
-  /*User.find().where("officeAddress", req.body.officeAddress)
-             .where("homeAddress", req.body.homeAddress)
-             .exec(function(err, users) {
-    if(err) {
-      logger.fatal('Error in User.getSuggestions. Error : ' + err);
-      return handleError(res, err);
-    }
-    if(!users){
-      logger.error('Error in User.getSuggestions. Error : Not Found');
-      return res.send(404);
-    }
-    logger.debug('Successfully got Users in User.getSuggestions');
-    return res.json(200, users);
-  });*/
-  User.findOne( { empId: empId }, function(err, user){
-    if(err) {
-      logger.fatal('Error in User.getSuggestions. Error : ' + err);
-      return handleError(res, err);
-    }
-    if(!user){
-      logger.error('Error in User.getSuggestions. Error : Not Found');
-      return res.send(404);
-    }
 
-    /*User.find( { 
-                 "homeAddressLocation.location" : { '$near' : user.homeAddressLocation.location },
-                 "userId"                       : { $ne: userId }
-               })
-        .limit(2)
-        .exec(function(err, users){
-            if(err) {
-              logger.fatal('Error in User.getSuggestions. Error : ' + err);
-              return handleError(res, err);
-            }
-            if(!users){
-              logger.error('Error in User.getSuggestions. Error : Not Found');
-              return res.send(404);
-            }
-            logger.debug('Successfully got Users in User.getSuggestions');
-            return res.json(200, users);
-        });*/
-
-
-
-
-    /*mongoose.connection.db.executeDbCommand({ 
+  /*mongoose.connection.db.executeDbCommand({ 
       geoNear             : "users",                            // the mongo collection
       near                : user.homeAddressLocation.location,  // the geo point
       spherical           : true,                               // tell mongo the earth is round, so it calculates based on a spherical location system
@@ -152,16 +132,22 @@ exports.getSuggestions = function(req, res){
             }
             logger.debug('Successfully got Users in User.getSuggestions');
             return res.json(200, result.documents[0].results);
-    }); */
+  }); */
 
-
-    User.geoNear( 
+  User.geoNear( 
       user.homeAddressLocation.location,
       {
           spherical           : true,            // tell mongo the earth is round, so it calculates based on a spherical location system
           distanceMultiplier  : 6371,            // tell mongo how many radians go into one kilometer.
           //maxDistance         : 1/6371,        // tell mongo the max distance in radians to filter out
           empId              : { $ne : empId }
+      },
+      {
+          empId: 1,
+          empName: 1,
+          userPhotoUrl: 1,
+          contactNo: 1,
+          rating: 1
       },function(err, results, stats){
           if(err) {
             logger.fatal('Error in User.getSuggestions. Error : ' + err);
@@ -174,7 +160,6 @@ exports.getSuggestions = function(req, res){
           logger.debug('Successfully got Users in User.getSuggestions');
           console.log('Results', results);
           return res.json(200, results);
-      });
   });
 };
 
@@ -295,8 +280,41 @@ exports.userByUserId = function(empId){
       deffered.reject(err)
     } 
     else{
-      logger.debug('Successfully got Name for User in User.userByUserId');
+      logger.debug('Successfully got User in User.userByUserId');
       deffered.resolve(user);
+    }
+  });
+  return deffered.promise;
+};
+
+exports.redgIdByEmpId = function(empId){
+  logger.trace(CurrentUser.empId + ' requested for User.redgIdByEmpId');
+  var deffered = q.defer();
+  User.findOne({ empId: empId }, { _id: 0, redgId: 1 }, function(err, user){
+    if(err){
+      logger.fatal('Error in User.redgIdByEmpId. Error : ' + err);
+      deffered.reject(err)
+    } 
+    else{
+      logger.debug('Successfully got redgId for User in User.redgIdByEmpId');
+      deffered.resolve(user.redgId);
+    }
+  });
+  return deffered.promise;
+};
+
+exports.redgIdsByEmpIds = function(empIds){
+  logger.trace(CurrentUser.empId + ' requested for User.redgIdsByEmpIds');
+  var deffered = q.defer();
+  User.findOne({ empId: { $in: empIds } }, { _id: 0, redgId: 1 }, function(err, users){
+    if(err){
+      logger.fatal('Error in User.redgIdsByEmpIds. Error : ' + err);
+      deffered.reject(err)
+    } 
+    else{
+      logger.debug('Successfully got redgIds for Users in User.redgIdsByEmpIds');
+      var redgIds = users.map(function(user){ return user.redgId; })
+      deffered.resolve(redgIds);
     }
   });
   return deffered.promise;

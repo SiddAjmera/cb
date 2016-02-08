@@ -12,14 +12,16 @@ var TeamSchema = new Schema({
   	empId: String,
   	empName: String,
   	contactNo: String,
-  	userPhotoUrl: String
+  	userPhotoUrl: String,
+    redgId: String
   },
   members: [{
   	empId: String,
   	empName: String,
   	contactNo: String,
   	userPhotoUrl: String,
-  	membershipStatus: { type: String, enum: ["PENDING", "CONFIRMED"] }
+  	membershipStatus: { type: String, enum: ["PENDING", "CONFIRMED"] },
+    redgId: String
   }],
   rideDetails: {
   	from: {
@@ -34,7 +36,8 @@ var TeamSchema = new Schema({
 	    location: {type: [Number], index: '2d'},
 	    placeId: String
   	},
-  	preferredTime: Date
+  	preferredTime: Date,
+    routeSummary: String
   },
   activities: [{
   	activityTime: { type: Date, default: Date.now },

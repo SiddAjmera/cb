@@ -19,6 +19,7 @@ router.post('/FilterRide', auth.isAuthenticated(), controller.filterRide);
 
 router.put('/:id', auth.isAuthenticated(), controller.update);
 router.put('/AddCompanionToRide/:id', auth.isAuthenticated(), controller.addCompanionToRide);
+router.put('/updateRiderStatus/:id', auth.isAuthenticated(), controller.updateRiderStatus);
 
 router.patch('/:id', auth.isAuthenticated(), controller.update);
 router.delete('/:id', auth.isAuthenticated(), controller.destroy);

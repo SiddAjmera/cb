@@ -1,10 +1,37 @@
-<div class="page-wrapper analyze-page">
+<div class="page-wrapper home-page">
 	<div class="col-md-12 col-sm-12 col-xs-12 header-section">
 			<span class="glyphicon glyphicon-chevron-left cursor-pointer avail-header-back" ng-click="toggleHamburger()"></span>
-			<span class="heading">Analyze</span>
+			
 		</div>
-	<div class="analyze-wrapper">
-		
+	<div class="home-content-wrapper">
+		<p class="home-welcome-text">Welcome <span class="welcome-username">Siddharth</span></p>
+
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none on-the-fly-sec">
+			<p class="on-the-fly-text"><span class="first-letter">O</span>n <span class="first-letter">T</span>he <span class="first-letter">F</span>ly</p>
+
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none take-post-btn-sec">
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-L-none home-post-ride">
+					<button>POST A RIDE</button>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-R-none home-take-ride">
+					<button>TAKE A RIDE</button>
+				</div>
+			</div>
+			<div class="or-sec">OR</div>
+		</div>	
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none pooling-section">
+			<p class="car-pooling-text"><span class="first-letter">C</span>ar <span class="first-letter">P</span>ooling</p>
+
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none for-team-btn-sec">
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-L-none home-team-ride">
+					<button>POST A RIDE</button>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-R-none home-my-ride">
+					<button>TAKE A RIDE</button>
+				</div>
+			</div>
+		</div>
+
 		<!-- <div class="tab-section">
 			<div>
 				<img src="assets/images/3x/ico_analyze_off.png">
@@ -16,14 +43,12 @@
 			</div>
 		</div>
  -->
-		<div class="analyze-map-wrap">
+		<!-- <div class="analyze-map-wrap">
 			<p class="ongoing-journey">ONGOING JOURNEY</p>
 
 			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzeon' defaults="defaults" paths="paths"></leaflet>
 
-		<!-- 	<p class="return-journey">RETURN JOURNEY</p>
-
-			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzere' defaults="defaults"></leaflet> -->
+		
 		</div>
 		<div class="analyze-data-wrapper">
 			<div class="each-dimension first-dim">
@@ -50,6 +75,26 @@
 		<div class="lower-left-right-buttons">
 			<span class="glyphicon glyphicon-chevron-left cursor-pointer left-cursor" ng-click="getPrevDrive()"></span>
 			<span class="glyphicon glyphicon-chevron-right cursor-pointer right-cursor" ng-click="getNextDrive()"></span>
+		</div> -->
+
+
+	</div>
+	<div class="home-page-menu-options">
+		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+			<img class="home-menu-icon" src="assets/images/dashboard-icon/home.png">
+			<p class="home-menu-text">HOME</p>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+			<img class="home-menu-icon" src="assets/images/dashboard-icon/profile.png">
+			<p class="home-menu-text">PROFILE</p>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+			<img class="home-menu-icon" src="assets/images/dashboard-icon/track-ride.png">
+			<p class="home-menu-text">TRACK RIDES</p>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+			<img class="home-menu-icon" src="assets/images/dashboard-icon/history.png">
+			<p class="home-menu-text">HISTORY</p>
 		</div>
 	</div>
 </div>
