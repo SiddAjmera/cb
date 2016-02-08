@@ -45,6 +45,21 @@
 	    margin: 0 auto;
 	    width: 90%;
 	}
-	
-	
+	.home-content-wrapper{
+		width: 100%;
+	    padding: 0 15px;
+	    float: left;
+	}
+	.home-page-menu-options{
+		height: 55px;
+	}
+	.home-menu-icon{
+        width: 28px;
+	}
+	.home-menu-text{
+		font-size: 11px;
+	}
+	.each-home-menu{
+		padding:0 0px;
+	}	
 }

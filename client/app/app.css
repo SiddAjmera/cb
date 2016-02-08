@@ -193,7 +193,7 @@ html,body{
 }
 .page-wrapper{
     background-image: url("../assets/images/login_background.png");
-    background-size: cover;
+    background-size: 100% 100%;
     float:left;
     width: 100%;
     min-height: 100vh;
@@ -205,8 +205,19 @@ html,body{
     float:left;
     width: 100%;
     height: 100vh;
-    background-color: #000;
+    background-image: url("../assets/images/acceleration.jpg");
+    background-image: url("../assets/images/acceleration.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 
+}
+.terms-condn-section{
+    margin-top: 20px;
+    color: #fff;
+    font-size: 12px;
+}
+.terms-condn-section .link-text{
+    color: #ec6a3c;
 }
 .container.login-container{
     width: 400px;
@@ -866,6 +877,11 @@ a.get-started-link:hover{
     width: 100%;
     height: 100vh;
 }
+.home-welcome-text{
+    color: #fff;
+    font-size: 12px;
+    margin-bottom: 8%;
+}
 /*home Css ends*/
 
 /*Main page css starts*/
@@ -1512,14 +1528,113 @@ input[type=number]::-webkit-outer-spin-button {
     top: 10px;
     padding: 5px;
 }
-.analyze-page{
-    background: none;
-    background-color: #000;
+.page-wrapper.home-page{
+    position: relative;
 }
-.analyze-wrapper{
+.home-page .header-section{
+    background-color: transparent;
+    padding-top: 10px;
+    border-bottom: none;
+}
+.home-content-wrapper{
+    width: 460px;
+    margin:0 auto;
     margin-top: 46px;
+    text-align: center;
 }
-.analyze-wrapper .ongoing-journey{
+.welcome-username{
+    font-weight: bold;
+    font-family: HelveticaBold;
+}
+.on-the-fly-text{
+    color: #ec6e3c;
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-bottom: 6%;
+}
+.first-letter{
+    font-size: 14px;
+    text-transform: uppercase;
+}
+.home-post-ride{
+    padding-right: 6px;
+    text-align: center;
+}
+.take-post-btn-sec button{
+    background-color: #ec6e3c;
+    height: 40px;
+    color: #fff;
+    font-size: 13px;
+    width: 100%;
+    border:none;
+}
+.home-take-ride{
+    padding-left:  6px;
+    text-align: center;
+}
+.car-pooling-text{
+    color: #ffce25;
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-bottom: 6%;
+}
+.for-team-btn-sec button{
+    background-color: rgba(208,170,35,0.8);
+    height: 40px;
+    color: #fff;
+    font-size: 13px;
+    width: 100%;
+    border: none;
+}
+.pooling-section{
+    margin-top: 20%;
+}
+.home-team-ride{
+    padding-right: 6px;
+    text-align: center;
+}
+.home-my-ride{
+    padding-left: 6px;
+    text-align: center;
+}
+.home-page-menu-options{
+    width: 100%;
+    float: left;
+    position: absolute;
+    bottom: 0;
+    height: 70px;
+    background-color: #4ecd98;
+}
+.on-the-fly-sec{
+    border-bottom: 1px solid #484848;
+    padding-bottom: 60px;
+    position: relative;
+}
+.or-sec{
+    position: absolute;
+    bottom: -23px;
+    background-image: url("../assets/images/dashboard-icon/or_bg.png");
+    width: 40px;
+    height: 40px;
+    background-size: 40px;
+    padding-top: 7px;
+    font-size: 12px;
+    color: #fff;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+.each-home-menu{
+    text-align: center;
+    cursor: pointer;
+}
+.home-menu-icon{
+    width: 37px;
+}
+.home-menu-text{
+    margin: 5px 0px;
+}
+/*.analyze-wrapper .ongoing-journey{
     margin-left: 5px;
     color: #4ecd99;
     text-transform: capitalize;
@@ -1553,7 +1668,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
     float: left;
     font-size: 12px;
-}
+}*/
 .dim-images-icon{
     width: 22px;
 }

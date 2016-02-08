@@ -4,13 +4,20 @@ angular.module('cbApp')
   .controller('StartSamplingCtrl', function (Auth,$scope, cordovaUtil,$rootScope,localStorage,filterService,httpRequest) {
     $scope.message = 'Hello';
     $scope.buttonText="START SAMPLING";
-
+    $scope.mapEvents={};
+    $scope.mapEvents.path= {
+                        enable: [ 'click', 'mouseover' ]
+                    };
+        
     $scope.defaults={minZoom:10, maxZoom:20,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
     $scope.center={
         lat : 18.581904504725568,
         lng : 73.68483066558838,
         zoom: 15
     };
+    $scope.$on('leafletDirectivePath.myMap.mousedown', function (event) {
+                console.log('Path clicked ',event);
+     });
     $scope.setCenter=true;
     $scope.paths={};
     $scope.startOrStopSampling = function(value){
