@@ -1,4 +1,4 @@
-<div class="page-wrapper post-ride-wrap-one">
+<div class="page-wrapper">
 	
 	<div class="container login-container user-home-container pad-R-none pad-L-none"  scroll ng-class="{availheaderback:boolChangeClass}">
 
@@ -114,7 +114,7 @@
 						
 					</div>
 					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.leavingIn.$error" class="error-msg-edit">
-						<p ng-message="required" class="error-msg">Leaving in min. is required</p>
+						<p ng-message="required" class="error-msg">Starting time is required</p>
 					</div>
 				</div>
 				<div class="each-row">
@@ -139,14 +139,12 @@
 						<textarea name="postRideComment" ng-model="ride.comments" class="input-boxes post-ride-comment"  placeholder="Lets share the ride :)" ></textarea> 
 					</div> -->
 				<!-- </div> -->
-				<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzeon' defaults="defaults" paths="mypath"></leaflet>
+			</div>
+			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzeon' defaults="defaults" paths="mypath"></leaflet>
 
 				<div class="each-row post-ride-continue" name="syncData" ng-click="postRide()">
 					POST MY RIDE! <img class="post-continue-img" src="assets/images/icon_car.png">
 				</div>
-				{{mypath}}
-			</div>
-
 		</form>		
 	</div>
 </div>

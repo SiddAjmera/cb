@@ -1941,6 +1941,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 80%;
     background-color: #fff;
     position: relative;
+    padding-top: 3px;
 }
 .each-row select.timeslot.post-ride-leaving-in{
     -webkit-appearance: none;
@@ -2102,6 +2103,23 @@ input[type=number]::-webkit-outer-spin-button {
 .leaflet-bar a{
     color: #000;
 }
+
+/*Track ride css*/
+.track-reschedule-btn{
+    width: 48.2%;
+    height: 40px;
+    color: #fff;
+    font-size: 13px;
+    border: none;
+    background-color: #ababab;
+}
+.track-btn-sec{
+    margin-top: 15px;
+}
+.track-reschedule-btn.cancel-btn{
+    background-color: #636262;
+}
+
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
         width: 4em;
