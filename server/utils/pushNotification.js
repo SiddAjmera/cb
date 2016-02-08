@@ -80,6 +80,28 @@ exports.notifyRiderAboutHostResponse = function(ride, riderRedgId, riderStatus){
     });
 };
 
+// Notifies the riders that the host has cancelled the ride
+exports.notifyAboutCancelledRide = function(ride){
+    var redgIds = [];
+    redgIds = ride.riders.map(function(rider){ return rider.redgId; });
+    message.params.data.message = ride.offeredBy.empName + ' has cancelled the ride. Please find another ride.';
+    sender.send(message, { registrationIds: redgIds }, function (err, result) {
+        if(err) console.error(err);
+        else    console.log(result);
+    });
+};
+
+// Notifies the riders that the host has rescheduled the ride
+exports.notifyAboutRescheduledRide = function(ride){
+    var redgIds = [];
+    redgIds = ride.riders.map(function(rider){ return rider.redgId; });
+    message.params.data.message = ride.offeredBy.empName + ' has rescheduled the ride. The ride will now start at ' + ride.rideScheduledTime;
+    sender.send(message, { registrationIds: redgIds }, function (err, result) {
+        if(err) console.error(err);
+        else    console.log(result);
+    });
+};
+
 // Notifies Team Members that they have been requested to be added to the Creator's Team
 exports.teamCreatedNotification = function(team){
     var redgIds = team.members.map(function(member){ return member.redgId; });

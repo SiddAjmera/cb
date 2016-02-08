@@ -15,6 +15,7 @@ var UserSchema = new Schema({
   gender: String,
   homeAddressLocation: {
     formatted_address: String,
+    display_address: String,
     icon: String,
     location: {type: [Number], index: '2d'},
     placeId: String
@@ -23,8 +24,8 @@ var UserSchema = new Schema({
   state: String,
   zipcode: String,
   officeAddressLocation: {
-    displayAddress:String,
     formatted_address: String,
+    display_address: String,
     icon: String,
     location: {type: [Number], index: '2dsphere'},
     placeId: String
