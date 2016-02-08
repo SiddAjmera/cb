@@ -58,7 +58,7 @@ angular.module('cbApp')
 
     $scope.toggleFooter = function(){
      
-      $(".home-page-menu-options").slideToggle(500);
+      $(".home-page-menu-options").slideToggle(250);
       
     }
 

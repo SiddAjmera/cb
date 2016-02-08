@@ -118,6 +118,9 @@ html,body{
     outline-color: transparent;
 }
 
+.signup-sec-wrapper .user-input-section{
+    padding-top: 7px;
+}
 .user-input-section{
     float: left;
     width: 70%;
@@ -163,7 +166,16 @@ html,body{
   width: 44px;
   height: 42px;
 }
-
+.show-pwd-icon{
+    position: absolute;
+    right: 5px;
+    top: 18px;
+    width: 20px;
+    cursor: pointer;
+}
+.show-pwd-wrap{
+    position: relative;
+}
 /*Login css ends*/
 .office-address-select .ui-select-match{
     width: 100%!important;
@@ -1602,7 +1614,7 @@ input[type=number]::-webkit-outer-spin-button {
     border: none;
 }
 .pooling-section{
-    margin-top: 20%;
+    margin-top: 14%;
 }
 .home-team-ride{
     padding-right: 6px;
@@ -1627,16 +1639,16 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .on-the-fly-sec{
     border-bottom: 1px solid #484848;
-    padding-bottom: 60px;
+    padding-bottom: 21%;
     position: relative;
 }
 .or-sec{
     position: absolute;
     bottom: -23px;
     background-image: url("../assets/images/dashboard-icon/or_bg.png");
-    width: 40px;
-    height: 40px;
-    background-size: 40px;
+    width: 45px;
+    height: 45px;
+    background-size: 45px;
     padding-top: 7px;
     font-size: 12px;
     color: #fff;

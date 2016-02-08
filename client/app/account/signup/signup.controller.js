@@ -12,7 +12,8 @@ angular.module('cbApp')
                                ];
 
     /*get tcs locations*/
- 
+    $scope.fieldtype = "password";
+
      $scope.officeAddressJSON = staticData.getTCSLocations();
                               
 
@@ -26,6 +27,10 @@ angular.module('cbApp')
     $scope.step = 1;
     $state.go("signup.stepOne");
 
+    /*function to change field type*/
+    $scope.changeFieldType = function(){
+      $scope.fieldtype = $scope.fieldtype=="password"?"text":"password";
+    }
 
     /*function for traversing between steps*/
     $scope.goToStep = function(step){
