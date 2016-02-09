@@ -15,11 +15,14 @@ router.post('/GetRideByRideAttribute', auth.isAuthenticated(), controller.getRid
 router.post('/GetAvailableRides', auth.isAuthenticated(), controller.getAvailableRides);
 router.post('/GetRideHistoryForCurrentUser', auth.isAuthenticated(), controller.getRideHistoryForCurrentUser);
 router.post('/FilterRide', auth.isAuthenticated(), controller.filterRide);
-// End of routes
+
 
 router.put('/:id', auth.isAuthenticated(), controller.update);
 router.put('/AddCompanionToRide/:id', auth.isAuthenticated(), controller.addCompanionToRide);
-router.put('/updateRiderStatus/:id', auth.isAuthenticated(), controller.updateRiderStatus);
+router.put('/UpdateRiderStatus/:id', auth.isAuthenticated(), controller.updateRiderStatus);
+router.put('/CancelRide/:id', auth.isAuthenticated(), controller.cancelRide);
+router.put('/RescheduleRide/:id', auth.isAuthenticated(), controller.rescheduleRide);
+// End of routes
 
 router.patch('/:id', auth.isAuthenticated(), controller.update);
 router.delete('/:id', auth.isAuthenticated(), controller.destroy);

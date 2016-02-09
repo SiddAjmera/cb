@@ -9,6 +9,7 @@ var Push = require('../../utils/pushNotification');
 var Util = require('../../utils/geoJSONify');
 var log4js= require('../../utils/serverLogger');
 var logger = log4js.getLogger('server');
+var q = require('q');
 
 var events = require('events');
 var EventEmitter = new events.EventEmitter();
@@ -28,6 +29,16 @@ EventEmitter.on("userRequestedARide", function(ride){
 EventEmitter.on("hostRespondedToRideRequest", function(ride, riderRedgId, riderStatus){
   logger.trace('hostRespondedToRideRequest Event emitted for user : ' + CurrentUser.empId);
   Push.notifyRiderAboutHostResponse(ride, riderRedgId, riderStatus);
+});
+
+EventEmitter.on("rideCancelled", function(ride){
+  logger.trace('rideCancelled Event emitted for user : ' + CurrentUser.empId);
+  Push.notifyAboutCancelledRide(ride);
+});
+
+EventEmitter.on("rideRescheduled", function(ride){
+  logger.trace('rideRescheduled Event emitted for user : ' + CurrentUser.empId);
+  Push.notifyAboutRescheduledRide(ride);
 });
 
 // Get list of rides
@@ -126,7 +137,8 @@ exports.create = function(req, res) {
         // This might be tricky. Since this is Async, this might get executed even before the User Vehicle Details are saved for the first time.
         if(user.vehicle) offeredBy.vehicleLicenseNumber = user.vehicle.vehicleLicenseNumber;
         rideBody.offeredBy = offeredBy;
-        ride.rideStatus = "ACTIVE";
+        rideBody.rideStatus = "ACTIVE";
+        rideBody.currentlyAvailableSeats = rideBody.initiallyAvailableSeats;
 
         Ride.create(rideBody, function(err, ride) {
           if(err) {
@@ -138,9 +150,18 @@ exports.create = function(req, res) {
             return res.send(404);
           }
           if(ride){
-            EventEmitter.emit("ridePosted", ride);
+            // TODO : Uncomment the next Line
+            /*EventEmitter.emit("ridePosted", ride);*/
             logger.debug('Successfully created ride in Ride.create');
-            return res.json(201, ride);
+            var rideObjectToReturn = {};
+            rideObjectToReturn.from = ride.startLocation.display_address;
+            rideObjectToReturn.to = ride.endLocation.display_address;
+            rideObjectToReturn.via = ride.routeSummary;
+            rideObjectToReturn.leavingIn = ride.rideScheduledTime;
+            rideObjectToReturn.currentlyAvailableSeats = ride.currentlyAvailableSeats;
+            rideObjectToReturn.initiallyAvailableSeats = ride.initiallyAvailableSeats;
+
+            return res.json(201, rideObjectToReturn);
           }
         });
       });
@@ -280,28 +301,70 @@ exports.getRideHistoryForCurrentUser = function(req, res){
 };
 
 // Updates an existing ride in the DB.
-exports.update = function(req, res) {
-  CurrentUser = req.user;
-  logger.trace(req.user.empId + ' requested for Ride.update');
-  if(req.body._id) { delete req.body._id; }
-  Ride.findById(req.params.id, function (err, ride) {
+exports.actualUpdate = function(editedRide) {
+  var deffered = q.defer();
+  logger.trace(CurrentUser.empId + ' requested for Ride.actualUpdate');
+  Ride.findById(editedRide._id, function (err, ride) {
     if (err) {
-     logger.fatal('Error in Ride.update. Error : ' + err);
-     return handleError(res, err); 
+     logger.fatal('Error in Ride.actualUpdate. Error : ' + err);
+     deffered.reject(err);
     }
     if(!ride) { 
-      logger.error('Error in Ride.update. Error : Not Found');
-      return res.send(404); 
+      logger.error('Error in Ride.actualUpdate. Error : Not Found');
+      deffered.reject(404);
     }
-    var updated = _.merge(ride, req.body);
+    var updated = _.merge(ride, editedRide);
     updated.save(function (err) {
       if (err) { 
-        logger.fatal('Error in Ride.update.updated.save. Error : ' + err);
-        return handleError(res, err); 
+        logger.fatal('Error in Ride.actualUpdate.updated.save. Error : ' + err);
+        deffered.reject(err)
       }
       logger.debug('Successfully updated ride in Ride.update');
-      return res.json(200, ride);
+      deffered.resolve(ride, editedRide);
     });
+  });
+  return deffered.promise;
+};
+
+exports.update = function(req, res){
+  req.body.ride = {};
+  req.body.ride._id = req.params.id;
+  this.actualUpdate(req.body.ride).
+  then(function(ride, editedRide){
+    return res.json(200, editedRide);
+  }, function(err){
+    if(err == 404) return res.send(404);
+    else return handleError(res, err);
+  });
+};
+
+// Cancels the Ride corresponding to ride._id field in the DB
+exports.cancelRide = function(req, res){
+  req.body.ride = {};
+  req.body.ride._id = req.params.id;
+  req.body.ride.rideStatus = "CANCELLED";
+  this.actualUpdate(req.body.ride).
+  then(function(ride, editedRide){
+    EventEmitter.emit("rideCancelled", ride);
+    return res.json(200, editedRide);
+  }, function(err){
+    if(err == 404) return res.send(404);
+    else return handleError(res, err);
+  });
+};
+
+// Reschedules the Ride corresponding to ride._id field in the DB
+exports.rescheduleRide = function(req, res){
+  req.body.ride = {};
+  req.body.ride._id = req.params.id;
+  req.body.ride.rideScheduledTime = req.body.newRideScheduledTime;
+  this.actualUpdate(req.body.ride).
+  then(function(ride, editedRide){
+    EventEmitter.emit("rideRescheduled", ride);
+    return res.json(200, editedRide);
+  }, function(err){
+    if(err == 404) return res.send(404);
+    else return handleError(res, err);
   });
 };
 

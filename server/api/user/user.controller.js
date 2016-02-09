@@ -5,7 +5,7 @@ var Team = require('../team/team.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
-var q= require('q');
+var q = require('q');
 
 var log4js= require('../../utils/serverLogger');
 var logger = log4js.getLogger('server'); 
@@ -237,7 +237,7 @@ exports.changePassword = function(req, res, next) {
 exports.regIdsForOtherUsers = function(empId){
   logger.trace(empId + ' requested for User.regIdsForOtherUsers');
   var redgIds = [];
-  var deffered=q.defer();
+  var deffered = q.defer();
   User.find({empId: {$nin: [empId]}}, 'redgId', function(err, regIds){
     if(err){
       logger.fatal('Error in User.regIdsForOtherUsers. Error : ' + err);
