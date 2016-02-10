@@ -8,3 +8,4 @@ dist
 /cordova/cbApp/platforms
 /cordova/cbApp/plugins
 npm-debug.log
+/server/logs
