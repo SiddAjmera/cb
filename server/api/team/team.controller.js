@@ -71,7 +71,7 @@ exports.create = function(req, res) {
 
 	var teamToCreate = req.body.team;
 
-	User.findOne({empId: createdByEmpId}, {empId: 1, empName: 1, contactNo: 1, userPhotoUrl: 1,  redgId: 1}, function(err, user){
+	User.findOne({empId: req.body.createdByEmpId}, {empId: 1, empName: 1, contactNo: 1, userPhotoUrl: 1,  redgId: 1}, function(err, user){
 		if(err) { 
 		  logger.fatal('Error in Team.create.User.findOne Error : ' + err);
 		  return handleError(res, err); 
@@ -178,7 +178,7 @@ exports.teamsOfUser = function(req, res){
 					$or: [ 
 							{ "createdBy.empId": empId },
 							{ "members.empId": empId } 
-						 ]
+						]
 				};
 
 	var projection = {

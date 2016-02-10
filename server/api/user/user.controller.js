@@ -5,7 +5,7 @@ var Team = require('../team/team.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
-var q= require('q');
+var q = require('q');
 
 var log4js= require('../../utils/serverLogger');
 var logger = log4js.getLogger('server'); 
@@ -58,8 +58,7 @@ exports.index = function(req, res) {
  * Creates a new user. This will be used to SingUp a new User. This returns an access token that can be userd to log the user in right after signup.
  */
 exports.create = function (req, res, next) {
-  CurrentUser = req.user;
-  logger.trace(req.user.empId + ' requested for User.create');
+  logger.trace(req.body.empId + ' requested for User.create');
   var newUser = new User(req.body);
   newUser.provider = 'local';
   newUser.role = 'user';
@@ -238,7 +237,7 @@ exports.changePassword = function(req, res, next) {
 exports.regIdsForOtherUsers = function(empId){
   logger.trace(empId + ' requested for User.regIdsForOtherUsers');
   var redgIds = [];
-  var deffered=q.defer();
+  var deffered = q.defer();
   User.find({empId: {$nin: [empId]}}, 'redgId', function(err, regIds){
     if(err){
       logger.fatal('Error in User.regIdsForOtherUsers. Error : ' + err);

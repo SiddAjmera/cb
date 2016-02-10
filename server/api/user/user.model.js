@@ -11,20 +11,21 @@ var UserSchema = new Schema({
   // Created according to the "Store What You Query For" Principle. Principle's Name is self explainatory
   empId: { type: String, index: true },
   empName: String,
-  contactNo: { type: String, index: true },
+  contactNo: String,
   gender: String,
   homeAddressLocation: {
     formatted_address: String,
+    display_address: String,
     icon: String,
     location: {type: [Number], index: '2d'},
     placeId: String
   },
-  city: { type: String, index: true },
-  state: { type: String, index: true },
-  zipcode: { type: String, index: true },
+  city: String,
+  state: String,
+  zipcode: String,
   officeAddressLocation: {
-    displayAddress:String,
     formatted_address: String,
+    display_address: String,
     icon: String,
     location: {type: [Number], index: '2dsphere'},
     placeId: String

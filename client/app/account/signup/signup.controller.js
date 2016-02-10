@@ -2,7 +2,7 @@
 
 angular.module('cbApp')
   .controller('SignupCtrl', function ($scope,$location, $window,$state,$modal,$rootScope,cordovaUtil,httpRequest,localStorage,pushnotification,staticData) {
-    $scope.user = {vehicle:{}};
+    $scope.user = {};
     $scope.user.gender = "Female";
     $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",
                                 "9:00 AM - 6:00 PM",
@@ -12,7 +12,8 @@ angular.module('cbApp')
                                ];
 
     /*get tcs locations*/
- 
+    $scope.fieldtype = "password";
+
      $scope.officeAddressJSON = staticData.getTCSLocations();
                               
 
@@ -26,6 +27,10 @@ angular.module('cbApp')
     $scope.step = 1;
     $state.go("signup.stepOne");
 
+    /*function to change field type*/
+    $scope.changeFieldType = function(){
+      $scope.fieldtype = $scope.fieldtype=="password"?"text":"password";
+    }
 
     /*function for traversing between steps*/
     $scope.goToStep = function(step){
@@ -92,9 +97,8 @@ angular.module('cbApp')
        
        $scope.signupPost=function(){ 
          var url = config.apis.signup;
-         $scope.user.empId = $scope.user.userId;
-         $scope.user.officeAddressLocation = $scope.user.officeAddress;
-         $scope.user.officeAddress = $scope.user.officeAddress.displayAddress;
+       // $scope.user.officeAddressLocation = $scope.user.officeAddress;
+        //$scope.user.officeAddress = $scope.user.officeAddress.displayAddress;
          httpRequest.post(url,$scope.user).
           then(function(response){
               /*if(response.status==)*/

@@ -216,7 +216,7 @@ angular.module('cbApp')
       isLoggedInAsync: function(cb) {
         //changed 
         fetchUser().then(function(user){
-          if(user)
+          if(user.hasOwnProperty('empId'))
             cb(true);
           else
             cb(false);
