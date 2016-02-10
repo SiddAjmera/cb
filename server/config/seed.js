@@ -93,6 +93,7 @@ User.create({
     username: '111113',
     password: "123",
     userId: '111113',
+    redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
     userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/055/092/193511e.jpg',
     vehicle: [{
         vehicleLicenseNumber: "MH 14 RF 5678",
@@ -125,6 +126,7 @@ User.create({
     username: '111114',
     password: "123",
     userId: '111114',
+    redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
     userPhotoUrl: 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png',
     vehicle: [{
         vehicleLicenseNumber: "MH 14 RF 7890",
@@ -150,6 +152,7 @@ User.create({
     username: '111115',
     password: "123",
     userId: '111115',
+    redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
     userPhotoUrl: 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png',
     vehicle: [{
         vehicleLicenseNumber: "MH 14 RF 8901",
@@ -210,15 +213,53 @@ Ride.create({
 });
 
 Team.create({
-    teamId: 1000,
-    name: "Monday Mornings",
-    admin: mongoose.Types.ObjectId("56601723647a6dac029d21e8"),
-    members: [ mongoose.Types.ObjectId("56601723647a6dac029d21eb"), mongoose.Types.ObjectId("56601723647a6dac029d21e9") ]
-},{
-    teamId: 1001,
-    name: "Monday Evenings",
-    admin: mongoose.Types.ObjectId("56601723647a6dac029d21ea"),
-    members: [ mongoose.Types.ObjectId("56601723647a6dac029d21ec")],
+    "name": "Morning Commute",
+    "createdBy": {
+        "empId": "111111",
+        "empName": "Jagdeep Singh Soni",
+        "contactNo": "9876543210",
+        "userPhotoUrl": "https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/08a/0fe/2c2b6bb.jpg",
+        "redgId": "APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg"
+    },
+    "members": [{
+        "empId": "111112",
+        "empName": "Siddharth Ajmera",
+        "contactNo": "9876543211",
+        "userPhotoUrl": "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAALvAAAAJDQyNGQ1MDI0LTFmYmEtNGNlMy05ZTkzLWI4OWU1OTdhMDUzOQ.jpg",
+        "membershipStatus": "PENDING",
+        "redgId": "APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg"
+    },{
+        "empId": "111113",
+        "empName": "Parvez Patel",
+        "contactNo": "9876543212",
+        "userPhotoUrl": "https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/055/092/193511e.jpg",
+        "membershipStatus": "PENDING",
+        "redgId": "APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg"
+    }],
+    "rideDetails": {
+        "from": {
+            "formatted_address" : "Test Team Formation 1",
+            "display_address" : "S1/Poorna",
+            "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+            "location" : [ 
+                73.6848913999999980,
+                18.5813442000000000
+            ],
+            "placeId" : "ChIJ6UG68Gy7wjsRs4AJ2njAyHc"
+        },
+        "to":{
+            "formatted_address" : "Bhumkar Bridge, Wakad, Pune, Maharashtra 411057, India",
+            "display_address" : "Bhumkar Bridge",
+            "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+            "location" : [ 
+                73.7526237999999950,
+                18.6059373000000010
+            ],
+            "placeId" : "ChIJ5-6NE3y5wjsR5Q4o_NfuSFU"
+        },
+        "preferredTime": 1455023742,
+        "routeSummary" : "Phase 2 Rd"
+    }
 }, function(){
     console.log('Finished populating Teams');
 });

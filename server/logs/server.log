@@ -1,0 +1,86 @@
+[2016-02-10 15:25:52.636] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 15:25:52.645] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 15:27:00.420] [TRACE] server - 111111 requested for Team.create
+[2016-02-10 15:27:00.440] [DEBUG] server - Successfully created Team in Team.create
+[2016-02-10 15:28:57.451] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 15:28:57.464] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 15:29:03.198] [TRACE] server - 111111 requested for Team.create
+[2016-02-10 15:29:03.221] [DEBUG] server - Successfully created Team in Team.create
+[2016-02-10 15:29:03.221] [TRACE] server - teamCreated Event emitted for user : 111111
+[2016-02-10 15:29:03.243] [DEBUG] server - Successfully created team in Team.create
+[2016-02-10 15:31:22.243] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 15:31:22.267] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 15:31:53.829] [TRACE] server - 111111 requested for Team.create
+[2016-02-10 15:31:53.859] [DEBUG] server - Successfully created Team in Team.create
+[2016-02-10 15:31:53.860] [TRACE] server - teamCreated Event emitted for user : 111111
+[2016-02-10 15:31:53.878] [DEBUG] server - Successfully created team in Team.create
+[2016-02-10 15:33:25.050] [TRACE] server - 111111 requested for Team.addMember
+[2016-02-10 15:33:25.233] [DEBUG] server - Successfully updated Team in Team.addMember
+[2016-02-10 15:33:25.234] [TRACE] server - teamMembersAdded Event emitted for user : 111111
+[2016-02-10 15:33:25.239] [DEBUG] server - Successfully added team member(s) in Team.addMember
+[2016-02-10 15:37:13.018] [TRACE] server - 111111 requested for Team.addMember
+[2016-02-10 15:37:13.095] [DEBUG] server - Successfully updated Team in Team.addMember
+[2016-02-10 15:37:13.096] [TRACE] server - teamMembersAdded Event emitted for user : 111111
+[2016-02-10 15:37:13.128] [DEBUG] server - Successfully added team member(s) in Team.addMember
+[2016-02-10 15:37:19.925] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 15:37:19.934] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 15:39:27.299] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 15:39:27.310] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 15:40:18.781] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 15:40:18.832] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 15:42:00.544] [TRACE] server - 111111 requested for User.me
+[2016-02-10 15:42:00.552] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 15:42:00.600] [TRACE] server - 111111 requested for User.me
+[2016-02-10 15:42:00.605] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 15:42:00.861] [TRACE] server - 111111 requested for User.me
+[2016-02-10 15:42:00.874] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 15:42:00.945] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 15:42:00.949] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 15:43:33.178] [TRACE] server - 111111 requested for Team.addMember
+[2016-02-10 15:43:33.179] [ERROR] server - Error in Team.addMember. Client did not give array of empIds to add as members
+[2016-02-10 15:44:44.785] [TRACE] server - 111111 requested for Team.updateMemberStatus
+[2016-02-10 15:44:44.789] [ERROR] server - Error in Team.updateMemberStatus. Client did not give membershipStatus: 'ACCEPTED or REJECTED ' but something else
+[2016-02-10 15:45:14.100] [TRACE] server - 111111 requested for Team.updateMemberStatus
+[2016-02-10 15:45:14.101] [ERROR] server - Error in Team.updateMemberStatus. Client did not give membershipStatus: 'ACCEPTED or REJECTED ' but something else
+[2016-02-10 15:47:20.247] [TRACE] server - 111111 requested for Team.updateMemberStatus
+[2016-02-10 15:47:20.250] [ERROR] server - Error in Team.updateMemberStatus. Client did not give membershipStatus: 'ACCEPTED or REJECTED ' but something else
+[2016-02-10 15:49:54.870] [TRACE] server - 111111 requested for Team.updateMemberStatus
+[2016-02-10 15:49:54.876] [ERROR] server - Error in Team.updateMemberStatus. Client did not give membershipStatus: 'ACCEPTED or REJECTED ' but something else
+[2016-02-10 15:52:16.887] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 15:52:16.901] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 15:52:21.330] [TRACE] server - 111111 requested for Team.updateMemberStatus
+[2016-02-10 15:52:21.330] [ERROR] server - Error in Team.updateMemberStatus. Client did not give membershipStatus: 'ACCEPTED or REJECTED ' but something else
+[2016-02-10 15:55:02.907] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 15:55:02.921] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 15:55:09.952] [TRACE] server - 111111 requested for Team.updateMemberStatus
+[2016-02-10 15:55:09.952] [ERROR] server - Error in Team.updateMemberStatus. Client did not give membershipStatus: 'ACCEPTED or REJECTED ' but something else
+[2016-02-10 15:58:01.451] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 15:58:01.464] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 15:58:04.813] [TRACE] server - 111111 requested for Team.updateMemberStatus
+[2016-02-10 16:00:08.264] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:00:08.276] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:00:25.361] [TRACE] server - 111111 requested for Team.updateMemberStatus
+[2016-02-10 16:04:02.120] [TRACE] server - 111111 requested for Team.updateMemberStatus
+[2016-02-10 16:04:02.147] [DEBUG] server - Successfully updated Team in Team.updateMemberStatus
+[2016-02-10 16:04:02.149] [TRACE] server - teamMemberResponded Event emitted for user : 111111
+[2016-02-10 16:04:02.174] [DEBUG] server - Successfully added team member(s) in Team.addMember
+[2016-02-10 16:04:10.393] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:04:10.402] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:18:38.972] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:18:38.989] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:18:42.206] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:18:42.211] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:21:17.561] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:21:17.582] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:21:21.237] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:21:21.241] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:22:21.936] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:22:21.964] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:22:27.245] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:22:27.248] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:23:38.829] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:23:38.883] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:23:43.249] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:23:43.252] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:27:59.579] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:27:59.590] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId

@@ -72,7 +72,7 @@ exports.create = function(req, res) {
 	var teamToCreate = req.body.team;
 
 	User.findOne({empId: req.body.createdByEmpId}, {empId: 1, empName: 1, contactNo: 1, userPhotoUrl: 1,  redgId: 1}, function(err, user){
-		if(err) { 
+		if(err){ 
 		  logger.fatal('Error in Team.create.User.findOne Error : ' + err);
 		  return handleError(res, err); 
 		}
@@ -80,11 +80,18 @@ exports.create = function(req, res) {
 	      logger.error('Error in Team.create.User.findOne Error : User Not Found');
 	      return res.send(404);
 	    }
-
-	    teamToCreate.offeredBy = user;
-
-	    User.find( {empId: { $in: req.body.membersEmpIds }}, {empId: 1, empName: 1, contactNo: 1, userPhotoUrl: 1,  redgId: 1}, function(err, users){
-	    	if(err) { 
+	    if(user){
+	      teamToCreate.createdBy = {};
+	      teamToCreate.createdBy._id = user._id;
+		  teamToCreate.createdBy.empId = user.empId;
+		  teamToCreate.createdBy.empName = user.empName;
+		  teamToCreate.createdBy.contactNo = user.contactNo;
+		  teamToCreate.createdBy.userPhotoUrl = user.userPhotoUrl;
+		  teamToCreate.createdBy.redgId = user.redgId;
+	    }
+		
+		User.find( {empId: { $in: req.body.membersEmpIds }}, {empId: 1, empName: 1, contactNo: 1, userPhotoUrl: 1,  redgId: 1}, function(err, users){
+	    	if(err){ 
 			  logger.fatal('Error in Team.create.User.find Error : ' + err);
 			  return handleError(res, err); 
 			}
@@ -92,11 +99,21 @@ exports.create = function(req, res) {
 		      logger.error('Error in Team.create.User.find Error : Users Not Found');
 		      return res.send(404);
 		    }
-		    users.forEach(function(user){
-		    	user.membershipStatus = "PENDING";
-		    });
+		    if(users){
+		    	var memberUsers = users.map(function(user){
+		    				var memberUser = {};
+		    				memberUser._id = user._id;
+		    				memberUser.empId = user.empId;
+		    				memberUser.empName = user.empName;
+		    				memberUser.contactNo = user.contactNo;
+		    				memberUser.userPhotoUrl = user.userPhotoUrl;
+		    				memberUser.redgId = user.redgId;
+		    				memberUser.membershipStatus = "PENDING";
+				    		return memberUser;
+				    	});
+		    }
 
-		    teamToCreate.members = users;
+		    teamToCreate.members = memberUsers;
 
 		    Team.create(teamToCreate, function(err, team) {
 				if(err) { 
@@ -110,6 +127,7 @@ exports.create = function(req, res) {
 			    logger.debug('Successfully created Team in Team.create');
 
 			    EventEmitter.emit("teamCreated", team);
+			    logger.debug('Successfully emitted teamCreated Event Team.create');
 		        logger.debug('Successfully created team in Team.create');
 				return res.json(201, team);
 			});
@@ -219,7 +237,7 @@ exports.addMember = function(req, res){
 		  logger.fatal('Error in Team.addMember. Error : ' + err);
 		  return handleError(res, err); 
 		}
-		if(!teams){
+		if(!team){
 	      logger.error('Error in Team.addMember. Error : Not Found');
 	      return res.send(404);
 	    }
@@ -233,13 +251,24 @@ exports.addMember = function(req, res){
 		      return res.send(404);
 		    }
 
-		    users.forEach(function(user){
-                                user.membershipStatus = "PENDING";
-                         });
+		    if(users){
+		    	var memberUsers = users.map(function(user){
+		    				var memberUser = {};
+		    				memberUser._id = user._id;
+		    				memberUser.empId = user.empId;
+		    				memberUser.empName = user.empName;
+		    				memberUser.contactNo = user.contactNo;
+		    				memberUser.userPhotoUrl = user.userPhotoUrl;
+		    				memberUser.redgId = user.redgId;
+		    				memberUser.membershipStatus = "PENDING";
+				    		return memberUser;
+				    	});
+		    }
 
 		    var newlyAddedMembersRedgIds = users.map(function(user){ return user.redgId; });
 
-		    team.members = team.members.concat(users);
+		    team.members = team.members.concat(memberUsers);
+
 		    team.save(function(err){
 		    	if(err) { 
 				  logger.fatal('Error in Team.addMember. Error : ' + err);
@@ -248,6 +277,7 @@ exports.addMember = function(req, res){
 				logger.debug('Successfully updated Team in Team.addMember');
 
 				EventEmitter.emit("teamMembersAdded", team, newlyAddedMembersRedgIds);
+				logger.debug('Successfully emitted teamMembersAdded Event Team.addMember');
 		        logger.debug('Successfully added team member(s) in Team.addMember');
 				return res.json(201, team);
 		    });
@@ -259,18 +289,25 @@ exports.addMember = function(req, res){
 exports.updateMemberStatus = function(req, res){
 	CurrentUser = req.user;
 
+	console.log("Request Body : " + JSON.stringify(req.body));
+
 	// This will be the EmpId of the User who has ACCEPTED or REJECTED the Membership Offer
 	var empId = req.user.empId;
 	logger.trace(empId + ' requested for Team.updateMemberStatus');
-	var membershipStatus = req.body.membershipStatus;
+	var membershipStatus = req.body.membershipStatus.toString();
+
+	console.log("membershipStatus : " + membershipStatus);
+
 	if(!membershipStatus){
 		logger.error('Error in Team.updateMemberStatus. Client did not give membershipStatus: \'ACCEPTED or REJECTED \' ');
 		return res.json(400, {"Error Message": " membershipStatus: \'ACCEPTED or REJECTED \' is mandatory "});
 	}
-	if(membershipStatus != 'ACCEPTED' || membershipStatus != 'REJECTED'){
+	if(membershipStatus != "ACCEPTED" && membershipStatus != "REJECTED"){
 		logger.error('Error in Team.updateMemberStatus. Client did not give membershipStatus: \'ACCEPTED or REJECTED \' but something else');
 		return res.json(400, {"Error Message": " membershipStatus can only be ACCEPTED or REJECTED"});
 	}
+
+	var respondingEmpName;
 
 	Team.findById( req.params.id, function(err, team){
 		if(err) { 
@@ -283,7 +320,7 @@ exports.updateMemberStatus = function(req, res){
 	    }
 	    team.members.forEach(function(member){
 	    	if(member.empId == empId){
-	    		var respondingEmpName = member.empName;
+	    		respondingEmpName = member.empName;
 	    		(membershipStatus == 'ACCEPTED') ? member.membershipStatus = 'CONFIRMED' : members.splice(members.indexOf(member), 1);
 	    	}
 	    });
