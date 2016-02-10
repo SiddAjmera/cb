@@ -20,7 +20,7 @@ var TeamSchema = new Schema({
   	empName: String,
   	contactNo: String,
   	userPhotoUrl: String,
-  	membershipStatus: { type: String, enum: ["PENDING", "CONFIRMED"] },
+  	membershipStatus: { type: String, enum: ["PENDING", "CONFIRMED"], default: "PENDING" },
     redgId: String
   }],
   rideDetails: {

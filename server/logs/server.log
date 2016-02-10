@@ -84,3 +84,116 @@
 [2016-02-10 16:23:43.252] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
 [2016-02-10 16:27:59.579] [TRACE] server - undefined requested for Drive.latestDriveId
 [2016-02-10 16:27:59.590] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:34:39.690] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:34:39.834] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:40:00.652] [TRACE] server - 111111 requested for Ride.create
+[2016-02-10 16:40:00.813] [DEBUG] server - Successfully created ride in Ride.create
+[2016-02-10 16:40:22.897] [TRACE] server - 111111 requested for Ride.create
+[2016-02-10 16:40:22.911] [DEBUG] server - Successfully created ride in Ride.create
+[2016-02-10 16:42:07.374] [TRACE] server - 111111 requested for Ride.create
+[2016-02-10 16:42:07.399] [DEBUG] server - Successfully created ride in Ride.create
+[2016-02-10 16:44:46.756] [TRACE] server - 111111 requested for Ride.create
+[2016-02-10 16:44:47.106] [DEBUG] server - Successfully created ride in Ride.create
+[2016-02-10 16:52:49.328] [TRACE] server - 111111 requested for Ride.create
+[2016-02-10 16:52:49.344] [DEBUG] server - Successfully created ride in Ride.create
+[2016-02-10 16:56:03.287] [TRACE] server - 111112 requested for User.me
+[2016-02-10 16:56:03.297] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 16:56:03.340] [TRACE] server - 111112 requested for User.me
+[2016-02-10 16:56:03.344] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 16:56:04.244] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 16:56:04.250] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 16:56:04.708] [TRACE] server - 111112 requested for User.me
+[2016-02-10 16:56:04.717] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 16:57:54.276] [TRACE] server - 111112 requested for Ride.addCompanionToRide
+[2016-02-10 16:57:54.336] [DEBUG] server - Successfully added a companion to ride with PENDING STATUS in Ride.getRideHistoryForCurrentUser
+[2016-02-10 16:57:54.337] [TRACE] server - userRequestedARide Event emitted for user : 111112
+[2016-02-10 16:57:54.354] [DEBUG] server - Successfully requested to ride together in Ride.addCompanionToRide
+[2016-02-10 17:05:04.930] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 17:05:05.069] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 17:05:25.364] [TRACE] server - 111111 requested for Ride.create
+[2016-02-10 17:05:25.392] [DEBUG] server - Successfully created ride in Ride.create
+[2016-02-10 17:06:15.644] [TRACE] server - 111112 requested for Ride.addCompanionToRide
+[2016-02-10 17:06:15.671] [DEBUG] server - Successfully added a companion to ride with PENDING STATUS in Ride.getRideHistoryForCurrentUser
+[2016-02-10 17:06:15.671] [TRACE] server - userRequestedARide Event emitted for user : 111112
+[2016-02-10 17:06:15.689] [DEBUG] server - Successfully requested to ride together in Ride.addCompanionToRide
+[2016-02-10 17:07:53.262] [TRACE] server - 111112 requested for Ride.create
+[2016-02-10 17:07:53.351] [ERROR] server - Error in Ride.create. Error : An ACTIVE RIDE already exist
+[2016-02-10 17:08:12.268] [TRACE] server - 111112 requested for Ride.create
+[2016-02-10 17:08:12.540] [DEBUG] server - Successfully created ride in Ride.create
+[2016-02-10 17:08:21.824] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 17:08:21.833] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 17:08:39.470] [TRACE] server - 111111 requested for User.me
+[2016-02-10 17:08:39.477] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 17:08:39.530] [TRACE] server - 111111 requested for User.me
+[2016-02-10 17:08:39.542] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 17:08:40.313] [TRACE] server - 111111 requested for User.me
+[2016-02-10 17:08:40.323] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 17:08:40.417] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 17:08:40.427] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 17:09:05.334] [TRACE] server - 111111 requested for Ride.addCompanionToRide
+[2016-02-10 17:09:05.340] [ERROR] server - Error in Ride.addCompanionToRide. Error : Not Found
+[2016-02-10 17:09:32.270] [TRACE] server - 111111 requested for Ride.addCompanionToRide
+[2016-02-10 17:09:32.306] [DEBUG] server - Successfully added a companion to ride with PENDING STATUS in Ride.getRideHistoryForCurrentUser
+[2016-02-10 17:09:32.306] [TRACE] server - userRequestedARide Event emitted for user : 111111
+[2016-02-10 17:09:32.356] [DEBUG] server - Successfully requested to ride together in Ride.addCompanionToRide
+[2016-02-10 17:48:13.097] [TRACE] server - 111112 requested for User.me
+[2016-02-10 17:48:13.133] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 17:48:13.157] [TRACE] server - 111112 requested for User.me
+[2016-02-10 17:48:13.163] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 17:48:13.554] [TRACE] server - 111112 requested for User.me
+[2016-02-10 17:48:13.560] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 17:48:13.702] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 17:48:13.706] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 17:48:32.142] [TRACE] server - 111112 requested for Ride.addCompanionToRide
+[2016-02-10 17:48:32.154] [ERROR] server - Error in Ride.addCompanionToRide. Error : User is already a part of an ACTIVE RIDE
+[2016-02-10 17:50:20.965] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 17:50:20.975] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 17:51:03.317] [TRACE] server - 111112 requested for Ride.updateRiderStatus
+[2016-02-10 17:51:03.317] [ERROR] server - Error in RideTeam.updateRiderStatus. Client did not give riderStatus: 'ACCEPTED or REJECTED ' 
+[2016-02-10 17:51:14.619] [TRACE] server - 111112 requested for Ride.updateRiderStatus
+[2016-02-10 17:53:08.823] [TRACE] server - 111112 requested for Ride.updateRiderStatus
+[2016-02-10 17:53:08.848] [DEBUG] server - Successfully updated Rider Status in Ride.updateRiderStatus
+[2016-02-10 17:55:15.022] [TRACE] server - 111112 requested for Ride.updateRiderStatus
+[2016-02-10 17:55:15.042] [DEBUG] server - Successfully updated Rider Status in Ride.updateRiderStatus
+[2016-02-10 17:55:15.043] [TRACE] server - hostRespondedToRideRequest Event emitted for user : 111112
+[2016-02-10 17:55:15.078] [DEBUG] server - Successfully responded to rider who requested to ride together in Ride.updateRiderStatus
+[2016-02-10 17:55:23.081] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 17:55:23.090] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 17:59:46.192] [TRACE] server - 111112 requested for Ride.updateRiderStatus
+[2016-02-10 17:59:46.363] [DEBUG] server - Successfully updated Rider Status in Ride.updateRiderStatus
+[2016-02-10 17:59:46.366] [TRACE] server - hostRespondedToRideRequest Event emitted for user : 111112
+[2016-02-10 17:59:46.396] [DEBUG] server - Successfully responded to rider who requested to ride together in Ride.updateRiderStatus
+[2016-02-10 17:59:53.180] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 17:59:53.196] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 18:20:09.584] [TRACE] server - 111112 requested for Ride.addCompanionToRide
+[2016-02-10 18:20:09.620] [ERROR] server - Error in Ride.addCompanionToRide. Error : User is already a part of an ACTIVE RIDE
+[2016-02-10 18:20:59.602] [TRACE] server - 111111 requested for User.me
+[2016-02-10 18:20:59.608] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 18:20:59.842] [TRACE] server - 111111 requested for User.me
+[2016-02-10 18:20:59.850] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 18:21:00.841] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 18:21:00.847] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 18:21:00.883] [TRACE] server - 111111 requested for User.me
+[2016-02-10 18:21:00.888] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 18:21:25.730] [TRACE] server - 111111 requested for Ride.addCompanionToRide
+[2016-02-10 18:21:25.743] [ERROR] server - Error in Ride.addCompanionToRide. Error : User is already a part of an ACTIVE RIDE
+[2016-02-10 18:22:36.995] [TRACE] server - 111111 requested for Ride.addCompanionToRide
+[2016-02-10 18:22:37.004] [ERROR] server - Error in Ride.addCompanionToRide. Error : User is already a part of an ACTIVE RIDE
+[2016-02-10 18:22:44.445] [TRACE] server - 111113 requested for User.me
+[2016-02-10 18:22:44.454] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 18:22:44.828] [TRACE] server - 111113 requested for User.me
+[2016-02-10 18:22:44.833] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 18:22:45.314] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 18:22:45.325] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 18:22:45.517] [TRACE] server - 111113 requested for User.me
+[2016-02-10 18:22:45.528] [DEBUG] server - Successfully got User in User.me
+[2016-02-10 18:23:00.494] [TRACE] server - 111113 requested for Ride.addCompanionToRide
+[2016-02-10 18:23:00.529] [DEBUG] server - Successfully added a companion to ride with PENDING STATUS in Ride.getRideHistoryForCurrentUser
+[2016-02-10 18:23:00.529] [TRACE] server - userRequestedARide Event emitted for user : 111113
+[2016-02-10 18:23:00.539] [DEBUG] server - Successfully requested to ride together in Ride.addCompanionToRide
+[2016-02-10 18:29:06.946] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 18:29:06.983] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 18:33:27.291] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 18:33:27.312] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-10 18:38:43.635] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-10 18:38:43.655] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId

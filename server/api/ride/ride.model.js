@@ -39,7 +39,7 @@ var RideSchema = new Schema({
     gender: String,
     contactNo: String,
     userPhotoUrl: String,
-    riderStatus: { type: String, enum: ["PENDING", "CONFIRMED"] },
+    riderStatus: { type: String, enum: ["PENDING", "CONFIRMED"], default: "PENDING" },
     redgId: String
   }], // Filled by the Details of the User who accepts the Ride
   initiallyAvailableSeats: Number,  // Filled by Seats Available
@@ -53,7 +53,7 @@ var RideSchema = new Schema({
     averageSpeed: Number
     // Some other Stats required as well
   }, // Updated after the ride is started and completed
-  rideStatus: { type: String, enum: [ 'ACTIVE', 'STARTED', 'COMPLETED', 'CANCELLED' ] }, // Updated when a ride is edited
+  rideStatus: { type: String, enum: [ 'ACTIVE', 'STARTED', 'COMPLETED', 'CANCELLED' ], default: "ACTIVE" }, // Updated when a ride is edited
   createdDate: { type: Date, default: Date.now }, // Time when a ride is created
   modifiedDate: { type: Date, default: Date.now }, // Updated when a ride is modified
   comments: String  // Comments field in the Post Ride section
