@@ -13,7 +13,6 @@ var Team = require('../api/team/team.model');
 
 var SeedData = require('./seedData');
 
-User.remove(function(){
 User.create({
     empId: '111111',
     empName: 'Jagdeep Singh Soni',
@@ -45,7 +44,7 @@ User.create({
         rfid: "ThisIsASampleRFID2",
         pictureUrl: "https://upload.wikimedia.org/wikipedia/commons/0/01/Audi_A4_2.0_TDI_Ambition_(B8,_Facelift)_%E2%80%93_Frontansicht,_30._Juli_2012,_Ratingen.jpg"
     }],
-    homeLocationCoordinates: [ 18.574381, 73.681143 ],
+    homeLocationCoordinates: [ 73.681143, 18.574381 ],
     email: 'jagdeep@tcs.com'
   }, {
     empId: '111112',
@@ -78,7 +77,7 @@ User.create({
         rfid: "ThisIsASampleRFID4",
         pictureUrl: "http://images0.cardekho.com/images/car-images/large/Renault/Renault-Duster/duster-black.jpg"
     }],
-    homeLocationCoordinates: [ 18.578157, 73.686889 ],
+    homeLocationCoordinates: [ 73.686889, 18.578157 ],
     email: 'siddharth@tcs.com'
   },{
     empId: '111113',
@@ -94,6 +93,7 @@ User.create({
     username: '111113',
     password: "123",
     userId: '111113',
+    redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
     userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/055/092/193511e.jpg',
     vehicle: [{
         vehicleLicenseNumber: "MH 14 RF 5678",
@@ -110,7 +110,7 @@ User.create({
         rfid: "ThisIsASampleRFID6",
         pictureUrl: "http://www.zigcdn.com/media/content/2015/Apr/bajaj-pulsar-rs200-first-ride-zigwheels-07042015-m00_560x420.jpg"
     }],
-    homeLocationCoordinates: [ 18.592117, 73.762857 ],
+    homeLocationCoordinates: [ 73.762857, 18.592117 ],
     email: 'parvez@tcs.com'
   },{
     empId: '111114',
@@ -126,6 +126,7 @@ User.create({
     username: '111114',
     password: "123",
     userId: '111114',
+    redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
     userPhotoUrl: 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png',
     vehicle: [{
         vehicleLicenseNumber: "MH 14 RF 7890",
@@ -135,7 +136,7 @@ User.create({
         rfid: "ThisIsASampleRFID7",
         pictureUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Bugatti_Veyron_16.4_%E2%80%93_Frontansicht_(1),_5._April_2012,_D%C3%BCsseldorf.jpg"
     }],
-    homeLocationCoordinates: [ 18.616153, 73.778059 ],
+    homeLocationCoordinates: [ 73.778059, 18.616153 ],
     email: 'ninad@tcs.com'
   },{
     empId: '111115',
@@ -151,6 +152,7 @@ User.create({
     username: '111115',
     password: "123",
     userId: '111115',
+    redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
     userPhotoUrl: 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png',
     vehicle: [{
         vehicleLicenseNumber: "MH 14 RF 8901",
@@ -160,53 +162,106 @@ User.create({
         rfid: "ThisIsASampleRFID8",
         pictureUrl: "https://www.mercedes-benz.com/wp-content/uploads/sites/3/2015/08/00-Mercedes-Benz-Vehicles-C-Class-C-63-Coupe-AMG-1180x559.jpg"
     }],
-    homeLocationCoordinates: [ 18.623647, 73.810078 ],
+    homeLocationCoordinates: [ 73.810078, 18.623647 ],
     email: 'ashraf@tcs.com'
   },function(){
     console.log('Finished populating Users');
 });
-});
-Ride.remove(function(){
+
 Ride.create({
-    rideId: 12345678,
-    offeredByUser : mongoose.Types.ObjectId("56601723647a6dac029d21e8"),
-    vehicle: mongoose.Types.ObjectId("5660167ab6df47d026dafbc5"),
-    companions: [ mongoose.Types.ObjectId("56601723647a6dac029d21eb"), mongoose.Types.ObjectId("56601723647a6dac029d21e9") ],
-    source: "Wakad",
-    destination: "Hinjewadi",
-    windowForDeparture: 15,
-    availableSeats: 3,
-    active: true,
-    offeredByUserId:"111111"
-  },{
-    rideId: 23456789,
-    offeredByUser : mongoose.Types.ObjectId("56601723647a6dac029d21ea"),
-    vehicle: mongoose.Types.ObjectId("5660167ab6df47d026dafbc9"),
-    companions: [ mongoose.Types.ObjectId("56601723647a6dac029d21ec")],
-    source: "Wakad",
-    destination: "Sahyadri Park",
-    windowForDeparture: 40,
-    availableSeats: 1,
-    offeredByUserId:"111112",
-    active: true
+    routeSummary : "Phase 2 Rd",
+    initiallyAvailableSeats : 4,
+    comments : "Please dont be late",
+    rideStatus : "ACTIVE",
+    currentlyAvailableSeats : 4,
+    modifiedDate : 1454907600000,
+    createdDate : 1454907600000,
+    rideStatistics : {
+        rideEndTime : 1454907600000,
+        rideStartTime : 1454907600000
+    },
+    offeredBy : {
+        empId : "111114",
+        empName : "Ninad Mahajan",
+        gender : "Male",
+        contactNo : "9876543213",
+        userPhotoUrl : "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png"
+    },
+    rideScheduledTime : 1454907600000,
+    endLocation : {
+        formatted_address : "Bhumkar Bridge, Wakad, Pune, Maharashtra 411057, India",
+        display_address : "Bhumkar Bridge",
+        icon : "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        location : [ 
+            73.7526237999999950,
+            18.6059373000000010
+        ],
+        placeId : "ChIJ5-6NE3y5wjsR5Q4o_NfuSFU"
+    },
+    startLocation : {
+        formatted_address : "S1/Poorna, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
+        display_address : "S1/Poorna",
+        icon : "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        location : [ 
+            73.6848913999999980,
+            18.5813442000000000
+        ],
+        placeId : "ChIJ6UG68Gy7wjsRs4AJ2njAyHc"
+    }
   }, function(){
     console.log('Finished Populating Rides');
-  });
 });
-Team.remove(function(){
+
 Team.create({
-    teamId: 1000,
-    name: "Monday Mornings",
-    admin: mongoose.Types.ObjectId("56601723647a6dac029d21e8"),
-    members: [ mongoose.Types.ObjectId("56601723647a6dac029d21eb"), mongoose.Types.ObjectId("56601723647a6dac029d21e9") ]
-},{
-    teamId: 1001,
-    name: "Monday Evenings",
-    admin: mongoose.Types.ObjectId("56601723647a6dac029d21ea"),
-    members: [ mongoose.Types.ObjectId("56601723647a6dac029d21ec")],
+    "name": "Morning Commute",
+    "createdBy": {
+        "empId": "111111",
+        "empName": "Jagdeep Singh Soni",
+        "contactNo": "9876543210",
+        "userPhotoUrl": "https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/08a/0fe/2c2b6bb.jpg",
+        "redgId": "APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg"
+    },
+    "members": [{
+        "empId": "111112",
+        "empName": "Siddharth Ajmera",
+        "contactNo": "9876543211",
+        "userPhotoUrl": "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAALvAAAAJDQyNGQ1MDI0LTFmYmEtNGNlMy05ZTkzLWI4OWU1OTdhMDUzOQ.jpg",
+        "membershipStatus": "PENDING",
+        "redgId": "APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg"
+    },{
+        "empId": "111113",
+        "empName": "Parvez Patel",
+        "contactNo": "9876543212",
+        "userPhotoUrl": "https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/055/092/193511e.jpg",
+        "membershipStatus": "PENDING",
+        "redgId": "APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg"
+    }],
+    "rideDetails": {
+        "from": {
+            "formatted_address" : "Test Team Formation 1",
+            "display_address" : "S1/Poorna",
+            "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+            "location" : [ 
+                73.6848913999999980,
+                18.5813442000000000
+            ],
+            "placeId" : "ChIJ6UG68Gy7wjsRs4AJ2njAyHc"
+        },
+        "to":{
+            "formatted_address" : "Bhumkar Bridge, Wakad, Pune, Maharashtra 411057, India",
+            "display_address" : "Bhumkar Bridge",
+            "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+            "location" : [ 
+                73.7526237999999950,
+                18.6059373000000010
+            ],
+            "placeId" : "ChIJ5-6NE3y5wjsR5Q4o_NfuSFU"
+        },
+        "preferredTime": 1455023742,
+        "routeSummary" : "Phase 2 Rd"
+    }
 }, function(){
     console.log('Finished populating Teams');
-});
 });
 
 SeedData.seedLocations();

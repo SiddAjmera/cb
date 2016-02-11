@@ -33,6 +33,11 @@
 html,body{
     font-family: helvetica;
 }
+button:focus,input[type="button"]:focus{
+    outline: none;
+    box-shadow: 1px 3px 9px #757575;
+    transition:box-shadow ease .2s;
+}
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -1142,7 +1147,15 @@ a.get-started-link:hover{
 }
 .leaflet-container{
     width:100%;
+    height: 93vh;
+}
+.post-ride-container .leaflet-container{
+    width:100%;
     height: 30vh;
+}
+.sampling-wrapper .leaflet-container{
+    width:100%;
+    height: 70vh;
 }
 .leaflet-popup-content-wrapper{
     background: transparent;

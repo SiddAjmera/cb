@@ -51,6 +51,9 @@ exports.newRideNotification = function(ride){
      var empId = ride.offeredBy.empId;
      User.regIdsForOtherUsers(empId).then(function(redgIds){
         message.params.data.message = "A new ride has been posted by " + ride.offeredBy.empName + " from " + ride.startLocation.display_address + " to " + ride.endLocation.display_address;
+
+        console.log("A new Ride Notification to all the Users : " + message.params.data.message);
+
         sender.send(message, { registrationIds: redgIds }, function (err, result) {
             if(err) console.error(err);
             else    console.log(result);
@@ -63,6 +66,9 @@ exports.notifyHostAboutANewRiderRequest = function(ride){
     var redgIds = [];
     redgIds.push(ride.offeredBy.redgId);
     message.params.data.message = ride.riders[(ride.riders.length - 1)].empName + ' has requested to Ride with you from ' + ride.startLocation.display_address + ' to ' + ride.endLocation.display_address;
+
+    console.log("Notification to the Ride Host About a new CoRider : " + message.params.data.message);
+
     sender.send(message, { registrationIds: redgIds }, function (err, result) {
         if(err) console.error(err);
         else    console.log(result);
@@ -74,6 +80,9 @@ exports.notifyRiderAboutHostResponse = function(ride, riderRedgId, riderStatus){
     var redgIds = [];
     redgIds.push(riderRedgId);
     message.params.data.message = ride.offeredBy.empName + ' has ' + riderStatus + ' your Ride Request';
+
+    console.log("Notification to the CoRider about the Ride Host Response: " + message.params.data.message);
+
     sender.send(message, { registrationIds: redgIds }, function (err, result) {
         if(err) console.error(err);
         else    console.log(result);
@@ -85,6 +94,9 @@ exports.notifyAboutCancelledRide = function(ride){
     var redgIds = [];
     redgIds = ride.riders.map(function(rider){ return rider.redgId; });
     message.params.data.message = ride.offeredBy.empName + ' has cancelled the ride. Please find another ride.';
+
+    console.log("Notification to the CoRiders about Ride Cancellation : " + message.params.data.message);
+
     sender.send(message, { registrationIds: redgIds }, function (err, result) {
         if(err) console.error(err);
         else    console.log(result);
@@ -96,6 +108,9 @@ exports.notifyAboutRescheduledRide = function(ride){
     var redgIds = [];
     redgIds = ride.riders.map(function(rider){ return rider.redgId; });
     message.params.data.message = ride.offeredBy.empName + ' has rescheduled the ride. The ride will now start at ' + ride.rideScheduledTime;
+
+    console.log("Notification to the CoRiders about ride rescheduled : " + message.params.data.message);
+
     sender.send(message, { registrationIds: redgIds }, function (err, result) {
         if(err) console.error(err);
         else    console.log(result);
@@ -106,6 +121,9 @@ exports.notifyAboutRescheduledRide = function(ride){
 exports.teamCreatedNotification = function(team){
     var redgIds = team.members.map(function(member){ return member.redgId; });
     message.params.data.message = team.createdBy.empName + ' has requested you to add to his team';
+    
+    console.log("Push Notification to the Members after Team Creation: " + message.params.data.message);
+    
     sender.send(message, { registrationIds: redgIds }, function (err, result) {
         if(err) console.error(err);
         else    console.log(result);
@@ -115,6 +133,9 @@ exports.teamCreatedNotification = function(team){
 // Notifies Newly Added Team Members about Team Creator's Request to Add them as a team member to an Existing Team
 exports.notifyRecentlyAddedTeamMembers = function(team, newlyAddedMembersRedgIds){
     message.params.data.message = team.createdBy.empName + ' has added you as a team member.';
+
+    console.log("Push Notification to the Members about their addition to an existing team : " + message.params.data.message);
+
     sender.send(message, { registrationIds: newlyAddedMembersRedgIds }, function (err, result) {
         if(err) console.error(err);
         else    console.log(result);
@@ -124,8 +145,11 @@ exports.notifyRecentlyAddedTeamMembers = function(team, newlyAddedMembersRedgIds
 // Notifies the host about a potential members response to the Team Creator's Request
 exports.notifyTeamCreatorAboutMemberResponse = function(team, memberName, memberResponse){
     var redgIds = [];
-    redgIds.push(team.offeredBy.redgId);
+    redgIds.push(team.createdBy.redgId);
     message.params.data.message = memberName + ' has ' + memberResponse + ' your offer to become a Team Members';
+
+    console.log("Push Notification to the Team Creator about a team member's response : " + message.params.data.message);
+
     sender.send(message, { registrationIds: redgIds }, function (err, result) {
         if(err) console.error(err);
         else    console.log(result);
