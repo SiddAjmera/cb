@@ -135,7 +135,7 @@ exports.create = function(req, res) {
         offeredBy.rating = user.rating;
         offeredBy.redgId = user.redgId;
         // This might be tricky. Since this is Async, this might get executed even before the User Vehicle Details are saved for the first time.
-        if(user.vehicle) offeredBy.vehicleLicenseNumber = user.vehicle.vehicleLicenseNumber;
+        if(user.vehicle) offeredBy.vehicleLicenseNumber = user.vehicle[0].vehicleLicenseNumber;
         rideBody.offeredBy = offeredBy;
         rideBody.rideStatus = "ACTIVE";
         rideBody.currentlyAvailableSeats = rideBody.initiallyAvailableSeats;
@@ -358,7 +358,7 @@ exports.rescheduleRide = function(req, res){
   req.body.ride = {};
   req.body.ride._id = req.params.id;
   req.body.ride.rideScheduledTime = req.body.newRideScheduledTime;
-  this.actualUpdate(req.body.ride).
+  Ride.actualUpdate(req.body.ride).
   then(function(ride, editedRide){
     EventEmitter.emit("rideRescheduled", ride);
     return res.json(200, editedRide);
@@ -425,7 +425,7 @@ exports.addCompanionToRide = function(req, res){
                                               }
                                               logger.debug('Successfully updated user details in Ride.addCompanionToRide');
 
-                                              user.riderStatus = "PENDING";
+                                              //user.riderStatus = "PENDING";
                                               ride.riders.push(user);
                                               ride.save(function(err){
                                                   if (err) { 
@@ -444,7 +444,7 @@ exports.addCompanionToRide = function(req, res){
                                           // If we go into else, it means the user isn't posting the ride for the 1st time.
                                           // Which means we already have the required details of the user.
                                           else{
-                                            user.riderStatus = "PENDING";
+                                            //user.riderStatus = "PENDING";
                                             ride.riders.push(user);
                                             ride.save(function(err){
                                                 if (err) { 
@@ -468,16 +468,18 @@ exports.addCompanionToRide = function(req, res){
 // Client should give the empId of the person whose request has been responded by the HOST OF THE RIDE
 // Client should also give the response - ACCEPTED / REJECTED
 exports.updateRiderStatus = function(req, res){
+  CurrentUser = req.user;
   var empId = req.user.empId;
   logger.trace(empId + ' requested for Ride.updateRiderStatus');
   var riderStatus = req.body.riderStatus;
   var riderEmpId = req.body.riderEmpId;
+  var riderRedgId;
 
   if(!riderStatus){
     logger.error('Error in RideTeam.updateRiderStatus. Client did not give riderStatus: \'ACCEPTED or REJECTED \' ');
     return res.json(400, {"Error Message": " riderStatus: \'ACCEPTED or REJECTED \' is mandatory "});
   }
-  if(riderStatus != 'ACCEPTED' || riderStatus != 'REJECTED'){
+  if(riderStatus != 'ACCEPTED' && riderStatus != 'REJECTED'){
     logger.error('Error in Ride.updateRiderStatus. Client did not give riderStatus: \'ACCEPTED or REJECTED \' but something else');
     return res.json(400, {"Error Message": " riderStatus can only be ACCEPTED or REJECTED"});
   }
@@ -490,13 +492,15 @@ exports.updateRiderStatus = function(req, res){
       logger.error('Error in Ride.updateRiderStatus. Error : Ride Not Found');
       return res.send(404);
     }
+
     ride.riders.forEach(function(rider){
       if(rider.empId == riderEmpId){
-        var riderRedgId = rider.redgId;
+        riderRedgId = rider.redgId;
         (riderStatus == 'ACCEPTED') ? rider.riderStatus = 'CONFIRMED' : ride.riders.splice(riders.indexOf(rider), 1);
       }
     });
-    ride.save(function(err){
+
+    ride.save(function(err, ride){
       if(err) { 
         logger.fatal('Error in Ride.updateRiderStatus. Error : ' + err);
         return handleError(res, err); 
