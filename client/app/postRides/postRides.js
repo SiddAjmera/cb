@@ -5,7 +5,7 @@ angular.module('cbApp')
     $stateProvider
       .state('userHome.postRides', {
         url: '/postRides',
-        templateUrl: 'app/postRides/postRideOneTime.html',
+        templateUrl: 'app/postRides/postRides.html',
         controller: 'PostRidesCtrl',
         authenticate:true
       });
