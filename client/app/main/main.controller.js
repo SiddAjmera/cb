@@ -27,6 +27,10 @@ angular.module('cbApp')
       cordovaUtil.batchSync();
     }
 
+    $scope.gotoLogin=function () {
+      $state.go('login');
+    }
+
     $scope.openSignupForm = function(){
       $state.go('signup');
     }

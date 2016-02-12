@@ -25,8 +25,6 @@ angular.module('cbApp')
     
     //by default, or on page refresh, redirect to first step.
     $scope.step = 1;
-    $state.go("signup.stepOne");
-
     /*function to change field type*/
     $scope.changeFieldType = function(){
       $scope.fieldtype = $scope.fieldtype=="password"?"text":"password";

@@ -1,5 +1,5 @@
 'use strict';
-
+/*
 angular.module('cbApp')
   .config(function ($stateProvider) {
     $stateProvider
@@ -7,4 +7,4 @@ angular.module('cbApp')
         url: '/stepThree',
         templateUrl: 'app/account/signup/stepThree/stepThree.html'
       });
-  });
+  });*/

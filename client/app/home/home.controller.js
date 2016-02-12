@@ -56,6 +56,13 @@ angular.module('cbApp')
         
     }
 
+    $scope.postRide=function () {
+
+    }
+    $scope.takeRide=function () {
+      
+    }
+
     $scope.toggleFooter = function(){
      
       $(".home-page-menu-options").slideToggle(250);

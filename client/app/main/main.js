@@ -6,7 +6,6 @@ angular.module('cbApp')
       .state('main', {
         url: '/main',
         templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl',
-        authenticate:true
+        controller: 'MainCtrl'      
       });
   });

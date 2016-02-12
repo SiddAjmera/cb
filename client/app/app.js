@@ -25,7 +25,7 @@ angular.module('cbApp', [
      console.log("In config block");
 
     $urlRouterProvider
-      .otherwise('/userHome/home');
+      .otherwise('/main');
 
   //  $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
@@ -110,14 +110,12 @@ angular.module('cbApp', [
         if(next.name=="intro"){
           localStorage.isInitialized().then(function(val){
             if(val)
-               $location.path('/userHome/home');
+               $state.go('main');
             else{
-              localStorage.initialize();
-              //$location.path('/intro');
+              localStorage.initialize();              
             }
          });
         }
-
       });
     });
   });
