@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('HomeCtrl', function ($scope,Auth,httpRequest,filterService) {
+  .controller('HomeCtrl', function ($scope,Auth,httpRequest,$state,filterService) {
      $scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
   
        $scope.center={
@@ -58,9 +58,11 @@ angular.module('cbApp')
 
     $scope.postRide=function () {
 
+      $state.go('userHome.postRides');
     }
     $scope.takeRide=function () {
       
+      $state.go('userHome.availableRides');
     }
 
     $scope.toggleFooter = function(){

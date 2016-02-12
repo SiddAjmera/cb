@@ -197,3 +197,37 @@
 [2016-02-10 18:33:27.312] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
 [2016-02-10 18:38:43.635] [TRACE] server - undefined requested for Drive.latestDriveId
 [2016-02-10 18:38:43.655] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-12 11:59:53.457] [TRACE] server - 759726 requested for User.me
+[2016-02-12 11:59:53.461] [DEBUG] server - Successfully got User in User.me
+[2016-02-12 11:59:53.822] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-12 11:59:53.825] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-12 12:00:37.026] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-12 12:00:37.030] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-12 12:00:54.818] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-12 12:00:54.819] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-12 12:01:50.859] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-12 12:01:50.861] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-12 12:02:25.449] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-12 12:02:25.450] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-12 12:02:49.669] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-12 12:02:49.670] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-12 12:02:57.349] [TRACE] server - 759726 requested for Ride.filterRide
+[2016-02-12 12:02:57.365] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-02-12 12:03:01.131] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-12 12:03:01.132] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-12 12:09:37.217] [TRACE] server - 759726 requested for User.me
+[2016-02-12 12:09:37.221] [DEBUG] server - Successfully got User in User.me
+[2016-02-12 12:09:37.471] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-12 12:09:37.480] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-12 12:36:28.311] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-12 12:36:28.314] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-12 12:45:01.627] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-12 12:45:01.629] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-12 12:45:47.647] [TRACE] server - 759726 requested for User.me
+[2016-02-12 12:45:47.651] [DEBUG] server - Successfully got User in User.me
+[2016-02-12 12:45:47.675] [TRACE] server - 759726 requested for User.me
+[2016-02-12 12:45:47.676] [DEBUG] server - Successfully got User in User.me
+[2016-02-12 12:45:47.943] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-12 12:45:47.947] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-12 12:45:47.984] [TRACE] server - 759726 requested for User.me
+[2016-02-12 12:45:47.986] [DEBUG] server - Successfully got User in User.me
