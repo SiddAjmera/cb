@@ -60,8 +60,8 @@ exports.index = function(req, res) {
 exports.create = function (req, res, next) {
   logger.trace(req.body.empId + ' requested for User.create');
   var newUser = new User(req.body);
-  newUser.provider = 'local';
-  newUser.role = 'user';
+  newUser.homeAddressLocation = null,
+  newUser.officeAddressLocation = null,
   newUser.save(function(err, user) {
     if(err){
         logger.fatal('Error in User.create. Error : ' + err);
@@ -160,12 +160,6 @@ exports.getSuggestions = function(req, res){
           console.log('Results', results);
           return res.json(200, results);
   });
-};
-
-
-exports.suggestionsTest = function(req, res){
-  CurrentUser = req.user;
-  logger.trace(req.user.empId + ' requested for User.suggestionsTest');
 };
 
 /**

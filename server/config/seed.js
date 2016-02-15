@@ -24,7 +24,6 @@ User.create({
     zipcode: '411057',
     officeAddress: 'Jagdeep Office',
     timeSlot: '9:00 AM - 7:00 PM',
-    username: '111111',
     redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
     password: "123",
     userId: '111111',
@@ -59,7 +58,6 @@ User.create({
     timeSlot: '9:00 AM - 7:00 PM',
     username: '111112',
     password: "123",
-    userId: '111112',
     redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
     userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAALvAAAAJDQyNGQ1MDI0LTFmYmEtNGNlMy05ZTkzLWI4OWU1OTdhMDUzOQ.jpg',
     vehicle: [{

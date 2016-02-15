@@ -14,7 +14,6 @@ router.get('/me', auth.isAuthenticated(), controller.me);
 // Routes created by Siddharth
 router.post('/MyTeams', auth.isAuthenticated(), controller.teamsOfCurrentUser);
 router.post('/GetSuggestions', auth.isAuthenticated(), controller.getSuggestions);
-router.post('/SuggestionsTest', auth.isAuthenticated(), controller.suggestionsTest);
 router.post('/GetUsers', auth.isAuthenticated(), controller.getUsers);
 // End of Routes Created by Siddharth
 
