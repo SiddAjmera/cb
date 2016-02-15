@@ -1,13 +1,13 @@
-<div class="page-wrapper">
-	<div class="col-md-12 col-sm-12 col-xs-12 header-section">
-		<span class="glyphicon glyphicon-chevron-left cursor-pointer"  ng-click="toggleHamburger()"></span>
-		<span class="heading">User Profile</span> 
-	</div>
-	<div class="container login-container">
+<div class="page-wrapper user-profile-wrapper">
+	
+	<div class="container profile-container">
 			
 		<form name="userProfileUpdateForm" class="animation-form-signup" ng-submit="updateUserData()" novalidate>
-			
-			<div class="form-section signup-section-form">
+			<div class="profile-pic-wrapper">
+				<div class="triangle-down-left-post"></div>
+				<img class="profile-pic" src="assets/images/user-image.jpg">
+			</div>
+			<!-- <div class="form-section signup-section-form">
 				<div class="image-update-wrap">
 					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-L-none pad-R-none user-image-update">
 						
@@ -36,10 +36,7 @@
 				<div class="each-row">
 					<input type="button" class="input-buttons"  name="syncData" value="SYNC DATA" ng-click="syncUserLocationData()">
 				</div>
-			</div>
-
-
-
+			</div> -->
 		</form>		
 	</div>
 </div>

@@ -1140,7 +1140,21 @@ a.get-started-link:hover{
   box-shadow: inset 0 0 0 6px #fff;
   background: #4ecd99;
 }
-
+select.post-ofc-address{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    color: #908F8F;
+    background-image: url(../assets/images/available-rides/dropdown.png);
+    height: 40px;
+    border: none;
+    border-bottom: 1px solid #e8e8e8;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: 97%;
+    padding: 0px 42px 0px 6px;
+}
 /*suggestions page css starts*/
 .suggestion-map-wrap{
     padding-top: 60px;
@@ -1785,6 +1799,9 @@ input[type=number]::-webkit-outer-spin-button {
 .page-wrapper.suggestion-page-wrapper{
     background-image: url("../assets/images/available-rides/PostAride_Background.png");   
 }
+.page-wrapper.user-profile-wrapper{
+    background-image: url("../assets/images/available-rides/PostAride_Background.png");   
+}
 .header-section.avail-ride-header{
     background-color: transparent;
     border-bottom: none;
@@ -2178,6 +2195,23 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .sugg-search-sec{
     margin-bottom: 30px;
+}
+.container.profile-container{
+    width: 400px;
+    margin-top: 33vh;
+}
+.profile-pic-wrapper{
+    width: 100%;
+    float:left;
+    position: relative;
+}
+.profile-pic{
+    position: absolute;
+    top: -25px;
+    left: 26px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
 }
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
