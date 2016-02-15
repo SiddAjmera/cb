@@ -52,7 +52,8 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/to.png" ng-click="optionAddressOptions('to')">
 					</div>
 					<div id="" class="from-address-post-wrap">
-						<select ng-options='item as item.displayAddress for item in officeAddressJSON' ng-model='user.officeAddress' name='officeAddress'>
+						<select ng-options='item as item.displayAddress for item in officeAddressJSON' ng-model='user.officeAddress' name='officeAddress'
+						class="post-ofc-address">
 							<option style="display:none" value="">Office Address</option> 
 						</select>
 						<!--  <ui-select search-enabled="false" ng-model="user.officeAddress" class="office-address-select">
