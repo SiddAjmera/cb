@@ -17,7 +17,6 @@
 	.container.login-container.post-ride-container{
 		float: left;
 	    width: 100%;
-	    margin-top: 177px;
 	}
 }
 @media(max-width: 480px){
@@ -48,6 +47,11 @@
 	.home-content-wrapper{
 		width: 100%;
 	    padding: 0 15px;
+	    float: left;
+	}
+	.suggestion-map-wrap{
+	    width: 100%;
+	    padding:60px 15px 0 15px;
 	    float: left;
 	}
 	.home-page-menu-options{

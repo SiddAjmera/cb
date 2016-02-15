@@ -42,7 +42,11 @@ angular.module('cbApp')
     }    
 
     
-
+    $scope.toggleFooter = function(){
+     
+      $(".home-page-menu-options").slideToggle(250);
+      
+    }
    
     $scope.center={
         lat : 18.581904504725568,

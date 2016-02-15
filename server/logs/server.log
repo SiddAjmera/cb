@@ -197,3 +197,27 @@
 [2016-02-10 18:33:27.312] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
 [2016-02-10 18:38:43.635] [TRACE] server - undefined requested for Drive.latestDriveId
 [2016-02-10 18:38:43.655] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-11 18:54:54.734] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-11 18:54:55.103] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-11 18:55:28.540] [TRACE] server - 111115 requested for Ride.filterRide
+[2016-02-11 18:55:28.592] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-02-11 19:00:29.506] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-11 19:00:29.507] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-11 19:00:44.022] [TRACE] server - 111115 requested for Ride.filterRide
+[2016-02-11 19:00:44.031] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-02-12 12:11:32.159] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-12 12:11:32.322] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-15 15:37:26.499] [TRACE] server - undefined requested for Drive.latestDriveId
+[2016-02-15 15:37:28.029] [DEBUG] server - Successfully got driveIds in Drive.latestDriveId
+[2016-02-15 15:37:46.879] [TRACE] server - 111115 requested for Ride.filterRide
+[2016-02-15 15:37:47.237] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-02-15 15:38:14.541] [TRACE] server - 111115 requested for Ride.filterRide
+[2016-02-15 15:38:14.668] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-02-15 15:42:33.625] [TRACE] server - 111115 requested for Ride.filterRide
+[2016-02-15 15:42:33.666] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-02-15 15:42:57.484] [TRACE] server - 111115 requested for Ride.filterRide
+[2016-02-15 15:42:57.504] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-02-15 15:43:13.248] [TRACE] server - 111115 requested for Ride.filterRide
+[2016-02-15 15:43:13.258] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
+[2016-02-15 15:43:42.594] [TRACE] server - 111115 requested for Ride.filterRide
+[2016-02-15 15:43:42.610] [DEBUG] server - Successfully got paginated rides in Ride.filterRide
