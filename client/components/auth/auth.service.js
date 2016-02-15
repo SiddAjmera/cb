@@ -48,19 +48,30 @@ angular.module('cbApp')
       return deffered.promise;
   }; 
 
-  var fetchUser=function(){
+  var fetchUser=function(forceFetchfromDB){
+    //forceFetchfromDB iof true then forced to fetch from DB;
     var deffered= $q.defer();
-    //if in cache
-    if(currentUser.userId){
-      deffered.resolve(currentUser);
+    if(forceFetchfromDB){
+        fetchUserFromDB().
+        then(function(user){
+          currentUser=user;
+          deffered.resolve(user);
+          localStorage.store('currentUser',user);
+          },function(err){
+            deffered.reject();
+        })
     }
     else{
-      //not in cahe then check local
-      fetchUserFromLocalStorage().
-      then(function(user){
-        currentUser=user;
+      if(currentUser.userId){
         deffered.resolve(currentUser);
-      },
+      }
+      else{
+      //not in cahe then check local
+        fetchUserFromLocalStorage().
+        then(function(user){
+          currentUser=user;
+          deffered.resolve(currentUser);
+        },
         function(err){
           //not in local go to DB
           fetchUserFromDB().
@@ -72,8 +83,12 @@ angular.module('cbApp')
           },function(err){
             deffered.reject();
           })
-      });
+        });
+      }
     }
+    //if in cache
+
+    
     return deffered.promise;       
   }
 
@@ -102,7 +117,7 @@ angular.module('cbApp')
               currentUser = User.get();
               console.log("currentUser in login service",currentUser)
               //fetch user & store in cache & local storage
-              fetchUser().then(function(userData){
+              fetchUser(true).then(function(userData){
                   deferred.resolve(data);
                   return cb();
               });         
@@ -176,9 +191,10 @@ angular.module('cbApp')
        *
        * @return {Object} user
        */
-      getCurrentUser: function() {
+      getCurrentUser: function(forceFetchfromDB) {
+        // forceFetchfromDB if true forced to fetch from DB;
         var deffered=$q.defer();        
-        fetchUser().then(function(user){
+        fetchUser(forceFetchfromDB).then(function(user){
           deffered.resolve(user);
         },
           function(err){

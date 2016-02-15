@@ -6,7 +6,7 @@ var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
 var q = require('q');
-
+var _ = require('lodash'); 
 var log4js= require('../../utils/serverLogger');
 var logger = log4js.getLogger('server'); 
 

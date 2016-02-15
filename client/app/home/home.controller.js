@@ -2,12 +2,11 @@
 
 angular.module('cbApp')
   .controller('HomeCtrl', function ($scope,Auth,httpRequest,$state,filterService) {
-     $scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
-  
-       $scope.center={
-        lat : 18.581904504725568,
-        lng : 73.68483066558838,
-        zoom: 15
+    $scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" };  
+    $scope.center={
+      lat : 18.581904504725568,
+      lng : 73.68483066558838,
+      zoom: 15
     };
     $scope.setCenter=true;
     $scope.paths={};
@@ -57,12 +56,22 @@ angular.module('cbApp')
     }
 
     $scope.postRide=function () {
+      if(currentUser.homeAddressLocation && currentUser.officeAddressLocation){
+        $state.go('userHome.postRides');        
+      }
+      else{
+        $state.go('userHome.rideDetails',{'for':'postRides'});
+      }
 
-      $state.go('userHome.postRides');
     }
     $scope.takeRide=function () {
+      if(currentUser.homeAddressLocation && currentUser.officeAddressLocation){
+        $state.go('userHome.availableRides');
+      }
+      else{
+        $state.go('userHome.rideDetails',{'for':'takeRide'});
+      }        
       
-      $state.go('userHome.availableRides');
     }
 
     $scope.toggleFooter = function(){

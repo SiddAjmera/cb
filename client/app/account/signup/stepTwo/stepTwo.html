@@ -2,7 +2,8 @@
 
 	<div class="each-row">
 		<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
-		<div class="input-fields address-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes" ng-model="user.homeAddress" placeholder="HOME ADDRESS" required></div>
+		<div class="input-fields address-fields">
+			<input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes" ng-model="user.homeAddress" placeholder="HOME ADDRESS" required></div>
 		<div class="icon-address-fields"><span><img class="icon-style" src="assets/images/icon_location.png" ng-click="getLocation()"></span></div>
 		<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
 			<p ng-message="required" class="error-msg">Home Address is required</p>
