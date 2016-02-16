@@ -2198,7 +2198,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .container.profile-container{
     width: 400px;
-    margin-top: 33vh;
+    margin-top: 30vh;
 }
 .profile-pic-wrapper{
     width: 100%;
@@ -2212,6 +2212,93 @@ input[type=number]::-webkit-outer-spin-button {
     width: 60px;
     height: 60px;
     border-radius: 50%;
+}
+.other-detail-wrapper{
+        float: left;
+    width: 100%;
+    background-color: #fff;
+    padding: 15px;
+    padding-top: 23px;
+    font-family: Helvetica;
+}
+.profile-row{
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 11px;
+}
+.profile-row .field-icon-section{
+    float: left;
+    width: 15%;
+    height: 36px;
+    background-color: #fff;
+    margin-left: 0;
+    text-align: left;
+}
+.profile-row.timing .field-icon-section{
+    width: 25%;
+}
+.profile-row .icon-style{
+    width: 41px;
+    height: 36px;
+    margin-top: 0px;
+}
+.profile-row .icon-style.home{
+    width: 33px;
+    height: 30px;
+    margin-top: 4px;
+    margin-left: 5px;
+}
+.profile-row.timing .icon-style{
+    width: 20px;
+    height: 20px;
+    margin-top: 9px;
+    margin-left: 11px;
+}
+.profile-row .user-input-section {
+    float: left;
+    width: 85%;
+}
+.profile-row.timing .user-input-section {
+    float: left;
+    width: 75%;
+    padding-left: 12px;
+}
+.profile-row .user-input-section span{
+    display: block;
+    padding-top: 11px;
+}
+.profile-row .login-input-box{
+    height: 36px;
+}
+.profile-row .login-input-box.read-only{
+    border-bottom: none;
+}
+.profile-uname{
+    padding-left: 1.5%;
+}
+.prof-edit-btn{
+    float: left;
+    width: 49%;
+    background-color: #329d71;
+    color: #fff;
+    height: 40px;
+    text-align: center;
+    font-size: 13px;
+    cursor: pointer;
+}
+.prof-logout-btn{
+    float: right;
+    width: 49%;
+    background-color: #ababab;
+    color: #fff;
+    height: 40px;
+    text-align: center;
+    font-size: 13px;
+    cursor: pointer;
+}
+.prof-btn-img{
+    width: 43px;
 }
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
