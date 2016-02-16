@@ -6,6 +6,8 @@ angular.module('cbApp')
       .state('userHome.rideDetails', {
         url: '/rideDetails',
         templateUrl: 'app/rideDetails/rideDetails.html',
-        controller: 'RideDetailsCtrl'
+        controller: 'RideDetailsCtrl',
+        params:{'for':''}
       });
+
   });

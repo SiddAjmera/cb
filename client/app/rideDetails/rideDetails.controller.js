@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('RideDetailsCtrl', ['$scope','staticData','Auth','httpRequest',function ($scope,staticData,Auth,httpRequest) {
+  .controller('RideDetailsCtrl', ['$scope','staticData','Auth','$state','$stateParams','httpRequest'
+  	,function ($scope,staticData,Auth,$state,$stateParams,httpRequest) {
+  	var forAction=$stateParams.for;
+  	console.log("forAction",forAction);
     $scope.message = 'Hello';
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
     $scope.officeAddressJSON = staticData.getTCSLocations();
@@ -39,8 +42,14 @@ angular.module('cbApp')
     			alert('stored');
     			Auth.getCurrentUser(true)
     			.then(function(data){
-        			currentUser = data;                
-    			 });  
+        			currentUser = data;
+        			if(forAction=='postRides'){
+        				$state.go('userHome.postRides');
+        			}
+        			else if(forAction=='takeRide'){
+        				$state.go('userHome.availableRides');
+        			}
+    			});  
     		}
     	})
     }                      
