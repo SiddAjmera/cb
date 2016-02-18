@@ -20,20 +20,22 @@
 						<!-- <label for="#postFrom" class="moving-label" ng-click="moveLabelUp('postFromSec')">
 							Employee Id
 						</label> -->
-		                <input tab-index="1" id="postFrom" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="postFromAdd" placeholder="From"  required ><!-- ng-click="moveLabelUp('postFromSec')"
+		                <!-- <input tab-index="1" id="postFrom" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="rideSource" placeholder="From"  required 
+		                ng-model='rideData.from'> -->
+		                <select ng-model='rideData.from' class="timeslot post-ride-leaving-in">
+		                	<option>Home</option>
+		                	<option>Office</option>
+		                	<option>Other</option>
+		                </select>	
+		                <!-- ng-click="moveLabelUp('postFromSec')"
 		                ng-blur="moveLabelDown('postFromSec','postFrom')" ng-focus="moveLabelUp('postFromSec')" -->
 		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideSource.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Ride source is required</p>
 						</div>
-						<!-- <div class="form-control input-boxes dummy-input-box" ng-show="address == 'default' || address == 'home'" ng-click="optionAddressOptions('from')">
-							
+						<!-- <div class="form-control input-boxes dummy-input-box" ng-show="address == 'default' || address == 'home'" ng-click="optionAddressOptions('from')">							
 							<span ng-if ="ride.source" class="dummy-input-box-text">{{ride.source}}</span>
-							
-							
-							<span ng-if="!ride.source" class="dummy-input-box-text">LEAVING FROM</span>
-							
+							<span ng-if="!ride.source" class="dummy-input-box-text">LEAVING FROM</span>							
 						</div> -->
-
 						<!-- office dropdown starts -->
 						<!-- <div class="input-fields office-address-select-wrap" ng-show="address == 'office'">
 							<ui-select search-enabled="false" ng-model="ride.source" class="office-address-select">
@@ -44,7 +46,6 @@
 							        <span ng-bind="item.displayAddress"></span>
 							    </ui-select-choices>
 							</ui-select>
-
 						</div> -->
 							<!-- office dropdown ends 
 						<input ng-show="address == 'other'" type="text" ng-class="{'error-border':!showErrorMessage}"  name="rideSource" class="form-control input-boxes ride-source-field" ng-model="ride.source" placeholder="LEAVING FROM" required g-places-autocomplete >--> <!-- force-selection="true" options="autocompleteOptions" -->
@@ -54,10 +55,7 @@
 						  <li><img ng-click="showAddressFrom('other')" class="post-loc-img img-last" src="assets/images/available-rides/from-icon.png"></li>
 						</ul> -->
 					</div>
-					
-					
 				</div>
-
 				<div class="each-row">
 					<!-- <div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div> -->
 					<div class="icon-address-fields">
@@ -67,9 +65,16 @@
 						<!-- <label for="#postTo" class="moving-label" ng-click="moveLabelUp('postToSec')">
 							Employee Id
 						</label> -->
-		                <input tab-index="1" id="postTo" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="postToAdd" placeholder="To"  required> <!-- ng-click="moveLabelUp('postToSec')"
+		                <!-- <input tab-index="1" id="postTo" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="rideDestination" placeholder="To"  required ng-model='rideData.to'> -->
+		                <select name="rideDestination" placeholder="To"  required ng-model='rideData.to' class='timeslot post-ride-leaving-in'> 
+		                	<option>Home</option>
+		                	<option>Office</option>
+		                	<option>Other</option>
+		                </select>
+		                 <!-- ng-click="moveLabelUp('postToSec')"
 		                ng-blur="moveLabelDown('postToSec','postTo')" ng-focus="moveLabelUp('postToSec')" -->
-		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error" class="error-msg-edit">
+		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error"
+		                class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Ride destination is required</p>
 						</div>
 						<!-- <div class="form-control input-boxes dummy-input-box" ng-show="addressTo == 'default' || addressTo == 'homeTo'" ng-click="optionAddressOptions('to')">
@@ -108,7 +113,7 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/starting-time.png">
 					</div>
 					<div class="from-address-post-wrap">
-						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-model="ride.leavingIn" ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON">
+						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-model="rideData.leavingIn" ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON">
 							<option style="display:none" value="">Starting at</option> 	
 						</select>
 						
@@ -122,7 +127,7 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/seats_avalaible.png">
 					</div>
 					<div class="from-address-post-wrap">
-						<select class="timeslot post-ride-leaving-in" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="ride.availableSeats" ng-options="c as c for c in availableSeatsJSON">
+						<select class="timeslot post-ride-leaving-in" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="rideData.availableSeats" ng-options="c as c for c in availableSeatsJSON">
 							<option style="display:none" value="">Seats available</option>
 						</select>
 					</div>

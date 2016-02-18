@@ -3,6 +3,15 @@
 angular.module('cbApp')
   .controller('PostRidesCtrl', function ($scope,httpRequest,Auth,cordovaUtil,staticData) {
     var directionsService = new google.maps.DirectionsService();
+    var currentUser = {};
+    Auth.getCurrentUser().
+    then(function(data){
+        currentUser = data;
+        if($scope.rideData)
+            $scope.rideData.availableSeats=(currentUser.vehicle[0].capacity-1).toString();
+
+        console.log("$scope.rideData",$scope.rideData);
+    });
     $scope.mypath ={};
     var getRoute =function () {
         var from,to;
@@ -21,7 +30,6 @@ angular.module('cbApp')
             to=currentUser.homeLocationCoordinates.join();   
         }
         else return;
-
 
         var request = {};
         request.optimizeWaypoints=true;
@@ -48,16 +56,8 @@ angular.module('cbApp')
                 console.log('in req ',$scope.mypath);                
                 console.log('enter!');  
             }
-        });       
-            
-       
+        }); 
     }
-    /*latArr=L.Polyline.fromEncoded("konpBstkaMrCf@AF_@dCEDGAoCe@GCCWOKk@KKfAMnA[nDY|BUdAQf@yCbGBBBF?B?@|AzAhJjJ~BlCfAu@xDmDnDgDhC}BlE_E~@eAvC}DxBwCbAwB`B{DbCkFbCeF|C_FrAiBjC{ChBuBj@k@rOqP|IoJz@kAZoAf@i@nBeB|@_@l@c@|LaLx@q@~CuCnCcBrBcAvAw@~CgBZ[Vc@v@mFRmAJ[PWRORI~@OhFO^CfBg@`FmAvAe@fDoAlDgAxBo@jA_@|CmAdAk@rA_AlQgMxLaIrGcEjKcHfGuD~HoF~JqGpJkGnIwF|B}AfA{@l@u@tAaC|DuGlB_DfFiIzCcFhA{AbGaIxBeDjD}EzA_Cx@mApAaCn@}@xKsQr@kARi@ZyAbAaFpAqHVcB\gCnBeL^gB\sBX_BBq@VqAf@eEBUAIg@gA[a@OM[]Yk@Q{@Cu@I_BES_@ZeBdByCxCMLW]c@i@S]Wq@s@eGeA_KAs@RyC@cBEeBIc@uCqEe@k@]U_@K{A_@}Bq@wFaC}@i@y@u@mDgGs@y@o@k@}@u@}@}@][g@c@eAmAWa@{@gBi@wAm@mBw@_EoCeQg@sCiD{K}BqH_@w@a@]oD{Bs@e@WMNS~@{Ah@y@fB}CNs@Bo@Gs@i@sBUeASsBQyA[oAm@}Ao@mAc@oAYiBEgA?c@^eC?Qc@uDu@yFkAcJk@{Bi@uAi@{@gBaCuAyAiC}BeDwCiBsAqBaBqEgFeBcC{@_Bq@uAM]Ke@_@aBQeA_BiH[mB{BwJs@yC_@sB_BgJ_BmGi@}A[g@y@w@u@_Aa@g@}@kAcAaBkDiGu@{Am@wAsAkEs@{C[cB{@wDyC{K[yAScASHOBiDZ").getLatLngs();
-        $scope.mypath ={};
-        $scope.mypath.polyline={type:"polyline",latlngs:latArr};               
-        console.log($scope.mypath);   
-        console.log('enter!'); */
-
     //Multiple Routes Code - start
     $scope.$watch('ride.destination', function(newValue, oldValue, scope) {
         console.log("ride.destination ",newValue);
@@ -68,6 +68,15 @@ angular.module('cbApp')
         console.log("ride.source ",newValue);   
         getRoute();
     });
+
+    $scope.rideData={};
+    $scope.rideData.from='Home';
+    $scope.rideData.to='Office';
+    $scope.rideData.leavingIn='15';
+
+    if(currentUser.vehicle)
+        $scope.rideData.availableSeats=(currentUser.vehicle[0].capacity-1).toString();
+    console.log("$scope.rideData",$scope.rideData);
 
     
 
@@ -95,21 +104,11 @@ angular.module('cbApp')
    
     //Multiple Routes Code - end
     $scope.ride = {};
-    var currentUser = {};
-    Auth.getCurrentUser().
-    then(function(data){
-        currentUser = data;
-        console.log("currentUser",currentUser)
-    });
-
-    /*get tcs locations*/
-   
+    /*get tcs locations*/   
     $scope.officeAddressJSON = staticData.getTCSLocations();
-    
-
     $scope.showErrorMessage = false;
     $scope.leavingInJSON =  [
-                                {"text":"5 MIN","value":"5"},
+                                {"text":"05 MIN","value":"5"},
                                 {"text":"10 MIN","value":"10"},
                                 {"text":"15 MIN","value":"15"},
                                 {"text":"20 MIN","value":"20"},
@@ -132,7 +131,7 @@ angular.module('cbApp')
             						"6"
     						    ];
 
-    $scope.autocompleteOptions = {                        
+    $scope.autocompleteOptions = {
                         types: ['(cities)'],
                         componentRestrictions: { country: 'IN',city:'Pune' },
                     }
@@ -150,33 +149,25 @@ angular.module('cbApp')
      $scope.showAddressFrom=function(option){
         console.log(option)
         $scope.address=option;
-
         if($scope.address == "home"){
-           $scope.ride.source= currentUser.homeAddress
-           
+           $scope.ride.source= currentUser.homeAddress           
         }
-
         $scope.otherAddress=true;
         $scope.open=false;
     }
-
     $scope.showAddressTo=function(option){
         console.log(option)
         $scope.addressTo=option;
-
         if($scope.addressTo == "homeTo"){
            $scope.ride.destination= currentUser.homeAddress
         }
-
         $scope.otherAddress=true;
         $scope.open=false;
     }
-
     $scope.postRide = function(){
         console.log("ride object",$scope.ride);
         var ride = {};
-
-        if($scope.address=="other"){
+        if($scope.rideData.from=="Other"){
             ride.startLocation = {
                                     formatted_address:$scope.ride.source.formatted_address,
                                     location:[$scope.ride.source.geometry.location.lat(),$scope.ride.source.geometry.location.lng()],
@@ -184,17 +175,14 @@ angular.module('cbApp')
                                     icon : $scope.ride.source.icon 
                                 };
         
-        }else if($scope.address=="home"){
+        }
+        else if($scope.rideData.from=="Home"){
             ride.startLocation = currentUser.homeAddressLocation;
         }
-        else if($scope.address=="office"){
-             ride.startLocation = $scope.ride.source;
+        else if($scope.rideData.from=="Office"){
+             ride.startLocation = currentUser.officeAddressLocation;
         }
-           
-
-
-
-        if($scope.addressTo=="otherTo"){
+        if($scope.rideData.to=="Other"){
             ride.endLocation = {
                                     formatted_address:$scope.ride.destination.formatted_address,
                                     location:[$scope.ride.destination.geometry.location.lat(),$scope.ride.destination.geometry.location.lng()],
@@ -202,34 +190,28 @@ angular.module('cbApp')
                                     icon : $scope.ride.destination.icon 
                              };    
         
-        }else if($scope.addressTo=="homeTo"){
+        }
+        else if($scope.rideData.to=="Home"){
             ride.endLocation = currentUser.homeAddressLocation;
         }
-        else if($scope.addressTo=="officeTo"){
-             ride.endLocation = $scope.ride.destination;
-        }
-        
-
-                     
-        ride.comments = $scope.ride.comments
-        ride.offeredByUserId = currentUser.userId;
-        ride.availableSeats = $scope.ride.availableSeats;
-        ride.rideStartTime = moment().add(parseInt($scope.ride.leavingIn),"minutes").valueOf();
-        ride.vehicleLicenseNumber = currentUser.vehicle.vehicleNo;
+        else if($scope.rideData.to=="Office"){
+             ride.endLocation = currentUser.officeAddressLocation;
+        }        
+       // ride.offeredByUserId = currentUser.empId;
+        ride.initiallyAvailableSeats = $scope.rideData.availableSeats;
+        ride.rideScheduledTime = moment().add(parseInt($scope.rideData.leavingIn),"minutes").valueOf();
+        ride.vehicleLicenseNumber = currentUser.vehicle[0].vehicleLicenseNumber;
         ride.rideStatus = "Active";
         console.log("final obj",ride)
-        httpRequest.post(config.apis.postRide,ride).
+        httpRequest.post(config.apis.postRide,{'ride':ride}).
         then(function(data){
              console.log(data);
             if(data.status==201){
                 if(config.cordova)
                     cordovaUtil.showToastMessage("Ride posted succesfully!")
                 else
-                     alert("Ride posted succesfully!");
-            }
-           
-                
-               
+                    alert("Ride posted succesfully!");
+            }  
         },function(err){
             console.log("err",err);
 
@@ -239,9 +221,4 @@ angular.module('cbApp')
             }
         })
     }
-
-
-
-
-
-  });
+});
