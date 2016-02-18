@@ -264,11 +264,11 @@ exports.getAvailableRides = function(req, res){
 
   // Or this
   Ride.geoNear( 
-      req.user.homeAddressLocation.location,  // TODO : To replace this with User's Current Location sent in the req.body
+      req.user.homeAddressLocation.location,
       {
           spherical           : true,            // tell mongo the earth is round, so it calculates based on a spherical location system
           distanceMultiplier  : 6371,            // tell mongo how many radians go into one kilometer.
-          maxDistance         : 1/6371,          // tell mongo the max distance in radians to filter out
+          /*maxDistance         : 5/6371,          // tell mongo the max distance in radians to filter out*/
           "offeredBy.empId"   : { $ne : empId }, // tell mongo to return only rides which haven't been hosted by the User requesting them
           "rideStatus"        : "ACTIVE"         // tell mongo to only return ACTIVE rides
       },function(err, results, stats){
@@ -281,9 +281,66 @@ exports.getAvailableRides = function(req, res){
             return res.send(404);
           }
           logger.debug('Successfully got rides in Ride.getAvailableRides');
-          console.log('Results', results);
-          return res.json(200, results);
+
+          var ridesToSend = [];
+
+          results.forEach(function(result){
+              if(result.obj.offeredBy.empId != empId) ridesToSend.push(result);
+          });
+          
+          return res.json(200, ridesToSend);
   });
+  
+  /*Ride.aggregate().near(
+  {
+      near                  : req.user.officeAddressLocation.location,
+      distanceField         : "distance",
+      spherical             : true,
+      distanceMultiplier    : 3959,
+      maxDistance           : 5/3959,
+      query : {
+        "offeredBy.empId" : { $ne: empId }
+      }
+  }).exec(function(err, docs){
+      if(err) {
+        logger.fatal('Error in Ride.getAvailableRides. Error : ' + err);
+        return handleError(res, err);
+      }
+      if(!docs){
+        logger.error('Error in Ride.getAvailableRides. Error : Not Found');
+        return res.send(404);
+      }
+      logger.debug('Successfully got rides in Ride.getAvailableRides');
+      console.log('Results', docs);
+      return res.json(200, docs);
+  });*/
+
+  /*property.aggregate().near(
+  { 
+      near:[parseFloat(req.params.longitude), parseFloat(req.params.latitude)], 
+      distanceField:"distance", 
+      spherical:true, 
+      distanceMultiplier:3959,
+      maxDistance:parseFloat(req.params.distance)/3959,
+      query: {
+          monthlyFee : { 
+                                  $gte: parseInt(req.params.minPrice), 
+                                  $lte: parseInt(req.params.maxPrice)
+                      },
+          numberOfBedrooms : { $gte: parseInt(req.params.minBedrooms) }
+      }
+  })
+  .exec(function(err,docs) {
+      if (err) res.send(err);
+
+      property.populate( docs, { path: 'user', select: 'firstname lastname email' }, function(err,properties) {
+          if (err) res.json(err);
+          res.json(properties);
+      });
+
+  });*/
+
+
 };
 
 // Gets inactive rides for current user
@@ -355,7 +412,7 @@ exports.cancelRide = function(req, res){
   req.body.ride.rideStatus = "CANCELLED";
   this.actualUpdate(req.body.ride).
   then(function(ride, editedRide){
-    EventEmitter.emit("rideCancelled", ride);
+    //EventEmitter.emit("rideCancelled", ride);
     return res.json(200, editedRide);
   }, function(err){
     if(err == 404) return res.send(404);
@@ -370,7 +427,7 @@ exports.rescheduleRide = function(req, res){
   req.body.ride.rideScheduledTime = req.body.newRideScheduledTime;
   Ride.actualUpdate(req.body.ride).
   then(function(ride, editedRide){
-    EventEmitter.emit("rideRescheduled", ride);
+    //EventEmitter.emit("rideRescheduled", ride);
     return res.json(200, editedRide);
   }, function(err){
     if(err == 404) return res.send(404);
@@ -437,6 +494,7 @@ exports.addCompanionToRide = function(req, res){
 
                                               //user.riderStatus = "PENDING";
                                               ride.riders.push(user);
+                                              ride.currentlyAvailableSeats = ride.currentlyAvailableSeats - 1;
                                               ride.save(function(err){
                                                   if (err) { 
                                                     logger.fatal('Error in Ride.addCompanionToRide. Error : ' + err);
@@ -444,7 +502,7 @@ exports.addCompanionToRide = function(req, res){
                                                   }
                                                   logger.debug('Successfully added a companion to ride with PENDING STATUS in Ride.getRideHistoryForCurrentUser');
 
-                                                  EventEmitter.emit("userRequestedARide", ride);
+                                                  //EventEmitter.emit("userRequestedARide", ride);
                                                   logger.debug('Successfully requested to ride together in Ride.addCompanionToRide');
                                                   return res.json(201, ride);
                                               });
@@ -456,6 +514,7 @@ exports.addCompanionToRide = function(req, res){
                                           else{
                                             //user.riderStatus = "PENDING";
                                             ride.riders.push(user);
+                                            ride.currentlyAvailableSeats = ride.currentlyAvailableSeats - 1;
                                             ride.save(function(err){
                                                 if (err) { 
                                                   logger.fatal('Error in Ride.addCompanionToRide. Error : ' + err);
@@ -463,7 +522,7 @@ exports.addCompanionToRide = function(req, res){
                                                 }
                                                 logger.debug('Successfully added a companion to ride with PENDING STATUS in Ride.getRideHistoryForCurrentUser');
 
-                                                EventEmitter.emit("userRequestedARide", ride);
+                                                //EventEmitter.emit("userRequestedARide", ride);
                                                 logger.debug('Successfully requested to ride together in Ride.addCompanionToRide');
                                                 return res.json(201, ride);
                                             });
@@ -517,7 +576,7 @@ exports.updateRiderStatus = function(req, res){
       }
       logger.debug('Successfully updated Rider Status in Ride.updateRiderStatus');
 
-      EventEmitter.emit("hostRespondedToRideRequest", ride, riderRedgId, riderStatus);
+      //EventEmitter.emit("hostRespondedToRideRequest", ride, riderRedgId, riderStatus);
       logger.debug('Successfully responded to rider who requested to ride together in Ride.updateRiderStatus');
       return res.json(201, ride);
     });
