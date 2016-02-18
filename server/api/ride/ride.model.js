@@ -18,7 +18,7 @@ var RideSchema = new Schema({
     formatted_address: String,
     display_address: String,
     icon: String,
-    location: { type: [Number], index: '2d' },
+    location: { type: [Number], index: '2dsphere' },
     placeId: String
   },  // Filled by End Location in Post Ride
   rideScheduledTime: { type: Date, default: Date.now },  // Filled by Leaving In field in Post Ride

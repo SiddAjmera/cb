@@ -10,10 +10,9 @@ angular.module('cbApp')
     Auth.getCurrentUser().then(function(user){currentUser = user;getAvailableRides();})
     var populateSeats = function(ride){
       var seatMap = [];
-      for(var i=0;i<ride.offeredByUser.totalNumberOfSeats;i++){       
+      for(var i = 0 ; i < ride.initiallyAvailableSeats ; i++){       
         var seat = {};
-        if(ride.companions[i])
-          seat._id = ride.companions[i]._id;        
+        if(ride.riders[i]) seat._id = ride.riders[i]._id;        
         seatMap.push(angular.copy(seat));
         ride.seatMap=seatMap;        
       }
@@ -44,21 +43,18 @@ angular.module('cbApp')
   		httpRequest.post(apis,requestJSON).
   		then(function(rides){
   			if(rides.status==200){
-  				rides = rides.data;
-  				//$scope.rides = rides;
+          rides = rides.data;
   				angular.forEach(rides, function(ride, key){
-  					var r=populateSeats(ride)
+            var r = populateSeats(ride.obj)
             $scope.rides.push(r);  
   				});
   				console.log($scope.rides);
   			}
-  			
   		})
-  		
   	};
 
   	$scope.selectRide = function(ride){
-  		var apis = config.apis.selectRide+ride._id;
+  		var apis = config.apis.selectRide + ride._id;
   		var requestJSON  = {};
   		requestJSON.companions = [];
   		angular.forEach(ride.seatMap, function(r, key){

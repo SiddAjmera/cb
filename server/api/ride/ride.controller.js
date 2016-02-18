@@ -228,6 +228,28 @@ exports.getAvailableRides = function(req, res){
   var empId = req.user.empId;
   logger.trace(empId + ' requested for Ride.getAvailableRides');
 
+  if(req.body.user){
+    User.findById(req.user._id, function(err, user){
+      if (err) {
+        logger.fatal('Error in Ride.getAvailableRides. Error : ' + err);
+        return handleError(res, err);
+      }
+      if (!user)  {
+        logger.error('Error in Ride.getAvailableRides. Error : User Not Found');
+        return res.send(404);
+      }
+      var updated = _.merge(user, req.body.user);
+      updated.save(function (err, user) {
+        if (err) {
+          logger.fatal('Error in Ride.getAvailableRides.updated.save. Error : ' + err);
+          return handleError(res, err);
+        }
+        logger.debug('Successfully updated user details in Ride.getAvailableRides');
+        req.user = user;
+      });
+    });
+  }
+
   // Either this
   /*mongoose.connection.db.executeDbCommand({ 
     geoNear : "rides",  // the mongo collection
@@ -242,25 +264,13 @@ exports.getAvailableRides = function(req, res){
 
   // Or this
   Ride.geoNear( 
-      user.homeAddressLocation.location,  // TODO : To replace this with User's Current Location sent in the req.body
+      req.user.homeAddressLocation.location,  // TODO : To replace this with User's Current Location sent in the req.body
       {
           spherical           : true,            // tell mongo the earth is round, so it calculates based on a spherical location system
           distanceMultiplier  : 6371,            // tell mongo how many radians go into one kilometer.
           maxDistance         : 1/6371,          // tell mongo the max distance in radians to filter out
           "offeredBy.empId"   : { $ne : empId }, // tell mongo to return only rides which haven't been hosted by the User requesting them
           "rideStatus"        : "ACTIVE"         // tell mongo to only return ACTIVE rides
-      },
-      {
-          "offeredBy.empName": 1,
-          "offeredBy.gender": 1,
-          "offeredBy.rating": 1,
-          "offeredBy.userPhotoUrl": 1,
-          "startLocation.display_address": 1,
-          "endLocation.display_address": 1,
-          "routeSummary": 1,
-          "rideScheduledTime": 1,
-          "initiallyAvailableSeats": 1,
-          "currentlyAvailableSeats": 1
       },function(err, results, stats){
           if(err) {
             logger.fatal('Error in Ride.getAvailableRides. Error : ' + err);
