@@ -1,11 +1,72 @@
 <div class="page-wrapper user-profile-wrapper">
-	
+	<div class="col-md-12 col-sm-12 col-xs-12 header-section post-ride-header">
+			<span class="glyphicon glyphicon-chevron-left cursor-pointer avail-header-back" ng-click="toggleHamburger()"></span>
+		</div>	
 	<div class="container profile-container">
-			
+		
 		<form name="userProfileUpdateForm" class="animation-form-signup" ng-submit="updateUserData()" novalidate>
 			<div class="profile-pic-wrapper">
 				<div class="triangle-down-left-post"></div>
 				<img class="profile-pic" src="assets/images/user-image.jpg">
+			</div>
+			<div class="other-detail-wrapper">
+				<p class="profile-uname"><span>Deepthi Kalapala</span></p>
+				<div class="profile-row">
+					<div class="field-icon-section">
+						<img class="icon-style" src="assets/images/icon_mobile_number.png">
+					</div>
+					<div class="user-input-section">
+						<span>8802135689</span>
+					</div>
+				</div>
+				<div class="profile-row">
+					<div class="field-icon-section">
+						<img class="icon-style home" alt="Home" src="assets/images/available-rides/from-icon.png">
+					</div>
+					<div class="user-input-section">
+						<span>Wakad, Pune, MH</span>
+					</div>
+				</div>
+				<div class="profile-row">
+					<div class="field-icon-section">
+						<img class="icon-style home" alt="Home" src="assets/images/available-rides/to.png">
+					</div>
+					<div class="user-input-section">
+						<span>Hinjewadi Phase 3, Pune, MH</span>
+					</div>
+				</div>
+				<div class="profile-row">
+					<div class="field-icon-section">
+						<img class="icon-style home" alt="Home" src="assets/images/available-rides/to.png">
+					</div>
+					<div class="user-input-section">
+						<span>MH 14 DW 1821</span>
+					</div>
+				</div>
+				<div class="profile-row timing">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-L-none">
+						<div class="field-icon-section">
+							<img class="icon-style home" alt="Home" src="assets/images/available-rides/starting-time.png">
+						</div>
+						<div class="user-input-section">
+							<span>9:00 AM</span>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-R-none">
+						<div class="field-icon-section">
+							<img class="icon-style home" alt="Home" src="assets/images/available-rides/starting-time.png">
+						</div>
+						<div class="user-input-section">
+							<span>6:00 PM</span>
+						</div>
+					</div>
+					<div class="prof-edit-btn">
+						EDIT <img class="prof-btn-img" src="assets/images/icon_car.png">
+					</div>
+					<div class="prof-logout-btn">
+						LOG OUT <img class="prof-btn-img" src="assets/images/icon_car.png">
+					</div>
+				</div>
 			</div>
 			<!-- <div class="form-section signup-section-form">
 				<div class="image-update-wrap">
