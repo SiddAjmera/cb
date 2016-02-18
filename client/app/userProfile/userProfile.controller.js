@@ -25,7 +25,10 @@ angular.module('cbApp')
         });
     };
     
-    
+    $scope.toggleFooter = function(){
+      $(".home-page-menu-options").slideToggle(250);
+    }
+
     $scope.getImageSaveContact = function() {       
             // Image picker will load images according to these settings
             var options = {
