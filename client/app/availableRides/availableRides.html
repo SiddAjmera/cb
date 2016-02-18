@@ -20,28 +20,28 @@
 
 				<div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride" ng-repeat="ride in rides track by $index">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-list-img-sec">
-						<img src="{{ride.offeredByUser.userImage}}" class="avail-user-img pull-left">
-						<p class="avail-user-name">{{ride.offeredByUser.userName}}</p>
+						<img src="{{ride.offeredBy.userPhotoUrl}}" class="avail-user-img pull-left">
+						<p class="avail-user-name">{{ride.offeredBy.empName}}</p>
 					</div>
 
 					<div class="col-md-6 col-sm-6 col-xs-6 avail-left-sec">
 						<div class="each-info-line">
 							<img class="avai-ride-info-icon" src="assets/images/available-rides/calendar.png">
-							<span>{{ride.rideStartTime | date:'dd/MM/yyyy'}}</span>
+							<span>{{ride.rideScheduledTime | date:'dd/MM/yyyy'}}</span>
 						</div>
 						<div class="each-info-line loc-trim">
 							<img class="avai-ride-info-icon" src="assets/images/available-rides/from-icon.png">
-							<span>{{ride.endLocation.formatted_address}}</span>
+							<span>{{ride.endLocation.display_address}}</span>
 						</div>
 						<div class="each-info-line">
 							<img class="avai-ride-info-icon" src="assets/images/available-rides/starting-time.png">
-							<span>{{ride.rideStartTime | date:'hh:mm a'}}</span> 
+							<span>{{ride.rideScheduledTime | date:'hh:mm a'}}</span> 
 						</div>
 					</div>
 					<div class="col-md-6 col-sm-6 col-xs-6 avail-right-sec">
 						<div class="avail-right-info">
 							<span class="pull-left seat-avail-label">Seats Available</span>
-							<span class="available-seat-count pull-right">{{ride.availableSeats}}</span>
+							<span class="available-seat-count pull-right">{{ride.currentlyAvailableSeats}}</span>
 						</div>
 						<div class="avail-right-info">
 							<span>Select a seat</span>
