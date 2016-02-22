@@ -7,105 +7,121 @@ angular.module('cbApp')
     return{
     	getTCSLocations:function(){
         var tcsLocations = [
-		{"displayAddress":"SP - A1 - Rajgad",
-		"formatted_address": "A1/Rajgad, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
+	{
+		"display_address":"TCS Sahyadri Park",
+		"formatted_address": "Sahyadri Park, Plot No. 2 & 3, Rajiv Gandhi Infotech Park, Phase-III,, Hinjewadi, Pune, Maharashtra 411057, India",
 	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [18.581016, 73.6867767],
-	    "placeId": "ChIJV7zgqG27wjsRhlwIyeY5MN8"},
-	
+	    "location": [73.6829262, 18.5806206],
+	    "placeId": "ChIJz2_Fp2XAwjsRf-D83a7sne8"
+    },
 
-		{"displayAddress":"SP - S1 - Poorna", 
-		"formatted_address": "S1/Poorna, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [18.5813442, 73.6848914],
-	    "placeId": "ChIJ6UG68Gy7wjsRs4AJ2njAyHc"},
-	
-
-		{"displayAddress":"SP - S2 - Torna", 
-		"formatted_address": "S2/Torna, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [18.5812141, 73.68342],
-	    "placeId": "ChIJnzULhmy7wjsRQfjFe8RUMPo"},
-	
-
-	{"displayAddress":"SP - S3 - Tikona" ,
-		"formatted_address": "S3/Tikona, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [18.581084, 73.68194849999999],
-	    "placeId": "ChIJwZFcd2u7wjsRN18GfUsT8sc"
-	},
-
-	{"displayAddress":"Bhosari MIDC Non STP" ,
+	{
+		"display_address":"TCS Bhosari",
 		"formatted_address": "TCS, Bhosari, Telco Rd, Landewadi, Pimpri, Pimpri-Chinchwad, Maharashtra 411026, India",
 	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [18.6229641, 73.838017],
+	    "location": [73.838017, 18.6229641],
 	    "placeId": "ChIJkx5xWX64wjsRw2ETFkK2fKk"
 	},
 
-	{"displayAddress":"Bhosari MIDC STP" ,
-		"formatted_address": "TCS, Bhosari, Telco Rd, Landewadi, Pimpri, Pimpri-Chinchwad, Maharashtra 411026, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [18.6229641, 73.838017],
-	    "placeId": "ChIJkx5xWX64wjsRw2ETFkK2fKk"
+	{
+		"display_address":"TCS Quadra II",
+		"formatted_address": "TATA Consultancy Services, S.No. 238/239, Quadra II, Opp Magarpatta City, Hadapsar, Pune, Maharashtra 411028, India",
+	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+	    "location": [73.933573, 18.5132302],
+	    "placeId": "ChIJjwkMLvXBwjsR_KclVTRIC7M"
 	},
 
-	{"displayAddress":"Sp-S1-Poorna-BPO" ,
-		"formatted_address": "S1/Poorna, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [18.5813442, 73.6848914],
-	    "placeId": "ChIJ6UG68Gy7wjsRs4AJ2njAyHc"
-	},
-
-	{"displayAddress":"Sp-S2-Torna-BPO" ,
-		"formatted_address": "S2/Torna, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [18.5812141, 73.68342],
-	    "placeId": "ChIJnzULhmy7wjsRQfjFe8RUMPo"
-	},
-
-	{"displayAddress":"TRDDC HADAPSAR, PUNE" ,
+	{
+		"display_address":"Tata Research Developement and Design Center(TRDDC)",
 		"formatted_address": "TRDDC, Hadapsar, Pune, Maharashtra 411013, India",
+		"display_address" : "Tata Research Developement and Design Center",
 	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/school-71.png",
-	    "location": [18.511536, 73.9166811],
+	    "location": [73.9166811, 18.511536],
 	    "placeId": "ChIJVVVVVeXBwjsRjhAlp31GD18"
 	},
 
-	{"displayAddress":"VSNL - Pune" ,
+	{
+		"display_address":"VSNL Training Centre- Pune",
 		"formatted_address": "VSNL Training Centre, Dighi, Pune, Maharashtra 411015, India",
 	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [18.6053331, 73.8659042],
+	    "location": [73.8659042, 18.6053331],
 	    "placeId": "ChIJ0zPIrRTHwjsRmAZZGDn6HY0"
 	},
 
-	{"displayAddress":"SahyadriPark SEZ - I" ,
+	{
+		"display_address":"The Quadron Business Park",
 		"formatted_address": "The Quadron Business Park, Plot No. 28 Rajiv Gandhi Infotech Park, Phase II, Hinjewadi, Pune, Maharashtra 411057, India",
 	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [18.5859733, 73.6970379],
+	    "location": [73.6970379, 18.5859733],
 	    "placeId": "ChIJ6ykEDQu7wjsRVDBjuDKHtnI"
 	},
 
-	{"displayAddress":"QBPL -Pune SEZ" ,
-		"formatted_address": "The Quadron Business Park, Plot No. 28 Rajiv Gandhi Infotech Park, Phase II, Hinjewadi, Pune, Maharashtra 411057, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [18.5859733, 73.6970379],
-	    "placeId": "ChIJ6ykEDQu7wjsRVDBjuDKHtnI"
+	{
+		"display_address":"CommerZone",
+		"formatted_address": "Commerzone IT Park, Yerawada, Pune, Maharashtra 411006, India",
+	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+	    "location": [73.883805, 18.5602898],
+	    "placeId": "ChIJH7PcT9nAwjsRFK4IL60gRjI"
 	},
 
-	{"displayAddress":"Pune(QuadraII) STP" ,
-		"formatted_address": "TATA Consultancy Services, S.No. 238/239, Quadra II, Opp Magarpatta City, Hadapsar, Pune, Maharashtra 411028, India",
+	{
+		"display_address":"TCS, Nyati Tiara",
+		"formatted_address": "Tata Consultancy Services, Pune Nagar Rd, Blue Hill Society, Yerawada, Pune, Maharashtra 411006, India",
 	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [18.5132302, 73.933573],
-	    "placeId": "ChIJjwkMLvXBwjsR_KclVTRIC7M"
+	    "location": [73.890797499, 18.5475484],
+	    "placeId": "ChIJC1YZpB3BwjsR8nFN2b93NgM"
 	},
 
-	{"displayAddress":"Pune(QuadraII)NonSTP" ,
-		"formatted_address": "TATA Consultancy Services, S.No. 238/239, Quadra II, Opp Magarpatta City, Hadapsar, Pune, Maharashtra 411028, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [18.5132302, 73.933573],
-	    "placeId": "ChIJjwkMLvXBwjsR_KclVTRIC7M"
+	{
+		"display_address":"Cerebrum IT Park" ,
+		"formatted_address": "Cerebrum IT Park, Marigold complex, Kalyani Nagar, Pune, Maharashtra 411014, India",
+	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+	    "location": [73.9105654, 18.5445986],
+	    "placeId": "ChIJG2xMEw3BwjsR5pww7XHk63U"
 	},
 
-	{"displayAddress":"Pune-Sun Suzlon-NSTP" ,
+	{
+		"display_address":"CMC LIMITED" ,
+		"formatted_address": "CMC-Pune, Elbee House, Dhole Patil Road, Siddharth Path, Pune, Maharashtra 411001, India",
+	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/school-71.png",
+	    "location": [73.8762283, 18.534962],
+	    "placeId": "ChIJ47XjtPnAwjsRfl0REV-KQdY"
+	},
+
+	{
+		"display_address":"Birla AT And T Communications . Ltd",
+		"formatted_address": "Koregaon Park Rd, Bund Garden, Sangamvadi, Pune, Maharashtra 411001, India",
+	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png",
+	    "location": [73.8850588, 18.54092559999999],
+	    "placeId": "ChIJkap8WPzAwjsRhdgLCXcF0to"
+	},
+
+	{
+		"display_address":"Mahindra British Telecom Limited",
+		"formatted_address": "S. No. 91, CTS No. 11/B/1, 2nd and 3rd Floor, Sharda Center, Erandwane, Pune, Maharashtra 411004, India",
+	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+	    "location": [73.835775, 18.510174],
+	    "placeId": "ChIJZVBZBoy_wjsRVkx2MdDgx9Y"
+	},
+
+	{
+		"display_address":"TCS PUNE (Millenium)" ,
+		"formatted_address": "TCS PUNE (Millenium), Godrej Millenium, Lane Number 7, Vasani Nagar, Koregaon Park, Pune, Maharashtra 411001, India",
+	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+	    "location": [73.897226, 18.537914],
+	    "placeId": "ChIJfZBSjAbBwjsRNADABRxQrJo"
+	},
+
+	{
+		"display_address":"NAVLAKHA COMP.-PUNE" ,
+		"formatted_address": "NAVLAKHA COMP, Bibwewadi Kondhwa Road, Near Jhala Complex, Bibwewadi Kondhwa Road, Pune, Maharashtra 411037, India",
+	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+	    "location": [73.8754836, 18.4814269],
+	    "placeId": "ChIJD00TwpzqwjsRzjNkTr9FcIU"
+	},
+
+	/*{
+		"display_address":"Pune-Sun Suzlon-NSTP" ,
 		"formatted_address": "Pune-Sun Suzlon, 180/1-8, Opposite Magarpatta City,, Hadapsar, Pune, Maharashtra 411028, India",
 	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
 	    "location": [18.5121034, 73.9352588],
@@ -119,61 +135,16 @@ angular.module('cbApp')
 	    "placeId": "ChIJrXdkmJ_BwjsRG2vuqY9LP7w"
 	},
 
-	{"displayAddress":"Pune - Commerzone" ,
-		"formatted_address": "Commerzone IT Park, Yerawada, Pune, Maharashtra 411006, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [18.5602898, 73.883805],
-	    "placeId": "ChIJH7PcT9nAwjsRFK4IL60gRjI"
-	},
-
-		{"displayAddress":"Nyati Tiara" ,
-		"formatted_address": "Tata Consultancy Services, Pune Nagar Rd, Blue Hill Society, Yerawada, Pune, Maharashtra 411006, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [18.5475484, 73.890797499],
-	    "placeId": "ChIJC1YZpB3BwjsR8nFN2b93NgM"
-	},
-
-		{"displayAddress":"Nashik PSK Sites" ,
+	{
+		"display_address":"Nashik PSK Sites" ,
 		"formatted_address": "Nashik Passport Office - Passport Seva Kendra, Shop No 3&4, Ground Floor, Nashik Pune National Highway, Nashik, Maharashtra 422214, India",
 	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/civic_building-71.png",
 	    "location": [19.9606742, 73.8285404],
 	    "placeId": "ChIJEybtlLLq3TsRWe7D4A8HWn4"
 	},
 
-		{"displayAddress":"Cerebrum IT Park" ,
-		"formatted_address": "Cerebrum IT Park, Marigold complex, Kalyani Nagar, Pune, Maharashtra 411014, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [18.5445986, 73.9105654],
-	    "placeId": "ChIJG2xMEw3BwjsR5pww7XHk63U"
-	},
+	*/
 
-		{"displayAddress":"CMC-Pune" ,
-		"formatted_address": "CMC-Pune, Elbee House, Dhole Patil Road, Siddharth Path, Pune, Maharashtra 411001, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/school-71.png",
-	    "location": [18.534962, 73.8762283],
-	    "placeId": "ChIJ47XjtPnAwjsRfl0REV-KQdY"
-	},
-
-		{"displayAddress":"Millenium Bldg, Pune" ,
-		"formatted_address": "TCS PUNE (Millenium), Godrej Millenium, Lane Number 7, Vasani Nagar, Koregaon Park, Pune, Maharashtra 411001, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [18.537914, 73.897226],
-	    "placeId": "ChIJfZBSjAbBwjsRNADABRxQrJo"
-	},
-
-	{"displayAddress":"NAVLAKHA COMP.-PUNE" ,
-		"formatted_address": "NAVLAKHA COMP, Bibwewadi Kondhwa Road, Near Jhala Complex, Bibwewadi Kondhwa Road, Pune, Maharashtra 411037, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [18.4814269, 73.8754836],
-	    "placeId": "ChIJD00TwpzqwjsRzjNkTr9FcIU"
-	},
-
-	{"displayAddress":"Pune Sahyadri Park" ,
-		"formatted_address": "Sahyadri Park, Plot No. 2 & 3, Rajiv Gandhi Infotech Park, Phase-III, Hinjewadi, Pune, Maharashtra 411057, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [18.5809591, 73.6868195],
-	    "placeId": "ChIJj1VVVcG7wjsRgSABrqya8pA"
-	}
 ];
     		return tcsLocations;
     	}

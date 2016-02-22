@@ -14,7 +14,9 @@ angular.module('cbApp')
      Auth.getCurrentUser().
      then(function(data){
         currentUser = data;
-        getDrives(10);
+        //getDrives(10);
+        currentUser.firstName = currentUser.empName.split(" ")[0];
+        console.log("First Name  ", currentUser.firstName);
         console.log(currentUser)
      });
     var getLocations = function(driveId){

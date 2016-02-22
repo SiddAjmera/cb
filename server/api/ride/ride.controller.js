@@ -287,7 +287,7 @@ exports.getAvailableRides = function(req, res){
           var ridesToSend = [];
 
           results.forEach(function(result){
-              if(result.obj.offeredBy.empId != empId) ridesToSend.push(result);
+              if(result.obj.offeredBy.empId != empId && result.obj.currentlyAvailableSeats > 0) ridesToSend.push(result);
           });
           
           return res.json(200, ridesToSend);
@@ -488,7 +488,7 @@ exports.addCompanionToRide = function(req, res){
                                           if(req.body.user){
                                             var updated = _.merge(user, req.body.user);
                                             updated.save(function (err) {
-                                              if (err) { 
+                                              if (err) {
                                                 logger.fatal('Error in Ride.addCompanionToRide.updated.save. Error : ' + err);
                                                 return handleError(res, err); 
                                               }

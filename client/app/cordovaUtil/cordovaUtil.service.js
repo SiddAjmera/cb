@@ -262,7 +262,7 @@ angular.module('cbApp')
 						}
 						//only report if we got Good Stuff
 						if(homeAddress != '' &&  city != '' && zipcode != '' && placeID != '' && state != '') {
-							var addressObject={};
+							var addressObject = {};
 							addressObject.homeAddressLocation = {};
 							addressObject.homeAddressLocation.location = [result.geometry.location.lat(),result.geometry.location.lng()];
 							addressObject.homeAddressLocation.placeId = placeID;
