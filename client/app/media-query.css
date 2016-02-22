@@ -70,5 +70,12 @@
 	.each-home-menu{
 		padding:0 0px;
 	}	
+	.avail-right-sec {
+	    padding: 10px 7px;
+	    padding-bottom: 5px;
+	}
+	.available-seat-count{
+		margin-left: 0px;
+	}
 }
 

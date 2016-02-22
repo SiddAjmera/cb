@@ -226,6 +226,7 @@ exports.filterRide = function(req, res){
 exports.getAvailableRides = function(req, res){
   CurrentUser = req.user;
   var empId = req.user.empId;
+
   logger.trace(empId + ' requested for Ride.getAvailableRides');
   console.log("Request Body : " + JSON.stringify(req.body));
   if(req.body.user){
@@ -275,7 +276,7 @@ exports.getAvailableRides = function(req, res){
           "rideStatus"        : "ACTIVE"         // tell mongo to only return ACTIVE rides
       },function(err, results, stats){
           if(err) {
-            console.log("Error in geoNear : " + JSON.stringify(err));
+            console.log("Error in  geoNear: " + JSON.stringify(err));
             logger.fatal('Error in Ride.getAvailableRides. Error : ' + err);
             return handleError(res, err);
           }
