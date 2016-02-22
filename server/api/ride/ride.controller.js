@@ -227,11 +227,12 @@ exports.getAvailableRides = function(req, res){
   CurrentUser = req.user;
   var empId = req.user.empId;
   logger.trace(empId + ' requested for Ride.getAvailableRides');
-
+  console.log("Request Body : " + JSON.stringify(req.body));
   if(req.body.user){
     User.findById(req.user._id, function(err, user){
       if (err) {
         logger.fatal('Error in Ride.getAvailableRides. Error : ' + err);
+        console.log("Error in findById : " + JSON.stringify(err));
         return handleError(res, err);
       }
       if (!user)  {
@@ -242,6 +243,7 @@ exports.getAvailableRides = function(req, res){
       updated.save(function (err, user) {
         if (err) {
           logger.fatal('Error in Ride.getAvailableRides.updated.save. Error : ' + err);
+          console.log("Error in updated.save : " + JSON.stringify(err));
           return handleError(res, err);
         }
         logger.debug('Successfully updated user details in Ride.getAvailableRides');
@@ -273,6 +275,7 @@ exports.getAvailableRides = function(req, res){
           "rideStatus"        : "ACTIVE"         // tell mongo to only return ACTIVE rides
       },function(err, results, stats){
           if(err) {
+            console.log("Error in geoNear : " + JSON.stringify(err));
             logger.fatal('Error in Ride.getAvailableRides. Error : ' + err);
             return handleError(res, err);
           }

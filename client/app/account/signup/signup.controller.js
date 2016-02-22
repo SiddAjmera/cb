@@ -13,18 +13,12 @@ angular.module('cbApp')
 
     /*get tcs locations*/
     $scope.fieldtype = "password";
-
-     $scope.officeAddressJSON = staticData.getTCSLocations();
-                              
-
+    $scope.officeAddressJSON = staticData.getTCSLocations();                              
+    //cordovaUtil.setDeviceUUID(); 
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
     $scope.showErrorMessage = true;
-    var currentStep = 1;
-   
-    $scope.signupForm = {};
-    
-    //by default, or on page refresh, redirect to first step.
-    $scope.step = 1;
+    $scope.signupForm = {};    
+        
     /*function to change field type*/
     $scope.changeFieldType = function(){
       $scope.fieldtype = $scope.fieldtype=="password"?"text":"password";
@@ -67,31 +61,26 @@ angular.module('cbApp')
 
    /*signup function called on form submit*/
 
-    $scope.register = function() {
-     
-         $scope.showErrorMessage = false;
-         console.log($scope.signupForm) ;
-         if(!$scope.signupForm.$valid){   /*if form is invalid,return and show error messages */
-              console.log($scope.signupForm) ;
-              $("input.ng-invalid").eq(0).focus();      
-              console.log("----------",$("input.ng-invalid"))
-              return false;
-         } 
-
-        /*else save the data*/
-    
-        // Function to save the UserObject in MongoDB
-        
-          if(config.cordova){
-            pushnotification.registerPushNotification().then(function(redgId){
-               $scope.user.redgId=redgId;
+    $scope.register = function() {     
+      $scope.showErrorMessage = false;
+      console.log($scope.signupForm) ;
+      if(!$scope.signupForm.$valid){   /*if form is invalid,return and show error messages */
+          console.log($scope.signupForm) ;
+          $("input.ng-invalid").eq(0).focus();      
+          console.log("----------",$("input.ng-invalid"))
+          return false;
+      }
+      /*else save the data*/    
+      // if device then register for push notification and save registarion ID.
+      if(config.cordova){
+        pushnotification.registerPushNotification().then(function(redgId){
+          $scope.user.redgId=redgId;
                 $scope.signupPost();
-            });          
-         }
-         else
-          $scope.signupPost();
-            
-       }
+          });          
+      }
+      else
+        $scope.signupPost();
+    }
        
        $scope.signupPost=function(){ 
          var url = config.apis.signup;

@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('cbApp')
   .service('cordovaUtil',['parse','Auth','httpRequest','localStorage','$q','$rootScope',function (parse,Auth,httpRequest,localStorage,$q,$rootScope) {
   var currentUser = {};
@@ -37,8 +35,8 @@ angular.module('cbApp')
 		  
 	   },
 	   
-	   saveCoordinates:function(position,driveId)
-	   {	
+	   	saveCoordinates:function(position,driveId)
+	   	{	
 	   	   var that=this;
 	   	   
 	   	   console.log("My cordinates ",position);
@@ -116,56 +114,52 @@ angular.module('cbApp')
 				 }
 			 });
 	
-	   },
+	  	},
 
-	   stopSampling: function(){
+	   	stopSampling: function(){
 	   		navigator.geolocation.clearWatch(watchId);
 	   		;
-	   },
-
-	   saveDeviceDetails:function()
-	   {
+	   	},
+	   //device is a global variable, will be available on device after deviceReady event
+	   	saveDeviceDetails:function(){
 		   localStorage.store('Device', JSON.stringify(device)).then(function(device){
 				return device;
 			});
-	   },
+	   	},
 
-	   getDeviceUUID:function()
-	   {
+	   	getDeviceUUID:function(){
 	   	   	localStorage.retrieve('DeviceUUID').then(function(uuid){
 	   			if(uuid != null){ 
 	   				//alert('This is the UUID : ' + uuid);
 	   				deviceUUID = uuid;
 	   				return uuid;
 	   			}
-	   		});
-
-	   	   	localStorage.store('DeviceUUID', device.uuid).then(function(uuid){
-	   	   		//alert('This is the UUID : ' + uuid);
-	   	   		deviceUUID = uuid;
-				return uuid;
+	   		});   	   	
+	   	},
+	   	setDeviceUUID:function (){
+	   		if( angular.isDefined(device) && angular.isDefined(device.uuid)){
+	   			localStorage.store('DeviceUUID', device.uuid).then(function(uuid){	   	   		
+	   	   			deviceUUID = uuid;					
+				});	
+	   		}
+	   		else{
+	   			localStorage.store('DeviceUUID', "Desktop").then(function(uuid){	   	   		
+	   	   			deviceUUID = "Desktop";
+				});
+	   		}	   		
+	   	},
+	   	getAllCoordinates:function(){
+	   		parse.getObjects().
+	   		then(function(res){	   		
+	   			var coordinates = _.map(res,function(d){return d.toJSON()});
+	   			return coordinates;
+	   		},function(err){
+			 	console.log(err);
 			});
-
-		   // var deviceDetails = window.localStorage.getItem('DeviceInformation');
-		   // deviceDetails = JSON.parse(deviceDetails);
-		   // if(deviceDetails != undefined)	return deviceDetails.uuid;
-		   // else	return device.uuid;
-		   // return "ThisIsASampleDeviceUUID";
-	   },
-
-	   getAllCoordinates:function(){
-	   	parse.getObjects().
-	   	then(function(res){
-	   		
-	   		var coordinates = _.map(res,function(d){return d.toJSON()});
-	   		return coordinates;
-	   	},function(err){
-			  console.log(err);
-		});
-	   },
+	   	},
 
 	   syncCoordinates:function(){
-	   		 localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
+	   		localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
 	   			var storedlocations = locations;
 	   			if(storedlocations==null) return;
 	   			storedlocations = JSON.parse(storedlocations);
@@ -179,8 +173,8 @@ angular.module('cbApp')
 	   		});		 
 	   },
 
-	   syncABatch: function(aBatch){
-	   	var that = this;
+	   	syncABatch: function(aBatch){
+	   		var that = this;
 	   		httpRequest.post(config.apis.syncLocations, aBatch).
 		   		then(function(res){
 		   			if(res.status==201){

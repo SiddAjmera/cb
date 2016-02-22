@@ -4,7 +4,7 @@ angular.module('cbApp')
   .controller('MainCtrl', function ($scope, $http, socket, cordovaUtil, $state, localStorage) {
 
    
-	  
+	 // cordovaUtil.setDeviceUUID();
 	  $scope.saveDeviceInfo=function()
 	  {
 		  cordovaUtil.saveDeviceDetails();
