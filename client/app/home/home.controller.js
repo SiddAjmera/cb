@@ -15,7 +15,7 @@ angular.module('cbApp')
      then(function(data){
         currentUser = data;
         //getDrives(10);
-        currentUser.firstName = currentUser.empName.split(" ")[0];
+        $scope.firstName = currentUser.empName.split(" ")[0];
         console.log("First Name  ", currentUser.firstName);
         console.log(currentUser)
      });

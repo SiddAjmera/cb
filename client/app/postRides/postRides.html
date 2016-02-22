@@ -22,11 +22,12 @@
 						</label> -->
 		                <!-- <input tab-index="1" id="postFrom" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="rideSource" placeholder="From"  required 
 		                ng-model='rideData.from'> -->
-		                <select ng-model='rideData.from' class="timeslot post-ride-leaving-in">
+		                <select ng-model='rideData.from' class="timeslot post-ride-leaving-in" ng-change="fromChanged(rideData.from)">
 		                	<option>Home</option>
 		                	<option>Office</option>
-		                	<option>Other</option>
-		                </select>	
+		                	<!-- <option>Other</option> -->
+		                </select>
+
 		                <!-- ng-click="moveLabelUp('postFromSec')"
 		                ng-blur="moveLabelDown('postFromSec','postFrom')" ng-focus="moveLabelUp('postFromSec')" -->
 		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideSource.$error" class="error-msg-edit">
@@ -66,10 +67,10 @@
 							Employee Id
 						</label> -->
 		                <!-- <input tab-index="1" id="postTo" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="rideDestination" placeholder="To"  required ng-model='rideData.to'> -->
-		                <select name="rideDestination" placeholder="To"  required ng-model='rideData.to' class='timeslot post-ride-leaving-in'> 
+		                <select name="rideDestination" placeholder="To"  required ng-model='rideData.to' class='timeslot post-ride-leaving-in' ng-change="toChanged(rideData.to)"> 
 		                	<option>Home</option>
 		                	<option>Office</option>
-		                	<option>Other</option>
+		                	<!-- <option>Other</option> -->
 		                </select>
 		                 <!-- ng-click="moveLabelUp('postToSec')"
 		                ng-blur="moveLabelDown('postToSec','postTo')" ng-focus="moveLabelUp('postToSec')" -->

@@ -69,10 +69,11 @@ angular.module('cbApp')
         getRoute();
     });
 
-    $scope.rideData={};
-    $scope.rideData.from='Home';
-    $scope.rideData.to='Office';
-    $scope.rideData.leavingIn='15';
+    $scope.rideData = {};
+    $scope.rideData.from = 'Home';
+    $scope.rideData.to = 'Office';
+    $scope.rideData.leavingIn = '15';
+    $scope.rideData.availableSeats = 4;
 
     if(currentUser.vehicle)
         $scope.rideData.availableSeats=(currentUser.vehicle[0].capacity-1).toString();
@@ -136,7 +137,15 @@ angular.module('cbApp')
                         componentRestrictions: { country: 'IN',city:'Pune' },
                     }
 
- 
+    
+    $scope.fromChanged = function(option){
+        (option == "Home") ? $scope.rideData.to = "Office" : $scope.rideData.to = "Home";
+    }
+
+    $scope.toChanged = function(option){
+        (option == "Home") ? $scope.rideData.from = "Office" : $scope.rideData.from = "Home";
+    }
+
     $scope.address='default'
     $scope.addressTo='default'
     $scope.optionAddressOptions=function(option){
