@@ -28,6 +28,20 @@ User.create({
     password: "123",
     userId: '111111',
     userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/08a/0fe/2c2b6bb.jpg',
+    homeAddressLocation: {
+        formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
+        display_address: "Splendour, MegaPolis",
+        icon: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        location: [73.6861693000000740, 18.5791973000000010],
+        placeId: "ChIJTdb_0G27wjsRDJzfJDgUqH4"
+    },
+    officeAddressLocation: {
+        formatted_address: "Sahyadri Park, Plot No. 2 & 3, Rajiv Gandhi Infotech Park, Phase-III,, Hinjewadi, Pune, Maharashtra 411057, India",
+        display_address: "TCS Sahyadri Park",
+        icon: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        location: [73.6829261999999970,  18.5806206000000000],
+        placeId: "ChIJz2_Fp2XAwjsRf-D83a7sne8"
+    },
     vehicle: [{
         vehicleLicenseNumber: "MH 14 JZ 1234",
         capacity: "4",
@@ -60,6 +74,19 @@ User.create({
     password: "123",
     redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
     userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAALvAAAAJDQyNGQ1MDI0LTFmYmEtNGNlMy05ZTkzLWI4OWU1OTdhMDUzOQ.jpg',
+    homeAddressLocation: {
+        formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
+        display_address: "Sangaria, MegaPolis",
+        icon: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        location: [73.6861693000000740, 18.5791973000000010]
+    },
+    officeAddressLocation: {
+        formatted_address: "Sahyadri Park, Plot No. 2 & 3, Rajiv Gandhi Infotech Park, Phase-III,, Hinjewadi, Pune, Maharashtra 411057, India",
+        display_address: "TCS Sahyadri Park",
+        icon: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        location: [73.6829261999999970,  18.5806206000000000],
+        placeId: "ChIJz2_Fp2XAwjsRf-D83a7sne8"
+    },
     vehicle: [{
         vehicleLicenseNumber: "MH 14 RF 3456",
         capacity: "4",
@@ -93,6 +120,19 @@ User.create({
     userId: '111113',
     redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
     userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/055/092/193511e.jpg',
+    homeAddressLocation: {
+        formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
+        display_address: "Sangaria, MegaPolis",
+        icon: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        location: [73.6861693000000740, 18.5791973000000010]
+    },
+    officeAddressLocation: {
+        formatted_address: "Sahyadri Park, Plot No. 2 & 3, Rajiv Gandhi Infotech Park, Phase-III,, Hinjewadi, Pune, Maharashtra 411057, India",
+        display_address: "TCS Sahyadri Park",
+        icon: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        location: [73.6829261999999970,  18.5806206000000000],
+        placeId: "ChIJz2_Fp2XAwjsRf-D83a7sne8"
+    },
     vehicle: [{
         vehicleLicenseNumber: "MH 14 RF 5678",
         capacity: "4",
@@ -126,6 +166,19 @@ User.create({
     userId: '111114',
     redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
     userPhotoUrl: 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png',
+    homeAddressLocation: {
+        formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
+        display_address: "Sangaria, MegaPolis",
+        icon: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        location: [73.6861693000000740, 18.5791973000000010]
+    },
+    officeAddressLocation: {
+        formatted_address: "Sahyadri Park, Plot No. 2 & 3, Rajiv Gandhi Infotech Park, Phase-III,, Hinjewadi, Pune, Maharashtra 411057, India",
+        display_address: "TCS Sahyadri Park",
+        icon: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        location: [73.6829261999999970,  18.5806206000000000],
+        placeId: "ChIJz2_Fp2XAwjsRf-D83a7sne8"
+    },
     vehicle: [{
         vehicleLicenseNumber: "MH 14 RF 7890",
         capacity: "2",
@@ -152,6 +205,19 @@ User.create({
     userId: '111115',
     redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
     userPhotoUrl: 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png',
+    homeAddressLocation: {
+        formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
+        display_address: "Sangaria, MegaPolis",
+        icon: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        location: [73.6861693000000740, 18.5791973000000010]
+    },
+    officeAddressLocation: {
+        formatted_address: "Sahyadri Park, Plot No. 2 & 3, Rajiv Gandhi Infotech Park, Phase-III,, Hinjewadi, Pune, Maharashtra 411057, India",
+        display_address: "TCS Sahyadri Park",
+        icon: "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        location: [73.6829261999999970,  18.5806206000000000],
+        placeId: "ChIJz2_Fp2XAwjsRf-D83a7sne8"
+    },
     vehicle: [{
         vehicleLicenseNumber: "MH 14 RF 8901",
         capacity: "4",
