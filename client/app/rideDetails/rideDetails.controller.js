@@ -4,6 +4,7 @@ angular.module('cbApp')
   .controller('RideDetailsCtrl', ['$scope','staticData','Auth','$state','$stateParams','httpRequest'
   	,function ($scope,staticData,Auth,$state,$stateParams,httpRequest) {
   	var forAction=$stateParams.for;
+    (forAction == "takeRide") ? $scope.hideVehicleDetails = true : $scope.hideVehicleDetails = false;
   	console.log("forAction",forAction);
     $scope.message = 'Hello';
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
