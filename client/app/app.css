@@ -862,6 +862,7 @@ a.get-started-link:hover{
     height: 50px;
     border-radius: 50%;
     border: 2px solid #888;
+    margin-right: 8px;
 }
 .avail-seat-wrap{
     float: left;
@@ -1818,7 +1819,7 @@ input[type=number]::-webkit-outer-spin-button {
     float: right;
 }
 .choose-ride-wrap{
-    background-color: #1E68A5;
+    background-color: #329D71;
     padding: 10px;
     color: #fff;
 }
@@ -1834,32 +1835,37 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .avail-rides-lists-wrap{
     background-color: #fff;
+    padding: 0 10px;
     padding-bottom: 20px;
 }
 .avail-list-img-sec{
     background-color: #EFEFEF;
     height: 70px;
     padding: 10px 15px;
-    border-left: 2px solid #D8D8D8;
-    border-right: 2px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
+    border-right: 1px solid #D8D8D8;
 }
 .avail-user-name{
-    line-height: 50px;
-    font-size: 16px;
-    padding-left: 10px;
-    float: left;
+    line-height: 18px;
+    font-size: 12px;
+    padding-top: 6px;
+    margin: 0 0 6px;
+}
+.avail-user-gender{
+    font-size: 12px;
+    color: #5C5C5C;
 }
 .avail-left-sec{
     padding: 10px 15px;
+    padding-bottom: 8px;
     font-size: 12px;
-    border-left: 2px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
 }
 .avai-ride-info-icon{
     width: 18px;
     margin-right: 3%;
 }
 .each-info-line{
-    margin-bottom: 10px;
 }
 .each-info-line.loc-trim{
     max-width: 100%;
@@ -1870,7 +1876,8 @@ input[type=number]::-webkit-outer-spin-button {
 .avail-right-sec{
     font-size: 12px;
     padding: 10px 10px;
-    border-right: 2px solid #D8D8D8;
+    padding-bottom: 5px;
+    border-right: 1px solid #D8D8D8;
 }
 .available-seat-count{
     background-image: url(../assets/images/available-rides/available_seats_BG.png);
@@ -1880,34 +1887,37 @@ input[type=number]::-webkit-outer-spin-button {
     display: block;
     width: 25px;
     height: 25px;
-    font-size: 15px;
+    font-size: 14px;
+    padding-top: 2px;
     color: #fff;
+    margin-left: 5px;
 }
 .avail-right-info{
     float: left;
     width: 100%;
-    margin-bottom: 7px;
 }
 .seat-avail-label{
     padding-top: 3px;
 }
 .seat-info-img{
     float: left;
-    width: 14px;
-    margin-right: 10%;
+    width: 12px;
+    margin-right: 3%;
     cursor: pointer;
 }
 .avail-proceed-wrap{
-    background-color: #EFEFEF;
-    padding: 5px 15px;
+    padding: 7px 15px;
     font-size: 13px;
-    color: #3191E6;
+    color: #fff;
+    background-color: #329D71;
     text-align: center;
-    border-bottom: 2px solid #D8D8D8;
+}
+.avail-proceed-wrap .book-ride-text{
+    position: relative;
+    top: 2px;
 }
 .avail-proceed-img{
-    width: 18px;
-    margin-left: 10px;
+    width: 46px;
 }
 /*Down-left pointing*/
 .triangle-down-left {
@@ -1928,7 +1938,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 0;
     height: 0;
     border-right: 561px solid transparent;
-    border-bottom: 20px solid #1E68A5;
+    border-bottom: 20px solid #329D71;
 }
 .triangle-down-left-post:after{
     content: "";
@@ -1950,11 +1960,11 @@ input[type=number]::-webkit-outer-spin-button {
     border-bottom: 3px solid #acacac;
     height: 42px;
     transition: all ease .3s;
-        background-image: linear-gradient(bottom, #FFD51A 50%, #FAC815 50%);
-    background-image: -o-linear-gradient(bottom, #FFD51A 50%, #FAC815 50%);
-    background-image: -moz-linear-gradient(bottom, #FFD51A 50%, #FAC815 50%);
-    background-image: -webkit-linear-gradient(bottom, #1E68A5 50%, #1E68A5 50%);
-    background-image: -ms-linear-gradient(bottom, #FFD51A 50%, #FAC815 50%);
+        background-image: linear-gradient(bottom, #329D71 50%, #329D71 50%);
+    background-image: -o-linear-gradient(bottom, #329D71 50%, #329D71 50%);
+    background-image: -moz-linear-gradient(bottom, #329D71 50%, #329D71 50%);
+    background-image: -webkit-linear-gradient(bottom, #329D71 50%, #329D71 50%);
+    background-image: -ms-linear-gradient(bottom, #329D71 50%, #329D71 50%);
 }
 
 /*Post irde-css*/
@@ -2299,6 +2309,48 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .prof-btn-img{
     width: 43px;
+}
+.avail-ride-date{
+    font-size: 15px;
+    font-weight: bold;
+}
+.address-text{
+    color: #656565;
+    font-size: 12px;
+    display: block;
+    max-width: 60%;
+    max-height: 35px;
+    overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    float: left;
+    padding-right: 5px;
+}
+.avail-ride-address-wrap{
+    padding-bottom: 5px;
+    border-right: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
+}
+.avail-ride-address-wrap .avai-ride-info-icon{
+    float: left;
+}
+.avail-ride-address-wrap .glyphicon{
+    color: #FF8901;
+}
+.via-sec{
+    font-size: 12px;
+    padding-bottom: 6px;
+    border-right: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
+}
+.seat-sec .select-text{
+    margin-right: 10px;
+    font-size: 12px;
+}
+.seat-sec{
+    padding-bottom: 10px;
+    border-right: 1px solid #D8D8D8;
+    border-left: 1px solid #D8D8D8;
 }
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
