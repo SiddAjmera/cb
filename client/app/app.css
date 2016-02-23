@@ -1720,6 +1720,17 @@ input[type=number]::-webkit-outer-spin-button {
     margin-top: 3px;
     cursor: pointer;
 }
+.field-label{
+    font-size: 9px;
+    margin-bottom: 0px;
+    color: #545454;
+}
+.field-label.from{
+    padding-left: 4px;
+}
+.field-label.route{
+    margin-left: 41px;
+}
 .current-loc-sec img{
     width: 16px;
     margin-right: 6px;
@@ -1938,6 +1949,7 @@ input[type=number]::-webkit-outer-spin-button {
     color: #fff;
     background-color: #329D71;
     text-align: center;
+    cursor: pointer;
 }
 .avail-proceed-wrap .book-ride-text{
     position: relative;
@@ -1945,6 +1957,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .avail-proceed-img{
     width: 46px;
+}
+.ride-status .login-input-box{
+    height: 22px;
+    padding: 0 10px 0 0px;
 }
 /*Down-left pointing*/
 .triangle-down-left {
@@ -2009,6 +2025,11 @@ input[type=number]::-webkit-outer-spin-button {
     width: 25px;
     padding-top: 12px;
 }
+.post-ride-from-icon.from{
+        width: 20px;
+    margin-top: 9px;
+    margin-left: 9px;
+}
 .post-ride-from-icon-one-time{
     padding-top: 8px;
 }
@@ -2024,14 +2045,15 @@ input[type=number]::-webkit-outer-spin-button {
     -moz-appearance: none;
     appearance: none;
     width: 100%;
-    color: #908F8F;
+    color: #000;
     background-image: url(../assets/images/available-rides/dropdown.png);
-    height: 40px;
+    height: 22px;
     border-bottom: 1px solid #e8e8e8;
     background-repeat: no-repeat;
     background-size: 20px;
     background-position: 97%;
-    padding: 0px 42px 0px 6px;
+    padding: 0px 42px 0px 0px;
+    font-size: 12px;
 }
 .post-ride-comment{
     font-size: 16px;
@@ -2050,6 +2072,7 @@ input[type=number]::-webkit-outer-spin-button {
     color: #fff;
     height: 60px;
     font-size: 16px;
+    cursor: pointer;
 }
 .post-ride-wrap-one .post-ride-continue{
     background-color: #ec6e3c;
