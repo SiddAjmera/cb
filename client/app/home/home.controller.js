@@ -57,6 +57,10 @@ angular.module('cbApp')
         
     }
 
+    $scope.openMyTeam = function(){
+      $state.go('myteams');
+    }
+
     $scope.postRide=function () {
       if(currentUser.homeAddressLocation && currentUser.officeAddressLocation){
         $state.go('userHome.postRides');        

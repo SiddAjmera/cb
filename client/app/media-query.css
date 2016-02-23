@@ -31,7 +31,7 @@
 		width: 90%;
 	}
 	.each-row div.gender-radio{
-		width: 50%;
+		width: 40%;
 	}
 	.each-row .each-row-half div:first-child{
 		width: 30%;
@@ -53,6 +53,16 @@
 	    width: 100%;
 	    padding:60px 15px 0 15px;
 	    float: left;
+	}
+	.my-teams-wrapper{
+	    width: 100%;
+	    padding: 0 15px;
+	    padding-top: 110px;
+	}
+	.team-dtl-wrapper{
+	    width: 100%;
+	    padding: 0 15px;
+	    padding-top: 110px;
 	}
 	.container.profile-container {
 	    width: 100%;

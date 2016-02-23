@@ -10,9 +10,14 @@
 			<p class="on-the-fly-text"><span class="first-letter">O</span>n <span class="first-letter">T</span>he <span class="first-letter">F</span>ly</p>
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none take-post-btn-sec">
-					<button class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none home-post-ride" ng-click="postRide()">POST A RIDE</button>
-					<button class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right pad-R-none home-take-ride" ng-click="takeRide()">TAKE A RIDE</button>
-				
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
+						<img src="assets/images/dashboard-icon/postRide.png" class="option-icon" ng-click="postRide()">
+						<p ng-click="postRide()" class="option-text">POST A RIDE</p>
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
+						<img src="assets/images/dashboard-icon/takeRide.png" class="option-icon" ng-click="takeRide()">
+						<p ng-click="takeRide()" class="option-text">TAKE A RIDE</p>
+					</div>				
 			</div>
 			<div class="or-sec">OR</div>
 		</div>	
@@ -21,8 +26,14 @@
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none for-team-btn-sec">
 				
-					<button class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none home-team-ride">FORM A TEAM</button>
-					<button class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right pad-R-none home-my-ride">MY TEAMS</button>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
+						<img src="assets/images/dashboard-icon/formTeam.png" class="option-icon" ng-click="postRide()">
+						<p ng-click="postRide()" class="option-text">FORM A TEAM</p>
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
+						<img src="assets/images/dashboard-icon/myTeams.png" class="option-icon" ng-click="openMyTeam()">
+						<p ng-click="openMyTeam()" class="option-text">MY TEAMS</p>
+					</div>
 				
 			</div>
 		</div>

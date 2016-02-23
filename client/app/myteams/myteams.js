@@ -5,7 +5,7 @@ angular.module('cbApp')
     $stateProvider
       .state('myteams', {
         url: '/myteams',
-        templateUrl: '../y/myteams/myteams.html',
+        templateUrl: 'app/myteams/myteams.html',
         controller: 'MyteamsCtrl'
       });
   });
