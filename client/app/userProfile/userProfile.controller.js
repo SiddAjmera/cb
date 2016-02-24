@@ -1,9 +1,14 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('UserProfileCtrl', function ($scope, $modal, cordovaUtil,$cordovaImagePicker) {
+  .controller('UserProfileCtrl', function ($scope, Auth, $modal, cordovaUtil, $cordovaImagePicker) {
     $scope.message = 'Hello';
 
+    Auth.getCurrentUser().
+     then(function(data){
+        user = data;
+        console.log(currentUser)
+     });
 
     $scope.getLocation=function(){
          var modalInstance = $modal.open({
@@ -17,10 +22,10 @@ angular.module('cbApp')
           if(option == "yes")
           cordovaUtil.getUserHomeCoordinates().then(function(address){
           	alert('Promise was returned successfully. Address is : ' + address);
-           	$scope.user.homeAddress=address.homeAddress;
-            $scope.user.city=address.city;
-            $scope.user.zipcode=address.zipcode;
-            $scope.user.placeID=address.placeID;
+           	$scope.user.homeAddress = address.homeAddress;
+            $scope.user.city = address.city;
+            $scope.user.zipcode = address.zipcode;
+            $scope.user.placeID = address.placeID;
           })
         });
     };

@@ -10,54 +10,54 @@
 				<img class="profile-pic" src="assets/images/user-image.jpg">
 			</div>
 			<div class="other-detail-wrapper">
-				<p class="profile-uname"><span>Deepthi Kalapala</span></p>
+				<p class="profile-uname"><span>{{user.empName}}</span></p>
 				<div class="profile-row">
 					<div class="field-icon-section">
 						<img class="icon-style" src="assets/images/icon_mobile_number.png">
 					</div>
 					<div class="user-input-section">
-						<span>8802135689</span>
+						<span>{{user.contactNo}}</span>
 					</div>
 				</div>
-				<div class="profile-row">
+				<div class="profile-row" ng-show="user.homeAddressLocation.display_address != null">
 					<div class="field-icon-section">
 						<img class="icon-style home" alt="Home" src="assets/images/available-rides/from-icon.png">
 					</div>
 					<div class="user-input-section">
-						<span>Wakad, Pune, MH</span>
+						<span>{{user.homeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span>
 					</div>
 				</div>
-				<div class="profile-row">
+				<div class="profile-row" ng-show="user.officeAddressLocation.display_address != null">
 					<div class="field-icon-section">
 						<img class="icon-style home" alt="Home" src="assets/images/available-rides/to.png">
 					</div>
 					<div class="user-input-section">
-						<span>Hinjewadi Phase 3, Pune, MH</span>
+						<span>{{user.officeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span>
 					</div>
 				</div>
-				<div class="profile-row">
+				<div class="profile-row" ng-show="user.vehicle[0] != null">
 					<div class="field-icon-section">
 						<img class="icon-style home" alt="Home" src="assets/images/available-rides/to.png">
 					</div>
 					<div class="user-input-section">
-						<span>MH 14 DW 1821</span>
+						<span>{{user.vehicle[0].vehicleLicenseNumber}}</span>
 					</div>
 				</div>
-				<div class="profile-row timing">
+				<div class="profile-row timing" ng-show="user.shiftTimeIn != null">
 					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-L-none">
 						<div class="field-icon-section">
 							<img class="icon-style home" alt="Home" src="assets/images/available-rides/starting-time.png">
 						</div>
 						<div class="user-input-section">
-							<span>9:00 AM</span>
+							<span>{{user.shiftTimeIn | date:'hh:mm a'}}</span>
 						</div>
 					</div>
-					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-R-none">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-R-none" ng-show="user.shiftTimeout != null">
 						<div class="field-icon-section">
 							<img class="icon-style home" alt="Home" src="assets/images/available-rides/starting-time.png">
 						</div>
 						<div class="user-input-section">
-							<span>6:00 PM</span>
+							<span>{{user.shiftTimeout | date:'hh:mm a'}}</span>
 						</div>
 					</div>
 					<div class="prof-edit-btn">
@@ -106,20 +106,20 @@
 		</div>
 		<div class="home-page-menu-options">
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
-				<img class="home-menu-icon" src="assets/images/dashboard-icon/home.png">
-				<p class="home-menu-text">HOME</p>
+				<img ui-sref="userHome.home" class="home-menu-icon" src="assets/images/dashboard-icon/home.png">
+				<p ui-sref="userHome.home" class="home-menu-text">HOME</p>
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
-				<img class="home-menu-icon" src="assets/images/dashboard-icon/profile.png">
-				<p class="home-menu-text">PROFILE</p>
+				<img ui-sref="userHome.userProfile" class="home-menu-icon" src="assets/images/dashboard-icon/profile.png">
+				<p ui-sref="userHome.userProfile" class="home-menu-text">PROFILE</p>
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
-				<img class="home-menu-icon" src="assets/images/dashboard-icon/track-ride.png">
-				<p class="home-menu-text">TRACK RIDES</p>
+				<img ui-sref="userHome.rideStatus" class="home-menu-icon" src="assets/images/dashboard-icon/track-ride.png">
+				<p ui-sref="userHome.rideStatus" class="home-menu-text">TRACK RIDES</p>
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
-				<img class="home-menu-icon" src="assets/images/dashboard-icon/history.png">
-				<p class="home-menu-text">HISTORY</p>
+				<img ui-sref="activities" class="home-menu-icon" src="assets/images/dashboard-icon/history.png">
+				<p ui-sref="activities" class="home-menu-text">HISTORY</p>
 			</div>
 		</div>
 	</div>

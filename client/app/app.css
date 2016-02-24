@@ -786,7 +786,7 @@ a.get-started-link:hover{
 .heading{
     font-size: 14px;
     margin-top: 3px;
-    
+    text-transform: uppercase;
 }
 .input-labels{
     color: #888888;

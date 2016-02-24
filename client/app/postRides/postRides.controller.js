@@ -12,6 +12,11 @@ angular.module('cbApp')
 
         console.log("$scope.rideData",$scope.rideData);
     });
+
+    $scope.toggleFooter = function(){
+      $(".home-page-menu-options").slideToggle(250);
+    }
+
     $scope.mypath ={};
     var getRoute =function () {
         var from,to;
