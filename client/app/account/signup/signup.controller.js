@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SignupCtrl', function ($scope,$location, $window,$state,$modal,$rootScope,cordovaUtil,httpRequest,localStorage,pushnotification,staticData) {
+  .controller('SignupCtrl', function ($scope, $location, $window, $state, $modal, $rootScope, cordovaUtil, httpRequest, localStorage, pushnotification, staticData) {
     $scope.user = {};
     $scope.user.gender = "Female";
     $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",
@@ -86,7 +86,7 @@ angular.module('cbApp')
          var url = config.apis.signup;
        // $scope.user.officeAddressLocation = $scope.user.officeAddress;
         //$scope.user.officeAddress = $scope.user.officeAddress.displayAddress;
-         httpRequest.post(url,$scope.user).
+          httpRequest.post(url,$scope.user).
           then(function(response){
               /*if(response.status==)*/
               if(response.status==200){

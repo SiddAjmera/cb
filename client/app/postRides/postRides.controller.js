@@ -179,25 +179,27 @@ angular.module('cbApp')
         if($scope.rideData.from=="Other"){
             ride.startLocation = {
                                     formatted_address:$scope.ride.source.formatted_address,
-                                    location:[$scope.ride.source.geometry.location.lat(),$scope.ride.source.geometry.location.lng()],
+                                    display_address : $scope.ride.destination.name,
+                                    location:[$scope.ride.source.geometry.location.lng(),$scope.ride.source.geometry.location.lat()],
                                     placeId:$scope.ride.source.place_id,
                                     icon : $scope.ride.source.icon 
                                 };
         
         }
-        else if($scope.rideData.from=="Home"){
+        else if($scope.rideData.from == "Home"){
             ride.startLocation = currentUser.homeAddressLocation;
         }
-        else if($scope.rideData.from=="Office"){
+        else if($scope.rideData.from == "Office"){
              ride.startLocation = currentUser.officeAddressLocation;
         }
-        if($scope.rideData.to=="Other"){
+        if($scope.rideData.to == "Other"){
             ride.endLocation = {
-                                    formatted_address:$scope.ride.destination.formatted_address,
-                                    location:[$scope.ride.destination.geometry.location.lat(),$scope.ride.destination.geometry.location.lng()],
-                                    placeId:$scope.ride.destination.place_id,
+                                    formatted_address : $scope.ride.destination.formatted_address,
+                                    display_address : $scope.ride.destination.name,
+                                    location : [$scope.ride.destination.geometry.location.lng(),$scope.ride.destination.geometry.location.lat()],
+                                    placeId : $scope.ride.destination.place_id,
                                     icon : $scope.ride.destination.icon 
-                             };    
+                               };    
         
         }
         else if($scope.rideData.to=="Home"){
@@ -210,7 +212,7 @@ angular.module('cbApp')
         ride.initiallyAvailableSeats = $scope.rideData.availableSeats;
         ride.rideScheduledTime = moment().add(parseInt($scope.rideData.leavingIn),"minutes").valueOf();
         ride.vehicleLicenseNumber = currentUser.vehicle[0].vehicleLicenseNumber;
-        ride.rideStatus = "Active";
+        ride.rideStatus = "ACTIVE";
         console.log("final obj",ride)
         httpRequest.post(config.apis.postRide,{'ride':ride}).
         then(function(data){
