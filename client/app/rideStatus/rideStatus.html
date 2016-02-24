@@ -6,7 +6,7 @@
 			<span class="heading">Track my ride</span>
 		</div>
 
-		<form name="userProfileUpdateForm" class="container login-container post-ride-container animation-form-signup" novalidate>
+		<form name="userProfileUpdateForm" class="container login-container post-ride-container animation-form-signup ride-status" novalidate>
 			<div class="triangle-down-left-post"></div>	
 			<div class="form-section signup-section-form post-ride-form">
 				
@@ -15,7 +15,14 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/from-icon.png" ng-click="optionAddressOptions('from')">
 					</div>
 					<div id="postFromSec" class="from-address-post-wrap">
-		                <input tab-index="1" id="postFrom" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="postFromAdd" placeholder="From"  required >
+						<label class="field-label from">
+							From
+						</label>
+		                <select class="timeslot post-ride-leaving-in">
+		                	<option>Home</option>
+		                	<option>Office</option>
+		                	
+		                </select>
 		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideSource.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Ride source is required</p>
 						</div>
@@ -27,8 +34,32 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/to.png" ng-click="optionAddressOptions('to')">
 					</div>
 					<div id="postToSec" class="from-address-post-wrap">
-		                <input tab-index="1" id="postTo" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="postToAdd" placeholder="To"  required> <!-- ng-click="moveLabelUp('postToSec')"
-		                ng-blur="moveLabelDown('postToSec','postTo')" ng-focus="moveLabelUp('postToSec')" -->
+						<label class="field-label from">
+							To
+						</label>
+		                <select class="timeslot post-ride-leaving-in">
+		                	<option>Home</option>
+		                	<option>Office</option>
+		                	
+		                </select>
+		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error" class="error-msg-edit">
+							<p ng-message="required" class="error-msg">Ride destination is required</p>
+						</div>
+					</div>	
+				</div>
+				<div class="each-row">
+					<div class="icon-address-fields">
+						<img class="post-ride-from-icon" src="assets/images/via.png" ng-click="optionAddressOptions('to')">
+					</div>
+					<div id="postToSec" class="from-address-post-wrap">
+						<label class="field-label from">
+							Via
+						</label>
+		                 <select class="timeslot post-ride-leaving-in">
+		                	<option>NH4</option>
+		                	
+		                	
+		                </select>
 		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Ride destination is required</p>
 						</div>
@@ -41,8 +72,12 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/starting-time.png">
 					</div>
 					<div class="from-address-post-wrap">
-						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-model="ride.leavingIn" ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON">
-							<option style="display:none" value="">Starting at</option> 	
+						<label class="field-label from">
+							Leaving in
+						</label>
+						<select name="leavingIn" class="timeslot post-ride-leaving-in">
+							<option value="">30 min</option> 	
+							<option value="">120 min</option> 	
 						</select>
 						
 					</div>
@@ -55,8 +90,11 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/seats_avalaible.png">
 					</div>
 					<div class="from-address-post-wrap">
-						<select class="timeslot post-ride-leaving-in" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="ride.availableSeats" ng-options="c as c for c in availableSeatsJSON">
-							<option style="display:none" value="">Seats available</option>
+						<label class="field-label from">
+							Total seats filled
+						</label>
+						<select class="timeslot post-ride-leaving-in">
+							<option value="">Seats available</option>
 						</select>
 					</div>
 					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.availableSeats.$error" class="error-msg-edit">
