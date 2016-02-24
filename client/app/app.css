@@ -1243,7 +1243,7 @@ select.post-ofc-address{
 /*suggestion page css ends*/
 
 .icon-address-fields{
-    width: 15%;
+    width: 31px;
     height: 60px;
     float: left;
     margin-right: 3%;
@@ -2485,7 +2485,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: 54%;
 }
 .team-detail-content .icon-style.time{
-    width: 64%;
+    width: 25px;
     height: 39%;
     margin-top: 8px;
 }
@@ -2581,16 +2581,31 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 8px;
     color: #AFAFAF;
 }
-.team-name-input{
-    width: 80%;
-    float: left;
-    margin-left: 38px;
-    margin-bottom: 10px;
+.team-name-icon{
+    display: none;
 }
 .team-name-field{
     height: 22px;
     padding: 0px;
     border-bottom: 1px solid #e8e8e8;
+}
+.rating-star{
+    float: right;
+    width: 17px;
+    margin-right: 2px;
+}
+.rating-star .star-border{
+    stroke: #5c5c5c;
+    cursor: pointer;
+}
+.rating-star .star-fill{
+    fill: #EFEFEF;
+}
+.rating-star.rated .star-border{
+    stroke: none;
+}
+.rating-star.rated .star-fill{
+    fill: #329D71;
 }
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
