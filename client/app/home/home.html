@@ -27,8 +27,8 @@
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none for-team-btn-sec">
 				
 					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
-						<img src="assets/images/dashboard-icon/formTeam.png" class="option-icon" ng-click="postRide()">
-						<p ng-click="postRide()" class="option-text">FORM A TEAM</p>
+						<img src="assets/images/dashboard-icon/formTeam.png" ui-sref="formTeam" class="option-icon">
+						<p ui-sref="formTeam" class="option-text">FORM A TEAM</p>
 					</div>
 					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
 						<img src="assets/images/dashboard-icon/myTeams.png" class="option-icon" ng-click="openMyTeam()">
@@ -95,16 +95,16 @@
 				<p class="home-menu-text">HOME</p>
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
-				<img class="home-menu-icon" src="assets/images/dashboard-icon/profile.png">
-				<p class="home-menu-text">PROFILE</p>
+				<img ui-sref="userHome.userProfile" class="home-menu-icon" src="assets/images/dashboard-icon/profile.png">
+				<p ui-sref="userHome.userProfile" class="home-menu-text">PROFILE</p>
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
-				<img class="home-menu-icon" src="assets/images/dashboard-icon/track-ride.png">
-				<p class="home-menu-text">TRACK RIDES</p>
+				<img class="home-menu-icon" ui-sref="userHome.rideStatus" src="assets/images/dashboard-icon/track-ride.png">
+				<p class="home-menu-text" ui-sref="userHome.rideStatus">TRACK RIDES</p>
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
-				<img class="home-menu-icon" src="assets/images/dashboard-icon/history.png">
-				<p class="home-menu-text">HISTORY</p>
+				<img ui-sref="activities" class="home-menu-icon" src="assets/images/dashboard-icon/history.png">
+				<p ui-sref="activities" class="home-menu-text">HISTORY</p>
 			</div>
 		</div>
 	</div>
