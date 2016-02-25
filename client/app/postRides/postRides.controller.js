@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('PostRidesCtrl', function ($scope,httpRequest,Auth,cordovaUtil,staticData) {
+  .controller('PostRidesCtrl', function ($scope, httpRequest, Auth, cordovaUtil, staticData, $state) {
     var directionsService = new google.maps.DirectionsService();
     var currentUser = {};
     Auth.getCurrentUser().
@@ -223,10 +223,9 @@ angular.module('cbApp')
         then(function(data){
              console.log(data);
             if(data.status==201){
-                if(config.cordova)
-                    cordovaUtil.showToastMessage("Ride posted succesfully!")
-                else
-                    alert("Ride posted succesfully!");
+                if(config.cordova) cordovaUtil.showToastMessage("Ride posted succesfully!")
+                else alert("Ride posted succesfully!");
+                $state.go('userHome.rideStatus');
             }  
         },function(err){
             console.log("err",err);

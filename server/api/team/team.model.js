@@ -24,19 +24,20 @@ var TeamSchema = new Schema({
     redgId: String
   }],
   rideDetails: {
-  	from: {
+  	home: {
   		formatted_address: String,
 	    icon: String,
 	    location: {type: [Number], index: '2d'},
 	    placeId: String
   	},
-  	to:{
+  	office: {
   		formatted_address: String,
 	    icon: String,
 	    location: {type: [Number], index: '2d'},
 	    placeId: String
   	},
-  	preferredTime: Date,
+  	preferredTimeHToO: Date,
+    preferredTimeOToH: Date,
     routeSummary: String
   },
   activities: [{

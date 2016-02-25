@@ -19,7 +19,7 @@
 						<label class="field-label">
 							Team name
 						</label> 
-	               		<input type="text" class="form-control login-input-box team-name-field">
+	               		<input type="text" ng-model="team.teamName" class="form-control login-input-box team-name-field">
 		            </div>
 				</div>
 				<div class="each-row">
@@ -31,7 +31,7 @@
 						<label class="field-label from">
 							From
 						</label> 
-		                <select ng-model='rideData.from' class="timeslot post-ride-leaving-in" ng-change="">
+		                <select ng-model='rideDetails.from' class="timeslot post-ride-leaving-in" ng-change="">
 		                	<option>Home</option>
 		                	<option>Office</option>
 		                </select>
@@ -51,7 +51,7 @@
 						<label class="field-label from">
 							To
 						</label>
-		                <select name="rideDestination" placeholder="To"  required ng-model='rideData.to' class='timeslot post-ride-leaving-in' ng-change="toChanged(rideData.to)"> 
+		                <select name="rideDestination" placeholder="To"  required ng-model='rideDetails.to' class='timeslot post-ride-leaving-in' ng-change="toChanged(rideData.to)"> 
 		                	<option>Home</option>
 		                	<option>Office</option>
 		                	<!-- <option>Other</option> -->
@@ -101,7 +101,7 @@
 						<label class="field-label from">
 							Shift start time
 						</label>
-						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-model="rideData.leavingIn" ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON">
+						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-model="rideData.leavingIn" ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.start for t in timeSlotJSON"  ng-model="ridePreferredTimeHToO">
 								
 						</select>
 						
@@ -118,7 +118,7 @@
 						<label class="field-label from">
 							Shift end time
 						</label>
-						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-model="rideData.leavingIn" ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON">
+						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-model="rideData.leavingIn" ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.end for t in timeSlotJSON"  ng-model="ridePreferredTimeOToH">
 								
 						</select>
 						

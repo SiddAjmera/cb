@@ -152,9 +152,16 @@ button:focus,input[type="button"]:focus{
     float: left;
     margin-top: 9px;
     display: block;
-    text-decoration: underline;
-    color: #fff;
+    text-decoration: none;
+    color: #ec6a3c;
     cursor: pointer;
+}
+.forgot-link:hover, .forgot-link:focus{
+    color: #ec6a3c;
+    text-decoration: none;
+}
+.new-here{
+    float: right;
 }
 .form-section a{
   text-decoration: none;
