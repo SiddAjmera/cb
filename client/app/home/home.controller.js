@@ -51,10 +51,7 @@ angular.module('cbApp')
                        }
             console.log("filtered data",filterService.GDouglasPeucker(pathArr,20));
             }
-           
-
-        })    
-        
+        })
     }
 
     $scope.openMyTeam = function(){

@@ -4,12 +4,13 @@ angular.module('cbApp')
   .controller('SignupCtrl', function ($scope, $location, $window, $state, $modal, $rootScope, cordovaUtil, httpRequest, localStorage, pushnotification, staticData) {
     $scope.user = {};
     $scope.user.gender = "Female";
-    $scope.timeSlotJSON = ["8:00 AM - 5:00 PM",
-                                "9:00 AM - 6:00 PM",
-                                "10:00 AM - 7:00 PM",
-                                "11:00 AM - 8:00 PM",
-                                "12:00 AM - 9:00 PM"
-                               ];
+    $scope.timeSlotJSON = [
+                            "8:00 AM - 5:00 PM",
+                            "9:00 AM - 6:00 PM",
+                            "10:00 AM - 7:00 PM",
+                            "11:00 AM - 8:00 PM",
+                            "12:00 AM - 9:00 PM"
+                          ];
 
     /*get tcs locations*/
     $scope.fieldtype = "password";
@@ -63,7 +64,7 @@ angular.module('cbApp')
 
     $scope.register = function() {     
       $scope.showErrorMessage = false;
-      console.log($scope.signupForm) ;
+      console.log($scope.signupForm);
       if(!$scope.signupForm.$valid){   /*if form is invalid,return and show error messages */
           console.log($scope.signupForm) ;
           $("input.ng-invalid").eq(0).focus();      
@@ -84,25 +85,22 @@ angular.module('cbApp')
        
        $scope.signupPost=function(){ 
          var url = config.apis.signup;
-       // $scope.user.officeAddressLocation = $scope.user.officeAddress;
-        //$scope.user.officeAddress = $scope.user.officeAddress.displayAddress;
+         // $scope.user.officeAddressLocation = $scope.user.officeAddress;
+         //$scope.user.officeAddress = $scope.user.officeAddress.displayAddress;
           httpRequest.post(url,$scope.user).
           then(function(response){
               /*if(response.status==)*/
-              if(response.status==200){
+              if(response.status == 200){
                  console.log('User Stored in the MongoDB Successfully. Here is the Response : ',response);
                   //$scope.response = response;
                   localStorage.store('token',response.data.token).then(function(){
                       $state.go("userHome.home");
-              })
+                  })
               }
-             
-            
         },function(err){
-             console.log('Error Storing the User to the MongoDB. Here is the Error: ' + err);
+             console.log('Error Storing the User to the MongoDB. Here is the Error: ', err);
              $scope.error = err;
         });
-       
        }
 
    
@@ -124,8 +122,8 @@ angular.module('cbApp')
               $scope.user.zipcode = parseInt(address.zipcode);
             $scope.user.placeID = address.placeID;
             $scope.user.homeLocationCoordinates = [];
-            $scope.user.homeLocationCoordinates.push(address.homeLocationCoordinates.lat);
             $scope.user.homeLocationCoordinates.push(address.homeLocationCoordinates.lng);
+            $scope.user.homeLocationCoordinates.push(address.homeLocationCoordinates.lat);
             $scope.user.homeAddressLocation = address.homeAddressLocation;
             $scope.user.state = address.state;
           });

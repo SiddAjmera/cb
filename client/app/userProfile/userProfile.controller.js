@@ -6,12 +6,11 @@ angular.module('cbApp')
 
     Auth.getCurrentUser().
      then(function(data){
-        user = data;
-        console.log(currentUser)
+        $scope.user = data;
      });
 
     $scope.getLocation=function(){
-         var modalInstance = $modal.open({
+          var modalInstance = $modal.open({
           animation: true,
           templateUrl: 'components/modal/modal.html',
           controller: 'ModalCtrl',
