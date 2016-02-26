@@ -4,7 +4,7 @@ angular.module('cbApp')
   .controller('UserHomeCtrl', function ($scope,Auth,$state,User) {
     $scope.message = 'Hello';
     $scope.tgState = false;
-    Auth.getCurrentUser().then(function(data){return $scope.currentUser=data});
+    Auth.getCurrentUser().then(function(data){return $scope.currentUser = data});
     
     
     $scope.toggleHamburger = function(){

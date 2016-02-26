@@ -101,7 +101,7 @@ UserSchema
   .validate(function(email) {
     if (authTypes.indexOf(this.provider) !== -1) return true;
     return email.length;
-  }, 'Email cannot be blank');
+  }, 'Email required');
 
 // Validate empty password
 UserSchema
@@ -109,7 +109,7 @@ UserSchema
   .validate(function(hashedPassword) {
     if (authTypes.indexOf(this.provider) !== -1) return true;
     return hashedPassword.length;
-  }, 'Password cannot be blank');
+  }, 'Password required');
 
 // Validate email is not taken
 UserSchema
@@ -124,14 +124,14 @@ UserSchema
       }
       respond(true);
     });
-}, 'The specified email address is already in use.');
+}, 'Email already in use.');
 
 // Validate userId is not taken
 UserSchema
-  .path('_id')
+  .path('empId')
   .validate(function(value, respond) {
     var self = this;
-    this.constructor.findOne({_id: value}, function(err, user) {
+    this.constructor.findOne({empId: value}, function(err, user) {
       if(err) throw err;
       if(user) {
         if(self.id === user.id) return respond(true);
@@ -139,7 +139,21 @@ UserSchema
       }
       respond(true);
     });
-}, 'The specified empId/userId is already in use.');
+}, 'EmpID already registered.');
+
+UserSchema
+  .path('contactNo')
+  .validate(function(value, respond) {
+    var self = this;
+    this.constructor.findOne({contactNo: value}, function(err, user) {
+      if(err) throw err;
+      if(user) {
+        if(self.id === user.id) return respond(true);
+        return respond(false);
+      }
+      respond(true);
+    });
+}, 'Contact Number already in use.');
 
 var validatePresenceOf = function(value) {
   return value && value.length;

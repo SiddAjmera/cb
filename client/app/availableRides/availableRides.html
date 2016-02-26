@@ -2,9 +2,9 @@
 	<div class="container login-container user-home-container pad-R-none pad-L-none" scroll ng-class="{availheaderback:boolChangeClass}">
 
 		<div class="col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header">
-			<span class="glyphicon glyphicon-chevron-left cursor-pointer avail-header-back" ng-click="toggleHamburger()"></span>
-			<span class="heading">Avaialble Rides</span>
-			<span><img class="avail-header-search" src="assets/images/3x/ico_search.png"></span>
+			<!-- <span class="glyphicon glyphicon-chevron-left cursor-pointer avail-header-back" ng-click="toggleHamburger()"></span> -->
+			<span class="heading">Available Rides</span>
+			<!-- <span><img class="avail-header-search" src="assets/images/3x/ico_search.png"></span> -->
 			
 		</div>
 
@@ -23,6 +23,43 @@
 						<img src="{{ride.offeredBy.userPhotoUrl}}" class="avail-user-img pull-left">
 						<p class="avail-user-name">{{ride.offeredBy.empName}}</p>
 						<span class="pull-left avail-user-gender">{{ride.offeredBy.gender}}</span>
+
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" viewBox="0 0 30 37.5" version="1.1" x="0px" y="0px" class="rating-star">
+							<g class="star-border" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+								<g sketch:type="MSArtboardGroup" transform="translate(-135.000000, -225.000000)" class="star-fill">
+									<path d="M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z" sketch:type="MSShapeGroup"/>
+								</g>
+							</g>
+						</svg>
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" viewBox="0 0 30 37.5" version="1.1" x="0px" y="0px" class="rating-star">
+							<g class="star-border" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+								<g sketch:type="MSArtboardGroup" transform="translate(-135.000000, -225.000000)" class="star-fill">
+									<path d="M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z" sketch:type="MSShapeGroup"/>
+								</g>
+							</g>
+						</svg>
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" viewBox="0 0 30 37.5" version="1.1" x="0px" y="0px" class="rating-star rated">
+							<g class="star-border" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+								<g sketch:type="MSArtboardGroup" transform="translate(-135.000000, -225.000000)" class="star-fill">
+									<path d="M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z" sketch:type="MSShapeGroup"/>
+								</g>
+							</g>
+						</svg>
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" viewBox="0 0 30 37.5" version="1.1" x="0px" y="0px" class="rating-star rated">
+							<g class="star-border" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+								<g sketch:type="MSArtboardGroup" transform="translate(-135.000000, -225.000000)" class="star-fill">
+									<path d="M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z" sketch:type="MSShapeGroup"/>
+								</g>
+							</g>
+						</svg>
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" viewBox="0 0 30 37.5" version="1.1" x="0px" y="0px" class="rating-star rated">
+							<g class="star-border" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+								<g sketch:type="MSArtboardGroup" transform="translate(-135.000000, -225.000000)" class="star-fill">
+									<path d="M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z" sketch:type="MSShapeGroup"/>
+								</g>
+							</g>
+						</svg>
+
 					</div>
 
 					<div class="col-md-6 col-sm-6 col-xs-6 avail-left-sec">
@@ -59,5 +96,30 @@
 			</div>			
 		</div>
 	</div>
+
+	<div class="home-menu-swiper-wrap">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec" >
+			<img src="assets/images/uparrow.png" ng-click="toggleFooter()" alt="up">
+		</div>
+		<div class="home-page-menu-options">
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="userHome.home" class="home-menu-icon" src="assets/images/dashboard-icon/home.png">
+				<p ui-sref="userHome.home" class="home-menu-text">HOME</p>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="userHome.userProfile" class="home-menu-icon" src="assets/images/dashboard-icon/profile.png">
+				<p ui-sref="userHome.userProfile" class="home-menu-text">PROFILE</p>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="userHome.rideStatus" class="home-menu-icon" src="assets/images/dashboard-icon/track-ride.png">
+				<p ui-sref="userHome.rideStatus" class="home-menu-text">TRACK RIDES</p>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="activities" class="home-menu-icon" src="assets/images/dashboard-icon/history.png">
+				<p ui-sref="activities" class="home-menu-text">HISTORY</p>
+			</div>
+		</div>
+	</div>
+	
 </div>
 

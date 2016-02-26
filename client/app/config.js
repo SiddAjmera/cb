@@ -26,6 +26,7 @@ config.apis.getDrives = "api/drives/LatestDriveId";
 /*ride apis*/
 config.apis.postRide = "api/rides/";
 config.apis.filterRides = "api/rides/GetAvailableRides";
-config.apis.selectRide = "api/rides/AddCompanionToRide/"
+config.apis.selectRide = "api/rides/AddCompanionToRide/";
+config.apis.latestActiveRideOfUser = "api/rides/LatestActiveRideOfUser/";
 config.cordova=false
 

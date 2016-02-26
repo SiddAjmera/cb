@@ -17,9 +17,9 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/from-icon.png" ng-click="optionAddressOptions('from')">
 					</div>
 					<div id="postFromSec" class="from-address-post-wrap">
-						<!-- <label for="#postFrom" class="moving-label" ng-click="moveLabelUp('postFromSec')">
-							Employee Id
-						</label> -->
+						<label class="field-label from">
+							From
+						</label> 
 		                <!-- <input tab-index="1" id="postFrom" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="rideSource" placeholder="From"  required 
 		                ng-model='rideData.from'> -->
 		                <select ng-model='rideData.from' class="timeslot post-ride-leaving-in" ng-change="fromChanged(rideData.from)">
@@ -27,7 +27,7 @@
 		                	<option>Office</option>
 		                	<!-- <option>Other</option> -->
 		                </select>
-
+		                <p class="current-loc-sec"><img src="assets/images/current_location.png">Use current location</p>
 		                <!-- ng-click="moveLabelUp('postFromSec')"
 		                ng-blur="moveLabelDown('postFromSec','postFrom')" ng-focus="moveLabelUp('postFromSec')" -->
 		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideSource.$error" class="error-msg-edit">
@@ -63,10 +63,9 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/to.png" ng-click="optionAddressOptions('to')">
 					</div>
 					<div id="postToSec" class="from-address-post-wrap">
-						<!-- <label for="#postTo" class="moving-label" ng-click="moveLabelUp('postToSec')">
-							Employee Id
-						</label> -->
-		                <!-- <input tab-index="1" id="postTo" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="rideDestination" placeholder="To"  required ng-model='rideData.to'> -->
+						<label class="field-label from">
+							To
+						</label>
 		                <select name="rideDestination" placeholder="To"  required ng-model='rideData.to' class='timeslot post-ride-leaving-in' ng-change="toChanged(rideData.to)"> 
 		                	<option>Home</option>
 		                	<option>Office</option>
@@ -111,11 +110,14 @@
 
 				<div class="each-row">
 					<div class="icon-address-fields">
-						<img class="post-ride-from-icon" src="assets/images/available-rides/starting-time.png">
+						<img class="post-ride-from-icon from" src="assets/images/available-rides/starting-time.png">
 					</div>
 					<div class="from-address-post-wrap">
+						<label class="field-label from">
+							Starting at
+						</label>
 						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-model="rideData.leavingIn" ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON">
-							<option style="display:none" value="">Starting at</option> 	
+								
 						</select>
 						
 					</div>
@@ -128,6 +130,9 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/seats_avalaible.png">
 					</div>
 					<div class="from-address-post-wrap">
+						<label class="field-label from">
+							Seats available
+						</label>
 						<select class="timeslot post-ride-leaving-in" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="rideData.availableSeats" ng-options="c as c for c in availableSeatsJSON">
 							<option style="display:none" value="">Seats available</option>
 						</select>
@@ -136,15 +141,9 @@
 						<p ng-message="required" class="error-msg">Available seats is required</p>
 					</div>
 				</div>
-				<!-- <div class="each-row"> -->
-					<!-- <div><span><img class="icon-style" src="assets/images/icon_office_address.png"></span></div> -->
-					<!-- <div class="icon-address-fields">
-						<img class="post-ride-from-icon" src="assets/images/available-rides/notes.png" ng-click="getLocation()">
-					</div>
-					<div class="from-address-post-wrap">
-						<textarea name="postRideComment" ng-model="ride.comments" class="input-boxes post-ride-comment"  placeholder="Lets share the ride :)" ></textarea> 
-					</div> -->
-				<!-- </div> -->
+				<label class="field-label route">
+					Tap to select a route
+				</label>
 			</div>
 			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzeon' defaults="defaults" paths="mypath"></leaflet>
 
@@ -153,4 +152,29 @@
 				</div>
 		</form>		
 	</div>
+
+	<div class="home-menu-swiper-wrap">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec" >
+			<img src="assets/images/uparrow.png" ng-click="toggleFooter()" alt="up">
+		</div>
+		<div class="home-page-menu-options">
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="userHome.home" class="home-menu-icon" src="assets/images/dashboard-icon/home.png">
+				<p ui-sref="userHome.home" class="home-menu-text">HOME</p>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="userHome.userProfile" class="home-menu-icon" src="assets/images/dashboard-icon/profile.png">
+				<p ui-sref="userHome.userProfile" class="home-menu-text">PROFILE</p>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="userHome.rideStatus" class="home-menu-icon" src="assets/images/dashboard-icon/track-ride.png">
+				<p ui-sref="userHome.rideStatus" class="home-menu-text">TRACK RIDES</p>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="activities" class="home-menu-icon" src="assets/images/dashboard-icon/history.png">
+				<p ui-sref="activities" class="home-menu-text">HISTORY</p>
+			</div>
+		</div>
+	</div>
+	
 </div>

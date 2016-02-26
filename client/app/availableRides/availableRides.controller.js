@@ -53,6 +53,10 @@ angular.module('cbApp')
   		})
   	};
 
+    $scope.toggleFooter = function(){
+      $(".home-page-menu-options").slideToggle(250);
+    }
+    
   	$scope.selectRide = function(ride){
   		var apis = config.apis.selectRide + ride._id;
   		var requestJSON  = {};

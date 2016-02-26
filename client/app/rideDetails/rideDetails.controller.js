@@ -19,8 +19,9 @@ angular.module('cbApp')
 	var currentUser={};
 	Auth.getCurrentUser()
     .then(function(data){
-        currentUser = data;                
-     });                          
+        currentUser = data;
+     });
+
     $scope.saveDetails=function () {
     	console.log("$scope.user",$scope.user);
     	var obj = {};
@@ -61,6 +62,7 @@ angular.module('cbApp')
     			});  
     		}
     	})
-    }                      
+    }
+
   }]);
 

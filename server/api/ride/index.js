@@ -16,6 +16,7 @@ router.post('/GetAvailableRides', auth.isAuthenticated(), controller.getAvailabl
 router.post('/GetRideHistoryForCurrentUser', auth.isAuthenticated(), controller.getRideHistoryForCurrentUser);
 router.post('/FilterRide', auth.isAuthenticated(), controller.filterRide);
 
+router.get('/LatestActiveRideOfUser/', auth.isAuthenticated(), controller.latestActiveRideOfUser);
 
 router.put('/:id', auth.isAuthenticated(), controller.update);
 router.put('/AddCompanionToRide/:id', auth.isAuthenticated(), controller.addCompanionToRide);

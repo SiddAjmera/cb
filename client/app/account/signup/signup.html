@@ -1,13 +1,8 @@
 <div class="page-wrapper">
-		<div class="container login-container">
-			<!-- <div class="timeline-section">
-				
-				<ul id="progressbar">
-					<li ng-class="{'active':step==1}"  ng-click="goToStep(1)"><a href="">1</a></li>
-					<li ng-class="{'active':step==2}"  ng-click="goToStep(2)"><a href="">2</a></li>
-					<li ng-class="{'active':step==3}"  ng-click="goToStep(3)"><a href="">3</a></li>
-				</ul>
-			</div> -->
+	<div class="col-md-12 col-sm-12 col-xs-12 header-section post-ride-header">
+		<span class="heading">Sign Up</span>
+	</div>
+	<div class="container login-container">
 
 		<form name="signupForm" class="animation-form-signup" ng-submit="register()" novalidate>
 			<div>
@@ -16,7 +11,7 @@
 				<div class="signup-sec-wrapper">
 					<div class="each-row">
 						<div class="field-icon-section"><span><img class="icon-style" src="assets/images/icon_username.png"></span></div>
-						<div class="user-input-section"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="empName" class="form-control input-boxes login-input-box" ng-model="user.empName" placeholder="NAME" required>
+						<div class="user-input-section"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="empName" class="form-control input-boxes login-input-box" ng-model="user.empName" placeholder="Name" required>
 							<div ng-show="!showErrorMessage"  ng-messages="signupForm.empName.$error" class="error-msg-edit">
 								<p ng-message="required" class="error-msg">Name is required</p>
 								<p ng-message="pattern" class="error-msg">Invalid Name</p>
@@ -30,6 +25,7 @@
 							<div ng-show="!showErrorMessage"  ng-messages="signupForm.empid.$error" class="error-msg-edit">
 								<p ng-message="required" class="error-msg">Employee ID is required</p>
 								<p ng-message="pattern" class="error-msg">Invalid Employee ID</p>
+								<p class="error-msg">{{error.data.errors.empId.message}}</p>
 							</div>
 						</div>
 					</div>
@@ -40,21 +36,25 @@
 							<div ng-show="!showErrorMessage"  ng-messages="signupForm.contactNo.$error" class="error-msg-edit">
 								<p ng-message="required" class="error-msg">Contact Number is required</p>
 								<p ng-message="pattern" class="error-msg">Invalid Contact Number</p>
+								<p class="error-msg">{{error.data.errors.contactNo.message}}</p>
 							</div>
 						</div>
 					</div>
 					<div class="each-row">
-						<div class="field-icon-section"><span><img class="icon-style" src="assets/images/icon_password.png"></span></div>
+						<div class="field-icon-section"><span><img class="icon-style key" src="assets/images/password.gif"></span></div>
 						<div class="user-input-section show-pwd-wrap">
 							<input class="form-control pwd-boxes login-input-box" ng-class="{'error-border':!showErrorMessage}"  required type="{{fieldtype}}" ng-model="user.password" name="password" placeholder="Password">
-							<img src="assets/images/eye.png" alt="show" class="show-pwd-icon" ng-click="changeFieldType()">
+							<img src="assets/images/show_password.png" alt="show" class="show-pwd-icon" ng-click="changeFieldType()" ng-if="fieldtype=='password'">
+							<img src="assets/images/hide_Password.png" alt="show" class="show-pwd-icon" ng-click="changeFieldType()" ng-if="fieldtype=='text'">
 							<div ng-show="!showErrorMessage"  ng-messages="signupForm.password.$error" class="error-msg-edit">
 								<p ng-message="required" class="error-msg">Please enter password</p>
 							</div>
 						</div>
 					</div>
 					<div id="sites" class="each-row gender-section">
+						<img src="assets/images/gender.png" class="gender-icon pull-left">
 						<div class="radio gender-radio">
+
 						<label class="rad"><input type="radio" name="optradio" value="Female" ng-model="user.gender"/><i></i>    Female</label>
 						</div>
 						<div class="radio gender-radio">
@@ -66,7 +66,7 @@
 						<img src="assets/images/icon_car.png" class="login-car-img">
 					</div>	
 				</div>	
-				<p class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none terms-condn-section">By signing up, I agree to <span class="link-text">TCS's terms of service</span> and <span  class="link-text">privacy policy</span>.</p>
+				<p class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none terms-condn-section">By signing up, I agree to <span class="link-text">TCS's Terms of Service</span> and <span class="link-text">Privacy Policy</span>.</p>
 				</div>
 			</div>
 		</form>		
