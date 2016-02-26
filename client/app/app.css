@@ -1686,7 +1686,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
     float: left;
     height: 70px;    
-    background-color: rgba(61, 62, 64, 0.42);
+    background-color: rgba(61, 62, 64, 0.90);
     display: none;
 }
 .home-menu-swiper-wrap{
