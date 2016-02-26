@@ -1623,7 +1623,7 @@ input[type=number]::-webkit-outer-spin-button {
     cursor: pointer;
 }
 .home-content-wrapper .option-text{
-    color: #fff;
+    color: #FF956B;
     margin-top: 15px;
     cursor: pointer;
 }
@@ -1632,7 +1632,7 @@ input[type=number]::-webkit-outer-spin-button {
     font-family: HelveticaBold;
 }
 .on-the-fly-text{
-    color: #32d971;
+    color: #FF956B;
     font-size: 11px;
     text-transform: uppercase;
     margin-bottom: 6%;
@@ -1658,7 +1658,7 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: center;
 }
 .car-pooling-text{
-    color: #32d971;
+    color: #DCC670;
     font-size: 11px;
     text-transform: uppercase;
     margin-bottom: 10%;
@@ -1666,10 +1666,13 @@ input[type=number]::-webkit-outer-spin-button {
 .for-team-btn-sec button{
     background-color: rgba(208,170,35,0.8);
     height: 40px;
-    color: #fff;
+    color: #DCC670;
     font-size: 13px;
     width: 49%;
     border: none;
+}
+.home-content-wrapper .for-team-btn-sec .option-text{
+    color: #DCC670;
 }
 .pooling-section{
     margin-top: 14%;
@@ -1886,6 +1889,8 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: #fff;
     padding: 0 10px;
     padding-bottom: 20px;
+    max-height: 65vh;
+    overflow: auto;
 }
 .avail-list-img-sec{
     background-color: #EFEFEF;
