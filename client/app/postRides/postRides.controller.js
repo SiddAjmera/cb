@@ -207,10 +207,10 @@ angular.module('cbApp')
                                };    
         
         }
-        else if($scope.rideData.to=="Home"){
+        else if($scope.rideData.to == "Home"){
             ride.endLocation = currentUser.homeAddressLocation;
         }
-        else if($scope.rideData.to=="Office"){
+        else if($scope.rideData.to == "Office"){
              ride.endLocation = currentUser.officeAddressLocation;
         }        
        // ride.offeredByUserId = currentUser.empId;
