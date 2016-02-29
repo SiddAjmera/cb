@@ -1,7 +1,6 @@
 <div class="page-wrapper home-page">
 	<div class="col-md-12 col-sm-12 col-xs-12 header-section">
 			<span class="glyphicon glyphicon-chevron-left cursor-pointer avail-header-back" ng-click="toggleHamburger()"></span>
-			
 		</div>
 	<div class="home-content-wrapper">
 		<p class="home-welcome-text">Welcome <span class="welcome-username">{{firstName}}</span></p>
@@ -10,81 +9,32 @@
 			<p class="on-the-fly-text"><span class="first-letter">O</span>n <span class="first-letter">T</span>he <span class="first-letter">F</span>ly</p>
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none take-post-btn-sec">
-					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
-						<img src="assets/images/dashboard-icon/postRide.png" class="option-icon" ng-click="postRide()">
-						<p ng-click="postRide()" class="option-text">POST A RIDE</p>
-					</div>
-					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
-						<img src="assets/images/dashboard-icon/takeRide.png" class="option-icon" ng-click="takeRide()">
-						<p ng-click="takeRide()" class="option-text">TAKE A RIDE</p>
-					</div>				
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
+					<img src="assets/images/dashboard-icon/postRide.png" class="option-icon" ng-click="postRide()">
+					<p ng-click="postRide()" class="option-text">POST A RIDE</p>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
+					<img src="assets/images/dashboard-icon/takeRide.png" class="option-icon" ng-click="takeRide()">
+					<p ng-click="takeRide()" class="option-text">TAKE A RIDE</p>
+				</div>
 			</div>
 			<div class="or-sec">OR</div>
 		</div>	
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none pooling-section">
 			<p class="car-pooling-text"><span class="first-letter">C</span>ar <span class="first-letter">P</span>ooling</p>
-
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none for-team-btn-sec">
-				
-					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
-						<img src="assets/images/dashboard-icon/formTeam.png" ui-sref="formTeam" class="option-icon">
-						<p ui-sref="formTeam" class="option-text">FORM A TEAM</p>
-					</div>
-					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
-						<img src="assets/images/dashboard-icon/myTeams.png" class="option-icon" ng-click="openMyTeam()">
-						<p ng-click="openMyTeam()" class="option-text">MY TEAMS</p>
-					</div>
-				
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
+					<img src="assets/images/dashboard-icon/formTeam.png" ui-sref="formTeam" class="option-icon">
+					<p ui-sref="formTeam" class="option-text">FORM A TEAM</p>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none ">
+					<img src="assets/images/dashboard-icon/myTeams.png" class="option-icon" ng-click="openMyTeam()">
+					<p ng-click="openMyTeam()" class="option-text">MY TEAMS</p>
+				</div>
 			</div>
 		</div>
-
-		<!-- <div class="tab-section">
-			<div>
-				<img src="assets/images/3x/ico_analyze_off.png">
-				<p>ANALYTICS</p>
-			</div>
-			<div>
-				<img src="assets/images/3x/ico_post_ride_off.png">
-				<p>HISTORY</p>
-			</div>
-		</div>
- -->
-		<!-- <div class="analyze-map-wrap">
-			<p class="ongoing-journey">ONGOING JOURNEY</p>
-
-			<leaflet class="leaflet" markers="markers" lf-center="center"  event-broadcast="events" id='analyzeon' defaults="defaults" paths="paths"></leaflet>
-
-		
-		</div>
-		<div class="analyze-data-wrapper">
-			<div class="each-dimension first-dim">
-				<span class="pull-left dim-img-icon-wrap"><img class="dim-images-icon" src="assets/images/3x/distance.png"></span>
-				<span class="pull-left">Total <span class="dist-highlight">Distance</span></span>
-				<span class="pull-right">{{stats.totalDistance}}{{stats.distanceUnit}}</span>
-			</div>
-			<div class="each-dimension">
-				<span class="pull-left dim-img-icon-wrap"><img class="dim-images-icon" src="assets/images/3x/stagnant_time.png"></span>
-				<span class="pull-left">Stangnant <span class="stan-time">Time</span></span>
-				<span class="pull-right">11:20</span>
-			</div>
-			<div class="each-dimension">
-				<span class="pull-left dim-img-icon-wrap"><img class="dim-images-icon" src="assets/images/3x/time.png"></span>
-				<span class="pull-left">Total <span class="total-time">time</span></span>
-				<span class="pull-right">{{stats.totalTime}}{{stats.timeUnit}}</span>
-			</div>
-			<div class="each-dimension last-dim">
-				<span class="pull-left dim-img-icon-wrap"><img class="dim-images-icon" src="assets/images/3x/speed.png"></span>
-				<span class="pull-left">Average <span class="avg-speed">Speed</span></span>
-				<span class="pull-right">{{stats.averageSpeed | limitTo:5}}{{stats.speedUnit}}</span></div>
-		</div>
-
-		<div class="lower-left-right-buttons">
-			<span class="glyphicon glyphicon-chevron-left cursor-pointer left-cursor" ng-click="getPrevDrive()"></span>
-			<span class="glyphicon glyphicon-chevron-right cursor-pointer right-cursor" ng-click="getNextDrive()"></span>
-		</div> -->
-
-
 	</div>
+	
 	<div class="home-menu-swiper-wrap">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec" >
 			<img src="assets/images/uparrow.png" ng-click="toggleFooter()" alt="up">

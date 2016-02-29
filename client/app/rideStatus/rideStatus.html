@@ -2,7 +2,6 @@
 	
 	<div class="container login-container user-home-container pad-R-none pad-L-none"  scroll ng-class="{availheaderback:boolChangeClass}">
 		<div class="col-md-12 col-sm-12 col-xs-12 header-section post-ride-header">
-			<span class="glyphicon glyphicon-chevron-left cursor-pointer avail-header-back" ng-click="toggleHamburger()"></span>
 			<span class="heading">Track my ride</span>
 		</div>
 
@@ -18,13 +17,6 @@
 						<label class="field-label from">
 							From
 						</label>
-		                <!-- <select class="timeslot post-ride-leaving-in">
-		                	<option>Home</option>
-		                	<option>Office</option>
-		                </select>
-		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideSource.$error" class="error-msg-edit">
-							<p ng-message="required" class="error-msg">Ride source is required</p>
-						</div> -->
 						<span>{{postedRide.from}}</span>
 					</div>
 				</div>
@@ -37,14 +29,6 @@
 						<label class="field-label from">
 							To
 						</label>
-		                <!-- <select class="timeslot post-ride-leaving-in">
-		                	<option>Home</option>
-		                	<option>Office</option>
-		                	
-		                </select>
-		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error" class="error-msg-edit">
-							<p ng-message="required" class="error-msg">Ride destination is required</p>
-						</div> -->
 						<span>{{postedRide.to}}</span>
 					</div>	
 				</div>
@@ -55,15 +39,7 @@
 					<div id="postToSec" class="from-address-post-wrap">
 						<label class="field-label from">
 							Via
-						</label><!-- 
-		                 <select class="timeslot post-ride-leaving-in">
-		                	<option>NH4</option>
-		                	
-		                	
-		                </select>
-		                <div ng-show="!showErrorMessage"  ng-messages="postRideForm.rideDestination.$error" class="error-msg-edit">
-							<p ng-message="required" class="error-msg">Ride destination is required</p>
-						</div> -->
+						</label>
 						<span>{{postedRide.via}}</span>
 					</div>	
 				</div>
@@ -77,16 +53,8 @@
 						<label class="field-label from">
 							Leaving in
 						</label>
-						<!-- <select name="leavingIn" class="timeslot post-ride-leaving-in">
-							<option value="">30 min</option> 	
-							<option value="">120 min</option> 	
-						</select> -->
 						<span>{{postedRide.leavingIn}}</span>
 					</div>
-					<!-- <div ng-show="!showErrorMessage"  ng-messages="postRideForm.leavingIn.$error" class="error-msg-edit">
-						<p ng-message="required" class="error-msg">Starting time is required</p>
-					</div> -->
-
 				</div>
 				<div class="each-row">
 					<div class="icon-address-fields">
@@ -96,14 +64,8 @@
 						<label class="field-label from">
 							Total seats filled
 						</label>
-						<!-- <select class="timeslot post-ride-leaving-in">
-							<option value="">Seats available</option>
-						</select> -->
 						<span>{{postedRide.initiallyAvailableSeats}}</span>
 					</div>
-					<!-- <div ng-show="!showErrorMessage"  ng-messages="postRideForm.availableSeats.$error" class="error-msg-edit">
-						<p ng-message="required" class="error-msg">Available seats is required</p>
-					</div> -->
 				</div>
 			</div>
 			<div class="each-row post-ride-continue" name="syncData" ng-click="startRide()">
