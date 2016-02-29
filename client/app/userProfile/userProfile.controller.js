@@ -3,7 +3,7 @@
 angular.module('cbApp')
   .controller('UserProfileCtrl', function ($scope, $state, Auth, $modal, cordovaUtil, $cordovaImagePicker, httpRequest, staticData) {
     $scope.message = 'Hello';
-
+    
     Auth.getCurrentUser().
      then(function(data){
         $scope.user = data;
@@ -12,6 +12,9 @@ angular.module('cbApp')
 
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
     $scope.officeAddressJSON = staticData.getTCSLocations();
+    $scope.editableMode = false;
+    $scope.editButtonText = "EDIT";
+    $scope.logoutButtonText = "LOG OUT"
     $scope.timeSlotJSON = [
                             {'start':'8:00 AM','end':'5:00 PM'},
                             {'start':'9:00 AM','end':'6:00 PM'},
@@ -20,7 +23,11 @@ angular.module('cbApp')
                             {'start':'12:00 AM','end':'9:00 PM'},                                
                           ];
 
-
+    $scope.changeMode = function(){
+      $scope.editableMode = !$scope.editableMode;
+      $scope.editButtonText = $scope.editButtonText=="EDIT"?"UPDATE":"EDIT";
+      $scope.logoutButtonText = $scope.logoutButtonText=="LOG OUT"?"CANCEL":"LOG OUT";
+    }
     $scope.getLocation=function(){
           var modalInstance = $modal.open({
           animation: true,
@@ -46,8 +53,12 @@ angular.module('cbApp')
     }
 
     $scope.logout = function(){
-      Auth.logout();
-      $state.go("login")
+      if($scope.logoutButtonText=="CANCEL")
+        $scope.changeMode();
+      else{
+        Auth.logout();
+        $state.go("login")
+      }
     }
 
     $scope.getImageSaveContact = function() {       
