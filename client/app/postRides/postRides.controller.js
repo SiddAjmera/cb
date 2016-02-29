@@ -271,6 +271,7 @@ angular.module('cbApp')
              if(err.status==409){
                   if(config.cordova) cordovaUtil.showToastMessage('You are already part of an Active Ride');
                   else alert('You are already part of an Active Ride');
+                  $state.go('userHome.rideStatus');
             }
         })
     }
