@@ -46,7 +46,7 @@
 							<label class="field-label from">
 								Home address
 							</label>
-							<input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="homeAddress" placeholder="Home address" required
+							<input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box" value="{{user.homeAddressLocation.display_address}}"  type="text" name="homeAddress" required
 			                ng-model='user.homeAddress' g-places-autocomplete>
 			                <div  class="error-msg-edit" ng-messages="postRideForm.homeAddress.$error">
 								<p ng-message="required" class="error-msg">Home address is required</p>
@@ -128,7 +128,7 @@
 
 
 				<!-- Shift Timings Sections -->
-				<div class="profile-row timing" ng-show="user.shiftTimeIn != null">
+				<div class="profile-row timing">
 
 
 					<!-- Shift TimeIn Section -->
@@ -142,7 +142,7 @@
 								<label class="field-label from">
 									Shift start time
 								</label>
-								<select name="shiftStartTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.start for t in timeSlotJSON"  ng-model="user.timeSlot">
+								<select name="shiftStartTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.start for t in timeSlotJSON"  ng-model="user.shiftTimeIn">
 									<option style="display:none" value="">Shift start time</option> 	
 								</select>
 								<div  class="error-msg-edit" ng-messages="postRideForm.shiftStartTime.$error">
@@ -155,7 +155,7 @@
 
 
 					<!-- Shift TimeOut Section -->
-					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-R-none" ng-show="user.shiftTimeout != null">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-R-none">
 						<div class="field-icon-section">
 							<img class="icon-style home" alt="Home" src="assets/images/available-rides/starting-time.png">
 						</div>
@@ -165,7 +165,7 @@
 								<label class="field-label from">
 									Shift end time
 								</label>
-								<select name="shiftEndTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.end for t in timeSlotJSON"  ng-model="user.timeSlot">
+								<select name="shiftEndTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.end for t in timeSlotJSON"  ng-model="user.shiftTimeout">
 									<option style="display:none" value="">Shift end time</option> 	
 								</select>
 								<div  class="error-msg-edit" ng-messages="postRideForm.shiftEndTime.$error">
@@ -177,44 +177,14 @@
 
 				</div>
 
-				<div class="prof-edit-btn" ng-click="changeMode()">
-					{{editButtonText}} <img class="prof-btn-img" src="assets/images/icon_car.png">
+				<div class="prof-edit-btn" ng-click="operation(leftButtonText)">
+					{{leftButtonText}} <img class="prof-btn-img" src="assets/images/icon_car.png">
 				</div>
-				<div class="prof-logout-btn" ng-click="logout()">
-					{{logoutButtonText}} <img class="prof-btn-img" src="assets/images/icon_car_grey.png">
+				<div class="prof-logout-btn" ng-click="operation(rightButtonText)">
+					{{rightButtonText}} <img class="prof-btn-img" src="assets/images/icon_car_grey.png">
 				</div>
 
 			</div>
-			<!-- <div class="form-section signup-section-form">
-				<div class="image-update-wrap">
-					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 pad-L-none pad-R-none user-image-update">
-						
-						<img ng-if="selectedImage" class="profile-image-update-sec" ng-src="{{selectedImage}}" alt="user-image">
-						
-						
-						<img ng-if="!selectedImage" class="profile-image-update-sec" src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png" alt="user-image">
-					</div>
-					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 image-update-btn">
-						<span class="glyphicon glyphicon-pencil" ng-click="getImageSaveContact()"></span>
-					</div>
-					
-				</div>
-
-				<div class="each-row">
-					<div><span><img class="icon-style" src="assets/images/icon_home_address.png"></span></div>
-
-					<div class="input-fields address-fields"><input type="text" ng-class="{'error-border':!showErrorMessage}"  name="homeAddress" class="form-control input-boxes home-address-changer" ng-model="user.homeAddress" placeholder="HOME ADDRESS" required></div>
-
-					<div class="icon-address-fields"><span><img class="icon-style" src="assets/images/icon_location.png" ng-click="getLocation()"></span></div>
-					<div ng-show="!showErrorMessage"  ng-messages="signupForm.homeAddress.$error" class="error-msg-edit">
-						<p ng-message="required" class="error-msg">Home Address is required</p>
-					</div>
-				</div>
-
-				<div class="each-row">
-					<input type="button" class="input-buttons"  name="syncData" value="SYNC DATA" ng-click="syncUserLocationData()">
-				</div>
-			</div> -->
 		</form>		
 	</div>
 	<div class="home-menu-swiper-wrap">
