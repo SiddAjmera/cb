@@ -33,7 +33,7 @@ angular.module('cbApp')
                 angular.forEach(routes,function(r,key){
                     var routeObj = {};
                     routeObj.color = '#'+Math.floor(Math.random()*16777215).toString(16);
-                    routeObj.weight = 2;
+                    routeObj.weight = 4;
                     routeObj.latlngs = L.Polyline.fromEncoded(r).getLatLngs();
                     routeObj.clickable = true;
                     $scope.mypath['r'+key] = routeObj; 
@@ -50,13 +50,31 @@ angular.module('cbApp')
     $scope.$watch('rideData.to', function(newValue, oldValue, scope) {
         if(currentUser){
             if(newValue == "Home"){
-                var from = currentUser.officeAddressLocation.location.join();
-                var to = currentUser.homeAddressLocation.location.join();
+                var fromLocation = [];
+                fromLocation.push(currentUser.officeAddressLocation.location[1]);
+                fromLocation.push(currentUser.officeAddressLocation.location[0]);
+                var toLocation = [];
+                toLocation.push(currentUser.homeAddressLocation.location[1]);
+                toLocation.push(currentUser.homeAddressLocation.location[0]);
+                console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
+                
+                var from = fromLocation.join();
+                var to = toLocation.join();
+                console.log("From is " + from + " and to is " + to);
                 getRoute(from, to);
             }
             else{
-                var from = currentUser.homeAddressLocation.location.join();
-                var to = currentUser.officeAddressLocation.location.join();
+                var fromLocation = [];
+                fromLocation.push(currentUser.homeAddressLocation.location[1]);
+                fromLocation.push(currentUser.homeAddressLocation.location[0]);
+                var toLocation = [];
+                toLocation.push(currentUser.officeAddressLocation.location[1]);
+                toLocation.push(currentUser.officeAddressLocation.location[0]);
+                console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
+                
+                var from = fromLocation.join();
+                var to = toLocation.join();
+                console.log("From is " + from + " and to is " + to);
                 getRoute(from, to);
             }
         }
@@ -65,13 +83,31 @@ angular.module('cbApp')
     $scope.$watch('rideData.from', function(newValue, oldValue, scope) {
         if(currentUser){
             if(newValue == "Home"){
-                var from = currentUser.homeAddressLocation.location.join();
-                var to = currentUser.officeAddressLocation.location.join();
+                var fromLocation = [];
+                fromLocation.push(currentUser.homeAddressLocation.location[1]);
+                fromLocation.push(currentUser.homeAddressLocation.location[0]);
+                var toLocation = [];
+                toLocation.push(currentUser.officeAddressLocation.location[1]);
+                toLocation.push(currentUser.officeAddressLocation.location[0]);
+                console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
+                
+                var from = fromLocation.join();
+                var to = toLocation.join();
+                console.log("From is " + from + " and to is " + to);
                 getRoute(from, to);
             }
             else{
-                var from = currentUser.homeAddressLocation.location.join();
-                var to = currentUser.officeAddressLocation.location.join();
+                var fromLocation = [];
+                fromLocation.push(currentUser.officeAddressLocation.location[1]);
+                fromLocation.push(currentUser.officeAddressLocation.location[0]);
+                var toLocation = [];
+                toLocation.push(currentUser.homeAddressLocation.location[1]);
+                toLocation.push(currentUser.homeAddressLocation.location[0]);
+                console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
+                
+                var from = fromLocation.join();
+                var to = toLocation.join();
+                console.log("From is " + from + " and to is " + to);
                 getRoute(from, to);
             }
         }
