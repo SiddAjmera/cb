@@ -3,12 +3,12 @@
 angular.module('cbApp')
   .controller('PostRidesCtrl', function ($scope, httpRequest, Auth, cordovaUtil, staticData, $state) {
     var directionsService = new google.maps.DirectionsService();
-    var currentUser = {};
+    var currentUser;
     Auth.getCurrentUser().
     then(function(data){
         currentUser = data;
-        if($scope.rideData)
-            $scope.rideData.availableSeats=(currentUser.vehicle[0].capacity-1).toString();
+        console.log('Current User : ', currentUser);
+        if($scope.rideData) $scope.rideData.availableSeats = (currentUser.vehicle[0].capacity-1).toString();
 
         console.log("$scope.rideData",$scope.rideData);
     });
@@ -17,43 +17,26 @@ angular.module('cbApp')
       $(".home-page-menu-options").slideToggle(250);
     }
 
-    $scope.mypath ={};
-    var getRoute =function () {
-        var from,to;
-        if(angular.isObject($scope.ride.source)){
-            from=$scope.ride.source.location.join();
-        }
-        else if($scope.ride.source && $scope.ride.source!='office'){
-            from=currentUser.homeLocationCoordinates.join();   
-        }
-        else return;
-
-        if(angular.isObject($scope.ride.destination)){
-            to=$scope.ride.destination.location.join();
-        }
-        else if($scope.ride.destination && $scope.ride.destination!='office'){
-            to=currentUser.homeLocationCoordinates.join();   
-        }
-        else return;
-
+    $scope.mypath = {};
+    var getRoute = function (from, to) {
         var request = {};
-        request.optimizeWaypoints=true;
-        request.provideRouteAlternatives=true;
-        request.travelMode= google.maps.TravelMode.DRIVING;
-        request.origin=from;
-        request.destination=to;
+        request.optimizeWaypoints = true;
+        request.provideRouteAlternatives = true;
+        request.travelMode = google.maps.TravelMode.DRIVING;
+        request.origin = from;
+        request.destination = to;
         directionsService.route(request, function(response, status) {
             console.log("response",response)
             if (status == google.maps.DirectionsStatus.OK) {
                 var routes = _.map(response.routes,function(r){return r.overview_polyline});
                 console.log("routes",routes);              
                 angular.forEach(routes,function(r,key){
-                    var routeObj={};
-                    routeObj.color= '#'+Math.floor(Math.random()*16777215).toString(16);
-                    routeObj.weight= 2;
-                    routeObj.latlngs=L.Polyline.fromEncoded(r).getLatLngs();
-                    routeObj.clickable=true;
-                    $scope.mypath['r'+key]=routeObj; 
+                    var routeObj = {};
+                    routeObj.color = '#'+Math.floor(Math.random()*16777215).toString(16);
+                    routeObj.weight = 2;
+                    routeObj.latlngs = L.Polyline.fromEncoded(r).getLatLngs();
+                    routeObj.clickable = true;
+                    $scope.mypath['r'+key] = routeObj; 
                   //latArr.push(L.Polyline.fromEncoded(r).getLatLngs());
                 });              
                //$scope.mypath ={};
@@ -64,14 +47,34 @@ angular.module('cbApp')
         }); 
     }
     //Multiple Routes Code - start
-    $scope.$watch('ride.destination', function(newValue, oldValue, scope) {
-        console.log("ride.destination ",newValue);
-        getRoute();
+    $scope.$watch('rideData.to', function(newValue, oldValue, scope) {
+        if(currentUser){
+            if(newValue == "Home"){
+                var from = currentUser.officeAddressLocation.location.join();
+                var to = currentUser.homeAddressLocation.location.join();
+                getRoute(from, to);
+            }
+            else{
+                var from = currentUser.homeAddressLocation.location.join();
+                var to = currentUser.officeAddressLocation.location.join();
+                getRoute(from, to);
+            }
+        }
     });
 
-    $scope.$watch('ride.source', function(newValue, oldValue, scope) {
-        console.log("ride.source ",newValue);   
-        getRoute();
+    $scope.$watch('rideData.from', function(newValue, oldValue, scope) {
+        if(currentUser){
+            if(newValue == "Home"){
+                var from = currentUser.homeAddressLocation.location.join();
+                var to = currentUser.officeAddressLocation.location.join();
+                getRoute(from, to);
+            }
+            else{
+                var from = currentUser.homeAddressLocation.location.join();
+                var to = currentUser.officeAddressLocation.location.join();
+                getRoute(from, to);
+            }
+        }
     });
 
     $scope.rideData = {};
@@ -80,8 +83,7 @@ angular.module('cbApp')
     $scope.rideData.leavingIn = '15';
     $scope.rideData.availableSeats = 4;
 
-    if(currentUser.vehicle)
-        $scope.rideData.availableSeats=(currentUser.vehicle[0].capacity-1).toString();
+    if(currentUser) $scope.rideData.availableSeats=(currentUser.vehicle[0].capacity-1).toString();
     console.log("$scope.rideData",$scope.rideData);
 
     
