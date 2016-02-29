@@ -2319,8 +2319,8 @@ input[type=number]::-webkit-outer-spin-button {
     width: 25%;
 }
 .profile-row .icon-style{
-    width: 41px;
-    height: 36px;
+    width: 35px;
+    height: 33px;
     margin-top: 0px;
 }
 .profile-row .icon-style.home{
@@ -2618,6 +2618,42 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .rating-star.rated .star-fill{
     fill: #329D71;
+}
+.editable-sec{
+    display: none;
+}
+.editable-mode .editable-sec{
+    display: block;
+    width: 97%;
+}
+.editable-mode .profile-row .user-input-section span.non-editable-sec{
+    display: none;
+}
+.editable-sec select{
+        -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    color: #000;
+    background-image: url(../assets/images/available-rides/dropdown.png);
+    height: 22px;
+    border: none;
+    border-bottom: 1px solid #e8e8e8;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: 99%;
+    padding: 0px 20px 0px 0px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.editable-sec .input-boxes{
+    padding: 0 5px;
+    height: 22px;
+    font-size: 12px;
+}
+.profile-row.timing{
+    width: 98%;
+    margin-bottom: 20px;
 }
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {

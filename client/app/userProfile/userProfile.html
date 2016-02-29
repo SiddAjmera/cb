@@ -9,7 +9,7 @@
 				<div class="triangle-down-left-post"></div>
 				<img class="profile-pic" src="assets/images/user-image.jpg">
 			</div>
-			<div class="other-detail-wrapper">
+			<div class="other-detail-wrapper" ng-class="{'editable-mode' : editableMode}">
 				<p class="profile-uname"><span>{{user.empName}}</span></p>
 				
 
@@ -19,8 +19,11 @@
 						<img class="icon-style" src="assets/images/icon_mobile_number.png">
 					</div>
 					<div class="user-input-section">
-						<span>{{user.contactNo}}</span>
-						<div>
+						<span class="non-editable-sec">{{user.contactNo}}</span>
+						<div class="editable-sec">
+							<label class="field-label from">
+								Contact no.
+							</label> 
 							<input maxlength="10" class="form-control input-boxes login-input-box"  ng-class="{'error-border':!showErrorMessage}"  ng-model="user.contactNo" type="tel" name="contactNo" required ng-pattern="/^[789]\d{9}$/" placeholder="Mobile Number" >
 							<div ng-show="!showErrorMessage"  ng-messages="signupForm.contactNo.$error" class="error-msg-edit">
 								<p ng-message="required" class="error-msg">Contact Number is required</p>
@@ -38,8 +41,11 @@
 						<img class="icon-style home" alt="Home" src="assets/images/available-rides/from-icon.png">
 					</div>
 					<div class="user-input-section">
-						<span>{{user.homeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span>
-						<div>
+						<span class="non-editable-sec">{{user.homeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span>
+						<div class="editable-sec">
+							<label class="field-label from">
+								Home address
+							</label>
 							<input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="homeAddress" placeholder="Home address" required
 			                ng-model='user.homeAddress' g-places-autocomplete>
 			                <div  class="error-msg-edit" ng-messages="postRideForm.homeAddress.$error">
@@ -57,22 +63,14 @@
 						<img class="icon-style home" alt="Home" src="assets/images/available-rides/to.png">
 					</div>
 					<div class="user-input-section">
-						<span>{{user.officeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span>
-						<div>
+						<span class="non-editable-sec">{{user.officeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span>
+						<div class="editable-sec">
+							<label class="field-label from">
+								Office address
+							</label>
 							<select ng-options='item as item.display_address for item in officeAddressJSON' ng-model='user.officeAddress' name='officeAddress' class="post-ofc-address">
 								<option style="display:none" value="">Office Address</option> 
 							</select>
-							<!--  <ui-select search-enabled="false" ng-model="user.officeAddress" class="office-address-select">
-							    <ui-select-match placeholder="OFFICE ADDRESS">
-							        <span ng-bind="$select.selected.displayAddress"></span>
-							    </ui-select-match>
-							    <ui-select-choices repeat="item in (officeAddressJSON | filter: $select.search)">
-							        <span ng-bind="item.displayAddress"></span>
-							    </ui-select-choices>
-							</ui-select> -->
-
-			                 <!-- ng-click="moveLabelUp('postToSec')"
-			                ng-blur="moveLabelDown('postToSec','postTo')" ng-focus="moveLabelUp('postToSec')" -->
 			                <div  class="error-msg-edit" ng-messages="postRideForm.officeAddress.$error">
 								<p ng-message="required" class="error-msg">Office address is required</p>
 							</div>
@@ -86,12 +84,15 @@
 				<!-- vehicleLicenseNumber section -->
 				<div class="profile-row" ng-show="user.vehicle[0] != null">
 					<div class="field-icon-section">
-						<img class="icon-style home" alt="Home" src="assets/images/available-rides/to.png">
+						<img class="icon-style" alt="Home" src="assets/images/car-front.png">
 					</div>
 					<div class="user-input-section">
-						<span>{{user.vehicle[0].vehicleLicenseNumber}}</span>
-						<div>
-							<input class="form-control input-boxes login-input-box" ng-class="{'error-border':!showErrorMessage}" type="text" maxlength="13" name="vehicleNo" required ng-pattern="/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/" ng-model="user.vehicle.vehicleLicenseNumber" placeholder="MyCar No.">
+						<span class="non-editable-sec">{{user.vehicle[0].vehicleLicenseNumber}}</span>
+						<div class="editable-sec">
+							<label class="field-label from">
+								Vehicle no.
+							</label>
+							<input class="form-control input-boxes login-input-box" ng-class="{'error-border':!showErrorMessage}" type="text" maxlength="13" name="vehicleNo" required ng-pattern="/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/" ng-model="user.vehicle.vehicleLicenseNumber">
 			                <div ng-show="!showErrorMessage"  ng-messages="signupForm.vehicleNo.$error" class="error-msg-edit">
 								<p ng-message="required" class="error-msg">Registration Number is required</p>
 								<p ng-message="pattern" class="error-msg">Invalid Registration Number</p>
@@ -108,8 +109,11 @@
 						<img class="icon-style home" alt="Home" src="assets/images/available-rides/to.png">
 					</div>
 					<div class="user-input-section">
-						<span>{{user.vehicle[0].capacity}}</span>
-						<div>
+						<span class="non-editable-sec">{{user.vehicle[0].capacity}}</span>
+						<div class="editable-sec">
+							<label class="field-label from">
+								Seats available
+							</label>
 							<select class="timeslot post-ride-leaving-in" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="user.vehicle.capacity" ng-options="c as c for c in vehicleCapacityJSON">
 								<option style="display:none" value="">Seats available</option>
 							</select>
@@ -133,8 +137,11 @@
 							<img class="icon-style home" alt="Home" src="assets/images/available-rides/starting-time.png">
 						</div>
 						<div class="user-input-section">
-							<span>{{user.shiftTimeIn | date:'hh:mm a'}}</span>
-							<div>
+							<span class="non-editable-sec">{{user.shiftTimeIn | date:'hh:mm a'}}</span>
+							<div class="editable-sec">
+								<label class="field-label from">
+									Shift start time
+								</label>
 								<select name="shiftStartTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.start for t in timeSlotJSON"  ng-model="user.timeSlot">
 									<option style="display:none" value="">Shift start time</option> 	
 								</select>
@@ -153,8 +160,11 @@
 							<img class="icon-style home" alt="Home" src="assets/images/available-rides/starting-time.png">
 						</div>
 						<div class="user-input-section">
-							<span>{{user.shiftTimeout | date:'hh:mm a'}}</span>
-							<div>
+							<span class="non-editable-sec">{{user.shiftTimeout | date:'hh:mm a'}}</span>
+							<div class="editable-sec">
+								<label class="field-label from">
+									Shift end time
+								</label>
 								<select name="shiftEndTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.end for t in timeSlotJSON"  ng-model="user.timeSlot">
 									<option style="display:none" value="">Shift end time</option> 	
 								</select>
@@ -167,11 +177,11 @@
 
 				</div>
 
-				<div class="prof-edit-btn">
-					EDIT <img class="prof-btn-img" src="assets/images/icon_car.png">
+				<div class="prof-edit-btn" ng-click="changeMode()">
+					{{editButtonText}} <img class="prof-btn-img" src="assets/images/icon_car.png">
 				</div>
 				<div class="prof-logout-btn" ng-click="logout()">
-					LOG OUT <img class="prof-btn-img" src="assets/images/icon_car.png">
+					{{logoutButtonText}} <img class="prof-btn-img" src="assets/images/icon_car_grey.png">
 				</div>
 
 			</div>
