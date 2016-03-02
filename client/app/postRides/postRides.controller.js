@@ -3,20 +3,7 @@
 angular.module('cbApp')
   .controller('PostRidesCtrl', function ($scope, httpRequest, Auth, cordovaUtil, staticData, $state) {
     var directionsService = new google.maps.DirectionsService();
-    var currentUser;
-    Auth.getCurrentUser().
-    then(function(data){
-        currentUser = data;
-        console.log('Current User : ', currentUser);
-        if($scope.rideData) $scope.rideData.availableSeats = (currentUser.vehicle[0].capacity-1).toString();
-
-        console.log("$scope.rideData",$scope.rideData);
-    });
-
-    $scope.toggleFooter = function(){
-      $(".home-page-menu-options").slideToggle(250);
-    }
-
+    
     $scope.mypath = {};
     var getRoute = function (from, to) {
         var request = {};
@@ -46,6 +33,35 @@ angular.module('cbApp')
             }
         }); 
     }
+    
+    var currentUser;
+    Auth.getCurrentUser().
+    then(function(data){
+        currentUser = data;
+        console.log('Current User : ', currentUser);
+        if($scope.rideData) $scope.rideData.availableSeats = (currentUser.vehicle[0].capacity-1).toString();
+
+        console.log("$scope.rideData",$scope.rideData);
+        
+        var fromLocation = [];
+        fromLocation.push(currentUser.homeAddressLocation.location[1]);
+        fromLocation.push(currentUser.homeAddressLocation.location[0]);
+        var toLocation = [];
+        toLocation.push(currentUser.officeAddressLocation.location[1]);
+        toLocation.push(currentUser.officeAddressLocation.location[0]);
+        console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
+                
+        var from = fromLocation.join();
+        var to = toLocation.join();
+        console.log("From is " + from + " and to is " + to);
+        getRoute(from, to);
+    });
+
+    $scope.toggleFooter = function(){
+      $(".home-page-menu-options").slideToggle(250);
+    }
+
+    
     //Multiple Routes Code - start
     $scope.$watch('rideData.to', function(newValue, oldValue, scope) {
         if(currentUser){

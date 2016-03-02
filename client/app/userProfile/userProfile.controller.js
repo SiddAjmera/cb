@@ -208,6 +208,10 @@ angular.module('cbApp')
               $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
               $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
               $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
+              
+              $scope.leftButtonText = "EDIT";
+              $scope.rightButtonText = "LOGOUT";
+              
               $state.go('userHome.userProfile');
           });  
         }
