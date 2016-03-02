@@ -30,8 +30,8 @@ var UserSchema = new Schema({
     location: {type: [Number], index: '2dsphere'},
     placeId: String
   },
-  shiftTimeIn: { type: Date },
-  shiftTimeout: { type: Date },
+  shiftTimeIn: String,
+  shiftTimeout: String,
   userPhotoUrl: String,
   redgId: String,
   vehicle : [{

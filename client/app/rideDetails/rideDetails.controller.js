@@ -9,18 +9,18 @@ angular.module('cbApp')
     $scope.message = 'Hello';
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
     $scope.officeAddressJSON = staticData.getTCSLocations();
-    $scope.timeSlotJSON = [
+    $scope.timeSlotJSON =   [
     							{'start':'8:00 AM','end':'5:00 PM'},
     							{'start':'9:00 AM','end':'6:00 PM'},
     							{'start':'10:00 AM','end':'7:00 PM'},
     							{'start':'11:00 AM','end':'8:00 PM'},
-    							{'start':'12:00 AM','end':'9:00 PM'},                                
-                          ];
+    							{'start':'12:00 AM','end':'9:00 PM'}
+                            ];
 	var currentUser={};
 	Auth.getCurrentUser()
-    .then(function(data){
-        currentUser = data;
-     });
+        .then(function(data){
+            currentUser = data;
+         });
 
     $scope.saveDetails=function () {
     	console.log("$scope.user",$scope.user);
