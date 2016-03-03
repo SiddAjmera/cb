@@ -28,6 +28,12 @@ module.exports = function (grunt) {
   // Define the configuration for all the tasks
   grunt.initConfig({
 
+    debug: {
+      options: {
+        open: true // do not open node-inspector in Chrome automatically 
+      }
+    },
+
     // Project settings
     pkg: grunt.file.readJSON('package.json'),
     yeoman: {
@@ -698,4 +704,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('mob-build', ['copy:custom']);
   grunt.registerTask('mob-build-dev', ['copy:customDev']);
+
+  grunt.loadNpmTasks('grunt-debug-task');
 };

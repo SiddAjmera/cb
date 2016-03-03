@@ -80,17 +80,15 @@ exports.show = function(req, res) {
 exports.latestActiveRideOfUser = function(req, res){
   CurrentUser = req.user;
   logger.trace(CurrentUser.empId + 'requested for Ride.latestActiveRideOfUser');
-  Ride.findOne({"offeredBy.empId" : CurrentUser.empId, rideStatus: 'ACTIVE'}, function(err, ride){
+  Ride.findOne({"offeredBy.empId" : CurrentUser.empId, rideStatus: 'ACTIVE'}, {_id: 0}, function(err, ride){
     if(err){
       logger.fatal('Error in Ride.latestActiveRideOfUser. Error : ' + err);
       return handleError(res, err);
     }
-    console.log('Successfully out of if(err)');
     if(!ride){
       logger.error('Error in Ride.latestActiveRideOfUser. Error : Not Found');
       return res.send(404);
     }
-    console.log('Successfully out of if(!ride)');
     logger.debug('Successfully got ride in Ride.latestActiveRideOfUser');
     return res.json(ride);
   });
