@@ -252,13 +252,13 @@ angular.module('cbApp')
              ride.startLocation = currentUser.officeAddressLocation;
         }
         if($scope.rideData.to == "Other"){
-            ride.endLocation = {
+            ride.endLocation =  {
                                     formatted_address : $scope.ride.destination.formatted_address,
                                     display_address : $scope.ride.destination.name,
                                     location : [$scope.ride.destination.geometry.location.lng(),$scope.ride.destination.geometry.location.lat()],
                                     placeId : $scope.ride.destination.place_id,
                                     icon : $scope.ride.destination.icon 
-                               };    
+                                };    
         
         }
         else if($scope.rideData.to == "Home"){

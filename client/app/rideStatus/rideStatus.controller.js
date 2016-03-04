@@ -6,13 +6,27 @@ angular.module('cbApp')
     $scope.leftButtonText = "RESCHEDULE RIDE";
     $scope.rightButtonText = "CANCEL RIDE";
 
-    httpRequest.get(config.apis.latestActiveRideOfUser).
-        then(function(data){
-            console.log(data);
-            if(data.status == 201) $scope.ride = data.data; 
+    httpRequest.get(config.apis.latestActiveRideOfUser)
+        .then(function(data){
+            //console.log("Data : ", data);
+            $scope.postedRide = data.data;
+
+            /*var rightNow = new Date().getTime();
+            var dbReturned = new Date(moment($scope.postedRide.rideScheduledTime).format('DD-MM-YYYY HH:mm:ss')).getTime();
+            $scope.rideScheduledTime = Math.round(Math.abs(( rightNow - dbReturned ) / (1000 * 60 * 60 * 60) ));*/
+            var now = moment();
+            var to = moment($scope.postedRide.rideScheduledTime);
+            $scope.rideScheduledTime = now.diff(to,'minutes');
+            //console.log("$scope.rideScheduledTime : ", $scope.rideScheduledTime)
+
+
+            //console.log("Posted Ride : ", $scope.postedRide);
         },function(err){
-            console.log("err",err);
-            if(err.status==409) alert('Error getting recent ride details'); 
+            if(err.status == 409) alert('Error getting recent ride details');
+            if(err.status == 404){
+              alert('You are not a part of an active ride. Please post a ride or request a ride to see it\'s details here');
+              $state.go('userHome.home');
+            }
         });
 
     $scope.leftButtonClicked = function(buttonText){
@@ -36,6 +50,17 @@ angular.module('cbApp')
         if (r == true) {
             // TODO : Code to cancel the Ride
             alert('User confirmed to cancel ride');
+            httpRequest.put(config.apis.cancelRide + $scope.postedRide._id)
+                       .then(function(data){
+                          console.log("Data from cancel ride : ", data);
+                          if(data.status == 200){
+                            alert("Ride Cancelled Successfully");
+                            $state.go('userHome.home');
+                          }
+                       }, function(err){
+                          alert("Ride can't be cancelled at this point. Error : ", err);
+                       });
+
         } else return;
       }
     };

@@ -6,18 +6,13 @@ var router = express.Router();
 var auth = require('../../auth/auth.service');
 
 router.get('/', auth.isAuthenticated(), controller.index);
-router.get('/:id', auth.isAuthenticated(), controller.show);
-router.post('/', auth.isAuthenticated(), controller.create);
-// Routes created by Siddharth
+router.get('/GetLatestActiveRide', auth.isAuthenticated(), controller.latestActiveRideOfUser);
 
-// This can be used for any type of sigle get. This will only return a single Ride Object
+router.post('/', auth.isAuthenticated(), controller.create);
 router.post('/GetRideByRideAttribute', auth.isAuthenticated(), controller.getRideByRideAttribute);
 router.post('/GetAvailableRides', auth.isAuthenticated(), controller.getAvailableRides);
 router.post('/GetRideHistoryForCurrentUser', auth.isAuthenticated(), controller.getRideHistoryForCurrentUser);
 router.post('/FilterRide', auth.isAuthenticated(), controller.filterRide);
-
-router.get('/LatestActiveRideOfUser/', auth.isAuthenticated(), controller.latestActiveRideOfUser);
-
 router.put('/:id', auth.isAuthenticated(), controller.update);
 router.put('/AddCompanionToRide/:id', auth.isAuthenticated(), controller.addCompanionToRide);
 router.put('/UpdateRiderStatus/:id', auth.isAuthenticated(), controller.updateRiderStatus);
@@ -27,5 +22,7 @@ router.put('/RescheduleRide/:id', auth.isAuthenticated(), controller.rescheduleR
 
 router.patch('/:id', auth.isAuthenticated(), controller.update);
 router.delete('/:id', auth.isAuthenticated(), controller.destroy);
+
+router.get('/:id', auth.isAuthenticated(), controller.show);
 
 module.exports = router;

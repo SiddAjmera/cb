@@ -206,7 +206,7 @@ angular.module('cbApp')
               console.log("$scope.user", $scope.user);
               $scope.user.homeAddress = $scope.user.homeAddressLocation;
               $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
-              $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
+             // $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
               $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
               
               $scope.leftButtonText = "EDIT";

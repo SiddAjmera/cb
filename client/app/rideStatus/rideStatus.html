@@ -17,7 +17,7 @@
 						<label class="field-label from">
 							From
 						</label>
-						<span>{{postedRide.from}}</span>
+						<span>{{postedRide.startLocation.display_address}}</span>
 					</div>
 				</div>
 
@@ -29,7 +29,7 @@
 						<label class="field-label from">
 							To
 						</label>
-						<span>{{postedRide.to}}</span>
+						<span>{{postedRide.endLocation.display_address}}</span>
 					</div>	
 				</div>
 				<div class="each-row">
@@ -53,7 +53,7 @@
 						<label class="field-label from">
 							Leaving in
 						</label>
-						<span>{{postedRide.leavingIn}}</span>
+						<span>{{rideScheduledTime}}</span>
 					</div>
 				</div>
 				<div class="each-row">
@@ -64,7 +64,7 @@
 						<label class="field-label from">
 							Total seats filled
 						</label>
-						<span>{{postedRide.initiallyAvailableSeats}}</span>
+						<span>{{postedRide.currentlyAvailableSeats}}</span>
 					</div>
 				</div>
 			</div>
