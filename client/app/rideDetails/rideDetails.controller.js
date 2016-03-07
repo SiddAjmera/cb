@@ -62,7 +62,11 @@ angular.module('cbApp')
     			});  
     		}
     	})
-    }
+    };
+
+    $scope.toggleFooter = function(){
+      $(".home-page-menu-options").slideToggle(250);
+    };
 
   }]);
 

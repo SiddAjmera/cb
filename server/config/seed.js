@@ -74,7 +74,7 @@ User.create({
     timeSlot: '9:00 AM - 7:00 PM',
     username: '111112',
     password: "123",
-    redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
+    redgId:"cwseZgmg0n8:APA91bGe_gDw-upSJz4cnRfbv0mvZoqOIYN8K-q_EeGfReZ372QNjxqHvXfyZTCl-kAtfORda3dBeHbqJVoiCBvvEC7cXoqaxiE8bKaXg_zNMmGHb3ZtFHPym9_I-gwRbFCYDfLwEAsW",
     userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAALvAAAAJDQyNGQ1MDI0LTFmYmEtNGNlMy05ZTkzLWI4OWU1OTdhMDUzOQ.jpg',
     homeAddressLocation: {
         formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
@@ -122,7 +122,7 @@ User.create({
     username: '111113',
     password: "123",
     userId: '111113',
-    redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
+    redgId:"cwseZgmg0n8:APA91bGe_gDw-upSJz4cnRfbv0mvZoqOIYN8K-q_EeGfReZ372QNjxqHvXfyZTCl-kAtfORda3dBeHbqJVoiCBvvEC7cXoqaxiE8bKaXg_zNMmGHb3ZtFHPym9_I-gwRbFCYDfLwEAsW",
     userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/055/092/193511e.jpg',
     homeAddressLocation: {
         formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
@@ -170,7 +170,7 @@ User.create({
     username: '111114',
     password: "123",
     userId: '111114',
-    redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
+    redgId:"cwseZgmg0n8:APA91bGe_gDw-upSJz4cnRfbv0mvZoqOIYN8K-q_EeGfReZ372QNjxqHvXfyZTCl-kAtfORda3dBeHbqJVoiCBvvEC7cXoqaxiE8bKaXg_zNMmGHb3ZtFHPym9_I-gwRbFCYDfLwEAsW",
     userPhotoUrl: 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png',
     homeAddressLocation: {
         formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
@@ -211,7 +211,7 @@ User.create({
     username: '111115',
     password: "123",
     userId: '111115',
-    redgId:"APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg",
+    redgId:"cwseZgmg0n8:APA91bGe_gDw-upSJz4cnRfbv0mvZoqOIYN8K-q_EeGfReZ372QNjxqHvXfyZTCl-kAtfORda3dBeHbqJVoiCBvvEC7cXoqaxiE8bKaXg_zNMmGHb3ZtFHPym9_I-gwRbFCYDfLwEAsW",
     userPhotoUrl: 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png',
     homeAddressLocation: {
         formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
@@ -242,7 +242,7 @@ User.create({
     console.log('Finished populating Users');
 });
 
-Ride.create({
+/*Ride.create({
     routeSummary : "Phase 2 Rd",
     initiallyAvailableSeats : 4,
     comments : "Please dont be late",
@@ -284,9 +284,9 @@ Ride.create({
     }
   }, function(){
     console.log('Finished Populating Rides');
-});
+});*/
 
-Team.create({
+/*Team.create({
     "name": "Morning Commute",
     "createdBy": {
         "empId": "111111",
@@ -336,6 +336,6 @@ Team.create({
     }
 }, function(){
     console.log('Finished populating Teams');
-});
+});*/
 
 SeedData.seedLocations();

@@ -1,6 +1,5 @@
 <div class="page-wrapper sampling-wrapper">
 	<div class="col-md-12 col-sm-12 col-xs-12 header-section post-ride-header">
-		<span class="glyphicon glyphicon-chevron-left cursor-pointer avail-header-back" ng-click="toggleHamburger()"></span>
 		<span class="heading">Start Sampling</span>
 	</div>
 	<div class="container login-container ">
@@ -13,4 +12,29 @@
 		</form>	
 		<leaflet id='myMap' defaults="defaults" center="center" paths="paths"></leaflet>	
 	</div>
+
+	<div class="home-menu-swiper-wrap">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec" >
+			<img src="assets/images/uparrow.png" ng-click="toggleFooter()" alt="up">
+		</div>
+		<div class="home-page-menu-options">
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="userHome.home" class="home-menu-icon" src="assets/images/dashboard-icon/home.png">
+				<p ui-sref="userHome.home" class="home-menu-text">HOME</p>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="userHome.userProfile" class="home-menu-icon" src="assets/images/dashboard-icon/profile.png">
+				<p ui-sref="userHome.userProfile" class="home-menu-text">PROFILE</p>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="userHome.rideStatus" class="home-menu-icon" src="assets/images/dashboard-icon/track-ride.png">
+				<p ui-sref="userHome.rideStatus" class="home-menu-text">TRACK RIDES</p>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="activities" class="home-menu-icon" src="assets/images/dashboard-icon/history.png">
+				<p ui-sref="activities" class="home-menu-text">HISTORY</p>
+			</div>
+		</div>
+	</div>
+	
 </div>

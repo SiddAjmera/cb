@@ -1,13 +1,13 @@
 <div class="page-wrapper user-profile-wrapper">
 	<div class="col-md-12 col-sm-12 col-xs-12 header-section post-ride-header">
-		<span class="glyphicon glyphicon-chevron-left cursor-pointer avail-header-back" ng-click="toggleHamburger()"></span>
 	</div>	
 	<div class="container profile-container">
 		
 		<form name="userProfileUpdateForm" class="animation-form-signup" ng-submit="updateUserData()" novalidate>
 			<div class="profile-pic-wrapper">
 				<div class="triangle-down-left-post"></div>
-				<img class="profile-pic" src="assets/images/user-image.jpg">
+				<!-- <img class="profile-pic" src="assets/images/user-image.jpg"> -->
+				<img class="profile-pic" src="{{user.userPhotoUrl}}">
 			</div>
 			<div class="other-detail-wrapper" ng-class="{'editable-mode' : editableMode}">
 				<p class="profile-uname"><span>{{user.empName}}</span></p>
@@ -186,6 +186,7 @@
 			</div>
 		</form>		
 	</div>
+
 	<div class="home-menu-swiper-wrap">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec" >
 			<img src="assets/images/uparrow.png" ng-click="toggleFooter()" alt="up">
@@ -209,4 +210,5 @@
 			</div>
 		</div>
 	</div>
+	
 </div>
