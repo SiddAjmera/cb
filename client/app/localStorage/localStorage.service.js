@@ -10,7 +10,7 @@ angular.module('cbApp')
              var that = this;
     		 return that.retrieve('init').
                      then(function(item){
-                        console.log("item",item);
+                        //console.log("item",item);
                         return item;
                      });
     	},

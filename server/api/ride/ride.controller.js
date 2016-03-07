@@ -77,20 +77,18 @@ exports.show = function(req, res) {
   });
 };
 
-exports.latestActiveRideOfUser = function(req, res){
+exports.latestActiveRideOfUser = function(req, res) {
   CurrentUser = req.user;
-  logger.trace(CurrentUser.empId + 'requested for Ride.latestActiveRideOfUser');
+  logger.trace(CurrentUser.empId + ' requested for Ride.latestActiveRideOfUser');
   Ride.findOne({"offeredBy.empId" : CurrentUser.empId, rideStatus: 'ACTIVE'}, function(err, ride){
     if(err){
       logger.fatal('Error in Ride.latestActiveRideOfUser. Error : ' + err);
       return handleError(res, err);
     }
-    console.log('Successfully out of if(err)');
     if(!ride){
       logger.error('Error in Ride.latestActiveRideOfUser. Error : Not Found');
       return res.send(404);
     }
-    console.log('Successfully out of if(!ride)');
     logger.debug('Successfully got ride in Ride.latestActiveRideOfUser');
     return res.json(ride);
   });
@@ -112,7 +110,6 @@ exports.create = function(req, res) {
       return handleError(res, err);
     }
     if(ride){
-      console.log('An Active Ride Already Exist');
       logger.error('Error in Ride.create. Error : An ACTIVE RIDE already exist');
       // Conflict as an ACTIVE RIDE Object for that particular User already exist
       return res.send(409);
@@ -247,12 +244,10 @@ exports.getAvailableRides = function(req, res){
   var empId = req.user.empId;
 
   logger.trace(empId + ' requested for Ride.getAvailableRides');
-  console.log("Request Body : " + JSON.stringify(req.body));
   if(req.body.user){
     User.findById(req.user._id, function(err, user){
       if (err) {
         logger.fatal('Error in Ride.getAvailableRides. Error : ' + err);
-        console.log("Error in findById : " + JSON.stringify(err));
         return handleError(res, err);
       }
       if (!user)  {
@@ -263,7 +258,6 @@ exports.getAvailableRides = function(req, res){
       updated.save(function (err, user) {
         if (err) {
           logger.fatal('Error in Ride.getAvailableRides.updated.save. Error : ' + err);
-          console.log("Error in updated.save : " + JSON.stringify(err));
           return handleError(res, err);
         }
         logger.debug('Successfully updated user details in Ride.getAvailableRides');
@@ -295,7 +289,6 @@ exports.getAvailableRides = function(req, res){
           "rideStatus"        : "ACTIVE"         // tell mongo to only return ACTIVE rides
       },function(err, results, stats){
           if(err) {
-            console.log("Error in  geoNear: " + JSON.stringify(err));
             logger.fatal('Error in Ride.getAvailableRides. Error : ' + err);
             return handleError(res, err);
           }
@@ -391,6 +384,45 @@ exports.getRideHistoryForCurrentUser = function(req, res){
 };
 
 // Updates an existing ride in the DB.
+
+/*var self = module.exports = {
+    myName : function(req, res, next) {
+        // accessing method within controller
+        self.getName(data);
+    },
+
+    getName : function(data) {
+        // code
+    },
+
+    actualUpdate: function(editedRide) {
+      var deffered = q.defer();
+      logger.trace(CurrentUser.empId + ' requested for Ride.actualUpdate');
+      Ride.findById(editedRide._id, function (err, ride) {
+        if (err) {
+         logger.fatal('Error in Ride.actualUpdate. Error : ' + err);
+         deffered.reject(err);
+        }
+        if(!ride) { 
+          logger.error('Error in Ride.actualUpdate. Error : Not Found');
+          deffered.reject(404);
+        }
+        var updated = _.merge(ride, editedRide);
+        updated.save(function (err) {
+          if (err) { 
+            logger.fatal('Error in Ride.actualUpdate.updated.save. Error : ' + err);
+            deffered.reject(err)
+          }
+          logger.debug('Successfully updated ride in Ride.update');
+          deffered.resolve(ride, editedRide);
+        });
+      });
+      return deffered.promise;
+    }
+
+}*/
+
+
 exports.actualUpdate = function(editedRide) {
   var deffered = q.defer();
   logger.trace(CurrentUser.empId + ' requested for Ride.actualUpdate');
@@ -419,7 +451,7 @@ exports.actualUpdate = function(editedRide) {
 exports.update = function(req, res){
   req.body.ride = {};
   req.body.ride._id = req.params.id;
-  this.actualUpdate(req.body.ride).
+  module.exports.actualUpdate(req.body.ride).
   then(function(ride, editedRide){
     return res.json(200, editedRide);
   }, function(err){
@@ -433,7 +465,7 @@ exports.cancelRide = function(req, res){
   req.body.ride = {};
   req.body.ride._id = req.params.id;
   req.body.ride.rideStatus = "CANCELLED";
-  this.actualUpdate(req.body.ride).
+  module.exports.actualUpdate(req.body.ride).
   then(function(ride, editedRide){
     //EventEmitter.emit("rideCancelled", ride);
     return res.json(200, editedRide);
@@ -448,7 +480,7 @@ exports.rescheduleRide = function(req, res){
   req.body.ride = {};
   req.body.ride._id = req.params.id;
   req.body.ride.rideScheduledTime = req.body.newRideScheduledTime;
-  Ride.actualUpdate(req.body.ride).
+  module.exports.actualUpdate(req.body.ride).
   then(function(ride, editedRide){
     //EventEmitter.emit("rideRescheduled", ride);
     return res.json(200, editedRide);

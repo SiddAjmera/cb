@@ -195,6 +195,7 @@ angular.module('cbApp')
         // forceFetchfromDB if true forced to fetch from DB;
         var deffered=$q.defer();        
         fetchUser(forceFetchfromDB).then(function(user){
+          //console.log("USer from getCurrentUser : ", user);
           deffered.resolve(user);
         },
           function(err){

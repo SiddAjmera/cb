@@ -58,6 +58,8 @@ User.create({
         pictureUrl: "https://upload.wikimedia.org/wikipedia/commons/0/01/Audi_A4_2.0_TDI_Ambition_(B8,_Facelift)_%E2%80%93_Frontansicht,_30._Juli_2012,_Ratingen.jpg"
     }],
     homeLocationCoordinates: [ 73.681143, 18.574381 ],
+    shiftTimeIn: "9:00 AM",
+    shiftTimeout: "6:00 PM",
     email: 'jagdeep@tcs.com'
   }, {
     empId: '111112',
@@ -103,6 +105,8 @@ User.create({
         pictureUrl: "http://images0.cardekho.com/images/car-images/large/Renault/Renault-Duster/duster-black.jpg"
     }],
     homeLocationCoordinates: [ 73.686889, 18.578157 ],
+    shiftTimeIn: "9:00 AM",
+    shiftTimeout: "6:00 PM",
     email: 'siddharth@tcs.com'
   },{
     empId: '111113',
@@ -149,6 +153,8 @@ User.create({
         pictureUrl: "http://www.zigcdn.com/media/content/2015/Apr/bajaj-pulsar-rs200-first-ride-zigwheels-07042015-m00_560x420.jpg"
     }],
     homeLocationCoordinates: [ 73.762857, 18.592117 ],
+    shiftTimeIn: "9:00 AM",
+    shiftTimeout: "6:00 PM",
     email: 'parvez@tcs.com'
   },{
     empId: '111114',
@@ -188,6 +194,8 @@ User.create({
         pictureUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Bugatti_Veyron_16.4_%E2%80%93_Frontansicht_(1),_5._April_2012,_D%C3%BCsseldorf.jpg"
     }],
     homeLocationCoordinates: [ 73.778059, 18.616153 ],
+    shiftTimeIn: "9:00 AM",
+    shiftTimeout: "6:00 PM",
     email: 'ninad@tcs.com'
   },{
     empId: '111115',
@@ -227,12 +235,14 @@ User.create({
         pictureUrl: "https://www.mercedes-benz.com/wp-content/uploads/sites/3/2015/08/00-Mercedes-Benz-Vehicles-C-Class-C-63-Coupe-AMG-1180x559.jpg"
     }],
     homeLocationCoordinates: [ 73.810078, 18.623647 ],
+    shiftTimeIn: "9:00 AM",
+    shiftTimeout: "6:00 PM",
     email: 'ashraf@tcs.com'
   },function(){
     console.log('Finished populating Users');
 });
 
-Ride.create({
+/*Ride.create({
     routeSummary : "Phase 2 Rd",
     initiallyAvailableSeats : 4,
     comments : "Please dont be late",
@@ -274,9 +284,9 @@ Ride.create({
     }
   }, function(){
     console.log('Finished Populating Rides');
-});
+});*/
 
-Team.create({
+/*Team.create({
     "name": "Morning Commute",
     "createdBy": {
         "empId": "111111",
@@ -326,6 +336,6 @@ Team.create({
     }
 }, function(){
     console.log('Finished populating Teams');
-});
+});*/
 
 SeedData.seedLocations();
