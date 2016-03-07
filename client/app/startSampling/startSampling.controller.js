@@ -35,6 +35,10 @@ angular.module('cbApp')
     	}
     };
 
+    $scope.toggleFooter = function(){
+      $(".home-page-menu-options").slideToggle(250);
+    };
+
     $rootScope.$on("locationCaptured",function(){
          localStorage.retrieve('SavedLocationCoordinates').then(function(locations){
                 var storedlocations =JSON.parse(locations);

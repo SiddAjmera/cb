@@ -242,7 +242,7 @@ User.create({
     console.log('Finished populating Users');
 });
 
-Ride.create({
+/*Ride.create({
     routeSummary : "Phase 2 Rd",
     initiallyAvailableSeats : 4,
     comments : "Please dont be late",
@@ -284,9 +284,9 @@ Ride.create({
     }
   }, function(){
     console.log('Finished Populating Rides');
-});
+});*/
 
-Team.create({
+/*Team.create({
     "name": "Morning Commute",
     "createdBy": {
         "empId": "111111",
@@ -336,6 +336,6 @@ Team.create({
     }
 }, function(){
     console.log('Finished populating Teams');
-});
+});*/
 
 SeedData.seedLocations();

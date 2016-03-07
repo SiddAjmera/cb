@@ -138,8 +138,6 @@ angular.module('cbApp')
     if(currentUser) $scope.rideData.availableSeats=(currentUser.vehicle[0].capacity-1).toString();
     console.log("$scope.rideData",$scope.rideData);
 
-    
-
     $scope.defaults = {
       minZoom:0,
       maxZoom:22,

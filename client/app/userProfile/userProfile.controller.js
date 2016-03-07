@@ -4,6 +4,7 @@ angular.module('cbApp')
   .controller('UserProfileCtrl', function ($scope, $state, Auth, $modal, cordovaUtil, $cordovaImagePicker, httpRequest, staticData) {
     $scope.message = 'Hello';
     $scope.editableMode = false;
+
     $scope.officeAddressJSON = staticData.getTCSLocations();
 
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
@@ -19,26 +20,10 @@ angular.module('cbApp')
     Auth.getCurrentUser()
         .then(function(data){
             $scope.user = data;
-
             console.log("$scope.user from top block : ", $scope.user);
-
             $scope.user.homeAddress = $scope.user.homeAddressLocation;
-            
-            /*$scope.officeAddress = $scope.user.officeAddressLocation;
-            $scope.vehicleCapacity = $scope.user.vehicle[0].capacity;
-
-            console.log("$scope.user : ", $scope.user);
-            console.log("$scope.homeAddress : ", $scope.homeAddress);
-            console.log("$scope.officeAddress : ", $scope.officeAddress);
-            console.log("$scope.vehicleCapacity : ", $scope.vehicleCapacity);*/
-
             $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
             $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
-
-            /*var shiftTimeIn = new Date($scope.user.shiftTimeIn).toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
-            var shiftTimeout = new Date($scope.user.shiftTimeout).toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
-            $scope.shiftTimeout = _.findWhere( $scope.timeSlotJSON, { 'end': shiftTimeout } );
-            */
             $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
         });
 
