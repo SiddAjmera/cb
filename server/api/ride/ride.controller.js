@@ -557,7 +557,7 @@ exports.addCompanionToRide = function(req, res){
                                                   }
                                                   logger.debug('Successfully added a companion to ride with PENDING STATUS in Ride.getRideHistoryForCurrentUser');
 
-                                                  //EventEmitter.emit("userRequestedARide", ride);
+                                                  EventEmitter.emit("userRequestedARide", ride);
                                                   logger.debug('Successfully requested to ride together in Ride.addCompanionToRide');
                                                   return res.json(201, ride);
                                               });
@@ -577,7 +577,7 @@ exports.addCompanionToRide = function(req, res){
                                                 }
                                                 logger.debug('Successfully added a companion to ride with PENDING STATUS in Ride.getRideHistoryForCurrentUser');
 
-                                                //EventEmitter.emit("userRequestedARide", ride);
+                                                EventEmitter.emit("userRequestedARide", ride);
                                                 logger.debug('Successfully requested to ride together in Ride.addCompanionToRide');
                                                 return res.json(201, ride);
                                             });
