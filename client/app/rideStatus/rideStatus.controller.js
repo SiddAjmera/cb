@@ -16,7 +16,7 @@ angular.module('cbApp')
             $scope.rideScheduledTime = Math.round(Math.abs(( rightNow - dbReturned ) / (1000 * 60 * 60 * 60) ));*/
             var now = moment();
             var to = moment($scope.postedRide.rideScheduledTime);
-            $scope.rideScheduledTime = now.diff(to,'minutes');
+            $scope.rideScheduledTime = Math.abs( now.diff(to,'minutes') );
             //console.log("$scope.rideScheduledTime : ", $scope.rideScheduledTime)
 
 
@@ -49,7 +49,7 @@ angular.module('cbApp')
         var r = confirm("Are you sure you want to cancel this ride?");
         if (r == true) {
             // TODO : Code to cancel the Ride
-            alert('User confirmed to cancel ride');
+            //alert('User confirmed to cancel ride');
             httpRequest.put(config.apis.cancelRide + $scope.postedRide._id)
                        .then(function(data){
                           console.log("Data from cancel ride : ", data);

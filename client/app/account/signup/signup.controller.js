@@ -75,6 +75,7 @@ angular.module('cbApp')
       // if device then register for push notification and save registarion ID.
       if(config.cordova){
         pushnotification.registerPushNotification().then(function(redgId){
+          console.log('Reg id of device is ',redgId);
           $scope.user.redgId=redgId;
                 $scope.signupPost();
           });          
