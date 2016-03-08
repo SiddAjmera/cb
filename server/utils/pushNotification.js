@@ -28,8 +28,11 @@ var message = new gcm.Message({
         key2: 'message2'
     },
     notification: {
-        title: "Commute buddy",
-        icon: "ic_launcher",
+        title: "COMMUTE BUDDY",
+        /*icon: "ic_launcher",*/
+        icon: "logo",
+        color: "#329D71",
+        sound: "notification_sound",
         body: "This is a notification that will be displayed ASAP."
     }
 });

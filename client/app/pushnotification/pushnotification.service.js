@@ -3,7 +3,7 @@
 angular.module('cbApp')
   .service('pushnotification', function ($q) {
     return {
-      registerPushNotification:function(){
+      registerPushNotification : function(){
         var deferred= $q.defer();
         var androidConfig = {
              "senderID": "463291795017",
@@ -21,7 +21,7 @@ angular.module('cbApp')
         });
         push.on('registration', function(data) {
           console.log(data.registrationId);
-          deferred.resolve(data.registrationId)
+          deferred.resolve(data.registrationId);
         });
         return deferred.promise;
       }

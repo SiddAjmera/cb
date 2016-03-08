@@ -74,7 +74,7 @@ User.create({
     timeSlot: '9:00 AM - 7:00 PM',
     username: '111112',
     password: "123",
-    redgId:"cwseZgmg0n8:APA91bGe_gDw-upSJz4cnRfbv0mvZoqOIYN8K-q_EeGfReZ372QNjxqHvXfyZTCl-kAtfORda3dBeHbqJVoiCBvvEC7cXoqaxiE8bKaXg_zNMmGHb3ZtFHPym9_I-gwRbFCYDfLwEAsW",
+    redgId:"cCXqYV4GPmw:APA91bGHiusA8oPoEjKwWFA_tB59jk3s2tpRfpW_nG-SmGsAh8b_J_7ahpUHM30dzhctKgIml6fdACnEjUPyV8cKEK9eTuqxjKwKIxGHxUaCAQvGt9QbbVYoV3t_9BKbZMoDueXnAWmo",
     userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAALvAAAAJDQyNGQ1MDI0LTFmYmEtNGNlMy05ZTkzLWI4OWU1OTdhMDUzOQ.jpg',
     homeAddressLocation: {
         formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",

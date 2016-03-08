@@ -80,7 +80,13 @@ exports.show = function(req, res) {
 exports.latestActiveRideOfUser = function(req, res) {
   CurrentUser = req.user;
   logger.trace(CurrentUser.empId + ' requested for Ride.latestActiveRideOfUser');
-  Ride.findOne({"offeredBy.empId" : CurrentUser.empId, rideStatus: 'ACTIVE'}, function(err, ride){
+  Ride.findOne( {  
+                  rideStatus: 'ACTIVE',
+                  $or: [ 
+                          { "offeredBy.empId" : CurrentUser.empId },
+                          { "riders.empId": CurrentUser.empId }
+                       ]
+                }, function(err, ride){
     if(err){
       logger.fatal('Error in Ride.latestActiveRideOfUser. Error : ' + err);
       return handleError(res, err);
