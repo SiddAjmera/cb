@@ -1161,6 +1161,7 @@ select.post-ofc-address{
     appearance: none;
     width: 100%;
     color: #908F8F;
+    background-color: #fff;
     background-image: url(../assets/images/available-rides/dropdown.png);
     height: 40px;
     border: none;
@@ -1695,7 +1696,7 @@ input[type=number]::-webkit-outer-spin-button {
 .home-menu-swiper-wrap{
     width: 100%;
     float: left;
-    position: absolute;
+    position: fixed;
     bottom: 0;
 }
 .on-the-fly-sec{
@@ -2096,6 +2097,17 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .post-ride-wrap-one .post-ride-continue{
     background-color: #ec6e3c;
+}
+.post-ride-wrap-one .login-input-box{
+    padding-left: 0px;
+    height: 24px;
+}
+.post-ride-wrap-one select.post-ofc-address{
+    height: 24px;
+    padding-left: 0px;
+}
+.post-ride-wrap-one .post-ride-from-icon{
+    width: 29px;
 }
 .post-continue-img{
     width: 60px;

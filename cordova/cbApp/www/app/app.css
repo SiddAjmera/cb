@@ -152,9 +152,16 @@ button:focus,input[type="button"]:focus{
     float: left;
     margin-top: 9px;
     display: block;
-    text-decoration: underline;
-    color: #fff;
+    text-decoration: none;
+    color: #ec6a3c;
     cursor: pointer;
+}
+.forgot-link:hover, .forgot-link:focus{
+    color: #ec6a3c;
+    text-decoration: none;
+}
+.new-here{
+    float: right;
 }
 .form-section a{
   text-decoration: none;
@@ -224,10 +231,15 @@ button:focus,input[type="button"]:focus{
     width: 100%;
     height: 100vh;
     background-image: url("../assets/images/acceleration.jpg");
-    background-image: url("../assets/images/acceleration.jpg");
     background-repeat: no-repeat;
     background-size: 100% 100%;
 
+}
+.gender-icon{
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+    margin-top: 10px;
 }
 .terms-condn-section{
     margin-top: 20px;
@@ -239,7 +251,6 @@ button:focus,input[type="button"]:focus{
 }
 .container.login-container{
     width: 400px;
-    margin-top: 5%;
 }
 .container.login-container.user-home-container{
     width:100%;
@@ -278,7 +289,7 @@ button:focus,input[type="button"]:focus{
     margin-top: 36%;
 }
 .form-section.signup-section-form{
-    margin-top: 15%;
+    margin-top: 110px;
 }
 .signup-sec-wrapper{
     background-color: #fff;
@@ -345,12 +356,12 @@ button:focus,input[type="button"]:focus{
 }
 .each-row div.gender-radio{
     float:left;
-    width: 50%;
+    width: 40%;
     color: #dadada;
     background-color: transparent;
     text-align: left;
     margin-top: 0px;
-    padding: 4.5% 4%;
+    padding: 4.5% 6%;
     font-size: 14px;
 }
 .gender-radio label{
@@ -641,6 +652,9 @@ p.error-msg{
     height: 70%;
     margin-top: 10px;
 }
+.icon-style.key{
+    width: 60%;
+}
 .each-row-half{
     display: block;
     float: left;
@@ -777,9 +791,9 @@ a.get-started-link:hover{
    
 }
 .heading{
-    font-size: 18px;
+    font-size: 14px;
     margin-top: 3px;
-    
+    text-transform: uppercase;
 }
 .input-labels{
     color: #888888;
@@ -1125,8 +1139,8 @@ a.get-started-link:hover{
 .rad > i{     /* DEFAULT <i> STYLE */
   display: inline-block;
   vertical-align: middle;
-  width:  30px;
-  height: 30px;
+  width:  20px;
+  height: 20px;
   border-radius: 50%;
   transition: 0.2s;
   box-shadow: inset 0 0 0 8px #fff;
@@ -1134,11 +1148,11 @@ a.get-started-link:hover{
   margin-right: 10%;
 }
 .rad:hover > i{ /* HOVER <i> STYLE */
-  box-shadow: inset 0 0 0 6px #fff;
+  box-shadow: inset 0 0 0 4px #fff;
   background: #4ecd99;
 }
 .rad > input:checked + i{ /* (RADIO CHECKED) <i> STYLE */
-  box-shadow: inset 0 0 0 6px #fff;
+  box-shadow: inset 0 0 0 4px #fff;
   background: #4ecd99;
 }
 select.post-ofc-address{
@@ -1169,6 +1183,10 @@ select.post-ofc-address{
 .post-ride-container .leaflet-container{
     width:100%;
     height: 30vh;
+}
+.post-ride-container .leaflet-container.team{
+    width:100%;
+    height: 20vh;   
 }
 .sampling-wrapper .leaflet-container{
     width:100%;
@@ -1232,13 +1250,13 @@ select.post-ofc-address{
 /*suggestion page css ends*/
 
 .icon-address-fields{
-    width: 15%;
+    width: 31px;
     height: 60px;
     float: left;
+    margin-right: 3%;
     background-color: #fff;
 }
 .icon-address-fields img{
-    margin-left: 15%;
     cursor: pointer;
 }
 .officeAddress{
@@ -1600,12 +1618,21 @@ input[type=number]::-webkit-outer-spin-button {
     margin-top: 46px;
     text-align: center;
 }
+.home-content-wrapper .option-icon{
+    width: 55px;
+    cursor: pointer;
+}
+.home-content-wrapper .option-text{
+    color: #FF956B;
+    margin-top: 15px;
+    cursor: pointer;
+}
 .welcome-username{
     font-weight: bold;
     font-family: HelveticaBold;
 }
 .on-the-fly-text{
-    color: #ec6e3c;
+    color: #FF956B;
     font-size: 11px;
     text-transform: uppercase;
     margin-bottom: 6%;
@@ -1631,18 +1658,21 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: center;
 }
 .car-pooling-text{
-    color: #ffce25;
+    color: #DCC670;
     font-size: 11px;
     text-transform: uppercase;
-    margin-bottom: 6%;
+    margin-bottom: 10%;
 }
 .for-team-btn-sec button{
     background-color: rgba(208,170,35,0.8);
     height: 40px;
-    color: #fff;
+    color: #DCC670;
     font-size: 13px;
     width: 49%;
     border: none;
+}
+.home-content-wrapper .for-team-btn-sec .option-text{
+    color: #DCC670;
 }
 .pooling-section{
     margin-top: 14%;
@@ -1659,7 +1689,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
     float: left;
     height: 70px;    
-    background-color: #4ecd98;
+    background-color: rgba(61, 62, 64, 0.90);
     display: none;
 }
 .home-menu-swiper-wrap{
@@ -1696,6 +1726,28 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .home-menu-text{
     margin: 5px 0px;
+    color: #37C58B;
+}
+.current-loc-sec{
+    font-size: 10px;
+    color: #ABABAB;
+    margin-top: 3px;
+    cursor: pointer;
+}
+.field-label{
+    font-size: 9px;
+    margin-bottom: 0px;
+    color: #545454;
+}
+.field-label.from{
+    padding-left: 4px;
+}
+.field-label.route{
+    margin-left: 41px;
+}
+.current-loc-sec img{
+    width: 16px;
+    margin-right: 6px;
 }
 /*.analyze-wrapper .ongoing-journey{
     margin-left: 5px;
@@ -1837,6 +1889,8 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: #fff;
     padding: 0 10px;
     padding-bottom: 20px;
+    max-height: 65vh;
+    overflow: auto;
 }
 .avail-list-img-sec{
     background-color: #EFEFEF;
@@ -1911,6 +1965,7 @@ input[type=number]::-webkit-outer-spin-button {
     color: #fff;
     background-color: #329D71;
     text-align: center;
+    cursor: pointer;
 }
 .avail-proceed-wrap .book-ride-text{
     position: relative;
@@ -1918,6 +1973,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .avail-proceed-img{
     width: 46px;
+}
+.ride-status .login-input-box{
+    height: 22px;
+    padding: 0 10px 0 0px;
 }
 /*Down-left pointing*/
 .triangle-down-left {
@@ -1982,6 +2041,11 @@ input[type=number]::-webkit-outer-spin-button {
     width: 25px;
     padding-top: 12px;
 }
+.post-ride-from-icon.from{
+        width: 20px;
+    margin-top: 9px;
+    margin-left: 2px;
+}
 .post-ride-from-icon-one-time{
     padding-top: 8px;
 }
@@ -1997,14 +2061,15 @@ input[type=number]::-webkit-outer-spin-button {
     -moz-appearance: none;
     appearance: none;
     width: 100%;
-    color: #908F8F;
+    color: #000;
     background-image: url(../assets/images/available-rides/dropdown.png);
-    height: 40px;
+    height: 22px;
     border-bottom: 1px solid #e8e8e8;
     background-repeat: no-repeat;
     background-size: 20px;
     background-position: 97%;
-    padding: 0px 42px 0px 6px;
+    padding: 0px 42px 0px 0px;
+    font-size: 12px;
 }
 .post-ride-comment{
     font-size: 16px;
@@ -2023,6 +2088,11 @@ input[type=number]::-webkit-outer-spin-button {
     color: #fff;
     height: 60px;
     font-size: 16px;
+    cursor: pointer;
+}
+.act-info-icon{
+    width: 16px;
+    margin-top: 4px;
 }
 .post-ride-wrap-one .post-ride-continue{
     background-color: #ec6e3c;
@@ -2249,13 +2319,13 @@ input[type=number]::-webkit-outer-spin-button {
     width: 25%;
 }
 .profile-row .icon-style{
-    width: 41px;
-    height: 36px;
+    width: 35px;
+    height: 33px;
     margin-top: 0px;
 }
 .profile-row .icon-style.home{
-    width: 33px;
-    height: 30px;
+    width: 30px;
+    height: 28px;
     margin-top: 4px;
     margin-left: 5px;
 }
@@ -2353,6 +2423,238 @@ input[type=number]::-webkit-outer-spin-button {
     border-right: 1px solid #D8D8D8;
     border-left: 1px solid #D8D8D8;
 }
+.my-teams-wrapper{
+    width: 420px;
+    padding-top: 110px;
+    margin: 0 auto;
+}
+.my-teams-wrapper .triangle-down-left:after{
+    border-bottom: 20px solid #fff;
+}
+.my-team-content{
+    width: 100%;
+    float: left;
+    background-color: #fff;
+    padding: 12px 25px;
+    min-height: 70vh;
+}
+.my-team-content .team-list{
+    list-style-type: none;
+    padding-left: 0px;
+}
+.my-team-content .team-list li{
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.my-team-content .count-sec{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #01744D;
+    text-align: center;
+    font-size: 11px;
+    padding-top: 1px;
+    margin-right: 5px;
+    color: #01744D;
+}
+.team-name-sec{
+        font-size: 12px;
+    color: #333333;
+    display: inline-block;
+    line-height: 17px;
+    width: 87%;
+    border-bottom: 1px solid #ECECEC;
+}
+.team-dtl-page .glyphicon-list-alt{
+    cursor: pointer;
+    top: 5px;
+}
+.team-dtl-wrapper{
+    width: 420px;
+    padding-top: 110px;
+    margin: 0 auto;
+}
+.commute-title{
+    background-color: #329D71;
+    padding: 10px 20px;
+    margin-bottom: 0px;
+    color: #fff;
+    font-size: 14px;
+}
+.team-detail-content{
+    width: 100%;
+    float: left;
+    background-color: #fff;
+    padding: 12px 0px;
+}
+.team-detail-content .each-row.login-page{
+    padding: 0 20px;
+}
+.team-detail-content .icon-style{
+    margin-top: 0px;
+    margin-left: 0px;
+    height: 54%;
+}
+.team-detail-content .icon-style.time{
+    width: 25px;
+    height: 39%;
+    margin-top: 8px;
+}
+.team-detail-content .field-icon-section{
+    margin-top: 0px;
+    margin-left: 0px;
+}
+.team-detail-content .user-input-section{
+    width: 80%;
+}
+.team-detail-content .label-text {
+    margin-bottom: 5px;
+    font-size: 9px;
+}
+.team-detail-content .value-text{
+    font-size: 12px;
+}
+.co-commuter-title{
+    float: left;
+    width: 100%;
+    background-color: #F8F8F8;
+    line-height: 28px;
+    font-size: 13px;
+    color: #A0A0A0;
+    padding-left: 30px;
+}
+.co-comm-list{
+    list-style-type: none;
+    padding: 0px 27px;
+    float: left;
+    width: 100%;
+}
+.co-comm-list li img{
+    width: 22px;
+    position: absolute;
+    left: 0;
+    float: left;
+    display: none;
+}
+.co-comm-list li{
+    position: relative;
+    margin-bottom: 7px;
+}
+.co-comm-list li.owner img{
+    display: block;
+}
+.co-comm-list li span{
+    margin-left: 28px;
+    font-size: 12px;
+}
+.today-activity{
+    width: 100%;
+    float: left;
+    background-color: #fff;
+    padding: 12px 25px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #F2F2F2;
+}
+.yesterday-activity{
+    width: 100%;
+    float: left;
+    background-color: #fff;
+    padding: 12px 25px;
+    padding-bottom: 5px;
+}
+.activity-header{
+    color: #009275;
+    font-size: 10px;
+}
+.activity-list{
+    list-style-type: none;
+    padding-left: 0px;
+    font-size: 11px;
+}
+.activity-list li{
+    margin-bottom: 10px;
+}
+.indic-circle{
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background-color: #009275;
+    border-radius: 50%;
+}
+.act-message{
+        display: inline-block;
+    background-color: #F2F2F2;
+    padding: 5px 10px;
+    border-radius: 50px;
+}
+
+.act-time{
+    font-size: 8px;
+    color: #AFAFAF;
+}
+.team-name-icon{
+    display: none;
+}
+.team-name-field{
+    height: 22px;
+    padding: 0px;
+    border-bottom: 1px solid #e8e8e8;
+}
+.rating-star{
+    float: right;
+    width: 17px;
+    margin-right: 2px;
+}
+.rating-star .star-border{
+    stroke: #5c5c5c;
+    cursor: pointer;
+}
+.rating-star .star-fill{
+    fill: #EFEFEF;
+}
+.rating-star.rated .star-border{
+    stroke: none;
+}
+.rating-star.rated .star-fill{
+    fill: #329D71;
+}
+.editable-sec{
+    display: none;
+}
+.editable-mode .editable-sec{
+    display: block;
+    width: 97%;
+}
+.editable-mode .profile-row .user-input-section span.non-editable-sec{
+    display: none;
+}
+.editable-sec select{
+        -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    color: #000;
+    background-image: url(../assets/images/available-rides/dropdown.png);
+    height: 22px;
+    border: none;
+    border-bottom: 1px solid #e8e8e8;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: 99%;
+    padding: 0px 20px 0px 0px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.editable-sec .input-boxes{
+    padding: 0 5px;
+    height: 22px;
+    font-size: 12px;
+}
+.profile-row.timing{
+    width: 98%;
+    margin-bottom: 20px;
+}
 /*@media only screen and (max-width: 620px) {
     .no-csstransforms li {
         width: 4em;
@@ -2397,7 +2699,10 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 
+
 .trash { color:rgb(209, 91, 71); }
+
+
 
 
 
@@ -2430,14 +2735,14 @@ input[type=number]::-webkit-outer-spin-button {
 	    width: 100%;
 	}
 	
-	.each-row div:first-child{
+	/*.each-row div:first-child{
 		width: 15%;
-	}
+	}*/
 	.icon-style{
 		width: 90%;
 	}
 	.each-row div.gender-radio{
-		width: 50%;
+		width: 40%;
 	}
 	.each-row .each-row-half div:first-child{
 		width: 30%;
@@ -2460,12 +2765,23 @@ input[type=number]::-webkit-outer-spin-button {
 	    padding:60px 15px 0 15px;
 	    float: left;
 	}
+	.my-teams-wrapper{
+	    width: 100%;
+	    padding: 0 15px;
+	    padding-top: 110px;
+	}
+	.team-dtl-wrapper{
+	    width: 100%;
+	    padding: 0 15px;
+	    padding-top: 110px;
+	}
 	.container.profile-container {
 	    width: 100%;
 	    padding: 0 15px;
 	}
 	.home-page-menu-options{
-		height: 55px;
+		height: 60px;
+		padding-top: 5px;
 	}
 	.home-menu-icon{
         width: 28px;
@@ -2484,6 +2800,8 @@ input[type=number]::-webkit-outer-spin-button {
 		margin-left: 0px;
 	}
 }
+
+
 
 
 
