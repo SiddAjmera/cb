@@ -16,7 +16,7 @@ var message = new gcm.Message({
 });
  
 var regIds = 
-['fS0jCl-59-o:APA91bEmsQYhAjXuVQiJ1QoDnSS7jg04i_s9kY69JN6vqbmmDCTxNASyJMLtrnE8I1GFheQext_QKjAmjBU8aAOHoQtm2uNse5gaJA8padwGGahadhFHEA3WIHWTB6PApi5vUob7i0gg'];
+['cwseZgmg0n8:APA91bGe_gDw-upSJz4cnRfbv0mvZoqOIYN8K-q_EeGfReZ372QNjxqHvXfyZTCl-kAtfORda3dBeHbqJVoiCBvvEC7cXoqaxiE8bKaXg_zNMmGHb3ZtFHPym9_I-gwRbFCYDfLwEAsW'];
  
 // Set up the sender with you API key 
 var sender = new gcm.Sender('AIzaSyDE69ofSO7JtqSRSK92ivGUo44cpQPfpmg');
