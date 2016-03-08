@@ -16,7 +16,9 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    
+    <allow-navigation href="*" />
+    <allow-navigation href="http://*/*" />
+
     <preference name="SplashScreen" value="screen"/>
     <preference name="SplashScreenDelay" value="10000" />
     
