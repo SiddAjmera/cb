@@ -15,6 +15,9 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/from-icon.png" ng-click="optionAddressOptions('from')">
 					</div>
 					<div id="postFromSec" class="from-address-post-wrap">
+						<label class="field-label from">
+							Vehicle No.
+						</label>
 		                <input class="form-control input-boxes login-input-box" ng-class="{'error-border':!showErrorMessage}" type="text" maxlength="13" name="vehicleNo" required ng-pattern="/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/" ng-model="user.vehicle.vehicleNo" placeholder="MyCar No.">
 		                <div ng-show="!showErrorMessage"  ng-messages="signupForm.vehicleNo.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Registration Number is required</p>

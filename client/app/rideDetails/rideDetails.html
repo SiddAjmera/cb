@@ -12,7 +12,10 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/from-icon.png" ng-click="optionAddressOptions('from')">
 					</div>
 					<div id="postFromSec" class="from-address-post-wrap">
-		                <input class="form-control input-boxes login-input-box" ng-class="{'error-border':!showErrorMessage}" type="text" maxlength="13" name="vehicleNo" required ng-pattern="/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/" ng-model="user.vehicle.vehicleLicenseNumber" placeholder="MyCar No.">
+						<label class="field-label from">
+							Registration No.
+						</label>
+		                <input class="form-control input-boxes login-input-box" ng-class="{'error-border':!showErrorMessage}" type="text" maxlength="13" name="vehicleNo" required ng-pattern="/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/" ng-model="user.vehicle.vehicleLicenseNumber" placeholder="">
 		                <div ng-show="!showErrorMessage"  ng-messages="signupForm.vehicleNo.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Registration Number is required</p>
 							<p ng-message="pattern" class="error-msg">Invalid Registration Number</p>
@@ -25,8 +28,10 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/seats_avalaible.png">
 					</div>
 					<div class="from-address-post-wrap">
+						<label class="field-label from">
+							Seats available
+						</label>
 						<select class="timeslot post-ride-leaving-in" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="user.vehicle.capacity" ng-options="c as c for c in vehicleCapacityJSON">
-							<option style="display:none" value="">Seats available</option>
 						</select>
 					</div>
 					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.availableSeats.$error" class="error-msg-edit">
@@ -40,8 +45,11 @@
 					<div class="icon-address-fields">
 						<img class="post-ride-from-icon" src="assets/images/available-rides/from-icon.png" ng-click="optionAddressOptions('from')">
 					</div>
-					<div id="" class="from-address-post-wrap">						
-		                <input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="homeAddress" placeholder="Home address" required
+					<div id="" class="from-address-post-wrap">
+						<label class="field-label from">
+							Home address
+						</label>						
+		                <input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box"  type="text" name="homeAddress" placeholder="" required
 		                ng-model='user.homeAddress' g-places-autocomplete>
 		                <div  class="error-msg-edit" ng-messages="postRideForm.homeAddress.$error">
 							<p ng-message="required" class="error-msg">Home address is required</p>
@@ -54,9 +62,12 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/to.png" ng-click="optionAddressOptions('to')">
 					</div>
 					<div id="" class="from-address-post-wrap">
+						<label class="field-label from">
+							Office address
+						</label>
 						<select ng-options='item as item.display_address for item in officeAddressJSON' ng-model='user.officeAddress' name='officeAddress'
 						class="post-ofc-address">
-							<option style="display:none" value="">Office Address</option> 
+						
 						</select>
 						<!--  <ui-select search-enabled="false" ng-model="user.officeAddress" class="office-address-select">
 						    <ui-select-match placeholder="OFFICE ADDRESS">
@@ -81,8 +92,10 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/starting-time.png">
 					</div>
 					<div class="from-address-post-wrap">
-						<select name="shiftStartTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.start for t in timeSlotJSON"  ng-model="user.timeSlot">
-							<option style="display:none" value="">Shift start time</option> 	
+						<label class="field-label from">
+							Shift start time
+						</label>
+						<select name="shiftStartTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.start for t in timeSlotJSON"  ng-model="user.timeSlot"> 	
 						</select>						
 					</div>
 					<div  class="error-msg-edit" ng-messages="postRideForm.shiftStartTime.$error">
@@ -94,8 +107,10 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/starting-time.png">
 					</div>
 					<div class="from-address-post-wrap">
+						<label class="field-label from">
+							Shift end time
+						</label>
 						<select name="shiftEndTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.end for t in timeSlotJSON"  ng-model="user.timeSlot">
-							<option style="display:none" value="">Shift end time</option> 	
 						</select>						
 					</div>
 					<div  class="error-msg-edit" ng-messages="postRideForm.shiftEndTime.$error">
