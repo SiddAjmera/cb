@@ -103,45 +103,59 @@ angular.module('cbApp')
       $(".home-page-menu-options").slideToggle(250);
     }
 
-    /*$scope.logout = function(){
-      if($scope.logoutButtonText=="CANCEL")
-        $scope.changeMode();
-      else{
-        Auth.logout();
-        $state.go("login")
+  $scope.getImageSaveContact = function() {       
+      // Image picker will load images according to these settings
+      console.log("Image Picker will open in phone");
+      var options = {
+          maximumImagesCount: 1, // Max number of selected images, I'm using only one for this example
+          width: 800,
+          height: 800,
+          quality: 80            // Higher is better
+      };
+
+      if($cordovaImagePicker){
+          $cordovaImagePicker.getPictures(options).then(function (results) {
+              // Loop through acquired images
+              for (var i = 0; i < results.length; i++) {
+                  $scope.selectedImage = results[i];   // We loading only one image so we can use it like this
+
+                  window.plugins.Base64.encodeFile($scope.selectedImage, function(base64){  // Encode URI to Base64 needed for contacts plugin
+                      $scope.selectedImage = base64;
+                      console.log($scope.selectedImage);
+                      $scope.saveImage();
+                  });
+              }
+          }, function(error) {
+              console.log('Error: ' + JSON.stringify(error));    // In case of error
+          });
       }
-    }*/
+  };
 
-    $scope.getImageSaveContact = function() {       
-            // Image picker will load images according to these settings
-            var options = {
-                maximumImagesCount: 1, // Max number of selected images, I'm using only one for this example
-                width: 800,
-                height: 800,
-                quality: 80            // Higher is better
-            };
- 
-            $cordovaImagePicker.getPictures(options).then(function (results) {
-                // Loop through acquired images
-                for (var i = 0; i < results.length; i++) {
-                    $scope.selectedImage = results[i];   // We loading only one image so we can use it like this
- 
-                    window.plugins.Base64.encodeFile($scope.selectedImage, function(base64){  // Encode URI to Base64 needed for contacts plugin
-                        $scope.selectedImage = base64;
-                        console.log($scope.selectedImage)
-                    });
-                }
-            }, function(error) {
-                console.log('Error: ' + JSON.stringify(error));    // In case of error
-            });
-        };
+  $scope.saveImage = function(){
+      var obj = {};
+      obj.userPhotoUrl = $scope.selectedImage;
+      var url = config.apis.signup + $scope.user._id;
+      httpRequest.put(url,obj)
+      .then(function (data) {
+        if(data.status === 200){
+          alert('stored');
+          Auth.getCurrentUser(true)
+          .then(function(data){
+              console.log("Data returned : ", data);
+              $scope.user = data;
+              console.log("$scope.user", $scope.user);
+              $scope.user.homeAddress = $scope.user.homeAddressLocation;
+              $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
+              $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
+              $scope.leftButtonText = "EDIT";
+              $scope.rightButtonText = "LOGOUT";
+              $state.go('userHome.userProfile');
+          });
+        }
+      });
+  };
 
-    /*$scope.syncUserLocationData = function(){
-    	cordovaUtil.syncCoordinates();
-    };*/
-
-
-    $scope.saveDetails=function () {
+  $scope.saveDetails=function () {
       var obj = {};
       
       obj.contactNo = $scope.user.contactNo;
@@ -191,7 +205,6 @@ angular.module('cbApp')
               console.log("$scope.user", $scope.user);
               $scope.user.homeAddress = $scope.user.homeAddressLocation;
               $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
-             // $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
               $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
               
               $scope.leftButtonText = "EDIT";
@@ -200,8 +213,10 @@ angular.module('cbApp')
               $state.go('userHome.userProfile');
           });  
         }
-      })
-    };
+      });
+  };
+
+
 
 
   });

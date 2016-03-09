@@ -1,4 +1,7 @@
 <div class="main-page-wrapper">
+
+
+
 	<!-- Hamburger Content -->
 
 		<div class="show-none hamburger-content" ng-class="{show : tgState}" >
@@ -9,14 +12,10 @@
 					</div>
 					<div class="user-image-hamburger-wrap">
 						<a ui-sref="userHome.userProfile"> 
-						<img src="{{currentUser.userPhotoUrl}}"  ng-click="toggleHamburger()" class="avail-user-img" ><!-- {{currentUser.userPhotoUrl}} -->
+						<img src="{{currentUser.userPhotoUrl}}"  ng-click="toggleHamburger()" class="avail-user-img" >
 						<div class="user-indication-image-wrap">
 							<img class="user-indication-image" src="assets/images/3x/ico_available.png"  >
 						</div>
-						
-						<!-- <svg>
-						  <circle cx="50" cy="50" r="5" class="indicator-circle"/>
-						</svg> -->
 						</a>
 					</div>
 					
@@ -67,13 +66,39 @@
 			</div>
 		</div>
 
-	
 
 	<!-- page content -->
 	<div class="main-content" ng-class="{show : tgState}">
-		<!-- <hamburger-toggle state="tgState"></hamburger-toggle> -->
+		<hamburger-toggle state="tgState"></hamburger-toggle>
 		<ui-view>
-			
+
 		</ui-view>
 	</div>
+
+
+	<!-- <div class="home-menu-swiper-wrap">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec" >
+			<img src="assets/images/uparrow.png" ng-click="toggleFooter()" alt="up">
+		</div>
+		<div class="home-page-menu-options">
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="userHome.home" class="home-menu-icon" src="assets/images/dashboard-icon/home.png">
+				<p ui-sref="userHome.home" class="home-menu-text">HOME</p>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="userHome.userProfile" class="home-menu-icon" src="assets/images/dashboard-icon/profile.png">
+				<p ui-sref="userHome.userProfile" class="home-menu-text">PROFILE</p>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="userHome.rideStatus" class="home-menu-icon" src="assets/images/dashboard-icon/track-ride.png">
+				<p ui-sref="userHome.rideStatus" class="home-menu-text">TRACK RIDES</p>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu">
+				<img ui-sref="activities" class="home-menu-icon" src="assets/images/dashboard-icon/history.png">
+				<p ui-sref="activities" class="home-menu-text">HISTORY</p>
+			</div>
+		</div>
+	</div> -->
+
+
 </div>

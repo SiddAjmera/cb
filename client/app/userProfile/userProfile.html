@@ -7,7 +7,8 @@
 			<div class="profile-pic-wrapper">
 				<div class="triangle-down-left-post"></div>
 				<!-- <img class="profile-pic" src="assets/images/user-image.jpg"> -->
-				<img class="profile-pic" src="{{user.userPhotoUrl}}">
+				<img class="profile-pic" src="{{user.userPhotoUrl}}" ng-click="getImageSaveContact()">
+				<!-- <img class="profile-pic" ng-src="data:image/png;base64,{{user.userPhotoUrl}}" ng-click="getImageSaveContact()"> -->
 			</div>
 			<div class="other-detail-wrapper" ng-class="{'editable-mode' : editableMode}">
 				<p class="profile-uname"><span>{{user.empName}}</span></p>

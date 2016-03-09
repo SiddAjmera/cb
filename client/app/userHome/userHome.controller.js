@@ -9,7 +9,11 @@ angular.module('cbApp')
     
     $scope.toggleHamburger = function(){
     	$scope.tgState = !$scope.tgState;
-    }
+    };
+
+    $scope.toggleFooter = function(){
+      $(".home-page-menu-options").slideToggle(250);
+    };
 
     $scope.logout = function(){
     	Auth.logout();

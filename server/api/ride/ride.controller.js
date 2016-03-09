@@ -36,6 +36,11 @@ EventEmitter.on("rideCancelled", function(ride){
   Push.notifyAboutCancelledRide(ride);
 });
 
+EventEmitter.on("riderCancelledRide", function(riderCancelledRideObject){
+  logger.trace('riderCancelledRide Event emitted for user : ' + CurrentUser.empId);
+  Push.notifyHostAboutRiderCancellation(riderCancelledRideObject);
+});
+
 EventEmitter.on("rideRescheduled", function(ride){
   logger.trace('rideRescheduled Event emitted for user : ' + CurrentUser.empId);
   Push.notifyAboutRescheduledRide(ride);
@@ -81,7 +86,7 @@ exports.latestActiveRideOfUser = function(req, res) {
   CurrentUser = req.user;
   logger.trace(CurrentUser.empId + ' requested for Ride.latestActiveRideOfUser');
   Ride.findOne( {  
-                  rideStatus: 'ACTIVE',
+                  rideStatus: {$in: ['ACTIVE', 'STARTED']},
                   $or: [ 
                           { "offeredBy.empId" : CurrentUser.empId },
                           { "riders.empId": CurrentUser.empId }
@@ -106,8 +111,8 @@ exports.create = function(req, res) {
   var empId = req.user.empId;
   logger.trace(empId + ' requested for Ride.create');
 
-  Ride.findOne({  rideStatus: "ACTIVE",
-                  $or:  [ 
+  Ride.findOne({  rideStatus: { $in : ["ACTIVE", "STARTED"] },
+                  $or : [ 
                           { "offeredBy.empId": empId },
                           { "riders.empId": empId }
                         ]}, function(err, ride){
@@ -468,16 +473,83 @@ exports.update = function(req, res){
 
 // Cancels the Ride corresponding to ride._id field in the DB
 exports.cancelRide = function(req, res){
-  req.body.ride = {};
+  CurrentUser = req.user;
+  /*req.body.ride = {};
   req.body.ride._id = req.params.id;
   req.body.ride.rideStatus = "CANCELLED";
   module.exports.actualUpdate(req.body.ride).
   then(function(ride, editedRide){
-    //EventEmitter.emit("rideCancelled", ride);
+    EventEmitter.emit("rideCancelled", ride);
     return res.json(200, editedRide);
   }, function(err){
     if(err == 404) return res.send(404);
     else return handleError(res, err);
+  });*/
+
+  //1. ID who Cancelled the Ride, the Host or the Rider.
+  //2. If the host did, update the ride satatus to CANCELLED.
+  //3. If the Rider did, remove the rider from the Ride.
+  Ride.findById( req.params.id, function(err, ride){
+    if(err) { 
+      logger.fatal('Error in Ride.cancelRide. Error : ' + err);
+      return handleError(res, err); 
+    }
+    if(!ride) { 
+      logger.error('Error in Ride.cancelRide. Error : Ride does not exist');
+      return res.send(404); 
+    }
+    if(ride){
+      if(ride.offeredBy.empId == req.user.empId){
+        // The host has Cancelled the Ride. So just update the rideStatus to Cancelled.
+        ride.rideStatus = "CANCELLED";
+        ride.save(function(err, ride){
+          if(err){
+            logger.fatal('Error in Ride.cancelRide.ride.save. Error : ' + err);
+            return handleError(res, err); 
+          }
+          if(!ride){
+            logger.error('Error in Ride.cancelRide.ride.save. Error : Ride does not exist');
+            return res.send(404); 
+          }
+          if(ride){
+            logger.error('Successfully updated Ride Status to Cancelled in Ride.cancelRide.ride.save.');
+            EventEmitter.emit("rideCancelled", ride);
+            return res.json(200, ride);
+          }
+        });
+      }
+      else{
+        // A rider cancelled the ride. Remove the Rider from the Ride
+        var riderWhoCancelled;
+        ride.riders.forEach(function(rider){
+          if(rider.empId == req.user.empId){
+            riderWhoCancelled = rider;
+            ride.riders.splice(ride.riders.indexOf(rider), 1);
+            ride.currentlyAvailableSeats = ride.currentlyAvailableSeats + 1;
+          }
+        });
+        ride.save(function(err, ride){
+          if(err){
+            logger.fatal('Error in Ride.cancelRide.ride.save. Error : ' + err);
+            return handleError(res, err); 
+          }
+          if(!ride){
+            logger.error('Error in Ride.cancelRide.ride.save. Error : Ride does not exist');
+            return res.send(404); 
+          }
+          if(ride){
+            logger.error('Successfully updated Ride Status to Cancelled in Ride.cancelRide.ride.save.');
+
+            var riderCancelledRideObject = {};
+            riderCancelledRideObject.offeredBy = ride.offeredBy;
+            riderCancelledRideObject.riderWhoCancelled = riderWhoCancelled;
+
+            EventEmitter.emit("riderCancelledRide", riderCancelledRideObject);
+            return res.json(200, ride);
+          }
+        });
+      }
+    }
   });
 };
 

@@ -4,6 +4,12 @@ angular.module('cbApp')
   .controller('PostRidesCtrl', function ($scope, httpRequest, Auth, cordovaUtil, staticData, $state) {
     var directionsService = new google.maps.DirectionsService();
     
+    $scope.rideData = {};
+    $scope.rideData.from = 'Home';
+    $scope.rideData.to = 'Office';
+    $scope.rideData.leavingIn = '15';
+    $scope.rideData.availableSeats = 1;
+
     $scope.mypath = {};
     var getRoute = function (from, to) {
         var request = {};
@@ -13,7 +19,6 @@ angular.module('cbApp')
         request.origin = from;
         request.destination = to;
         directionsService.route(request, function(response, status) {
-            console.log("response",response)
             if (status == google.maps.DirectionsStatus.OK) {
                 var routes = _.map(response.routes,function(r){return r.overview_polyline});
                 console.log("routes",routes);              
@@ -39,7 +44,16 @@ angular.module('cbApp')
     then(function(data){
         currentUser = data;
         console.log('Current User : ', currentUser);
-        if($scope.rideData) $scope.rideData.availableSeats = (currentUser.vehicle[0].capacity-1).toString();
+
+        var maxAvailableSeats = currentUser.vehicle[0].capacity - 1;
+
+        $scope.availableSeatsJSON = [];
+        for(var i=1; i <= maxAvailableSeats; i++){
+            $scope.availableSeatsJSON.push(i.toString());
+        }
+
+        $scope.rideData.availableSeats = (currentUser.vehicle[0].capacity - 1).toString();
+        console.log("$scope.rideData.availableSeats : ", $scope.rideData.availableSeats);
 
         console.log("$scope.rideData",$scope.rideData);
         
@@ -49,11 +63,9 @@ angular.module('cbApp')
         var toLocation = [];
         toLocation.push(currentUser.officeAddressLocation.location[1]);
         toLocation.push(currentUser.officeAddressLocation.location[0]);
-        console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
                 
         var from = fromLocation.join();
         var to = toLocation.join();
-        console.log("From is " + from + " and to is " + to);
         getRoute(from, to);
     });
 
@@ -72,11 +84,9 @@ angular.module('cbApp')
                 var toLocation = [];
                 toLocation.push(currentUser.homeAddressLocation.location[1]);
                 toLocation.push(currentUser.homeAddressLocation.location[0]);
-                console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
                 
                 var from = fromLocation.join();
                 var to = toLocation.join();
-                console.log("From is " + from + " and to is " + to);
                 getRoute(from, to);
             }
             else{
@@ -86,11 +96,9 @@ angular.module('cbApp')
                 var toLocation = [];
                 toLocation.push(currentUser.officeAddressLocation.location[1]);
                 toLocation.push(currentUser.officeAddressLocation.location[0]);
-                console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
                 
                 var from = fromLocation.join();
                 var to = toLocation.join();
-                console.log("From is " + from + " and to is " + to);
                 getRoute(from, to);
             }
         }
@@ -129,13 +137,6 @@ angular.module('cbApp')
         }
     });
 
-    $scope.rideData = {};
-    $scope.rideData.from = 'Home';
-    $scope.rideData.to = 'Office';
-    $scope.rideData.leavingIn = '15';
-    $scope.rideData.availableSeats = 4;
-
-    if(currentUser) $scope.rideData.availableSeats=(currentUser.vehicle[0].capacity-1).toString();
     console.log("$scope.rideData",$scope.rideData);
 
     $scope.defaults = {
@@ -180,15 +181,6 @@ angular.module('cbApp')
                                 {"text":"60 MIN","value":"60"},
                             ];
 
-    $scope.availableSeatsJSON = [
-                                    "1",
-            						"2",
-            						"3",
-            						"4",
-            						"5",
-            						"6"
-    						    ];
-
     $scope.autocompleteOptions = {
                         types: ['(cities)'],
                         componentRestrictions: { country: 'IN',city:'Pune' },
@@ -207,28 +199,22 @@ angular.module('cbApp')
     $scope.addressTo='default'
     $scope.optionAddressOptions=function(option){
         $scope.open=option;
-        if(option=="from")
-        $scope.ride.source=undefined;
-    else
-         $scope.ride.destination=undefined;
+        if(option=="from") $scope.ride.source=undefined;
+        else $scope.ride.destination=undefined;
     }
      $scope.showAddressFrom=function(option){
         console.log(option)
-        $scope.address=option;
-        if($scope.address == "home"){
-           $scope.ride.source= currentUser.homeAddress           
-        }
-        $scope.otherAddress=true;
-        $scope.open=false;
+        $scope.address = option;
+        if($scope.address == "home") $scope.ride.source = currentUser.homeAddress;
+        $scope.otherAddress = true;
+        $scope.open = false;
     }
     $scope.showAddressTo=function(option){
         console.log(option)
-        $scope.addressTo=option;
-        if($scope.addressTo == "homeTo"){
-           $scope.ride.destination= currentUser.homeAddress
-        }
-        $scope.otherAddress=true;
-        $scope.open=false;
+        $scope.addressTo = option;
+        if($scope.addressTo == "homeTo") $scope.ride.destination= currentUser.homeAddress;
+        $scope.otherAddress = true;
+        $scope.open = false;
     }
     $scope.postRide = function(){
         console.log("ride object",$scope.ride);
@@ -264,8 +250,7 @@ angular.module('cbApp')
         }
         else if($scope.rideData.to == "Office"){
              ride.endLocation = currentUser.officeAddressLocation;
-        }        
-       // ride.offeredByUserId = currentUser.empId;
+        }
         ride.initiallyAvailableSeats = $scope.rideData.availableSeats;
         ride.rideScheduledTime = moment().add(parseInt($scope.rideData.leavingIn),"minutes").valueOf();
         ride.vehicleLicenseNumber = currentUser.vehicle[0].vehicleLicenseNumber;
@@ -273,7 +258,7 @@ angular.module('cbApp')
         console.log("final obj",ride)
         httpRequest.post(config.apis.postRide,{'ride':ride}).
         then(function(data){
-             console.log(data);
+            console.log(data);
             if(data.status==201){
                 if(config.cordova) cordovaUtil.showToastMessage("Ride posted succesfully!")
                 else alert("Ride posted succesfully!");
@@ -282,7 +267,7 @@ angular.module('cbApp')
         },function(err){
             console.log("err",err);
 
-             if(err.status==409){
+             if(err.status == 409){
                   if(config.cordova) cordovaUtil.showToastMessage('You are already part of an Active Ride');
                   else alert('You are already part of an Active Ride');
                   $state.go('userHome.rideStatus');
