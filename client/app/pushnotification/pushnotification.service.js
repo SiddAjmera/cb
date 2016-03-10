@@ -23,6 +23,10 @@ angular.module('cbApp')
           console.log(data.registrationId);
           deferred.resolve(data.registrationId);
         });
+        push.on('notification', function(data) {
+          console.log(data);
+          //deferred.resolve(data.registrationId);
+        });
         return deferred.promise;
       }
     }

@@ -6,8 +6,8 @@ if(angular.isUndefined(config)){
 
 //base URL for API
 
-config.apiBaseURL="http://localhost:9000/";
-//config.apiBaseURL="http://52.77.218.140:9000/";
+//config.apiBaseURL="http://localhost:9000/";
+config.apiBaseURL="http://52.77.218.140:9000/";
 //config.apiBaseURL="http://192.168.44.66:9000/"
 
 
@@ -30,7 +30,7 @@ config.apis.selectRide = "api/rides/AddCompanionToRide/";
 config.apis.latestActiveRideOfUser = "api/rides/GetLatestActiveRide";
 config.apis.cancelRide = "api/rides/CancelRide/";
 
-config.cordova=false;
+config.cordova=true;
 
 //"cwseZgmg0n8:APA91bGe_gDw-upSJz4cnRfbv0mvZoqOIYN8K-q_EeGfReZ372QNjxqHvXfyZTCl-kAtfORda3dBeHbqJVoiCBvvEC7cXoqaxiE8bKaXg_zNMmGHb3ZtFHPym9_I-gwRbFCYDfLwEAsW"
 

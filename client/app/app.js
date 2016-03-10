@@ -126,3 +126,12 @@ var onDeviceReady = function() {
 }
 document.addEventListener('deviceready', 
 onDeviceReady);
+
+var acceptHandler=function(data){
+    console.log(data);
+    alert("Successs");
+};
+var rejectHandler=function(data){
+    console.log(data);
+    alert("Reject handler");
+};
