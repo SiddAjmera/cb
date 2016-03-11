@@ -31,6 +31,12 @@ angular.module('cbApp')
           console.log("data.registrationId: ", data.registrationId);
           deferred.resolve(data.registrationId);
         });
+<<<<<<< HEAD
+        push.on('notification', function(data) {
+          console.log(data);
+          //deferred.resolve(data.registrationId);
+        });
+=======
 
         push.on('notification', function(data) {
             console.log("Notification Event Callback");
@@ -46,6 +52,7 @@ angular.module('cbApp')
           alert("push error");
         });
 
+>>>>>>> 41d5b6f555a1795a1265b59d6815b8374f0f4e0b
         return deferred.promise;
       }
 
