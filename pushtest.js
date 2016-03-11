@@ -18,9 +18,10 @@ var sender = new gcm.Sender('AIzaSyDE69ofSO7JtqSRSK92ivGUo44cpQPfpmg');
 // Now the sender can be used to send messages 
 message.addData('message', 'This is sample message. This is sample message.');
     message.addData('actions', [
-        { "icon": "emailGuests", "title": "APPROVE", "callback": "acceptHandler"},
-        { "icon": "snooze", "title": "REJECT", "callback": "rejectHandler"},
+        { "icon": "emailGuests", "title": "APPROVE", "callback": "window.approve"},
+        { "icon": "snooze", "title": "REJECT", "callback": "window.reject"},
     ]);
+    message.addData('content-available',1);
 sender.send(message, { registrationIds: regIds }, function (err, result) {
     if(err) console.error(err);
     else    console.log(result);

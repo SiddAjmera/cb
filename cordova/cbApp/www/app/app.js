@@ -2266,11 +2266,28 @@ angular.module('cbApp')
           console.log(data);
           //deferred.resolve(data.registrationId);
         });
+        push.on('approve', function(data) {
+            alert("Approve Event Fired");
+        });
+        push.on('reject', function(data) {
+            alert("Reject Fired");
+        });
+       
+        
         return deferred.promise;
       }
     }
 });
+//global functins for push notifications actions
+window.approve = function(data){
+    alert("Approve Triggered");
+    console.log("Approve Callback Triggred. Here is the Data : ", data);
+}
 
+window.reject = function(data){
+    alert("Reject Triggred");
+    console.log("Reject Callback Triggred. Here is the Data : ", data);
+}
 'use strict';
 
 angular.module('cbApp')
