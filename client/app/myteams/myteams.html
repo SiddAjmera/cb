@@ -7,7 +7,7 @@
 		<div class="my-teams-wrapper">
 			<div class="triangle-down-left"></div>
 			<div class="my-team-content">
-				<ul class="team-list">
+				<!-- <ul class="team-list">
 					<li ng-click="openteamDetails()">
 						<span class="count-sec">1</span>
 						<span class="team-name-sec">Morning Commute</span>
@@ -16,7 +16,13 @@
 						<span class="count-sec">2</span>
 						<span class="team-name-sec">Evening Commute</span>
 					</li>
-				</ul>
+				</ul> -->
+
+				<div ng-repeat="team in teams track by $index">
+					<span class="count-sec" ng-click="openteamDetails(team._id)">{{$index + 1}}</span>
+					<span class="team-name-sec" ng-click="openteamDetails(team._id)">{{team.name}}</span>
+				</div>
+
 			</div>
 		</div>
 	</div>

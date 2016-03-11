@@ -196,7 +196,7 @@ exports.teamsOfUser = function(req, res){
 					$or: [ 
 							{ "createdBy.empId": empId },
 							{ "members.empId": empId } 
-						]
+						 ]
 				};
 
 	var projection = {

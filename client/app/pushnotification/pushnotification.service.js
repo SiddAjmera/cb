@@ -49,7 +49,7 @@ angular.module('cbApp')
         return deferred.promise;
       }
 
-      window.approve = function(data){
+      /*window.approve = function(data){
         alert("Approve Triggered");
         console.log("Approve Callback Triggred. Here is the Data : ", data);
       }
@@ -57,6 +57,6 @@ angular.module('cbApp')
       window.reject = function(data){
         alert("Reject Triggred");
         console.log("Reject Callback Triggred. Here is the Data : ", data);
-      }
+      }*/
     }
 });
