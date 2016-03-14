@@ -4,8 +4,8 @@ angular.module('cbApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('teamDetails', {
-        url: '/teamDetails',
-        templateUrl: 'app/teamDetails/teamDetails.html',
-        controller: 'TeamDetailsCtrl'
+      	templateUrl: 'app/teamDetails/teamDetails.html',
+      	params: {'teamId': null, 'team': null},
+      	controller: 'TeamDetailsCtrl'
       });
-  });
+});

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('FormTeamCtrl', function ($scope, Auth, staticData) {
+  .controller('FormTeamCtrl', function ($scope, $state, Auth, staticData) {
     $scope.message = 'Hello';
 
     var directionsService = new google.maps.DirectionsService();
@@ -152,8 +152,10 @@ angular.module('cbApp')
         teamObject.team.rideDetails.ridePreferredTimeHToO = $scope.team.rideDetails.ridePreferredTime.start;
         teamObject.team.rideDetails.ridePreferredTimeOToH = $scope.team.rideDetails.ridePreferredTime.end;
         console.log("Final Team Object Before Find Team Memebers : ", teamObject);
-        alert("This functionality is yet to be implemented");
-    }
+        /*alert("This functionality is yet to be implemented");*/
+
+        $state.go('userHome.suggestions', {'team': teamObject});
+    };
 
     $scope.toggleFooter = function(){
       $(".home-page-menu-options").slideToggle(250);

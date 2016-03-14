@@ -31,7 +31,9 @@ config.apis.latestActiveRideOfUser = "api/rides/GetLatestActiveRide";
 config.apis.cancelRide = "api/rides/CancelRide/";
 
 /*team apis*/
+config.apis.createTeam = "api/teams/";
 config.apis.getUserTeams = "api/teams/TeamsOfUser";
+config.apis.getTeamDetails = "api/teams/";
 
 config.cordova=false;
 

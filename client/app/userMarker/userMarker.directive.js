@@ -6,13 +6,19 @@ angular.module('cbApp')
       templateUrl: 'app/userMarker/userMarker.html',
       restrict: 'E',
       scope:{
-      	contactno:"="
+      	contactno:"=",
+        empid:"=",
+        addemployee:"&"
       },
       link: function (scope, element, attrs) {
-      	console.log(scope.contactno);
-      	scope.callMe = function(){
+      	console.log("Scope in link function : ", scope);
+
+        scope.callMe = function(){
       		alert("directive function called!")
-      	}
-      }
-    };
-  });
+      	};
+
+        scope.callAddAsMember = function(){
+          scope.addemployee(scope.empid.toString());
+      };
+    }
+  }});

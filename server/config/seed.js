@@ -286,8 +286,8 @@ User.create({
     console.log('Finished Populating Rides');
 });*/
 
-/*Team.create({
-    "name": "Morning Commute",
+Team.create({
+    "name": "Monday Morning Commute",
     "createdBy": {
         "empId": "111111",
         "empName": "Jagdeep Singh Soni",
@@ -310,8 +310,30 @@ User.create({
         "membershipStatus": "PENDING",
         "redgId": "APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg"
     }],
+    "activities" : [
+        {
+            "activity": "Jagdeep formed a team",
+            "activityTime": 1457958600000
+        },
+        {
+            "activity": "Jagdeep added Siddharth to the team",
+            "activityTime": 1457958700000
+        },
+        {
+            "activity": "Siddharth accepted Jagdeep's membership request",
+            "activityTime": 1457958800000
+        },
+        {
+            "activity": "Jagdeep added Parvez to the team",
+            "activityTime": 1457958900000
+        },
+        {
+            "activity": "Parvez accepted Jagdeep's membership request",
+            "activityTime": 1457959000000
+        }
+    ],
     "rideDetails": {
-        "from": {
+        "home": {
             "formatted_address" : "Test Team Formation 1",
             "display_address" : "S1/Poorna",
             "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
@@ -321,7 +343,7 @@ User.create({
             ],
             "placeId" : "ChIJ6UG68Gy7wjsRs4AJ2njAyHc"
         },
-        "to":{
+        "office":{
             "formatted_address" : "Bhumkar Bridge, Wakad, Pune, Maharashtra 411057, India",
             "display_address" : "Bhumkar Bridge",
             "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
@@ -331,11 +353,12 @@ User.create({
             ],
             "placeId" : "ChIJ5-6NE3y5wjsR5Q4o_NfuSFU"
         },
-        "preferredTime": 1455023742,
+        "preferredTimeHToO": "9:00 AM",
+        "preferredTimeOToH": "6:00 PM",
         "routeSummary" : "Phase 2 Rd"
     }
 }, function(){
     console.log('Finished populating Teams');
-});*/
+});
 
 SeedData.seedLocations();

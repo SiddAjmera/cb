@@ -36,8 +36,8 @@ var TeamSchema = new Schema({
 	    location: {type: [Number], index: '2d'},
 	    placeId: String
   	},
-  	preferredTimeHToO: Date,
-    preferredTimeOToH: Date,
+  	preferredTimeHToO: String,
+    preferredTimeOToH: String,
     routeSummary: String
   },
   activities: [{

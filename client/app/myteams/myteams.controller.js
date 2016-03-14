@@ -14,10 +14,7 @@ angular.module('cbApp')
     }
 
     $scope.openteamDetails = function(_id){
-    	//console.log("_id : ", _id);
-    	//$state.go('teamDetails');
-
-    	$location.path('/teamDetails/' + _id);
+    	$state.go('teamDetails', {'teamId': _id});
     }
 
     var getUserTeams = function(){
