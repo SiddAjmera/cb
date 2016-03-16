@@ -43,7 +43,7 @@ angular.module('cbApp')
                                             iconAnchor: [10, 45],
                                             html: image[0].outerHTML + p[0].outerHTML
                                      }
-                        tempObj.message='<user-marker contactno="'+user.contactNo+'" empid="'+user.empId+'" addemployee="addAsMember(obj)"></user-marker';
+                        tempObj.message='<user-marker contactno="'+user.contactNo+'" empid="'+user.empId+'" action="addAsMember('+user.empId+')"></user-marker>';
                         $scope.markers.push(tempObj);
                 });
                 console.log($scope.markers)
