@@ -9,7 +9,9 @@ var events = require('events');
 var EventEmitter = new events.EventEmitter();
 
 var log4js= require('../../utils/serverLogger');
-var logger = log4js.getLogger('server'); 
+var logger = log4js.getLogger('server');
+
+var ActivityCreator = require('../../utils/activityCreator');
 
 var CurrentUser;
 
@@ -70,6 +72,7 @@ exports.create = function(req, res) {
 	logger.trace(req.user.empId + ' requested for Team.create');
 
 	var teamToCreate = req.body.team;
+	teamToCreate.activities = [];
 
 	User.findOne({empId: req.body.createdByEmpId}, {empId: 1, empName: 1, contactNo: 1, userPhotoUrl: 1,  redgId: 1}, function(err, user){
 		if(err){ 
@@ -88,6 +91,9 @@ exports.create = function(req, res) {
 		  teamToCreate.createdBy.contactNo = user.contactNo;
 		  teamToCreate.createdBy.userPhotoUrl = user.userPhotoUrl;
 		  teamToCreate.createdBy.redgId = user.redgId;
+
+		  var activityString = user.empName + ' created Team : ' + teamToCreate.name;
+		  teamToCreate.activities.push(ActivityCreator.createActivity(activityString));
 	    }
 		
 		User.find( {empId: { $in: req.body.membersEmpIds }}, {empId: 1, empName: 1, contactNo: 1, userPhotoUrl: 1,  redgId: 1}, function(err, users){
@@ -109,6 +115,10 @@ exports.create = function(req, res) {
 		    				memberUser.userPhotoUrl = user.userPhotoUrl;
 		    				memberUser.redgId = user.redgId;
 		    				memberUser.membershipStatus = "PENDING";
+
+		    				var activityString = user.empName + ' was requested to join ' + teamToCreate.name;
+							teamToCreate.activities.push(ActivityCreator.createActivity(activityString));
+
 				    		return memberUser;
 				    	});
 		    }
@@ -261,6 +271,10 @@ exports.addMember = function(req, res){
 		    				memberUser.userPhotoUrl = user.userPhotoUrl;
 		    				memberUser.redgId = user.redgId;
 		    				memberUser.membershipStatus = "PENDING";
+
+		    				var activityString = user.empName + ' was requested to join ' + team.name;
+							team.activities.push(ActivityCreator.createActivity(activityString));
+
 				    		return memberUser;
 				    	});
 		    }
@@ -321,7 +335,15 @@ exports.updateMemberStatus = function(req, res){
 	    team.members.forEach(function(member){
 	    	if(member.empId == empId){
 	    		respondingEmpName = member.empName;
-	    		(membershipStatus == 'ACCEPTED') ? member.membershipStatus = 'CONFIRMED' : members.splice(members.indexOf(member), 1);
+	    		if(membershipStatus == 'ACCEPTED'){
+	    			member.membershipStatus = 'CONFIRMED';
+	    			var activityString = member.empName + ' joined ' + team.name;
+					team.activities.push(ActivityCreator.createActivity(activityString));
+	    		}else if(membershipStatus == 'REJECTED'){
+	    			members.splice(members.indexOf(member), 1);
+	    			var activityString = member.empName + ' refused to join ' + team.name;
+					team.activities.push(ActivityCreator.createActivity(activityString));
+	    		}
 	    	}
 	    });
 	    team.save(function(err){
