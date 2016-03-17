@@ -3,8 +3,23 @@
 angular.module('cbApp')
   .controller('RideStatusCtrl', function ($scope, httpRequest, $state) {
     $scope.message = 'Hello';
+    $scope.editableMode = false;
     $scope.leftButtonText = "RESCHEDULE RIDE";
     $scope.rightButtonText = "CANCEL RIDE";
+    $scope.leavingInJSON =  [
+                                {"text":"05 MIN","value":"5"},
+                                {"text":"10 MIN","value":"10"},
+                                {"text":"15 MIN","value":"15"},
+                                {"text":"20 MIN","value":"20"},
+                                {"text":"25 MIN","value":"25"},
+                                {"text":"30 MIN","value":"30"},
+                                {"text":"35 MIN","value":"35"},
+                                {"text":"40 MIN","value":"40"},
+                                {"text":"45 MIN","value":"45"},
+                                {"text":"50 MIN","value":"50"},
+                                {"text":"55 MIN","value":"55"},
+                                {"text":"60 MIN","value":"60"},
+                            ];
 
     httpRequest.get(config.apis.latestActiveRideOfUser)
         .then(function(data){
@@ -31,12 +46,35 @@ angular.module('cbApp')
 
     $scope.leftButtonClicked = function(buttonText){
       if(buttonText == "RESCHEDULE RIDE"){
+        $scope.editableMode = true;
         $scope.leftButtonText = "CONFIRM RESCHEDULE";
         $scope.rightButtonText = "CANCEL";
       }
       else if(buttonText == "CONFIRM RESCHEDULE"){
         // TODO : Code to reschedule Ride
-        alert('User confirmed to reschedule ride');
+        console.log("Leaving in : ", $scope.leavingIn);
+
+        var postBody = {};
+        postBody.newRideScheduledTime = moment().add(parseInt($scope.leavingIn),"minutes").valueOf();
+
+        httpRequest.put(config.apis.rescheduleRide + $scope.postedRide._id, postBody)
+                   .then(function(data){
+                      console.log("Data after reschedule Ride : ", data);
+                      if(data.status == 200){
+                          alert("Ride rescheduled Successfully");
+                          console.log("Config.data.newRideScheduledTime : ", data.config.data.newRideScheduledTime);
+
+                          var now = moment();
+                          var to = moment(data.config.data.newRideScheduledTime);
+                          $scope.rideScheduledTime = Math.abs( now.diff(to,'minutes') );
+
+                          $scope.editableMode = false;
+                          $scope.leftButtonText = "RESCHEDULE RIDE";
+                          $scope.rightButtonText = "CANCEL RIDE";
+                      }
+                   }, function(err){
+                      alert("Ride can't be rescheduled at this point. Error : " + err);
+                   });
       }
     };
 
@@ -58,7 +96,7 @@ angular.module('cbApp')
                             $state.go('userHome.home');
                           }
                        }, function(err){
-                          alert("Ride can't be cancelled at this point. Error : ", err);
+                          alert("Ride can't be cancelled at this point. Error : " + err);
                        });
 
         } else return;

@@ -47,9 +47,6 @@
 							<p ng-message="required" class="error-msg">Ride destination is required</p>
 						</div>
 					</div>
-
-					
-					
 				</div>
 
 
@@ -62,9 +59,7 @@
 							Starting at
 						</label>
 						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-model="rideData.leavingIn" ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON">
-								
 						</select>
-						
 					</div>
 					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.leavingIn.$error" class="error-msg-edit">
 						<p ng-message="required" class="error-msg">Starting time is required</p>
