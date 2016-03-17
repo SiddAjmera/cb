@@ -2643,6 +2643,9 @@ input[type=number]::-webkit-outer-spin-button {
 .editable-mode .profile-row .user-input-section span.non-editable-sec{
     display: none;
 }
+.editable-mode .non-editable-sec {
+    display: none;
+}
 .editable-sec select{
         -webkit-appearance: none;
     -moz-appearance: none;

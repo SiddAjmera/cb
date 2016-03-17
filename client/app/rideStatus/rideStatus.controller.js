@@ -31,16 +31,12 @@ angular.module('cbApp')
             //To create a ticking minutes Clock. Time in minutes will automatically decrement by 1 each minute
             $scope.onTimeout = function(){
                 $scope.rideScheduledTime--;
-                if ($scope.rideScheduledTime > 0) {
-                    mytimeout = $timeout($scope.onTimeout,60000);
-                }
-                else {
-                    alert("Time is up!");
+                if($scope.rideScheduledTime > 0) mytimeout = $timeout($scope.onTimeout,60000);
+                else{
+                  alert("Time is up!");
                 }
             }
             var mytimeout = $timeout($scope.onTimeout,60000);
-
-
         },function(err){
             if(err.status == 409) alert('Error getting recent ride details');
             if(err.status == 404){
@@ -82,6 +78,7 @@ angular.module('cbApp')
       if(buttonText == "CANCEL"){
         $scope.leftButtonText = "RESCHEDULE RIDE";
         $scope.rightButtonText = "CANCEL RIDE";
+        $scope.editableMode = false;
       }
       else if(buttonText == "CANCEL RIDE"){
         var r = confirm("Are you sure you want to cancel this ride?");
