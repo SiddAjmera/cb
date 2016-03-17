@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('RideStatusCtrl', function ($scope, httpRequest, $state) {
+  .controller('RideStatusCtrl', function ($scope, httpRequest, $state, $timeout) {
     $scope.message = 'Hello';
     $scope.editableMode = false;
     $scope.leftButtonText = "RESCHEDULE RIDE";
@@ -23,19 +23,24 @@ angular.module('cbApp')
 
     httpRequest.get(config.apis.latestActiveRideOfUser)
         .then(function(data){
-            //console.log("Data : ", data);
             $scope.postedRide = data.data;
-
-            /*var rightNow = new Date().getTime();
-            var dbReturned = new Date(moment($scope.postedRide.rideScheduledTime).format('DD-MM-YYYY HH:mm:ss')).getTime();
-            $scope.rideScheduledTime = Math.round(Math.abs(( rightNow - dbReturned ) / (1000 * 60 * 60 * 60) ));*/
             var now = moment();
             var to = moment($scope.postedRide.rideScheduledTime);
             $scope.rideScheduledTime = Math.abs( now.diff(to,'minutes') );
-            //console.log("$scope.rideScheduledTime : ", $scope.rideScheduledTime)
+
+            //To create a ticking minutes Clock. Time in minutes will automatically decrement by 1 each minute
+            $scope.onTimeout = function(){
+                $scope.rideScheduledTime--;
+                if ($scope.rideScheduledTime > 0) {
+                    mytimeout = $timeout($scope.onTimeout,60000);
+                }
+                else {
+                    alert("Time is up!");
+                }
+            }
+            var mytimeout = $timeout($scope.onTimeout,60000);
 
 
-            //console.log("Posted Ride : ", $scope.postedRide);
         },function(err){
             if(err.status == 409) alert('Error getting recent ride details');
             if(err.status == 404){
@@ -51,23 +56,18 @@ angular.module('cbApp')
         $scope.rightButtonText = "CANCEL";
       }
       else if(buttonText == "CONFIRM RESCHEDULE"){
-        // TODO : Code to reschedule Ride
         console.log("Leaving in : ", $scope.leavingIn);
-
         var postBody = {};
         postBody.newRideScheduledTime = moment().add(parseInt($scope.leavingIn),"minutes").valueOf();
-
         httpRequest.put(config.apis.rescheduleRide + $scope.postedRide._id, postBody)
                    .then(function(data){
                       console.log("Data after reschedule Ride : ", data);
                       if(data.status == 200){
                           alert("Ride rescheduled Successfully");
                           console.log("Config.data.newRideScheduledTime : ", data.config.data.newRideScheduledTime);
-
                           var now = moment();
                           var to = moment(data.config.data.newRideScheduledTime);
                           $scope.rideScheduledTime = Math.abs( now.diff(to,'minutes') );
-
                           $scope.editableMode = false;
                           $scope.leftButtonText = "RESCHEDULE RIDE";
                           $scope.rightButtonText = "CANCEL RIDE";
