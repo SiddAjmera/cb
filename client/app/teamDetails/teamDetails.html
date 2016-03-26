@@ -3,11 +3,11 @@
 
 		<div class="col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header">
 			<span class="heading">Team Details</span>
-			<span class="glyphicon glyphicon-list-alt pull-right"></span>
+			<span class="glyphicon glyphicon-list-alt pull-right" ng-click="getTeamActivities()"></span>
 		</div>
 		<div class="team-dtl-wrapper">
 			<div class="triangle-down-left"></div>
-			<p class="commute-title">Morning Commute</p>
+			<p class="commute-title">{{ team.name }}</p>
 			<div class="team-detail-content">
 				<div class="each-row login-page">
 	              <div class="field-icon-section">
@@ -15,7 +15,7 @@
 	              </div>
 	              <div class="user-input-section">
 	                <p class="label-text">Starting</p>
-	                <p class="value-text">Baner,Pune, Maharashtra</p> 	
+	                <p class="value-text">{{ team.rideDetails.home.formatted_address }}</p> 	
                   </div>
               	</div>
               	<div class="each-row login-page">
@@ -24,7 +24,7 @@
 	              </div>
 	              <div class="user-input-section">
 	                <p class="label-text">Destination</p>
-	                <p class="value-text">Sahyadri Park, Hinjewadi Phase 3</p> 	
+	                <p class="value-text">{{ team.rideDetails.office.formatted_address }}</p> 	
                   </div>
               	</div>
               	<div class="each-row login-page">
@@ -33,30 +33,18 @@
 	              </div>
 	              <div class="user-input-section">
 	                <p class="label-text">Shift time</p>
-	                <p class="value-text">9:00 AM - 6:00 PM</p> 	
+	                <p class="value-text">{{  team.rideDetails.preferredTimeHToO  }} - {{  team.rideDetails.preferredTimeOToH  }}</p> 	
                   </div>
               	</div>
               	<p class="co-commuter-title">Co-commuters</p>
               	<ul class="co-comm-list">
               		<li class="owner">
               			<img src="assets/images/time.png">
-              			<span>Jagdeep Soni</span>
+              			<span>{{ team.createdBy.empName }}</span>
               		</li>
-              		<li>
+              		<li ng-repeat="member in team.members">
               			<img src="assets/images/time.png">
-              			<span>Md Ashraf</span>
-              		</li>
-              		<li>
-              			<img src="assets/images/time.png">
-              			<span>Rishabh Kesarwani</span>
-              		</li>
-              		<li>
-              			<img src="assets/images/time.png">
-              			<span>Ninad Mahajan</span>
-              		</li>
-              		<li>
-              			<img src="assets/images/time.png">
-              			<span>Parvez Patel</span>
+              			<span>{{ member.empName }}</span>
               		</li>
               	</ul>
 	        </div>

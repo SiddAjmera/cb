@@ -37,7 +37,7 @@
 
 
 				<!-- Home Address Section -->
-				<div class="profile-row">
+				<div class="profile-row" ng-show="user.homeAddressLocation != null">
 					<div class="field-icon-section">
 						<img class="icon-style home" alt="Home" src="assets/images/available-rides/from-icon.png">
 					</div>
@@ -58,7 +58,7 @@
 
 
 				<!-- Office Address Section -->
-				<div class="profile-row" >
+				<div class="profile-row" ng-show="user.officeAddressLocation != null">
 					<div class="field-icon-section">
 						<img class="icon-style home" alt="Home" src="assets/images/available-rides/to.png">
 					</div>
@@ -128,7 +128,7 @@
 
 
 				<!-- Shift Timings Sections -->
-				<div class="profile-row timing">
+				<div class="profile-row timing" ng-show="user.shiftTimeIn != null">
 
 
 					<!-- Shift TimeIn Section -->
@@ -159,6 +159,7 @@
 						<div class="field-icon-section">
 							<img class="icon-style home" alt="Home" src="assets/images/available-rides/starting-time.png">
 						</div>
+						
 						<div class="user-input-section">
 							<span class="non-editable-sec">{{user.shiftTimeout | date:'hh:mm a'}}</span>
 							<div class="editable-sec">

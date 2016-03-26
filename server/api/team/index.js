@@ -6,10 +6,11 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 router.get('/', auth.isAuthenticated(), controller.index);
+router.get('/TeamsOfUser', auth.isAuthenticated(), controller.teamsOfUser);
 router.get('/:id', auth.isAuthenticated(), controller.show);
+
 router.post('/', auth.isAuthenticated(), controller.create);
 
-router.post('/TeamsOfUser', auth.isAuthenticated(), controller.teamsOfUser);
 router.post('/AddMember/:id', auth.isAuthenticated(), controller.addMember);
 router.post('/UpdateMemberStatus/:id', auth.isAuthenticated(), controller.updateMemberStatus);
 

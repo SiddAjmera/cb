@@ -1,7 +1,7 @@
 <div class="page-wrapper post-ride-wrap-one">	
 	<div class="container login-container user-home-container pad-R-none pad-L-none"  scroll ng-class="{availheaderback:boolChangeClass}">
 		<div class="col-md-12 col-sm-12 col-xs-12 header-section post-ride-header">
-			<span class="heading">Post a Ride</span>
+			<span class="heading">{{pageHeader}}</span>
 		</div>
 		<form name="userProfileUpdateForm" class="container login-container post-ride-container animation-form-signup" novalidate>
 			<div class="triangle-down-left-post"></div>	
@@ -15,7 +15,7 @@
 						<label class="field-label from">
 							Registration No.
 						</label>
-		                <input class="form-control input-boxes login-input-box" ng-class="{'error-border':!showErrorMessage}" type="text" maxlength="13" name="vehicleNo" required ng-pattern="/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/" ng-model="user.vehicle.vehicleLicenseNumber" placeholder="">
+		                <input class="form-control input-boxes login-input-box" ng-class="{'error-border':!showErrorMessage}" type="text" maxlength="13" name="vehicleNo" required ng-pattern="/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/" ng-model="user.vehicle[0].vehicleLicenseNumber" placeholder="">
 		                <div ng-show="!showErrorMessage"  ng-messages="signupForm.vehicleNo.$error" class="error-msg-edit">
 							<p ng-message="required" class="error-msg">Registration Number is required</p>
 							<p ng-message="pattern" class="error-msg">Invalid Registration Number</p>
@@ -31,7 +31,7 @@
 						<label class="field-label from">
 							Seats available
 						</label>
-						<select class="timeslot post-ride-leaving-in" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="user.vehicle.capacity" ng-options="c as c for c in vehicleCapacityJSON">
+						<select class="timeslot post-ride-leaving-in" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="user.vehicle[0].capacity" ng-options="c as c for c in vehicleCapacityJSON">
 						</select>
 					</div>
 					<div ng-show="!showErrorMessage"  ng-messages="postRideForm.availableSeats.$error" class="error-msg-edit">
@@ -95,7 +95,7 @@
 						<label class="field-label from">
 							Shift start time
 						</label>
-						<select name="shiftStartTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.start for t in timeSlotJSON"  ng-model="user.timeSlot"> 	
+						<select name="shiftStartTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.start for t in timeSlotJSON"  ng-model="user.timeSlot">
 						</select>						
 					</div>
 					<div  class="error-msg-edit" ng-messages="postRideForm.shiftStartTime.$error">

@@ -29,6 +29,12 @@ config.apis.filterRides = "api/rides/GetAvailableRides";
 config.apis.selectRide = "api/rides/AddCompanionToRide/";
 config.apis.latestActiveRideOfUser = "api/rides/GetLatestActiveRide";
 config.apis.cancelRide = "api/rides/CancelRide/";
+config.apis.rescheduleRide = "api/rides/RescheduleRide/";
+
+/*team apis*/
+config.apis.createTeam = "api/teams/";
+config.apis.getUserTeams = "api/teams/TeamsOfUser";
+config.apis.getTeamDetails = "api/teams/";
 
 config.cordova=true;
 

@@ -21,10 +21,10 @@ angular.module('cbApp')
         .then(function(data){
             $scope.user = data;
             console.log("$scope.user from top block : ", $scope.user);
-            $scope.user.homeAddress = $scope.user.homeAddressLocation;
-            $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
-            $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
-            $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
+            if($scope.user.homeAddressLocation) $scope.user.homeAddress = $scope.user.homeAddressLocation;
+            if($scope.user.officeAddressLocation) $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
+            if($scope.user.vehicle[0]) $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
+            if($scope.user.shiftTimeIn) $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
         });
 
     $scope.leftButtonText = "EDIT";
@@ -68,7 +68,6 @@ angular.module('cbApp')
         $state.go("login");
       }
       else if(buttonText == "UPDATE"){
-        alert("saveDetails() Called on UPDATE");
         $scope.saveDetails();
         $scope.editableMode = false;
       }
@@ -158,13 +157,17 @@ angular.module('cbApp')
   $scope.saveDetails=function () {
       var obj = {};
       
-      obj.contactNo = $scope.user.contactNo;
-      obj.shiftTimeIn = $scope.user.shiftTimeIn;
-      obj.shiftTimeout = $scope.user.shiftTimeout;
+      if($scope.userProfileUpdateForm.contactNo.$dirty) obj.contactNo = $scope.user.contactNo;
+      if($scope.userProfileUpdateForm.shiftStartTime.$dirty){
+        obj.shiftTimeIn = $scope.user.shiftTimeIn;
+      }
+      if($scope.userProfileUpdateForm.shiftEndTime.$dirty){
+        obj.shiftTimeout = $scope.user.shiftTimeout;
+      }
 
       console.log("$scope.user.homeAddress : ", $scope.user.homeAddress);
 
-      if($scope.user.homeAddress != $scope.user.homeAddressLocation){
+      if($scope.userProfileUpdateForm.homeAddress.$dirty){
           obj.homeAddressLocation = {};
           obj.homeAddressLocation.display_address = $scope.user.homeAddress.name;
           obj.homeAddressLocation.formatted_address = $scope.user.homeAddress.formatted_address;
@@ -182,12 +185,14 @@ angular.module('cbApp')
           }
       }
 
-      if($scope.officeAddress != $scope.user.officeAddressLocation) obj.officeAddressLocation = $scope.officeAddress;
+      if($scope.userProfileUpdateForm.officeAddress.$dirty) obj.officeAddressLocation = $scope.officeAddress;
 
       obj.vehicle = [];
       var vehicle = {};
-      vehicle.vehicleLicenseNumber = $scope.user.vehicle[0].vehicleLicenseNumber;
-      vehicle.capacity = $scope.user.vehicle[0].capacity;
+      
+      if($scope.userProfileUpdateForm.vehicleNo.$dirty) vehicle.vehicleLicenseNumber = $scope.user.vehicle[0].vehicleLicenseNumber;
+      if($scope.userProfileUpdateForm.availableSeats.$dirty) vehicle.capacity = $scope.user.vehicle[0].capacity;
+
       obj.vehicle.push(vehicle);
 
       console.log("Final Updated User Object : ", obj);
@@ -196,17 +201,19 @@ angular.module('cbApp')
       httpRequest.put(url,obj)
       .then(function (data) {
         if(data.status === 200){
-          alert('stored');
+          alert('Profile Updated Successfully');
           Auth.getCurrentUser(true)
           .then(function(data){
               console.log("Data returned : ", data);
 
               $scope.user = data;
               console.log("$scope.user", $scope.user);
-              $scope.user.homeAddress = $scope.user.homeAddressLocation;
-              $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
-              $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
-              
+
+              if($scope.user.homeAddressLocation) $scope.user.homeAddress = $scope.user.homeAddressLocation;
+              if($scope.user.officeAddressLocation) $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
+              if($scope.user.vehicle[0]) $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
+              if($scope.user.shiftTimeIn) $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
+
               $scope.leftButtonText = "EDIT";
               $scope.rightButtonText = "LOGOUT";
               

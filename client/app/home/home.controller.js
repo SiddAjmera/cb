@@ -59,7 +59,7 @@ angular.module('cbApp')
     }
 
     $scope.postRide=function () {
-      if(currentUser.homeAddressLocation && currentUser.officeAddressLocation){
+      if(currentUser.homeAddressLocation && currentUser.officeAddressLocation && currentUser.vehicle[0] && currentUser.shiftTimeIn && currentUser.shiftTimeout){
         $state.go('userHome.postRides');        
       }
       else{
@@ -68,13 +68,12 @@ angular.module('cbApp')
 
     }
     $scope.takeRide=function () {
-      if(currentUser.homeAddressLocation && currentUser.officeAddressLocation){
+      if(currentUser.homeAddressLocation && currentUser.officeAddressLocation && currentUser.shiftTimeIn && currentUser.shiftTimeout){
         $state.go('userHome.availableRides');
       }
       else{
         $state.go('userHome.rideDetails',{'for':'takeRide'});
-      }        
-      
+      }
     }
 
     $scope.toggleFooter = function(){
