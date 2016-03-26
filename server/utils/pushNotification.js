@@ -92,8 +92,8 @@ exports.notifyHostAboutANewRiderRequest = function(ride){
     var notificationMessage = ride.riders[(ride.riders.length - 1)].empName + ' has requested to Ride with you from ' + ride.startLocation.display_address + ' to ' + ride.endLocation.display_address;
     message.addData('message', notificationMessage);
     message.addData('actions', [
-        { "icon": "emailGuests", "title": "APPROVE", "callback": "registarion"},
-        { "icon": "snooze", "title": "REJECT", "callback": "notification"},
+        { "icon": "emailGuests", "title": "APPROVE", "callback": "push.approve"},
+        { "icon": "snooze", "title": "REJECT", "callback": "push.reject"},
     ]);
     
     sender.send(message, { registrationIds: redgIds }, function (err, result) {
