@@ -251,6 +251,7 @@ exports.filterRide = function(req, res){
 
 // Gets rides based on certain criteria.  TODO - Write Logic to get list of available rides
 exports.getAvailableRides = function(req, res){
+  console.log("Request Body for getAvailableRides : ", JSON.stringify(req.body));
   CurrentUser = req.user;
   var empId = req.user.empId;
 

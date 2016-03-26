@@ -127,6 +127,15 @@ var onDeviceReady = function() {
 document.addEventListener('deviceready', 
 onDeviceReady);
 
+var acceptHandler=function(data){
+    console.log(data);
+    alert("Successs");
+};
+var rejectHandler=function(data){
+    console.log(data);
+    alert("Reject handler");
+};
+
 'use strict';
 
 angular.module('cbApp')
@@ -318,25 +327,21 @@ angular.module('cbApp')
         $scope.signupPost();
     }
        
-       $scope.signupPost=function(){ 
-         var url = config.apis.signup;
-         // $scope.user.officeAddressLocation = $scope.user.officeAddress;
-         //$scope.user.officeAddress = $scope.user.officeAddress.displayAddress;
-          httpRequest.post(url,$scope.user).
-          then(function(response){
-              /*if(response.status==)*/
-              if(response.status == 200){
-                 console.log('User Stored in the MongoDB Successfully. Here is the Response : ',response);
-                  //$scope.response = response;
-                  localStorage.store('token',response.data.token).then(function(){
-                      $state.go("userHome.home");
-                  })
-              }
+      $scope.signupPost=function(){ 
+        var url = config.apis.signup;
+        httpRequest.post(url,$scope.user).
+        then(function(response){
+          if(response.status == 200){
+            console.log('User Stored in the MongoDB Successfully. Here is the Response : ',response);
+            localStorage.store('token',response.data.token).then(function(){
+              $state.go("userHome.home");
+            });
+          }
         },function(err){
-             console.log('Error Storing the User to the MongoDB. Here is the Error: ', err);
-             $scope.error = err;
+          console.log('Error Storing the User to the MongoDB. Here is the Error: ', err);
+          $scope.error = err;
         });
-       }
+      }
 
    
 
@@ -1948,6 +1953,12 @@ angular.module('cbApp')
   .controller('PostRidesCtrl', function ($scope, httpRequest, Auth, cordovaUtil, staticData, $state) {
     var directionsService = new google.maps.DirectionsService();
     
+    $scope.rideData = {};
+    $scope.rideData.from = 'Home';
+    $scope.rideData.to = 'Office';
+    $scope.rideData.leavingIn = '15';
+    $scope.rideData.availableSeats = 1;
+
     $scope.mypath = {};
     var getRoute = function (from, to) {
         var request = {};
@@ -1957,7 +1968,6 @@ angular.module('cbApp')
         request.origin = from;
         request.destination = to;
         directionsService.route(request, function(response, status) {
-            console.log("response",response)
             if (status == google.maps.DirectionsStatus.OK) {
                 var routes = _.map(response.routes,function(r){return r.overview_polyline});
                 console.log("routes",routes);              
@@ -1983,7 +1993,16 @@ angular.module('cbApp')
     then(function(data){
         currentUser = data;
         console.log('Current User : ', currentUser);
-        if($scope.rideData) $scope.rideData.availableSeats = (currentUser.vehicle[0].capacity-1).toString();
+
+        var maxAvailableSeats = currentUser.vehicle[0].capacity - 1;
+
+        $scope.availableSeatsJSON = [];
+        for(var i=1; i <= maxAvailableSeats; i++){
+            $scope.availableSeatsJSON.push(i.toString());
+        }
+
+        $scope.rideData.availableSeats = (currentUser.vehicle[0].capacity - 1).toString();
+        console.log("$scope.rideData.availableSeats : ", $scope.rideData.availableSeats);
 
         console.log("$scope.rideData",$scope.rideData);
         
@@ -1993,11 +2012,9 @@ angular.module('cbApp')
         var toLocation = [];
         toLocation.push(currentUser.officeAddressLocation.location[1]);
         toLocation.push(currentUser.officeAddressLocation.location[0]);
-        console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
                 
         var from = fromLocation.join();
         var to = toLocation.join();
-        console.log("From is " + from + " and to is " + to);
         getRoute(from, to);
     });
 
@@ -2016,11 +2033,9 @@ angular.module('cbApp')
                 var toLocation = [];
                 toLocation.push(currentUser.homeAddressLocation.location[1]);
                 toLocation.push(currentUser.homeAddressLocation.location[0]);
-                console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
                 
                 var from = fromLocation.join();
                 var to = toLocation.join();
-                console.log("From is " + from + " and to is " + to);
                 getRoute(from, to);
             }
             else{
@@ -2030,11 +2045,9 @@ angular.module('cbApp')
                 var toLocation = [];
                 toLocation.push(currentUser.officeAddressLocation.location[1]);
                 toLocation.push(currentUser.officeAddressLocation.location[0]);
-                console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
                 
                 var from = fromLocation.join();
                 var to = toLocation.join();
-                console.log("From is " + from + " and to is " + to);
                 getRoute(from, to);
             }
         }
@@ -2073,13 +2086,6 @@ angular.module('cbApp')
         }
     });
 
-    $scope.rideData = {};
-    $scope.rideData.from = 'Home';
-    $scope.rideData.to = 'Office';
-    $scope.rideData.leavingIn = '15';
-    $scope.rideData.availableSeats = 4;
-
-    if(currentUser) $scope.rideData.availableSeats=(currentUser.vehicle[0].capacity-1).toString();
     console.log("$scope.rideData",$scope.rideData);
 
     $scope.defaults = {
@@ -2124,15 +2130,6 @@ angular.module('cbApp')
                                 {"text":"60 MIN","value":"60"},
                             ];
 
-    $scope.availableSeatsJSON = [
-                                    "1",
-            						"2",
-            						"3",
-            						"4",
-            						"5",
-            						"6"
-    						    ];
-
     $scope.autocompleteOptions = {
                         types: ['(cities)'],
                         componentRestrictions: { country: 'IN',city:'Pune' },
@@ -2151,28 +2148,22 @@ angular.module('cbApp')
     $scope.addressTo='default'
     $scope.optionAddressOptions=function(option){
         $scope.open=option;
-        if(option=="from")
-        $scope.ride.source=undefined;
-    else
-         $scope.ride.destination=undefined;
+        if(option=="from") $scope.ride.source=undefined;
+        else $scope.ride.destination=undefined;
     }
      $scope.showAddressFrom=function(option){
         console.log(option)
-        $scope.address=option;
-        if($scope.address == "home"){
-           $scope.ride.source= currentUser.homeAddress           
-        }
-        $scope.otherAddress=true;
-        $scope.open=false;
+        $scope.address = option;
+        if($scope.address == "home") $scope.ride.source = currentUser.homeAddress;
+        $scope.otherAddress = true;
+        $scope.open = false;
     }
     $scope.showAddressTo=function(option){
         console.log(option)
-        $scope.addressTo=option;
-        if($scope.addressTo == "homeTo"){
-           $scope.ride.destination= currentUser.homeAddress
-        }
-        $scope.otherAddress=true;
-        $scope.open=false;
+        $scope.addressTo = option;
+        if($scope.addressTo == "homeTo") $scope.ride.destination= currentUser.homeAddress;
+        $scope.otherAddress = true;
+        $scope.open = false;
     }
     $scope.postRide = function(){
         console.log("ride object",$scope.ride);
@@ -2208,8 +2199,7 @@ angular.module('cbApp')
         }
         else if($scope.rideData.to == "Office"){
              ride.endLocation = currentUser.officeAddressLocation;
-        }        
-       // ride.offeredByUserId = currentUser.empId;
+        }
         ride.initiallyAvailableSeats = $scope.rideData.availableSeats;
         ride.rideScheduledTime = moment().add(parseInt($scope.rideData.leavingIn),"minutes").valueOf();
         ride.vehicleLicenseNumber = currentUser.vehicle[0].vehicleLicenseNumber;
@@ -2217,7 +2207,7 @@ angular.module('cbApp')
         console.log("final obj",ride)
         httpRequest.post(config.apis.postRide,{'ride':ride}).
         then(function(data){
-             console.log(data);
+            console.log(data);
             if(data.status==201){
                 if(config.cordova) cordovaUtil.showToastMessage("Ride posted succesfully!")
                 else alert("Ride posted succesfully!");
@@ -2226,7 +2216,7 @@ angular.module('cbApp')
         },function(err){
             console.log("err",err);
 
-             if(err.status==409){
+             if(err.status == 409){
                   if(config.cordova) cordovaUtil.showToastMessage('You are already part of an Active Ride');
                   else alert('You are already part of an Active Ride');
                   $state.go('userHome.rideStatus');
@@ -2252,7 +2242,7 @@ angular.module('cbApp')
 angular.module('cbApp')
   .service('pushnotification', function ($q) {
     return {
-      registerPushNotification:function(){
+      registerPushNotification : function(){
         var deferred= $q.defer();
         var androidConfig = {
              "senderID": "463291795017",
@@ -2270,13 +2260,34 @@ angular.module('cbApp')
         });
         push.on('registration', function(data) {
           console.log(data.registrationId);
-          deferred.resolve(data.registrationId)
+          deferred.resolve(data.registrationId);
         });
+        push.on('notification', function(data) {
+          console.log(data);
+          //deferred.resolve(data.registrationId);
+        });
+        push.on('approve', function(data) {
+            alert("Approve Event Fired");
+        });
+        push.on('reject', function(data) {
+            alert("Reject Fired");
+        });
+       
+        
         return deferred.promise;
       }
     }
 });
+//global functins for push notifications actions
+window.approve = function(data){
+    alert("Approve Triggered");
+    console.log("Approve Callback Triggred. Here is the Data : ", data);
+}
 
+window.reject = function(data){
+    alert("Reject Triggred");
+    console.log("Reject Callback Triggred. Here is the Data : ", data);
+}
 'use strict';
 
 angular.module('cbApp')
@@ -3017,7 +3028,11 @@ angular.module('cbApp')
     
     $scope.toggleHamburger = function(){
     	$scope.tgState = !$scope.tgState;
-    }
+    };
+
+    $scope.toggleFooter = function(){
+      $(".home-page-menu-options").slideToggle(250);
+    };
 
     $scope.logout = function(){
     	Auth.logout();
@@ -3037,7 +3052,6 @@ angular.module('cbApp')
         authenticate:true
       });
   });
-
 'use strict';
 
 angular.module('cbApp')
@@ -3162,45 +3176,59 @@ angular.module('cbApp')
       $(".home-page-menu-options").slideToggle(250);
     }
 
-    /*$scope.logout = function(){
-      if($scope.logoutButtonText=="CANCEL")
-        $scope.changeMode();
-      else{
-        Auth.logout();
-        $state.go("login")
+  $scope.getImageSaveContact = function() {       
+      // Image picker will load images according to these settings
+      console.log("Image Picker will open in phone");
+      var options = {
+          maximumImagesCount: 1, // Max number of selected images, I'm using only one for this example
+          width: 800,
+          height: 800,
+          quality: 80            // Higher is better
+      };
+
+      if($cordovaImagePicker){
+          $cordovaImagePicker.getPictures(options).then(function (results) {
+              // Loop through acquired images
+              for (var i = 0; i < results.length; i++) {
+                  $scope.selectedImage = results[i];   // We loading only one image so we can use it like this
+
+                  window.plugins.Base64.encodeFile($scope.selectedImage, function(base64){  // Encode URI to Base64 needed for contacts plugin
+                      $scope.selectedImage = base64;
+                      console.log($scope.selectedImage);
+                      $scope.saveImage();
+                  });
+              }
+          }, function(error) {
+              console.log('Error: ' + JSON.stringify(error));    // In case of error
+          });
       }
-    }*/
+  };
 
-    $scope.getImageSaveContact = function() {       
-            // Image picker will load images according to these settings
-            var options = {
-                maximumImagesCount: 1, // Max number of selected images, I'm using only one for this example
-                width: 800,
-                height: 800,
-                quality: 80            // Higher is better
-            };
- 
-            $cordovaImagePicker.getPictures(options).then(function (results) {
-                // Loop through acquired images
-                for (var i = 0; i < results.length; i++) {
-                    $scope.selectedImage = results[i];   // We loading only one image so we can use it like this
- 
-                    window.plugins.Base64.encodeFile($scope.selectedImage, function(base64){  // Encode URI to Base64 needed for contacts plugin
-                        $scope.selectedImage = base64;
-                        console.log($scope.selectedImage)
-                    });
-                }
-            }, function(error) {
-                console.log('Error: ' + JSON.stringify(error));    // In case of error
-            });
-        };
+  $scope.saveImage = function(){
+      var obj = {};
+      obj.userPhotoUrl = $scope.selectedImage;
+      var url = config.apis.signup + $scope.user._id;
+      httpRequest.put(url,obj)
+      .then(function (data) {
+        if(data.status === 200){
+          alert('stored');
+          Auth.getCurrentUser(true)
+          .then(function(data){
+              console.log("Data returned : ", data);
+              $scope.user = data;
+              console.log("$scope.user", $scope.user);
+              $scope.user.homeAddress = $scope.user.homeAddressLocation;
+              $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
+              $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
+              $scope.leftButtonText = "EDIT";
+              $scope.rightButtonText = "LOGOUT";
+              $state.go('userHome.userProfile');
+          });
+        }
+      });
+  };
 
-    /*$scope.syncUserLocationData = function(){
-    	cordovaUtil.syncCoordinates();
-    };*/
-
-
-    $scope.saveDetails=function () {
+  $scope.saveDetails=function () {
       var obj = {};
       
       obj.contactNo = $scope.user.contactNo;
@@ -3250,7 +3278,6 @@ angular.module('cbApp')
               console.log("$scope.user", $scope.user);
               $scope.user.homeAddress = $scope.user.homeAddressLocation;
               $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
-             // $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
               $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
               
               $scope.leftButtonText = "EDIT";
@@ -3259,8 +3286,10 @@ angular.module('cbApp')
               $state.go('userHome.userProfile');
           });  
         }
-      })
-    };
+      });
+  };
+
+
 
 
   });
@@ -3975,7 +4004,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/postRides/postRideOneTime.html',
-    "<div class=\"page-wrapper post-ride-wrap-one\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><span class=heading>Post a Ride</span></div><form name=userProfileUpdateForm class=\"container login-container post-ride-container animation-form-signup\" novalidate><div class=triangle-down-left-post></div><div class=\"form-section signup-section-form post-ride-form\"><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div id=postFromSec class=from-address-post-wrap><input class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" maxlength=13 name=vehicleNo required ng-pattern=\"/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/\" ng-model=user.vehicle.vehicleNo placeholder=\"MyCar No.\"><div ng-show=!showErrorMessage ng-messages=signupForm.vehicleNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Registration Number is required</p><p ng-message=pattern class=error-msg>Invalid Registration Number</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/seats_avalaible.png></div><div class=from-address-post-wrap><select class=\"timeslot post-ride-leaving-in\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=ride.availableSeats ng-options=\"c as c for c in availableSeatsJSON\"><option style=display:none value=\"\">Seats available</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div class=from-address-post-wrap><input tab-index=1 ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" name=homeAddress placeholder=\"Home address\" required><div class=error-msg-edit><p ng-message=required class=error-msg>Home address is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/to.png ng-click=\"optionAddressOptions('to')\"></div><div class=from-address-post-wrap><input tab-index=1 ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" name=officeAddress placeholder=\"Office address\" required><!-- ng-click=\"moveLabelUp('postToSec')\"\n" +
+    "<div class=\"page-wrapper post-ride-wrap-one\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><span class=heading>Post a Ride</span></div><form name=userProfileUpdateForm class=\"container login-container post-ride-container animation-form-signup\" novalidate><div class=triangle-down-left-post></div><div class=\"form-section signup-section-form post-ride-form\"><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div id=postFromSec class=from-address-post-wrap><label class=\"field-label from\">Vehicle No.</label><input class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" maxlength=13 name=vehicleNo required ng-pattern=\"/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/\" ng-model=user.vehicle.vehicleNo placeholder=\"MyCar No.\"><div ng-show=!showErrorMessage ng-messages=signupForm.vehicleNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Registration Number is required</p><p ng-message=pattern class=error-msg>Invalid Registration Number</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/seats_avalaible.png></div><div class=from-address-post-wrap><select class=\"timeslot post-ride-leaving-in\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=ride.availableSeats ng-options=\"c as c for c in availableSeatsJSON\"><option style=display:none value=\"\">Seats available</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div class=from-address-post-wrap><input tab-index=1 ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" name=homeAddress placeholder=\"Home address\" required><div class=error-msg-edit><p ng-message=required class=error-msg>Home address is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/to.png ng-click=\"optionAddressOptions('to')\"></div><div class=from-address-post-wrap><input tab-index=1 ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" name=officeAddress placeholder=\"Office address\" required><!-- ng-click=\"moveLabelUp('postToSec')\"\n" +
     "\t\t                ng-blur=\"moveLabelDown('postToSec','postTo')\" ng-focus=\"moveLabelUp('postToSec')\" --><div class=error-msg-edit><p ng-message=required class=error-msg>Office address is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/starting-time.png></div><div class=from-address-post-wrap><select name=leavingIn class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t.value as t.text for t in leavingInJSON\"><option style=display:none value=\"\">Shift start time</option></select></div><div class=error-msg-edit><p ng-message=required class=error-msg>shift time is required</p></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/starting-time.png></div><div class=from-address-post-wrap><select name=leavingIn class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t.value as t.text for t in leavingInJSON\"><option style=display:none value=\"\">Shift end time</option></select></div><div class=error-msg-edit><p ng-message=required class=error-msg>shift time is required</p></div></div></div><div class=\"each-row post-ride-continue\" name=\"\" ng-click=\"\">TAKE ME AHEAD... <img class=post-continue-img src=assets/images/icon_car.png></div></form></div></div>"
   );
 
@@ -3986,7 +4015,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/rideDetails/rideDetails.html',
-    "<div class=\"page-wrapper post-ride-wrap-one\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><span class=heading>Post a Ride</span></div><form name=userProfileUpdateForm class=\"container login-container post-ride-container animation-form-signup\" novalidate><div class=triangle-down-left-post></div><div class=\"form-section signup-section-form post-ride-form\"><div class=each-row ng-hide=hideVehicleDetails><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div id=postFromSec class=from-address-post-wrap><input class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" maxlength=13 name=vehicleNo required ng-pattern=\"/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/\" ng-model=user.vehicle.vehicleLicenseNumber placeholder=\"MyCar No.\"><div ng-show=!showErrorMessage ng-messages=signupForm.vehicleNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Registration Number is required</p><p ng-message=pattern class=error-msg>Invalid Registration Number</p></div></div></div><div class=each-row ng-hide=hideVehicleDetails><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/seats_avalaible.png></div><div class=from-address-post-wrap><select class=\"timeslot post-ride-leaving-in\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=user.vehicle.capacity ng-options=\"c as c for c in vehicleCapacityJSON\"><option style=display:none value=\"\">Seats available</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div class=from-address-post-wrap><input tab-index=1 ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" name=homeAddress placeholder=\"Home address\" required ng-model=user.homeAddress g-places-autocomplete><div class=error-msg-edit ng-messages=postRideForm.homeAddress.$error><p ng-message=required class=error-msg>Home address is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/to.png ng-click=\"optionAddressOptions('to')\"></div><div class=from-address-post-wrap><select ng-options=\"item as item.display_address for item in officeAddressJSON\" ng-model=user.officeAddress name=officeAddress class=post-ofc-address><option style=display:none value=\"\">Office Address</option></select><!--  <ui-select search-enabled=\"false\" ng-model=\"user.officeAddress\" class=\"office-address-select\">\n" +
+    "<div class=\"page-wrapper post-ride-wrap-one\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><span class=heading>Post a Ride</span></div><form name=userProfileUpdateForm class=\"container login-container post-ride-container animation-form-signup\" novalidate><div class=triangle-down-left-post></div><div class=\"form-section signup-section-form post-ride-form\"><div class=each-row ng-hide=hideVehicleDetails><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div id=postFromSec class=from-address-post-wrap><label class=\"field-label from\">Registration No.</label><input class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" maxlength=13 name=vehicleNo required ng-pattern=\"/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/\" ng-model=user.vehicle.vehicleLicenseNumber placeholder=\"\"><div ng-show=!showErrorMessage ng-messages=signupForm.vehicleNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Registration Number is required</p><p ng-message=pattern class=error-msg>Invalid Registration Number</p></div></div></div><div class=each-row ng-hide=hideVehicleDetails><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/seats_avalaible.png></div><div class=from-address-post-wrap><label class=\"field-label from\">Seats available</label><select class=\"timeslot post-ride-leaving-in\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=user.vehicle.capacity ng-options=\"c as c for c in vehicleCapacityJSON\"></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div class=from-address-post-wrap><label class=\"field-label from\">Home address</label><input tab-index=1 ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" name=homeAddress placeholder=\"\" required ng-model=user.homeAddress g-places-autocomplete><div class=error-msg-edit ng-messages=postRideForm.homeAddress.$error><p ng-message=required class=error-msg>Home address is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/to.png ng-click=\"optionAddressOptions('to')\"></div><div class=from-address-post-wrap><label class=\"field-label from\">Office address</label><select ng-options=\"item as item.display_address for item in officeAddressJSON\" ng-model=user.officeAddress name=officeAddress class=post-ofc-address></select><!--  <ui-select search-enabled=\"false\" ng-model=\"user.officeAddress\" class=\"office-address-select\">\n" +
     "\t\t\t\t\t\t    <ui-select-match placeholder=\"OFFICE ADDRESS\">\n" +
     "\t\t\t\t\t\t        <span ng-bind=\"$select.selected.displayAddress\"></span>\n" +
     "\t\t\t\t\t\t    </ui-select-match>\n" +
@@ -3994,7 +4023,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "\t\t\t\t\t\t        <span ng-bind=\"item.displayAddress\"></span>\n" +
     "\t\t\t\t\t\t    </ui-select-choices>\n" +
     "\t\t\t\t\t\t</ui-select> --><!-- ng-click=\"moveLabelUp('postToSec')\"\n" +
-    "\t\t                ng-blur=\"moveLabelDown('postToSec','postTo')\" ng-focus=\"moveLabelUp('postToSec')\" --><div class=error-msg-edit ng-messages=postRideForm.officeAddress.$error><p ng-message=required class=error-msg>Office address is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/starting-time.png></div><div class=from-address-post-wrap><select name=shiftStartTime class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t.start for t in timeSlotJSON\" ng-model=user.timeSlot><option style=display:none value=\"\">Shift start time</option></select></div><div class=error-msg-edit ng-messages=postRideForm.shiftStartTime.$error><p ng-message=required class=error-msg>shift time is required</p></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/starting-time.png></div><div class=from-address-post-wrap><select name=shiftEndTime class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t.end for t in timeSlotJSON\" ng-model=user.timeSlot><option style=display:none value=\"\">Shift end time</option></select></div><div class=error-msg-edit ng-messages=postRideForm.shiftEndTime.$error><p ng-message=required class=error-msg>shift time is required</p></div></div></div><div class=\"each-row post-ride-continue\" name=\"\" ng-click=saveDetails()>TAKE ME AHEAD... <img class=post-continue-img src=assets/images/icon_car.png></div></form></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
+    "\t\t                ng-blur=\"moveLabelDown('postToSec','postTo')\" ng-focus=\"moveLabelUp('postToSec')\" --><div class=error-msg-edit ng-messages=postRideForm.officeAddress.$error><p ng-message=required class=error-msg>Office address is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/starting-time.png></div><div class=from-address-post-wrap><label class=\"field-label from\">Shift start time</label><select name=shiftStartTime class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t.start for t in timeSlotJSON\" ng-model=user.timeSlot></select></div><div class=error-msg-edit ng-messages=postRideForm.shiftStartTime.$error><p ng-message=required class=error-msg>shift time is required</p></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/starting-time.png></div><div class=from-address-post-wrap><label class=\"field-label from\">Shift end time</label><select name=shiftEndTime class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t.end for t in timeSlotJSON\" ng-model=user.timeSlot></select></div><div class=error-msg-edit ng-messages=postRideForm.shiftEndTime.$error><p ng-message=required class=error-msg>shift time is required</p></div></div></div><div class=\"each-row post-ride-continue\" name=\"\" ng-click=saveDetails()>TAKE ME AHEAD... <img class=post-continue-img src=assets/images/icon_car.png></div></form></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
   );
 
 
@@ -4019,9 +4048,29 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/userHome/userHome.html',
-    "<div class=main-page-wrapper><!-- Hamburger Content --><div class=\"show-none hamburger-content\" ng-class=\"{show : tgState}\"><div class=\"col-md-11 col-sm-11 col-xs-11 pad-R-none pad-L-none ham-con-wrap\"><div class=\"col-md-12 col-sm-12 col-xs-12 hamburger-image-section\"><div class=\"col-md-12 col-sm-12 col-xs-12\"><svg ng-click=toggleHamburger() class=close-hamburger-menu xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink height=32px id=Layer_1 style=\"enable-background:new 0 0 32 32\" version=1.1 viewbox=\"0 0 32 32\" width=32px xml:space=preserve><path d=\"M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z\"></svg></div><div class=user-image-hamburger-wrap><a ui-sref=userHome.userProfile><img src={{currentUser.userPhotoUrl}} ng-click=toggleHamburger() class=avail-user-img><!-- {{currentUser.userPhotoUrl}} --><div class=user-indication-image-wrap><img class=user-indication-image src=assets/images/3x/ico_available.png></div><!-- <svg>\n" +
-    "\t\t\t\t\t\t  <circle cx=\"50\" cy=\"50\" r=\"5\" class=\"indicator-circle\"/>\n" +
-    "\t\t\t\t\t\t</svg> --></a></div><p class=hamburger-username>{{currentUser.empName}}</p><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 user-locationham-wrap\"><span class=\"glyphicon glyphicon-map-marker\"></span> <span class=user-location-ham>{{currentUser.city}}, {{currentUser.state}}</span></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none\"><ul class=functionality-ham-list><li><img src=assets/images/3x/ico_analyze_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.home ng-click=toggleHamburger()>ANALYZE</a></li><li><img src=assets/images/3x/ico_post_ride_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.postRides ng-click=toggleHamburger()>POST RIDE</a></li><li><img src=assets/images/3x/ico_get_sugg_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.suggestions ng-click=toggleHamburger()>GET SUGGESTIONS</a></li><li><img src=assets/images/3x/ico_sampling_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.availableRides ng-click=toggleHamburger()>AVAILABLE RIDES</a></li><li><img src=assets/images/3x/ico_sampling_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.startSampling ng-click=toggleHamburger()>START SAMPLING</a></li><li><img src=assets/images/3x/ico_analyze_off.png class=ham-menu-icon> <a class=function-links ui-sref=main>TEST APP</a></li><li><img src=assets/images/3x/ico_analyze_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.rideStatus ng-click=toggleHamburger()>Ride Status</a></li><li><img src=assets/images/3x/ico_login_off.png class=ham-menu-icon> <a class=function-links ng-click=logout()>LOGOUT</a></li></ul></div></div><div class=\"col-md-1 col-sm-1 col-xs-1 pad-R-none pad-L-none hamburger-overlay\" ng-click=toggleHamburger()></div></div><!-- page content --><div class=main-content ng-class=\"{show : tgState}\"><!-- <hamburger-toggle state=\"tgState\"></hamburger-toggle> --><ui-view></ui-view></div></div>"
+    "<div class=main-page-wrapper><!-- Hamburger Content --><div class=\"show-none hamburger-content\" ng-class=\"{show : tgState}\"><div class=\"col-md-11 col-sm-11 col-xs-11 pad-R-none pad-L-none ham-con-wrap\"><div class=\"col-md-12 col-sm-12 col-xs-12 hamburger-image-section\"><div class=\"col-md-12 col-sm-12 col-xs-12\"><svg ng-click=toggleHamburger() class=close-hamburger-menu xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink height=32px id=Layer_1 style=\"enable-background:new 0 0 32 32\" version=1.1 viewbox=\"0 0 32 32\" width=32px xml:space=preserve><path d=\"M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z\"></svg></div><div class=user-image-hamburger-wrap><a ui-sref=userHome.userProfile><img src={{currentUser.userPhotoUrl}} ng-click=toggleHamburger() class=avail-user-img><div class=user-indication-image-wrap><img class=user-indication-image src=assets/images/3x/ico_available.png></div></a></div><p class=hamburger-username>{{currentUser.empName}}</p><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 user-locationham-wrap\"><span class=\"glyphicon glyphicon-map-marker\"></span> <span class=user-location-ham>{{currentUser.city}}, {{currentUser.state}}</span></div></div><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none\"><ul class=functionality-ham-list><li><img src=assets/images/3x/ico_analyze_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.home ng-click=toggleHamburger()>ANALYZE</a></li><li><img src=assets/images/3x/ico_post_ride_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.postRides ng-click=toggleHamburger()>POST RIDE</a></li><li><img src=assets/images/3x/ico_get_sugg_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.suggestions ng-click=toggleHamburger()>GET SUGGESTIONS</a></li><li><img src=assets/images/3x/ico_sampling_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.availableRides ng-click=toggleHamburger()>AVAILABLE RIDES</a></li><li><img src=assets/images/3x/ico_sampling_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.startSampling ng-click=toggleHamburger()>START SAMPLING</a></li><li><img src=assets/images/3x/ico_analyze_off.png class=ham-menu-icon> <a class=function-links ui-sref=main>TEST APP</a></li><li><img src=assets/images/3x/ico_analyze_off.png class=ham-menu-icon> <a class=function-links ui-sref=userHome.rideStatus ng-click=toggleHamburger()>Ride Status</a></li><li><img src=assets/images/3x/ico_login_off.png class=ham-menu-icon> <a class=function-links ng-click=logout()>LOGOUT</a></li></ul></div></div><div class=\"col-md-1 col-sm-1 col-xs-1 pad-R-none pad-L-none hamburger-overlay\" ng-click=toggleHamburger()></div></div><!-- page content --><div class=main-content ng-class=\"{show : tgState}\"><hamburger-toggle state=tgState></hamburger-toggle><ui-view></ui-view></div><!-- <div class=\"home-menu-swiper-wrap\">\n" +
+    "\t\t<div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\" >\n" +
+    "\t\t\t<img src=\"assets/images/uparrow.png\" ng-click=\"toggleFooter()\" alt=\"up\">\n" +
+    "\t\t</div>\n" +
+    "\t\t<div class=\"home-page-menu-options\">\n" +
+    "\t\t\t<div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\">\n" +
+    "\t\t\t\t<img ui-sref=\"userHome.home\" class=\"home-menu-icon\" src=\"assets/images/dashboard-icon/home.png\">\n" +
+    "\t\t\t\t<p ui-sref=\"userHome.home\" class=\"home-menu-text\">HOME</p>\n" +
+    "\t\t\t</div>\n" +
+    "\t\t\t<div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\">\n" +
+    "\t\t\t\t<img ui-sref=\"userHome.userProfile\" class=\"home-menu-icon\" src=\"assets/images/dashboard-icon/profile.png\">\n" +
+    "\t\t\t\t<p ui-sref=\"userHome.userProfile\" class=\"home-menu-text\">PROFILE</p>\n" +
+    "\t\t\t</div>\n" +
+    "\t\t\t<div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\">\n" +
+    "\t\t\t\t<img ui-sref=\"userHome.rideStatus\" class=\"home-menu-icon\" src=\"assets/images/dashboard-icon/track-ride.png\">\n" +
+    "\t\t\t\t<p ui-sref=\"userHome.rideStatus\" class=\"home-menu-text\">TRACK RIDES</p>\n" +
+    "\t\t\t</div>\n" +
+    "\t\t\t<div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\">\n" +
+    "\t\t\t\t<img ui-sref=\"activities\" class=\"home-menu-icon\" src=\"assets/images/dashboard-icon/history.png\">\n" +
+    "\t\t\t\t<p ui-sref=\"activities\" class=\"home-menu-text\">HISTORY</p>\n" +
+    "\t\t\t</div>\n" +
+    "\t\t</div>\n" +
+    "\t</div> --></div>"
   );
 
 
@@ -4031,7 +4080,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/userProfile/userProfile.html',
-    "<div class=\"page-wrapper user-profile-wrapper\"><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"></div><div class=\"container profile-container\"><form name=userProfileUpdateForm class=animation-form-signup ng-submit=updateUserData() novalidate><div class=profile-pic-wrapper><div class=triangle-down-left-post></div><!-- <img class=\"profile-pic\" src=\"assets/images/user-image.jpg\"> --><img class=profile-pic src={{user.userPhotoUrl}}></div><div class=other-detail-wrapper ng-class=\"{'editable-mode' : editableMode}\"><p class=profile-uname><span>{{user.empName}}</span></p><!-- Contact Number Section --><div class=profile-row><div class=field-icon-section><img class=\"icon-style home\" src=assets/images/icon_mobile_number.png></div><div class=user-input-section><span class=non-editable-sec>{{user.contactNo}}</span><div class=editable-sec><label class=\"field-label from\">Contact no.</label><input maxlength=10 class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" ng-model=user.contactNo type=tel name=contactNo required ng-pattern=\"/^[789]\\d{9}$/\" placeholder=\"Mobile Number\"><div ng-show=!showErrorMessage ng-messages=signupForm.contactNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Contact Number is required</p><p ng-message=pattern class=error-msg>Invalid Contact Number</p></div></div></div></div><!-- Home Address Section --><div class=profile-row><div class=field-icon-section><img class=\"icon-style home\" alt=Home src=assets/images/available-rides/from-icon.png></div><div class=user-input-section><span class=non-editable-sec>{{user.homeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span><div class=editable-sec><label class=\"field-label from\">Home address</label><input tab-index=1 ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" name=homeAddress required ng-model=user.homeAddress g-places-autocomplete><div class=error-msg-edit ng-messages=postRideForm.homeAddress.$error><p ng-message=required class=error-msg>Home address is required</p></div></div></div></div><!-- Office Address Section --><div class=profile-row><div class=field-icon-section><img class=\"icon-style home\" alt=Home src=assets/images/available-rides/to.png></div><div class=user-input-section><span class=non-editable-sec>{{user.officeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span><div class=editable-sec><label class=\"field-label from\">Office address</label><select ng-options=\"item as item.display_address for item in officeAddressJSON\" ng-model=officeAddress name=officeAddress class=post-ofc-address><option style=display:none value=\"\">Office Address</option></select><div class=error-msg-edit ng-messages=postRideForm.officeAddress.$error><p ng-message=required class=error-msg>Office address is required</p></div></div></div></div><!-- vehicleLicenseNumber section --><div class=profile-row ng-show=\"user.vehicle[0] != null\"><div class=field-icon-section><img class=\"icon-style home\" alt=Home src=assets/images/car-front.png></div><div class=user-input-section><span class=non-editable-sec>{{user.vehicle[0].vehicleLicenseNumber}}</span><div class=editable-sec><label class=\"field-label from\">Vehicle no.</label><input class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" maxlength=13 name=vehicleNo required ng-pattern=\"/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/\" ng-model=user.vehicle[0].vehicleLicenseNumber><div ng-show=!showErrorMessage ng-messages=signupForm.vehicleNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Registration Number is required</p><p ng-message=pattern class=error-msg>Invalid Registration Number</p></div></div></div></div><!-- Seats Available Section --><div class=profile-row ng-show=\"user.vehicle[0] != null\"><div class=field-icon-section><img class=\"icon-style home\" alt=Home src=assets/images/available-rides/to.png></div><div class=user-input-section><span class=non-editable-sec>{{user.vehicle[0].capacity}}</span><div class=editable-sec><label class=\"field-label from\">Seats available</label><select class=\"timeslot post-ride-leaving-in\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=vehicleCapacity ng-options=\"c as c for c in vehicleCapacityJSON\"><option style=display:none value=\"\">Seats available</option></select><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></div></div></div><!-- Shift Timings Sections --><div class=\"profile-row timing\"><!-- Shift TimeIn Section --><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-L-none\"><div class=field-icon-section><img class=\"icon-style home\" alt=Home src=assets/images/available-rides/starting-time.png></div><div class=user-input-section><span class=non-editable-sec>{{user.shiftTimeIn | date:'hh:mm a'}}</span><div class=editable-sec><label class=\"field-label from\">Shift start time</label><select name=shiftStartTime class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t.start for t in timeSlotJSON\" ng-model=shiftTime><option style=display:none value=\"\">Shift start time</option></select><div class=error-msg-edit ng-messages=postRideForm.shiftStartTime.$error><p ng-message=required class=error-msg>shift time is required</p></div></div></div></div><!-- Shift TimeOut Section --><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-R-none\"><div class=field-icon-section><img class=\"icon-style home\" alt=Home src=assets/images/available-rides/starting-time.png></div><div class=user-input-section><span class=non-editable-sec>{{user.shiftTimeout | date:'hh:mm a'}}</span><div class=editable-sec><label class=\"field-label from\">Shift end time</label><select name=shiftEndTime class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t.end for t in timeSlotJSON\" ng-model=shiftTime><option style=display:none value=\"\">Shift end time</option></select><div class=error-msg-edit ng-messages=postRideForm.shiftEndTime.$error><p ng-message=required class=error-msg>shift time is required</p></div></div></div></div></div><div class=prof-edit-btn ng-click=operation(leftButtonText)>{{leftButtonText}} <img class=prof-btn-img src=assets/images/icon_car.png></div><div class=prof-logout-btn ng-click=operation(rightButtonText)>{{rightButtonText}} <img class=prof-btn-img src=assets/images/icon_car_grey.png></div></div></form></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
+    "<div class=\"page-wrapper user-profile-wrapper\"><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"></div><div class=\"container profile-container\"><form name=userProfileUpdateForm class=animation-form-signup ng-submit=updateUserData() novalidate><div class=profile-pic-wrapper><div class=triangle-down-left-post></div><!-- <img class=\"profile-pic\" src=\"assets/images/user-image.jpg\"> --><img class=profile-pic src={{user.userPhotoUrl}} ng-click=getImageSaveContact()><!-- <img class=\"profile-pic\" ng-src=\"data:image/png;base64,{{user.userPhotoUrl}}\" ng-click=\"getImageSaveContact()\"> --></div><div class=other-detail-wrapper ng-class=\"{'editable-mode' : editableMode}\"><p class=profile-uname><span>{{user.empName}}</span></p><!-- Contact Number Section --><div class=profile-row><div class=field-icon-section><img class=\"icon-style home\" src=assets/images/icon_mobile_number.png></div><div class=user-input-section><span class=non-editable-sec>{{user.contactNo}}</span><div class=editable-sec><label class=\"field-label from\">Contact no.</label><input maxlength=10 class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" ng-model=user.contactNo type=tel name=contactNo required ng-pattern=\"/^[789]\\d{9}$/\" placeholder=\"Mobile Number\"><div ng-show=!showErrorMessage ng-messages=signupForm.contactNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Contact Number is required</p><p ng-message=pattern class=error-msg>Invalid Contact Number</p></div></div></div></div><!-- Home Address Section --><div class=profile-row><div class=field-icon-section><img class=\"icon-style home\" alt=Home src=assets/images/available-rides/from-icon.png></div><div class=user-input-section><span class=non-editable-sec>{{user.homeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span><div class=editable-sec><label class=\"field-label from\">Home address</label><input tab-index=1 ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" name=homeAddress required ng-model=user.homeAddress g-places-autocomplete><div class=error-msg-edit ng-messages=postRideForm.homeAddress.$error><p ng-message=required class=error-msg>Home address is required</p></div></div></div></div><!-- Office Address Section --><div class=profile-row><div class=field-icon-section><img class=\"icon-style home\" alt=Home src=assets/images/available-rides/to.png></div><div class=user-input-section><span class=non-editable-sec>{{user.officeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span><div class=editable-sec><label class=\"field-label from\">Office address</label><select ng-options=\"item as item.display_address for item in officeAddressJSON\" ng-model=officeAddress name=officeAddress class=post-ofc-address><option style=display:none value=\"\">Office Address</option></select><div class=error-msg-edit ng-messages=postRideForm.officeAddress.$error><p ng-message=required class=error-msg>Office address is required</p></div></div></div></div><!-- vehicleLicenseNumber section --><div class=profile-row ng-show=\"user.vehicle[0] != null\"><div class=field-icon-section><img class=\"icon-style home\" alt=Home src=assets/images/car-front.png></div><div class=user-input-section><span class=non-editable-sec>{{user.vehicle[0].vehicleLicenseNumber}}</span><div class=editable-sec><label class=\"field-label from\">Vehicle no.</label><input class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" maxlength=13 name=vehicleNo required ng-pattern=\"/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/\" ng-model=user.vehicle[0].vehicleLicenseNumber><div ng-show=!showErrorMessage ng-messages=signupForm.vehicleNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Registration Number is required</p><p ng-message=pattern class=error-msg>Invalid Registration Number</p></div></div></div></div><!-- Seats Available Section --><div class=profile-row ng-show=\"user.vehicle[0] != null\"><div class=field-icon-section><img class=\"icon-style home\" alt=Home src=assets/images/available-rides/to.png></div><div class=user-input-section><span class=non-editable-sec>{{user.vehicle[0].capacity}}</span><div class=editable-sec><label class=\"field-label from\">Seats available</label><select class=\"timeslot post-ride-leaving-in\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=vehicleCapacity ng-options=\"c as c for c in vehicleCapacityJSON\"><option style=display:none value=\"\">Seats available</option></select><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></div></div></div><!-- Shift Timings Sections --><div class=\"profile-row timing\"><!-- Shift TimeIn Section --><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-L-none\"><div class=field-icon-section><img class=\"icon-style home\" alt=Home src=assets/images/available-rides/starting-time.png></div><div class=user-input-section><span class=non-editable-sec>{{user.shiftTimeIn | date:'hh:mm a'}}</span><div class=editable-sec><label class=\"field-label from\">Shift start time</label><select name=shiftStartTime class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t.start for t in timeSlotJSON\" ng-model=shiftTime><option style=display:none value=\"\">Shift start time</option></select><div class=error-msg-edit ng-messages=postRideForm.shiftStartTime.$error><p ng-message=required class=error-msg>shift time is required</p></div></div></div></div><!-- Shift TimeOut Section --><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pad-R-none\"><div class=field-icon-section><img class=\"icon-style home\" alt=Home src=assets/images/available-rides/starting-time.png></div><div class=user-input-section><span class=non-editable-sec>{{user.shiftTimeout | date:'hh:mm a'}}</span><div class=editable-sec><label class=\"field-label from\">Shift end time</label><select name=shiftEndTime class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t.end for t in timeSlotJSON\" ng-model=shiftTime><option style=display:none value=\"\">Shift end time</option></select><div class=error-msg-edit ng-messages=postRideForm.shiftEndTime.$error><p ng-message=required class=error-msg>shift time is required</p></div></div></div></div></div><div class=prof-edit-btn ng-click=operation(leftButtonText)>{{leftButtonText}} <img class=prof-btn-img src=assets/images/icon_car.png></div><div class=prof-logout-btn ng-click=operation(rightButtonText)>{{rightButtonText}} <img class=prof-btn-img src=assets/images/icon_car_grey.png></div></div></form></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
   );
 
 

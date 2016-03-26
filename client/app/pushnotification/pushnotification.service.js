@@ -1,3 +1,16 @@
+//Data Body
+/*
+additionalData: {
+  collapse_key: "com.tcs.cb"
+  e: "1"
+  foreground: true
+  icon: "ic_launcher"
+  key2: "message2"
+},
+message: "You have an appointment in 1 hour"
+title: "Commute buddy"
+*/
+
 'use strict';
 
 angular.module('cbApp')
@@ -35,8 +48,14 @@ angular.module('cbApp')
         push.on('notification', function(data) {
             console.log("Notification Event Callback");
             console.log("Data from Notification Event Callback : ", JSON.stringify(data));
-            push.finish(function () {
+            push.finish(function() {
               alert('finish successfully called');
+            });
+            push.approve(function() {
+                alert("Approve Got Called Successfully");
+            });
+            push.reject(function() {
+                alert("Reject Got Called Successfully");
             });
         });
 
