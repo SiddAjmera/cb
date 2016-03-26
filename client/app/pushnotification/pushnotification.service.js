@@ -1,4 +1,4 @@
-Data Body
+//Data Body
 /*
 additionalData: {
   collapse_key: "com.tcs.cb"
@@ -48,13 +48,13 @@ angular.module('cbApp')
         push.on('notification', function(data) {
             console.log("Notification Event Callback");
             console.log("Data from Notification Event Callback : ", JSON.stringify(data));
-            push.finish(function () {
+            push.finish(function() {
               alert('finish successfully called');
             });
-            push.approve(function{
+            push.approve(function() {
                 alert("Approve Got Called Successfully");
             });
-            push.reject(function{
+            push.reject(function() {
                 alert("Reject Got Called Successfully");
             });
         });
