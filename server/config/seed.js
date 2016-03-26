@@ -60,7 +60,8 @@ User.create({
     homeLocationCoordinates: [ 73.681143, 18.574381 ],
     shiftTimeIn: "9:00 AM",
     shiftTimeout: "6:00 PM",
-    email: 'jagdeep@tcs.com'
+    email: 'jagdeep@tcs.com',
+    rating: 5
   }, {
     empId: '111112',
     empName: 'Siddharth Ajmera',
@@ -107,7 +108,8 @@ User.create({
     homeLocationCoordinates: [ 73.686889, 18.578157 ],
     shiftTimeIn: "9:00 AM",
     shiftTimeout: "6:00 PM",
-    email: 'siddharth@tcs.com'
+    email: 'siddharth@tcs.com',
+    rating: 4
   },{
     empId: '111113',
     empName: 'Parvez Patel',
@@ -155,7 +157,8 @@ User.create({
     homeLocationCoordinates: [ 73.762857, 18.592117 ],
     shiftTimeIn: "9:00 AM",
     shiftTimeout: "6:00 PM",
-    email: 'parvez@tcs.com'
+    email: 'parvez@tcs.com',
+    rating: 2
   },{
     empId: '111114',
     empName: 'Ninad Mahajan',
@@ -196,7 +199,8 @@ User.create({
     homeLocationCoordinates: [ 73.778059, 18.616153 ],
     shiftTimeIn: "9:00 AM",
     shiftTimeout: "6:00 PM",
-    email: 'ninad@tcs.com'
+    email: 'ninad@tcs.com',
+    rating: 1
   },{
     empId: '111115',
     empName: 'Md Ashraf',
@@ -237,7 +241,8 @@ User.create({
     homeLocationCoordinates: [ 73.810078, 18.623647 ],
     shiftTimeIn: "9:00 AM",
     shiftTimeout: "6:00 PM",
-    email: 'ashraf@tcs.com'
+    email: 'ashraf@tcs.com',
+    rating: 5
   },function(){
     console.log('Finished populating Users');
 });
