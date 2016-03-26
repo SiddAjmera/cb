@@ -9,7 +9,7 @@ angular.module('cbApp')
     $scope.rideData.to = 'Office';
     $scope.rideData.leavingIn = '15';
     $scope.rideData.availableSeats = 1;
-
+    
     $scope.mypath = {};
     var getRoute = function (from, to) {
         var request = {};

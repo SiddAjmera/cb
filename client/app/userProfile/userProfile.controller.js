@@ -5,6 +5,31 @@ angular.module('cbApp')
     $scope.message = 'Hello';
     $scope.editableMode = false;
 
+
+    $scope.autocompleteOptions = { componentRestrictions: { country: 'in' } }
+
+    var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+    function isEmpty(obj) {
+
+        // null and undefined are "empty"
+        if (obj == null) return true;
+
+        // Assume if it has a length property with a non-zero value
+        // that that property is correct.
+        if (obj.length > 0)    return false;
+        if (obj.length === 0)  return true;
+
+        // Otherwise, does it have any properties of its own?
+        // Note that this doesn't handle
+        // toString and valueOf enumeration bugs in IE < 9
+        for (var key in obj) {
+            if (hasOwnProperty.call(obj, key)) return false;
+        }
+
+        return true;
+    };
+
     $scope.officeAddressJSON = staticData.getTCSLocations();
 
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
@@ -69,7 +94,10 @@ angular.module('cbApp')
       }
       else if(buttonText == "UPDATE"){
         $scope.saveDetails();
-        $scope.editableMode = false;
+        //$scope.editableMode = false;
+        /*if($scope.user.homeAddressLocation) $scope.user.homeAddress = $scope.user.homeAddressLocation;
+        $scope.leftButtonText = "EDIT";
+        $scope.rightButtonText = "LOGOUT";*/
       }
       else if(buttonText == "CANCEL"){
         $scope.leftButtonText = "EDIT";
@@ -165,9 +193,8 @@ angular.module('cbApp')
         obj.shiftTimeout = $scope.user.shiftTimeout;
       }
 
-      console.log("$scope.user.homeAddress : ", $scope.user.homeAddress);
-
       if($scope.userProfileUpdateForm.homeAddress.$dirty){
+        if($scope.user.homeAddress.name && $scope.user.homeAddress.formatted_address && $scope.user.homeAddress.geometry && $scope.user.homeAddress.address_components){
           obj.homeAddressLocation = {};
           obj.homeAddressLocation.display_address = $scope.user.homeAddress.name;
           obj.homeAddressLocation.formatted_address = $scope.user.homeAddress.formatted_address;
@@ -183,44 +210,59 @@ angular.module('cbApp')
               if(ac.types.indexOf("administrative_area_level_1") >= 0) obj.state = ac.long_name;
               if(ac.types.indexOf("postal_code") >= 0) obj.zipcode = ac.long_name;
           }
+          $scope.userProfileUpdateForm.homeAddress.$setValidity("useautocomplete", true);
+        }else{
+          $scope.userProfileUpdateForm.homeAddress.$setValidity("useautocomplete", false);
+          return false;
+        }
+
       }
 
       if($scope.userProfileUpdateForm.officeAddress.$dirty) obj.officeAddressLocation = $scope.officeAddress;
 
-      obj.vehicle = [];
-      var vehicle = {};
-      
-      if($scope.userProfileUpdateForm.vehicleNo.$dirty) vehicle.vehicleLicenseNumber = $scope.user.vehicle[0].vehicleLicenseNumber;
-      if($scope.userProfileUpdateForm.availableSeats.$dirty) vehicle.capacity = $scope.user.vehicle[0].capacity;
 
-      obj.vehicle.push(vehicle);
+      if($scope.userProfileUpdateForm.vehicleNo.$dirty || $scope.userProfileUpdateForm.availableSeats.$dirty){
+        obj.vehicle = [];
+        var vehicle = {};
+        vehicle.vehicleLicenseNumber = $scope.user.vehicle[0].vehicleLicenseNumber;
+        vehicle.capacity = $scope.user.vehicle[0].capacity;
+        obj.vehicle.push(vehicle);
+      }
 
       console.log("Final Updated User Object : ", obj);
 
-      var url = config.apis.signup + $scope.user._id;
-      httpRequest.put(url,obj)
-      .then(function (data) {
-        if(data.status === 200){
-          alert('Profile Updated Successfully');
-          Auth.getCurrentUser(true)
-          .then(function(data){
-              console.log("Data returned : ", data);
+      if(isEmpty(obj)){
+        alert("Nothing to save");
+        $scope.leftButtonText = "EDIT";
+        $scope.rightButtonText = "LOGOUT";
+        $scope.editableMode = false;
+      }
+      else{
+        var url = config.apis.signup + $scope.user._id;
+        httpRequest.put(url,obj)
+        .then(function (data) {
+          if(data.status === 200){
+            alert('Profile Updated Successfully');
+            Auth.getCurrentUser(true)
+            .then(function(data){
+                console.log("Data returned : ", data);
 
-              $scope.user = data;
-              console.log("$scope.user", $scope.user);
+                $scope.user = data;
+                console.log("$scope.user", $scope.user);
 
-              if($scope.user.homeAddressLocation) $scope.user.homeAddress = $scope.user.homeAddressLocation;
-              if($scope.user.officeAddressLocation) $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
-              if($scope.user.vehicle[0]) $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
-              if($scope.user.shiftTimeIn) $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
+                if($scope.user.homeAddressLocation) $scope.user.homeAddress = $scope.user.homeAddressLocation;
+                if($scope.user.officeAddressLocation) $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
+                if($scope.user.vehicle[0]) $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
+                if($scope.user.shiftTimeIn) $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
 
-              $scope.leftButtonText = "EDIT";
-              $scope.rightButtonText = "LOGOUT";
-              
-              $state.go('userHome.userProfile');
-          });  
-        }
-      });
+                $scope.leftButtonText = "EDIT";
+                $scope.rightButtonText = "LOGOUT";
+                
+                $state.go('userHome.userProfile');
+            });  
+          }
+        });
+      }
   };
 
 

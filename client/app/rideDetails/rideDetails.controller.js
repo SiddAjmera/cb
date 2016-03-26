@@ -4,6 +4,8 @@ angular.module('cbApp')
   .controller('RideDetailsCtrl', ['$scope','staticData','Auth','$state','$stateParams','httpRequest'
   	,function ($scope,staticData,Auth,$state,$stateParams,httpRequest) {
   	var forAction = $stateParams.for;
+    $scope.autocompleteOptions = { componentRestrictions: { country: 'in' } }
+    $scope.showAutoCompleteErrorMessage = false;
     if(forAction == "takeRide"){
         $scope.hideVehicleDetails = true;
         $scope.pageHeader = 'TAKE RIDE'
@@ -52,21 +54,28 @@ angular.module('cbApp')
 
         if($scope.userProfileUpdateForm.officeAddress.$dirty) obj.officeAddressLocation = $scope.user.officeAddress;
         if($scope.userProfileUpdateForm.homeAddress.$dirty){
-            obj.homeAddressLocation = {};
-            obj.homeAddressLocation.display_address = $scope.user.homeAddress.name;
-            obj.homeAddressLocation.formatted_address = $scope.user.homeAddress.formatted_address;
-            obj.homeAddressLocation.icon = $scope.user.homeAddress.icon;
-            obj.homeAddressLocation.placeId = $scope.user.homeAddress.place_id;
-            obj.homeAddressLocation.location = []
-            obj.homeAddressLocation.location.push($scope.user.homeAddress.geometry.location.lng());
-            obj.homeAddressLocation.location.push($scope.user.homeAddress.geometry.location.lat());
 
-            for(var i=0, len = $scope.user.homeAddress.address_components.length; i < len; i++) {
-                var ac = $scope.user.homeAddress.address_components[i];
-                console.log(ac);
-                if(ac.types.indexOf("administrative_area_level_2") >= 0) obj.city = ac.long_name;
-                if(ac.types.indexOf("administrative_area_level_1") >= 0) obj.state = ac.long_name;
-                if(ac.types.indexOf("postal_code") >= 0) obj.zipcode = ac.long_name;
+            if($scope.user.homeAddress.name && $scope.user.homeAddress.formatted_address && $scope.user.homeAddress.geometry){
+                obj.homeAddressLocation = {};
+                obj.homeAddressLocation.display_address = $scope.user.homeAddress.name;
+                obj.homeAddressLocation.formatted_address = $scope.user.homeAddress.formatted_address;
+                obj.homeAddressLocation.icon = $scope.user.homeAddress.icon;
+                obj.homeAddressLocation.placeId = $scope.user.homeAddress.place_id;
+                obj.homeAddressLocation.location = []
+                obj.homeAddressLocation.location.push($scope.user.homeAddress.geometry.location.lng());
+                obj.homeAddressLocation.location.push($scope.user.homeAddress.geometry.location.lat());
+
+                for(var i=0, len = $scope.user.homeAddress.address_components.length; i < len; i++) {
+                    var ac = $scope.user.homeAddress.address_components[i];
+                    console.log(ac);
+                    if(ac.types.indexOf("administrative_area_level_2") >= 0) obj.city = ac.long_name;
+                    if(ac.types.indexOf("administrative_area_level_1") >= 0) obj.state = ac.long_name;
+                    if(ac.types.indexOf("postal_code") >= 0) obj.zipcode = ac.long_name;
+                }
+                $scope.userProfileUpdateForm.homeAddress.$setValidity("useautocomplete", true);
+            }else{
+                $scope.userProfileUpdateForm.homeAddress.$setValidity("useautocomplete", false);
+                return false;
             }
         }
 

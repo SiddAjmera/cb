@@ -47,9 +47,12 @@
 							<label class="field-label from">
 								Home address
 							</label>
-							<input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box" type="text" name="homeAddress" required ng-model='user.homeAddress' g-places-autocomplete>
+							<input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box" type="text" name="homeAddress" required ng-model='user.homeAddress' g-places-autocomplete options="autocompleteOptions">
 			                <div  class="error-msg-edit" ng-messages="postRideForm.homeAddress.$error">
 								<p ng-message="required" class="error-msg">Home address is required</p>
+							</div>
+							<div class="error-msg-edit">
+								<span class="error-msg" style"color: red;" ng-show="userProfileUpdateForm.homeAddress.$error.useautocomplete">Please use autocomplete to select Home address</span>
 							</div>
 						</div>
 					</div>
