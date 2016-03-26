@@ -13,7 +13,7 @@ angular.module('cbApp')
       link: function (scope, element, attrs) {
           scope.onClick = function() {
             // Ad "id" to the locals of "editWebsite" 
-            scope.action();
+            scope.action(scope.empid);
           }
       }
   }});

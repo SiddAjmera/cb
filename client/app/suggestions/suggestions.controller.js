@@ -42,7 +42,7 @@ angular.module('cbApp')
                                             popupAnchor: [0, -50],
                                             iconAnchor: [10, 45],
                                             html: image[0].outerHTML + p[0].outerHTML
-                                     }
+                                        }
                         tempObj.message='<user-marker contactno="'+user.contactNo+'" empid="'+user.empId+'" action="addAsMember('+user.empId+')"></user-marker>';
                         $scope.markers.push(tempObj);
                 });
