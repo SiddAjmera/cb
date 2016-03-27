@@ -1,6 +1,6 @@
 if(angular.isUndefined(config)){
-	var config={};
-	config.apis={};
+	var config = {};
+	config.apis = {};
 }
 
 

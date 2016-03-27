@@ -11,7 +11,7 @@ angular.module('cbApp')
     $scope.setCenter=true;
     $scope.paths={};
     var currentUser = {};
-     Auth.getCurrentUser().
+     Auth.getCurrentUser(true).
      then(function(data){
         currentUser = data;
         //getDrives(10);

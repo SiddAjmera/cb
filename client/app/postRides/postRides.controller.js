@@ -6,14 +6,15 @@ angular.module('cbApp')
     
     /*$scope.$on('leafletDirectiveMap.click', function(event){
         console.log("Click hua with event object : ", event);
-    });
-
-    $scope.$on('leafletDirectivePath.analyzeon.mousedown', function(event){
-        console.log("Click hua with event object : ", event);
     });*/
 
+    $scope.$on('leafletDirectivePath.analyzeon.mousedown', function(event, path){
+        console.log("%cGot leafletObject Message : " + path.leafletObject.options.message,"color:green;");
+        $scope.routeSummary = path.leafletObject.options.message;
+    });
+
     $scope.$on('leafletDirectivePath.analyzeon.click', function(event, path){
-        console.log("Got path as : ", path);
+        console.log("%cGot path as : "+path,"background-color:green");
         console.log("Got leafletObject Message : ", path.leafletObject.options.message);
         $scope.routeSummary = path.leafletObject.options.message;
     });
@@ -49,7 +50,7 @@ angular.module('cbApp')
                 angular.forEach(routes,function(r,key){
                     var routeObj = {};
                     routeObj.color = '#'+Math.floor(Math.random()*16777215).toString(16);
-                    routeObj.weight = 4;
+                    routeObj.weight = 5;
                     routeObj.latlngs = L.Polyline.fromEncoded(r.polyline).getLatLngs();
                     routeObj.clickable = true;
                     routeObj.message = r.via;

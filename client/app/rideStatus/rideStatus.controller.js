@@ -24,6 +24,7 @@ angular.module('cbApp')
     httpRequest.get(config.apis.latestActiveRideOfUser)
         .then(function(data){
             $scope.postedRide = data.data;
+            console.log("postedRide : ", $scope.postedRide);
             var now = moment();
             var to = moment($scope.postedRide.rideScheduledTime);
             $scope.rideScheduledTime = Math.abs( now.diff(to,'minutes') );

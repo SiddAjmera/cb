@@ -42,7 +42,7 @@ angular.module('cbApp', [
         config.headers = config.headers || {};
         localStorage.retrieve('token').
         then(function(res){
-          console.log("header",res);
+          //console.log("header",res);
           if(res!=null)
              config.headers.Authorization = 'Bearer ' + res;
           /*console.log("config",config);
