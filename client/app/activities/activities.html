@@ -9,7 +9,7 @@
 			<div class="triangle-down-left"></div>
 			<div class="today-activity">
 				<p class="activity-header">Today</p>
-				<ul class="activity-list">
+				<ul class="activity-list"  ng-if="team.activities.length>0">
 					<li ng-repeat="activity in team.activities">
 						<span class="indic-circle"></span>
 						<span class="act-message">{{ activity.activity }}</span>
@@ -22,6 +22,9 @@
 						<span class="act-time">8:00 AM</span>
 					</li> -->
 				</ul>
+				
+				<p class="no-team-sub-text" ng-if="team.activities.length<=0">No activities found.</p>
+				
 			</div>
 			<!-- <div class="yesterday-activity">
 				<p class="activity-header">Yesterday</p>
