@@ -84,25 +84,21 @@ angular.module('cbApp')
         $scope.signupPost();
     }
        
-       $scope.signupPost=function(){ 
-         var url = config.apis.signup;
-         // $scope.user.officeAddressLocation = $scope.user.officeAddress;
-         //$scope.user.officeAddress = $scope.user.officeAddress.displayAddress;
-          httpRequest.post(url,$scope.user).
-          then(function(response){
-              /*if(response.status==)*/
-              if(response.status == 200){
-                 console.log('User Stored in the MongoDB Successfully. Here is the Response : ',response);
-                  //$scope.response = response;
-                  localStorage.store('token',response.data.token).then(function(){
-                      $state.go("userHome.home");
-                  })
-              }
+      $scope.signupPost=function(){ 
+        var url = config.apis.signup;
+        httpRequest.post(url,$scope.user).
+        then(function(response){
+          if(response.status == 200){
+            console.log('User Stored in the MongoDB Successfully. Here is the Response : ',response);
+            localStorage.store('token',response.data.token).then(function(){
+              $state.go("userHome.home");
+            });
+          }
         },function(err){
-             console.log('Error Storing the User to the MongoDB. Here is the Error: ', err);
-             $scope.error = err;
+          console.log('Error Storing the User to the MongoDB. Here is the Error: ', err);
+          $scope.error = err;
         });
-       }
+      }
 
    
 

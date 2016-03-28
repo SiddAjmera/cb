@@ -1199,13 +1199,13 @@ select.post-ofc-address{
 }
 .map-user-marker{
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border: 3px solid #FF723C;
 }
 .user-own{
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     background-image: url(../assets/images/suggested-icon/self-image-back.png);
     background-size: 70px;
     padding: 12px;
@@ -1385,6 +1385,8 @@ select.post-ofc-address{
 }
 .cn-wrapper li a img{
     cursor: pointer;
+    width: 35px;
+    height: 35px;
 }
  .cn-wrapper li a:hover,
  .cn-wrapper li a:active,
@@ -2639,6 +2641,9 @@ input[type=number]::-webkit-outer-spin-button {
     width: 97%;
 }
 .editable-mode .profile-row .user-input-section span.non-editable-sec{
+    display: none;
+}
+.editable-mode .non-editable-sec {
     display: none;
 }
 .editable-sec select{

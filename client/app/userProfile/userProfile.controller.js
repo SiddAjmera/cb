@@ -5,6 +5,31 @@ angular.module('cbApp')
     $scope.message = 'Hello';
     $scope.editableMode = false;
 
+
+    $scope.autocompleteOptions = { componentRestrictions: { country: 'in' } }
+
+    var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+    function isEmpty(obj) {
+
+        // null and undefined are "empty"
+        if (obj == null) return true;
+
+        // Assume if it has a length property with a non-zero value
+        // that that property is correct.
+        if (obj.length > 0)    return false;
+        if (obj.length === 0)  return true;
+
+        // Otherwise, does it have any properties of its own?
+        // Note that this doesn't handle
+        // toString and valueOf enumeration bugs in IE < 9
+        for (var key in obj) {
+            if (hasOwnProperty.call(obj, key)) return false;
+        }
+
+        return true;
+    };
+
     $scope.officeAddressJSON = staticData.getTCSLocations();
 
     $scope.vehicleCapacityJSON = ["2","3","4","5","6"];
@@ -21,10 +46,10 @@ angular.module('cbApp')
         .then(function(data){
             $scope.user = data;
             console.log("$scope.user from top block : ", $scope.user);
-            $scope.user.homeAddress = $scope.user.homeAddressLocation;
-            $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
-            $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
-            $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
+            if($scope.user.homeAddressLocation) $scope.user.homeAddress = $scope.user.homeAddressLocation;
+            if($scope.user.officeAddressLocation) $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
+            if($scope.user.vehicle[0]) $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
+            if($scope.user.shiftTimeIn) $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
         });
 
     $scope.leftButtonText = "EDIT";
@@ -68,9 +93,11 @@ angular.module('cbApp')
         $state.go("login");
       }
       else if(buttonText == "UPDATE"){
-        alert("saveDetails() Called on UPDATE");
         $scope.saveDetails();
-        $scope.editableMode = false;
+        //$scope.editableMode = false;
+        /*if($scope.user.homeAddressLocation) $scope.user.homeAddress = $scope.user.homeAddressLocation;
+        $scope.leftButtonText = "EDIT";
+        $scope.rightButtonText = "LOGOUT";*/
       }
       else if(buttonText == "CANCEL"){
         $scope.leftButtonText = "EDIT";
@@ -103,54 +130,71 @@ angular.module('cbApp')
       $(".home-page-menu-options").slideToggle(250);
     }
 
-    /*$scope.logout = function(){
-      if($scope.logoutButtonText=="CANCEL")
-        $scope.changeMode();
-      else{
-        Auth.logout();
-        $state.go("login")
+  $scope.getImageSaveContact = function() {       
+      // Image picker will load images according to these settings
+      console.log("Image Picker will open in phone");
+      var options = {
+          maximumImagesCount: 1, // Max number of selected images, I'm using only one for this example
+          width: 800,
+          height: 800,
+          quality: 80            // Higher is better
+      };
+
+      if($cordovaImagePicker){
+          $cordovaImagePicker.getPictures(options).then(function (results) {
+              // Loop through acquired images
+              for (var i = 0; i < results.length; i++) {
+                  $scope.selectedImage = results[i];   // We loading only one image so we can use it like this
+
+                  window.plugins.Base64.encodeFile($scope.selectedImage, function(base64){  // Encode URI to Base64 needed for contacts plugin
+                      $scope.selectedImage = base64;
+                      console.log($scope.selectedImage);
+                      $scope.saveImage();
+                  });
+              }
+          }, function(error) {
+              console.log('Error: ' + JSON.stringify(error));    // In case of error
+          });
       }
-    }*/
+  };
 
-    $scope.getImageSaveContact = function() {       
-            // Image picker will load images according to these settings
-            var options = {
-                maximumImagesCount: 1, // Max number of selected images, I'm using only one for this example
-                width: 800,
-                height: 800,
-                quality: 80            // Higher is better
-            };
- 
-            $cordovaImagePicker.getPictures(options).then(function (results) {
-                // Loop through acquired images
-                for (var i = 0; i < results.length; i++) {
-                    $scope.selectedImage = results[i];   // We loading only one image so we can use it like this
- 
-                    window.plugins.Base64.encodeFile($scope.selectedImage, function(base64){  // Encode URI to Base64 needed for contacts plugin
-                        $scope.selectedImage = base64;
-                        console.log($scope.selectedImage)
-                    });
-                }
-            }, function(error) {
-                console.log('Error: ' + JSON.stringify(error));    // In case of error
-            });
-        };
+  $scope.saveImage = function(){
+      var obj = {};
+      obj.userPhotoUrl = $scope.selectedImage;
+      var url = config.apis.signup + $scope.user._id;
+      httpRequest.put(url,obj)
+      .then(function (data) {
+        if(data.status === 200){
+          alert('stored');
+          Auth.getCurrentUser(true)
+          .then(function(data){
+              console.log("Data returned : ", data);
+              $scope.user = data;
+              console.log("$scope.user", $scope.user);
+              $scope.user.homeAddress = $scope.user.homeAddressLocation;
+              $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
+              $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
+              $scope.leftButtonText = "EDIT";
+              $scope.rightButtonText = "LOGOUT";
+              $state.go('userHome.userProfile');
+          });
+        }
+      });
+  };
 
-    /*$scope.syncUserLocationData = function(){
-    	cordovaUtil.syncCoordinates();
-    };*/
-
-
-    $scope.saveDetails=function () {
+  $scope.saveDetails=function () {
       var obj = {};
       
-      obj.contactNo = $scope.user.contactNo;
-      obj.shiftTimeIn = $scope.user.shiftTimeIn;
-      obj.shiftTimeout = $scope.user.shiftTimeout;
+      if($scope.userProfileUpdateForm.contactNo.$dirty) obj.contactNo = $scope.user.contactNo;
+      if($scope.userProfileUpdateForm.shiftStartTime.$dirty){
+        obj.shiftTimeIn = $scope.user.shiftTimeIn;
+      }
+      if($scope.userProfileUpdateForm.shiftEndTime.$dirty){
+        obj.shiftTimeout = $scope.user.shiftTimeout;
+      }
 
-      console.log("$scope.user.homeAddress : ", $scope.user.homeAddress);
-
-      if($scope.user.homeAddress != $scope.user.homeAddressLocation){
+      if($scope.userProfileUpdateForm.homeAddress.$dirty){
+        if($scope.user.homeAddress.name && $scope.user.homeAddress.formatted_address && $scope.user.homeAddress.geometry && $scope.user.homeAddress.address_components){
           obj.homeAddressLocation = {};
           obj.homeAddressLocation.display_address = $scope.user.homeAddress.name;
           obj.homeAddressLocation.formatted_address = $scope.user.homeAddress.formatted_address;
@@ -166,42 +210,62 @@ angular.module('cbApp')
               if(ac.types.indexOf("administrative_area_level_1") >= 0) obj.state = ac.long_name;
               if(ac.types.indexOf("postal_code") >= 0) obj.zipcode = ac.long_name;
           }
+          $scope.userProfileUpdateForm.homeAddress.$setValidity("useautocomplete", true);
+        }else{
+          $scope.userProfileUpdateForm.homeAddress.$setValidity("useautocomplete", false);
+          return false;
+        }
+
       }
 
-      if($scope.officeAddress != $scope.user.officeAddressLocation) obj.officeAddressLocation = $scope.officeAddress;
+      if($scope.userProfileUpdateForm.officeAddress.$dirty) obj.officeAddressLocation = $scope.officeAddress;
 
-      obj.vehicle = [];
-      var vehicle = {};
-      vehicle.vehicleLicenseNumber = $scope.user.vehicle[0].vehicleLicenseNumber;
-      vehicle.capacity = $scope.user.vehicle[0].capacity;
-      obj.vehicle.push(vehicle);
+
+      if($scope.userProfileUpdateForm.vehicleNo.$dirty || $scope.userProfileUpdateForm.availableSeats.$dirty){
+        obj.vehicle = [];
+        var vehicle = {};
+        vehicle.vehicleLicenseNumber = $scope.user.vehicle[0].vehicleLicenseNumber;
+        vehicle.capacity = $scope.user.vehicle[0].capacity;
+        obj.vehicle.push(vehicle);
+      }
 
       console.log("Final Updated User Object : ", obj);
 
-      var url = config.apis.signup + $scope.user._id;
-      httpRequest.put(url,obj)
-      .then(function (data) {
-        if(data.status === 200){
-          alert('stored');
-          Auth.getCurrentUser(true)
-          .then(function(data){
-              console.log("Data returned : ", data);
+      if(isEmpty(obj)){
+        alert("Nothing to save");
+        $scope.leftButtonText = "EDIT";
+        $scope.rightButtonText = "LOGOUT";
+        $scope.editableMode = false;
+      }
+      else{
+        var url = config.apis.signup + $scope.user._id;
+        httpRequest.put(url,obj)
+        .then(function (data) {
+          if(data.status === 200){
+            alert('Profile Updated Successfully');
+            Auth.getCurrentUser(true)
+            .then(function(data){
+                console.log("Data returned : ", data);
 
-              $scope.user = data;
-              console.log("$scope.user", $scope.user);
-              $scope.user.homeAddress = $scope.user.homeAddressLocation;
-              $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
-             // $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
-              $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
-              
-              $scope.leftButtonText = "EDIT";
-              $scope.rightButtonText = "LOGOUT";
-              
-              $state.go('userHome.userProfile');
-          });  
-        }
-      })
-    };
+                $scope.user = data;
+                console.log("$scope.user", $scope.user);
+
+                if($scope.user.homeAddressLocation) $scope.user.homeAddress = $scope.user.homeAddressLocation;
+                if($scope.user.officeAddressLocation) $scope.officeAddress = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
+                if($scope.user.vehicle[0]) $scope.vehicleCapacity = _.findWhere( $scope.vehicleCapacityJSON, $scope.user.vehicle[0].capacity );
+                if($scope.user.shiftTimeIn) $scope.shiftTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
+
+                $scope.leftButtonText = "EDIT";
+                $scope.rightButtonText = "LOGOUT";
+                
+                $state.go('userHome.userProfile');
+            });  
+          }
+        });
+      }
+  };
+
+
 
 
   });

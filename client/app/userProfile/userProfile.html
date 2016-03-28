@@ -7,7 +7,8 @@
 			<div class="profile-pic-wrapper">
 				<div class="triangle-down-left-post"></div>
 				<!-- <img class="profile-pic" src="assets/images/user-image.jpg"> -->
-				<img class="profile-pic" src="{{user.userPhotoUrl}}">
+				<img class="profile-pic" src="{{user.userPhotoUrl}}" ng-click="getImageSaveContact()">
+				<!-- <img class="profile-pic" ng-src="data:image/png;base64,{{user.userPhotoUrl}}" ng-click="getImageSaveContact()"> -->
 			</div>
 			<div class="other-detail-wrapper" ng-class="{'editable-mode' : editableMode}">
 				<p class="profile-uname"><span>{{user.empName}}</span></p>
@@ -36,7 +37,7 @@
 
 
 				<!-- Home Address Section -->
-				<div class="profile-row">
+				<div class="profile-row" ng-show="user.homeAddressLocation != null">
 					<div class="field-icon-section">
 						<img class="icon-style home" alt="Home" src="assets/images/available-rides/from-icon.png">
 					</div>
@@ -46,9 +47,12 @@
 							<label class="field-label from">
 								Home address
 							</label>
-							<input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box" type="text" name="homeAddress" required ng-model='user.homeAddress' g-places-autocomplete>
+							<input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box" type="text" name="homeAddress" required ng-model='user.homeAddress' g-places-autocomplete options="autocompleteOptions">
 			                <div  class="error-msg-edit" ng-messages="postRideForm.homeAddress.$error">
 								<p ng-message="required" class="error-msg">Home address is required</p>
+							</div>
+							<div class="error-msg-edit">
+								<span class="error-msg" style"color: red;" ng-show="userProfileUpdateForm.homeAddress.$error.useautocomplete">Please use autocomplete to select Home address</span>
 							</div>
 						</div>
 					</div>
@@ -57,7 +61,7 @@
 
 
 				<!-- Office Address Section -->
-				<div class="profile-row" >
+				<div class="profile-row" ng-show="user.officeAddressLocation != null">
 					<div class="field-icon-section">
 						<img class="icon-style home" alt="Home" src="assets/images/available-rides/to.png">
 					</div>
@@ -127,7 +131,7 @@
 
 
 				<!-- Shift Timings Sections -->
-				<div class="profile-row timing">
+				<div class="profile-row timing" ng-show="user.shiftTimeIn != null">
 
 
 					<!-- Shift TimeIn Section -->
@@ -158,6 +162,7 @@
 						<div class="field-icon-section">
 							<img class="icon-style home" alt="Home" src="assets/images/available-rides/starting-time.png">
 						</div>
+						
 						<div class="user-input-section">
 							<span class="non-editable-sec">{{user.shiftTimeout | date:'hh:mm a'}}</span>
 							<div class="editable-sec">

@@ -21,15 +21,15 @@ angular.module('cbApp', [
   'google.places'
 ])
 
-.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider,cfpLoadingBarProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, cfpLoadingBarProvider) {
      console.log("In config block");
+
+    //$locationProvider.html5Mode(true);
+    $httpProvider.interceptors.push('authInterceptor');
+    cfpLoadingBarProvider.includeSpinner = false;
 
     $urlRouterProvider
       .otherwise('/main');
-
-  //  $locationProvider.html5Mode(true);
-    $httpProvider.interceptors.push('authInterceptor');
-    cfpLoadingBarProvider.includeSpinner = false;
 
   })
 
@@ -42,7 +42,7 @@ angular.module('cbApp', [
         config.headers = config.headers || {};
         localStorage.retrieve('token').
         then(function(res){
-          console.log("header",res);
+          //console.log("header",res);
           if(res!=null)
              config.headers.Authorization = 'Bearer ' + res;
           /*console.log("config",config);
@@ -126,3 +126,12 @@ var onDeviceReady = function() {
 }
 document.addEventListener('deviceready', 
 onDeviceReady);
+
+var acceptHandler=function(data){
+    console.log(data);
+    alert("Successs");
+};
+var rejectHandler=function(data){
+    console.log(data);
+    alert("Reject handler");
+};

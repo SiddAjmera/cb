@@ -60,7 +60,8 @@ User.create({
     homeLocationCoordinates: [ 73.681143, 18.574381 ],
     shiftTimeIn: "9:00 AM",
     shiftTimeout: "6:00 PM",
-    email: 'jagdeep@tcs.com'
+    email: 'jagdeep@tcs.com',
+    rating: 5
   }, {
     empId: '111112',
     empName: 'Siddharth Ajmera',
@@ -74,7 +75,7 @@ User.create({
     timeSlot: '9:00 AM - 7:00 PM',
     username: '111112',
     password: "123",
-    redgId:"cwseZgmg0n8:APA91bGe_gDw-upSJz4cnRfbv0mvZoqOIYN8K-q_EeGfReZ372QNjxqHvXfyZTCl-kAtfORda3dBeHbqJVoiCBvvEC7cXoqaxiE8bKaXg_zNMmGHb3ZtFHPym9_I-gwRbFCYDfLwEAsW",
+    redgId:"ewhpNzHAo_A:APA91bGDocSZu1S2e31LMV6T0EdvdzAwRfDsECxHdMKMyoSF6XBD_C4KqBI4kyLyLD3zEEgzDs_mbCpiiw-1BLgDmAJbnPVhkKme5EreDKvBvxCVZiowsuJZ-taFUNkkxoqSU0tn9635",
     userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAALvAAAAJDQyNGQ1MDI0LTFmYmEtNGNlMy05ZTkzLWI4OWU1OTdhMDUzOQ.jpg',
     homeAddressLocation: {
         formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
@@ -107,7 +108,8 @@ User.create({
     homeLocationCoordinates: [ 73.686889, 18.578157 ],
     shiftTimeIn: "9:00 AM",
     shiftTimeout: "6:00 PM",
-    email: 'siddharth@tcs.com'
+    email: 'siddharth@tcs.com',
+    rating: 4
   },{
     empId: '111113',
     empName: 'Parvez Patel',
@@ -122,7 +124,7 @@ User.create({
     username: '111113',
     password: "123",
     userId: '111113',
-    redgId:"cwseZgmg0n8:APA91bGe_gDw-upSJz4cnRfbv0mvZoqOIYN8K-q_EeGfReZ372QNjxqHvXfyZTCl-kAtfORda3dBeHbqJVoiCBvvEC7cXoqaxiE8bKaXg_zNMmGHb3ZtFHPym9_I-gwRbFCYDfLwEAsW",
+    redgId:"ewhpNzHAo_A:APA91bGDocSZu1S2e31LMV6T0EdvdzAwRfDsECxHdMKMyoSF6XBD_C4KqBI4kyLyLD3zEEgzDs_mbCpiiw-1BLgDmAJbnPVhkKme5EreDKvBvxCVZiowsuJZ-taFUNkkxoqSU0tn9635",
     userPhotoUrl: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/1/005/055/092/193511e.jpg',
     homeAddressLocation: {
         formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
@@ -155,7 +157,8 @@ User.create({
     homeLocationCoordinates: [ 73.762857, 18.592117 ],
     shiftTimeIn: "9:00 AM",
     shiftTimeout: "6:00 PM",
-    email: 'parvez@tcs.com'
+    email: 'parvez@tcs.com',
+    rating: 2
   },{
     empId: '111114',
     empName: 'Ninad Mahajan',
@@ -196,7 +199,8 @@ User.create({
     homeLocationCoordinates: [ 73.778059, 18.616153 ],
     shiftTimeIn: "9:00 AM",
     shiftTimeout: "6:00 PM",
-    email: 'ninad@tcs.com'
+    email: 'ninad@tcs.com',
+    rating: 1
   },{
     empId: '111115',
     empName: 'Md Ashraf',
@@ -211,7 +215,7 @@ User.create({
     username: '111115',
     password: "123",
     userId: '111115',
-    redgId:"cwseZgmg0n8:APA91bGe_gDw-upSJz4cnRfbv0mvZoqOIYN8K-q_EeGfReZ372QNjxqHvXfyZTCl-kAtfORda3dBeHbqJVoiCBvvEC7cXoqaxiE8bKaXg_zNMmGHb3ZtFHPym9_I-gwRbFCYDfLwEAsW",
+    redgId:"ewhpNzHAo_A:APA91bGDocSZu1S2e31LMV6T0EdvdzAwRfDsECxHdMKMyoSF6XBD_C4KqBI4kyLyLD3zEEgzDs_mbCpiiw-1BLgDmAJbnPVhkKme5EreDKvBvxCVZiowsuJZ-taFUNkkxoqSU0tn9635",
     userPhotoUrl: 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png',
     homeAddressLocation: {
         formatted_address: "MIDC Phase III Main Rd, Phase 3, Hinjewadi Rajiv Gandhi Infotech Park, Hinjawadi, Pimpri-Chinchwad, Maharashtra 411057, India",
@@ -237,7 +241,8 @@ User.create({
     homeLocationCoordinates: [ 73.810078, 18.623647 ],
     shiftTimeIn: "9:00 AM",
     shiftTimeout: "6:00 PM",
-    email: 'ashraf@tcs.com'
+    email: 'ashraf@tcs.com',
+    rating: 5
   },function(){
     console.log('Finished populating Users');
 });
@@ -286,8 +291,8 @@ User.create({
     console.log('Finished Populating Rides');
 });*/
 
-/*Team.create({
-    "name": "Morning Commute",
+Team.create({
+    "name": "Monday Morning Commute",
     "createdBy": {
         "empId": "111111",
         "empName": "Jagdeep Singh Soni",
@@ -310,8 +315,30 @@ User.create({
         "membershipStatus": "PENDING",
         "redgId": "APA91bGo64zn22up2LWQf08Hk40jaozA1zPQ5OMvP-xbkcMEpSu2y3GUnLkVHSs73ZDRQ2cM5_Ic2t-7hpjoBp-5f2IeIHaXZrq5h18bXLgBjyTLFFlOZUg"
     }],
+    "activities" : [
+        {
+            "activity": "Jagdeep formed a team",
+            "activityTime": 1457958600000
+        },
+        {
+            "activity": "Jagdeep added Siddharth to the team",
+            "activityTime": 1457958700000
+        },
+        {
+            "activity": "Siddharth accepted Jagdeep's membership request",
+            "activityTime": 1457958800000
+        },
+        {
+            "activity": "Jagdeep added Parvez to the team",
+            "activityTime": 1457958900000
+        },
+        {
+            "activity": "Parvez accepted Jagdeep's membership request",
+            "activityTime": 1457959000000
+        }
+    ],
     "rideDetails": {
-        "from": {
+        "home": {
             "formatted_address" : "Test Team Formation 1",
             "display_address" : "S1/Poorna",
             "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
@@ -321,7 +348,7 @@ User.create({
             ],
             "placeId" : "ChIJ6UG68Gy7wjsRs4AJ2njAyHc"
         },
-        "to":{
+        "office":{
             "formatted_address" : "Bhumkar Bridge, Wakad, Pune, Maharashtra 411057, India",
             "display_address" : "Bhumkar Bridge",
             "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
@@ -331,11 +358,12 @@ User.create({
             ],
             "placeId" : "ChIJ5-6NE3y5wjsR5Q4o_NfuSFU"
         },
-        "preferredTime": 1455023742,
+        "preferredTimeHToO": "9:00 AM",
+        "preferredTimeOToH": "6:00 PM",
         "routeSummary" : "Phase 2 Rd"
     }
 }, function(){
     console.log('Finished populating Teams');
-});*/
+});
 
 SeedData.seedLocations();

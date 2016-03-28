@@ -1,12 +1,28 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('FormTeamCtrl', function ($scope, Auth, staticData) {
+  .controller('FormTeamCtrl', function ($scope, $state, Auth, staticData, httpRequest) {
     $scope.message = 'Hello';
+    var routes;
+    
+    var fromLocation = [];
+    var toLocation = [];
+    var from, to;
 
     var directionsService = new google.maps.DirectionsService();
 
     $scope.officeAddressJSON = staticData.getTCSLocations();
+
+    $scope.$on('leafletDirectivePath.analyzeon.mousedown', function(event, path){
+        console.log("%cGot leafletObject Message : " + path.leafletObject.options.message,"color:green;");
+        $scope.routeSummary = path.leafletObject.options.message;
+    });
+
+    $scope.$on('leafletDirectivePath.analyzeon.click', function(event, path){
+        console.log("%cGot path as : "+path,"background-color:green");
+        console.log("Got leafletObject Message : ", path.leafletObject.options.message);
+        $scope.routeSummary = path.leafletObject.options.message;
+    });
 
     $scope.timeSlotJSON =   [
     							{'start':'8:00 AM','end':'5:00 PM'},
@@ -29,6 +45,7 @@ angular.module('cbApp')
       zoom: 14
     };
 
+    $scope.mypath = {};
     var getRoute = function (from, to) {
         var request = {};
         request.optimizeWaypoints = true;
@@ -36,17 +53,32 @@ angular.module('cbApp')
         request.travelMode = google.maps.TravelMode.DRIVING;
         request.origin = from;
         request.destination = to;
+        console.log("Request Object to Direction Service : ", request);
         directionsService.route(request, function(response, status) {
             console.log("response",response)
             if (status == google.maps.DirectionsStatus.OK) {
-                var routes = _.map(response.routes,function(r){return r.overview_polyline});
+                
+                //var routes = _.map(response.routes,function(r){return r.overview_polyline});
+
+                routes = _.map(response.routes,function(r){
+
+                    console.log("r : ", r);
+                    console.log("r.summary : ", r.summary);
+
+                    return  {
+                                polyline: r.overview_polyline,
+                                via: r.summary
+                            }
+                });
+
                 console.log("routes",routes);              
                 angular.forEach(routes,function(r,key){
                     var routeObj = {};
                     routeObj.color = '#'+Math.floor(Math.random()*16777215).toString(16);
                     routeObj.weight = 4;
-                    routeObj.latlngs = L.Polyline.fromEncoded(r).getLatLngs();
+                    routeObj.latlngs = L.Polyline.fromEncoded(r.polyline).getLatLngs();
                     routeObj.clickable = true;
+                    routeObj.message = r.via;
                     $scope.mypath['r'+key] = routeObj; 
                   //latArr.push(L.Polyline.fromEncoded(r).getLatLngs());
                 });              
@@ -58,37 +90,36 @@ angular.module('cbApp')
         }); 
     };
 
+    $scope.team = {};
+    $scope.team.teamName = "Morning Commute";
+    $scope.team.rideDetails = {};
+    $scope.team.rideDetails.from = {};
+    $scope.team.rideDetails.to = {};
+
     var currentUser = {};
-	Auth.getCurrentUser()
+	Auth.getCurrentUser(true)
     	.then(function(data){
         	$scope.user = data;
-
-            console.log("Here the User that came from the Database : ", $scope.user);
-
-            $scope.team = {};
-            $scope.team.teamName = "Morning Commute";
-            $scope.team.rideDetails = {};
-            $scope.team.rideDetails.from = $scope.user.homeAddressLocation;
-            $scope.team.rideDetails.to = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
-            $scope.team.rideDetails.ridePreferredTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
-
-            var fromLocation = [];
-            fromLocation.push($scope.user.homeAddressLocation.location[1]);
-            fromLocation.push($scope.user.homeAddressLocation.location[0]);
-            var toLocation = [];
-            toLocation.push($scope.user.officeAddressLocation.location[1]);
-            toLocation.push($scope.user.officeAddressLocation.location[0]);
-            console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
-                    
-            var from = fromLocation.join();
-            var to = toLocation.join();
-            console.log("From is " + from + " and to is " + to);
-            getRoute(from, to);
+            
+            if($scope.user.homeAddressLocation){
+                $scope.team.rideDetails.from = $scope.user.homeAddressLocation;
+                fromLocation.push($scope.team.rideDetails.from.location[1]);
+                fromLocation.push($scope.team.rideDetails.from.location[0]);
+                from = fromLocation.join();
+            }
+            
+            if($scope.user.officeAddressLocation){
+                $scope.team.rideDetails.to = _.findWhere( $scope.officeAddressJSON, { 'display_address': $scope.user.officeAddressLocation.display_address } );
+                toLocation.push($scope.team.rideDetails.to.location[1]);
+                toLocation.push($scope.team.rideDetails.to.location[0]);
+                to = toLocation.join();
+            }
+            if($scope.user.shiftTimeIn) $scope.team.rideDetails.ridePreferredTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
+            if(from && to) getRoute(from, to);
     	});
 
     $scope.$watch('team.rideDetails.from', function(newValue, oldValue, scope) {
         if(newValue != oldValue){
-
             $scope.team.rideDetails.from.display_address = $scope.team.rideDetails.from.name;
             $scope.team.rideDetails.from.formatted_address = $scope.team.rideDetails.from.formatted_address;
             $scope.team.rideDetails.from.icon = $scope.team.rideDetails.from.icon;
@@ -114,35 +145,23 @@ angular.module('cbApp')
             delete $scope.team.rideDetails.from.vicinity;
             delete $scope.team.rideDetails.from.__proto__;
 
-            var fromLocation = [];
-            fromLocation.push($scope.team.rideDetails.from.geometry.location.lat());
-            fromLocation.push($scope.team.rideDetails.from.geometry.location.lng());
-            var toLocation = [];
-            toLocation.push($scope.user.officeAddressLocation.location[1]);
-            toLocation.push($scope.user.officeAddressLocation.location[0]);
-            console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
-                    
-            var from = fromLocation.join();
-            var to = toLocation.join();
+            fromLocation.push($scope.team.rideDetails.from.location[1]);
+            fromLocation.push($scope.team.rideDetails.from.location[0]);
+            from = fromLocation.join();
+            to = toLocation.join();
             console.log("From is " + from + " and to is " + to);
-            getRoute(from, to);
+            if(from && to) getRoute(from, to);
         }
     });
 
     $scope.$watch('team.rideDetails.to', function(newValue, oldValue, scope) {
         if(newValue != oldValue){
-            var fromLocation = [];
-            fromLocation.push($scope.user.homeAddressLocation.location[1]);
-            fromLocation.push($scope.user.homeAddressLocation.location[0]);
-            var toLocation = [];
             toLocation.push($scope.team.rideDetails.to.location[1]);
             toLocation.push($scope.team.rideDetails.to.location[0]);
-            console.log("FromLocation is " + fromLocation + " and toLocation is " + toLocation);
-                    
-            var from = fromLocation.join();
-            var to = toLocation.join();
+            from = fromLocation.join();
+            to = toLocation.join();
             console.log("From is " + from + " and to is " + to);
-            getRoute(from, to);
+            if(from && to) getRoute(from, to);
         }
     });
 
@@ -151,9 +170,28 @@ angular.module('cbApp')
         teamObject.team = $scope.team;
         teamObject.team.rideDetails.ridePreferredTimeHToO = $scope.team.rideDetails.ridePreferredTime.start;
         teamObject.team.rideDetails.ridePreferredTimeOToH = $scope.team.rideDetails.ridePreferredTime.end;
+        teamObject.team.rideDetails.routeSummary = $scope.routeSummary;
         console.log("Final Team Object Before Find Team Memebers : ", teamObject);
-        alert("This functionality is yet to be implemented");
-    }
+
+        //For the case when the User directly visits the Form Team Page.
+        var url = config.apis.signup + $scope.user._id;
+        if(!$scope.user.homeAddressLocation && !scope.user.officeAddressLocation){
+            var obj = {};
+            obj.homeAddressLocation = $scope.team.rideDetails.from;
+            obj.officeAddressLocation = $scope.team.rideDetails.to;
+            obj.shiftTimeIn = $scope.team.rideDetails.ridePreferredTime.start;
+            obj.shiftTimeout = $scope.team.rideDetails.ridePreferredTime.end;
+            httpRequest.post(url, obj)
+                       .then(function(data){
+                            if(data.status === 200){
+                                alert('Your information has been stored successfully.');
+                            }
+                       });
+
+        }
+
+        $state.go('userHome.suggestions', {'team': teamObject});
+    };
 
     $scope.toggleFooter = function(){
       $(".home-page-menu-options").slideToggle(250);

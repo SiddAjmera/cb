@@ -4,9 +4,10 @@ angular.module('cbApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('userHome.suggestions', {
-        url: '/suggestions',
+        /*url: '/suggestions',*/
         templateUrl: 'app/suggestions/suggestions.html',
         controller: 'SuggestionsCtrl',
-         authenticate:true
+        params: {'team': null},
+        authenticate:true
       });
   });

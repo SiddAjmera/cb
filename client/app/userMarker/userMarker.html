@@ -1,5 +1,5 @@
 <div class="cn-wrapper" id="cn-wrapper">
-	{{contactno}}
+	{{contactno}}  {{empid}}
 	<ul>  
 	 <li>
 	 	<a ng-href='tel: {{contactno}}'><img class="calling-icon-map" src="assets/images/map-icons/icon_call.png"></a>
@@ -10,8 +10,8 @@
 	 <li>
 	 	<a href="#"><img src="assets/images/map-icons/icon_favorite.png"></a>
 	 </li>  
-	 <li>
-	 	<a href="#"><img class="add-icon-map" src="assets/images/map-icons/icon_add.png"></a>
+	 <li data-ng-click='onClick()'>
+	 	<a><img class="add-icon-map" src="assets/images/map-icons/icon_add.png"></a>
 	 </li>  
 	</ul>
 </div>

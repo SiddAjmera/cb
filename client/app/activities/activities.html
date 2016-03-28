@@ -3,26 +3,27 @@
 
 		<div class="col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header">
 			<span class="heading">Activities</span>
-			<img src="assets/images/info.svg" class="pull-right act-info-icon cursor-pointer">
+			<img src="assets/images/info.svg" class="pull-right act-info-icon cursor-pointer" ng-click="getTeam()">
 		</div>
 		<div class="my-teams-wrapper">
 			<div class="triangle-down-left"></div>
 			<div class="today-activity">
 				<p class="activity-header">Today</p>
 				<ul class="activity-list">
-					<li>
+					<li ng-repeat="activity in team.activities">
 						<span class="indic-circle"></span>
-						<span class="act-message">Siddharth is not commuting today</span>
-						<span class="act-time">8:00 AM</span>
+						<span class="act-message">{{ activity.activity }}</span>
+						<!-- <span class="act-time">{{ activity.activityTime | date:'h:mm:ss a' }}</span> -->
+						<span class="act-time">{{ activity.activityTime | date:'d-M h:mm a' }}</span>
 					</li>
-					<li>
+					<!-- <li>
 						<span class="indic-circle"></span>
 						<span class="act-message">Jagdeep joined the commute</span>
 						<span class="act-time">8:00 AM</span>
-					</li>
+					</li> -->
 				</ul>
 			</div>
-			<div class="yesterday-activity">
+			<!-- <div class="yesterday-activity">
 				<p class="activity-header">Yesterday</p>
 				<ul class="activity-list">
 					<li>
@@ -51,7 +52,7 @@
 						<span class="act-time">8:00 AM</span>
 					</li>
 				</ul>
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<div class="home-menu-swiper-wrap">

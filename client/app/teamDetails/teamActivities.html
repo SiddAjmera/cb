@@ -2,27 +2,56 @@
 	<div class="container login-container user-home-container pad-R-none pad-L-none" scroll ng-class="{availheaderback:boolChangeClass}">
 
 		<div class="col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header">
-			<span class="heading">My teams</span>
+			<span class="heading">Activities</span>
+			<img src="assets/images/info.svg" class="pull-right act-info-icon cursor-pointer">
 		</div>
 		<div class="my-teams-wrapper">
 			<div class="triangle-down-left"></div>
-			<div class="my-team-content">
-				<ul class="team-list">
-					<li ng-repeat="team in teams track by $index" >
-						<span class="count-sec" ng-click="openteamDetails(team._id)">{{$index + 1}}</span>
-						<span class="team-name-sec" ng-click="openteamDetails(team._id)">{{team.name}}</span>
+			<div class="today-activity">
+				<p class="activity-header">Today</p>
+				<ul class="activity-list">
+					<li ng-repeat="activity in team.activities">
+						<span class="indic-circle"></span>
+						<span class="act-message">{{ activity.activity }}</span>
+						<span class="act-time">{{ activity.activityTime }}</span>
 					</li>
 				</ul>
-				<
-
-				<!-- <div >
-					<span class="count-sec" ng-click="openteamDetails(team._id)">{{$index + 1}}</span>
-					<span class="team-name-sec" ng-click="openteamDetails(team._id)">{{team.name}}</span>
-				</div> -->
-
 			</div>
+
+			<!-- <div class="yesterday-activity">
+				<p class="activity-header">Yesterday</p>
+				<ul class="activity-list">
+					<li>
+						<span class="indic-circle"></span>
+						<span class="act-message">Siddharth is not commuting today</span>
+						<span class="act-time">8:00 AM</span>
+					</li>
+					<li>
+						<span class="indic-circle"></span>
+						<span class="act-message">Jagdeep joined the commute</span>
+						<span class="act-time">8:00 AM</span>
+					</li>
+					<li>
+						<span class="indic-circle"></span>
+						<span class="act-message">Jagdeep joined the commute</span>
+						<span class="act-time">8:00 AM</span>
+					</li>
+					<li>
+						<span class="indic-circle"></span>
+						<span class="act-message">Jagdeep joined the commute</span>
+						<span class="act-time">8:00 AM</span>
+					</li>
+					<li>
+						<span class="indic-circle"></span>
+						<span class="act-message">Jagdeep joined the commute</span>
+						<span class="act-time">8:00 AM</span>
+					</li>
+				</ul>
+			</div> -->
+
 		</div>
 	</div>
+
 	<div class="home-menu-swiper-wrap">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec" >
 			<img src="assets/images/uparrow.png" ng-click="toggleFooter()" alt="up">
@@ -46,4 +75,6 @@
 			</div>
 		</div>
 	</div>
+	
 </div>		
+

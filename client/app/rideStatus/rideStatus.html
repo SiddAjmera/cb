@@ -7,7 +7,7 @@
 
 		<form name="userProfileUpdateForm" class="container login-container post-ride-container animation-form-signup ride-status" novalidate>
 			<div class="triangle-down-left-post"></div>	
-			<div class="form-section signup-section-form post-ride-form">
+			<div class="form-section signup-section-form post-ride-form" ng-class="{'editable-mode' : editableMode}">
 				
 				<div class="each-row">
 					<div class="icon-address-fields">
@@ -40,7 +40,7 @@
 						<label class="field-label from">
 							Via
 						</label>
-						<span>{{postedRide.via}}</span>
+						<span>{{postedRide.routeSummary}}</span>
 					</div>	
 				</div>
 
@@ -49,11 +49,20 @@
 					<div class="icon-address-fields">
 						<img class="post-ride-from-icon" src="assets/images/available-rides/starting-time.png">
 					</div>
-					<div class="from-address-post-wrap">
-						<label class="field-label from">
-							Leaving in
-						</label>
-						<span>{{rideScheduledTime}} minutes</span>
+
+					<div class="user-input-section"> <!-- class="from-address-post-wrap" -->
+						<label class="field-label from">Leaving in</label>
+						<span class="non-editable-sec">{{rideScheduledTime}} minutes</span>
+						<div class="editable-sec">
+							<!-- <label class="field-label from">Leaving In</label> -->
+							<select name="leavingIn" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON" ng-model="leavingIn">
+								<option style="display:none" value="">Leaving In</option> 	
+							</select>
+							<div class="error-msg-edit" ng-messages="postRideForm.shiftEndTime.$error">
+								<p ng-message="required" class="error-msg">shift time is required</p>
+							</div>
+						</div>
+
 					</div>
 				</div>
 				<div class="each-row">
@@ -62,9 +71,9 @@
 					</div>
 					<div class="from-address-post-wrap">
 						<label class="field-label from">
-							Total seats filled
+							Seat Available
 						</label>
-						<span>{{postedRide.currentlyAvailableSeats}}</span>
+						<span>{{postedRide.currentlyAvailableSeats}} / {{postedRide.initiallyAvailableSeats}}</span>
 					</div>
 				</div>
 			</div>
