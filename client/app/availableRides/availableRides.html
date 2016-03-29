@@ -2,7 +2,7 @@
 	<div class="container login-container user-home-container pad-R-none pad-L-none" scroll ng-class="{availheaderback:boolChangeClass}">
 
 		<div class="col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header">
-			<span class="glyphicon glyphicon-chevron-left cursor-pointer pull-left"></span>
+			<!-- <span class="glyphicon glyphicon-chevron-left cursor-pointer pull-left"></span> -->
 			<span class="heading">Available Rides</span>
 		</div>
 
@@ -18,7 +18,7 @@
 
 				<div class="col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride" ng-repeat="ride in rides track by $index">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-list-img-sec">
-						<img src="{{ride.offeredBy.userPhotoUrl}}" class="avail-user-img pull-left">
+						<img ng-src="{{ ride.offeredBy.userPhotoUrl || 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png' }}" class="avail-user-img pull-left">
 						<p class="avail-user-name">{{ride.offeredBy.empName}}</p>
 						<span class="pull-left avail-user-gender">{{ride.offeredBy.gender}}</span>
 
@@ -82,7 +82,7 @@
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 via-sec">
 						<img class="avai-ride-info-icon" src="assets/images/available-rides/from-icon.png">
-						<span class="">NH4</span>
+						<span class="">{{ride.routeSummary}}</span>
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 seat-sec">
 						<img class="avai-ride-info-icon pull-left" src="assets/images/available-rides/from-icon.png">

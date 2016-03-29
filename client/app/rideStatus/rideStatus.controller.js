@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('RideStatusCtrl', function ($scope, httpRequest, $state, $timeout) {
+  .controller('RideStatusCtrl', function ($scope, Auth, httpRequest, $state, $timeout) {
     $scope.message = 'Hello';
     $scope.editableMode = false;
     $scope.leftButtonText = "RESCHEDULE RIDE";
@@ -24,6 +24,17 @@ angular.module('cbApp')
     httpRequest.get(config.apis.latestActiveRideOfUser)
         .then(function(data){
             $scope.postedRide = data.data;
+
+            Auth.getCurrentUser()
+                .then(function(data){
+                    $scope.user = data;
+                    if($scope.user.empId == $scope.postedRide.offeredBy.empId){
+                        $scope.leftButtonText = "RESCHEDULE RIDE";
+                    }else{
+                        $scope.leftButtonText = "TRACK DRIVER";
+                    }
+                 });
+
             console.log("postedRide : ", $scope.postedRide);
             var now = moment();
             var to = moment($scope.postedRide.rideScheduledTime);
@@ -72,6 +83,10 @@ angular.module('cbApp')
                    }, function(err){
                       alert("Ride can't be rescheduled at this point. Error : " + err);
                    });
+      }
+      else if(buttonText == "TRACK DRIVER"){
+          if(config.cordova) cordovaUtil.showToastMessage('This feature is in progress');
+          else alert('This feature is in progress');
       }
     };
 

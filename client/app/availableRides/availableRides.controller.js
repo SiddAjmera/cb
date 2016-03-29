@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('AvailableRidesCtrl', function ($scope,httpRequest,Auth,socket, cordovaUtil) {
+  .controller('AvailableRidesCtrl', function ($scope,httpRequest,Auth,socket, cordovaUtil, $state) {
     console.log("Loading");
   	var currentUser = {};
   	$scope.rides = [];
@@ -85,9 +85,13 @@ angular.module('cbApp')
   			if(response.status==200){
   				//getAvailableRides();
   				/*ride selected successfully. Show notification to ride owner*/
+          if(config.cordova) cordovaUtil.showToastMessage('Your ride has been booked successfully.');
+          else alert('Your ride has been booked successfully.');
+          $state.go('userHome.rideStatus');
   			}else if(response.status==409){
           if(config.cordova) cordovaUtil.showToastMessage('You are already part of an Active Ride');
           else alert('You are already part of an Active Ride');
+          $state.go('userHome.rideStatus');
         }
   		},function(err){
             console.log("err",err);
@@ -95,6 +99,7 @@ angular.module('cbApp')
              if(err.status==409){
                   if(config.cordova) cordovaUtil.showToastMessage('You are already part of an Active Ride');
                   else alert('You are already part of an Active Ride');
+                  $state.go('userHome.rideStatus');
             }
         })
   	}

@@ -111,10 +111,11 @@ angular.module('cbApp')
         httpRequest.post(config.apis.createTeam, teamObject)
                    .then(function(data){
                         console.log("Team Created Successfully. TEAM: ", data.data);
+                        if(config.cordova) cordovaUtil.showToastMessage('A request has been sent for the members to join your team.');
+                        else alert('A request has been sent for the members to join your team.');
                  }).error(function(data, status, headers, config){
                     console.log("Error creating a Team");
                  });
-
     };
     
   });

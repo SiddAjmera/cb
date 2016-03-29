@@ -83,7 +83,8 @@ angular.module('cbApp')
     	httpRequest.put(url,obj)
     	.then(function (data) {
     		if(data.status === 200){
-    			alert('Your information has been stored successfully.');
+                if(config.cordova) cordovaUtil.showToastMessage("Your information has been stored successfully.");
+    			else alert('Your information has been stored successfully.');
     			Auth.getCurrentUser(true)
     			.then(function(data){
         			$scope.user = data;

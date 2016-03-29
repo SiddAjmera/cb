@@ -75,7 +75,7 @@ angular.module('cbApp')
                 angular.forEach(routes,function(r,key){
                     var routeObj = {};
                     routeObj.color = '#'+Math.floor(Math.random()*16777215).toString(16);
-                    routeObj.weight = 4;
+                    routeObj.weight = 8;
                     routeObj.latlngs = L.Polyline.fromEncoded(r.polyline).getLatLngs();
                     routeObj.clickable = true;
                     routeObj.message = r.via;
@@ -184,7 +184,8 @@ angular.module('cbApp')
             httpRequest.post(url, obj)
                        .then(function(data){
                             if(data.status === 200){
-                                alert('Your information has been stored successfully.');
+                                if(config.cordova) cordovaUtil.showToastMessage('Your information has been stored successfully.');
+                                else alert('Your information has been stored successfully.');
                             }
                        });
 

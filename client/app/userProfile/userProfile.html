@@ -7,7 +7,7 @@
 			<div class="profile-pic-wrapper">
 				<div class="triangle-down-left-post"></div>
 				<!-- <img class="profile-pic" src="assets/images/user-image.jpg"> -->
-				<img class="profile-pic" src="{{user.userPhotoUrl}}" ng-click="getImageSaveContact()">
+				<img class="profile-pic" ng-src="{{ ride.offeredBy.userPhotoUrl || 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png' }}" ng-click="getImageSaveContact()">
 				<!-- <img class="profile-pic" ng-src="data:image/png;base64,{{user.userPhotoUrl}}" ng-click="getImageSaveContact()"> -->
 			</div>
 			<div class="other-detail-wrapper" ng-class="{'editable-mode' : editableMode}">

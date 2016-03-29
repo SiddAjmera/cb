@@ -49,6 +49,10 @@ button:focus,input[type="button"]:focus{
     cursor: pointer;
 }
 
+.align-center {
+    text-align: center;
+}
+
 /*login and signup styles*/
 
 /*login Css starts*/
@@ -1199,13 +1203,13 @@ select.post-ofc-address{
 }
 .map-user-marker{
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border: 3px solid #FF723C;
 }
 .user-own{
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     background-image: url(../assets/images/suggested-icon/self-image-back.png);
     background-size: 70px;
     padding: 12px;
@@ -1385,6 +1389,8 @@ select.post-ofc-address{
 }
 .cn-wrapper li a img{
     cursor: pointer;
+    width: 35px;
+    height: 35px;
 }
  .cn-wrapper li a:hover,
  .cn-wrapper li a:active,
@@ -1989,7 +1995,7 @@ input[type=number]::-webkit-outer-spin-button {
 .triangle-down-left-post{
     width: 100%;
     height: 0;
-    padding-bottom: 20px;
+    padding-bottom: 18px;
     overflow: hidden;
 }
 .triangle-down-left:after {
@@ -2448,7 +2454,24 @@ input[type=number]::-webkit-outer-spin-button {
     float: left;
     background-color: #fff;
     padding: 12px 25px;
-    min-height: 70vh;
+    min-height: 45vh;
+}
+.no-team-sub-text {
+    font-size: 10px;
+    color: #9c9c9c;
+    letter-spacing: 0.8px;
+    margin: 20px 0;
+}
+.no-team-section {
+    text-align: center;
+}
+.create-team-btn {
+    background: #329d71;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    padding: 3px 15px;
+    box-shadow: 1px 2px 3px #acacac;
 }
 .my-team-content .team-list{
     list-style-type: none;
@@ -2471,12 +2494,13 @@ input[type=number]::-webkit-outer-spin-button {
     color: #01744D;
 }
 .team-name-sec{
-        font-size: 12px;
-    color: #333333;
+    font-size: 12px;
+    color: #5D5D5D;
     display: inline-block;
     line-height: 17px;
     width: 87%;
     border-bottom: 1px solid #ECECEC;
+    padding-bottom: 4px;
 }
 .team-dtl-page .glyphicon-list-alt{
     cursor: pointer;
@@ -2639,6 +2663,9 @@ input[type=number]::-webkit-outer-spin-button {
     width: 97%;
 }
 .editable-mode .profile-row .user-input-section span.non-editable-sec{
+    display: none;
+}
+.editable-mode .non-editable-sec {
     display: none;
 }
 .editable-sec select{
