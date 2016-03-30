@@ -281,7 +281,7 @@ angular.module('cbApp')
         ride.vehicleLicenseNumber = currentUser.vehicle[0].vehicleLicenseNumber;
         ride.rideStatus = "ACTIVE";
         
-        if(!$scope.routeSummary && routes > 1){
+        if(!$scope.routeSummary && routes.length > 1){
             if(config.cordova) cordovaUtil.showToastMessage("Please select a route before posting the ride!")
             else alert("Please select a route before posting the ride");
             return false;

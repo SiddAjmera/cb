@@ -48,10 +48,17 @@ angular.module('cbApp')
                   alert("Time is up! Your ride will be deleted from our system.");
                   httpRequest.delete(config.apis.deleteRide + $scope.postedRide._id)
                              .then(function(response){
-                                if(response.satatus === 204){
+                                if(response.satatus == 204){
                                     if(config.cordova) cordovaUtil.showToastMessage("Your ride has been deleted.")
                                     else alert("Your ride has been deleted.");
+                                    $state.go('userHome.home');
                                 }
+                             }, function(err){
+                                  if(err){
+                                      if(config.cordova) cordovaUtil.showToastMessage("Your ride couldn't be deleted at this point.")
+                                      else alert("Your ride couldn't be deleted at this point.");
+                                      $state.go('userHome.home');
+                                  }
                              });
                 }
             }

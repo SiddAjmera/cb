@@ -82,8 +82,7 @@ angular.module('cbApp')
   		httpRequest.put(apis,requestJSON).
   		then(function(response){
         console.log(response);
-  			if(response.status==200){
-  				//getAvailableRides();
+  			if(response.status==201){
   				/*ride selected successfully. Show notification to ride owner*/
           if(config.cordova) cordovaUtil.showToastMessage('Your ride has been booked successfully.');
           else alert('Your ride has been booked successfully.');

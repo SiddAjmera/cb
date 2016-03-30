@@ -172,6 +172,13 @@ angular.module('cbApp')
         teamObject.team = $scope.team;
         teamObject.team.rideDetails.ridePreferredTimeHToO = $scope.team.rideDetails.ridePreferredTime.start;
         teamObject.team.rideDetails.ridePreferredTimeOToH = $scope.team.rideDetails.ridePreferredTime.end;
+
+        if(!$scope.routeSummary && routes.length > 1){
+            if(config.cordova) cordovaUtil.showToastMessage("Please select a route before proceeding!")
+            else alert("Please select a route before proceeding");
+            return false;
+        }
+
         teamObject.team.rideDetails.routeSummary = $scope.routeSummary;
         console.log("Final Team Object Before Find Team Memebers : ", teamObject);
 
@@ -183,6 +190,7 @@ angular.module('cbApp')
             obj.officeAddressLocation = $scope.team.rideDetails.to;
             obj.shiftTimeIn = $scope.team.rideDetails.ridePreferredTime.start;
             obj.shiftTimeout = $scope.team.rideDetails.ridePreferredTime.end;
+
             httpRequest.post(url, obj)
                        .then(function(data){
                             if(data.status === 200){
