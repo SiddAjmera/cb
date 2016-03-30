@@ -16,7 +16,7 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/from-icon.png" ng-click="optionAddressOptions('from')">
 					</div>
 					<div id="postFromSec" class="from-address-post-wrap">
-						<label class="field-label from">
+						<label class="field-label">
 							From
 						</label>
 		                <select ng-model='rideData.from' class="timeslot post-ride-leaving-in" ng-change="fromChanged(rideData.from)">
@@ -35,7 +35,7 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/to.png" ng-click="optionAddressOptions('to')">
 					</div>
 					<div id="postToSec" class="from-address-post-wrap">
-						<label class="field-label from">
+						<label class="field-label">
 							To
 						</label>
 		                <select name="rideDestination" placeholder="To"  required ng-model='rideData.to' class='timeslot post-ride-leaving-in' ng-change="toChanged(rideData.to)"> 
@@ -56,7 +56,7 @@
 						<img class="post-ride-from-icon from" src="assets/images/available-rides/starting-time.png">
 					</div>
 					<div class="from-address-post-wrap">
-						<label class="field-label from">
+						<label class="field-label">
 							Starting at
 						</label>
 						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-model="rideData.leavingIn" ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON">
@@ -71,7 +71,7 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/seats_avalaible.png">
 					</div>
 					<div class="from-address-post-wrap">
-						<label class="field-label from">
+						<label class="field-label">
 							Seats available
 						</label>
 						<select class="timeslot post-ride-leaving-in" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="rideData.availableSeats" ng-options="c as c for c in availableSeatsJSON">

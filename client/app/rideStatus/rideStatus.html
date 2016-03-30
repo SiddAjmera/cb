@@ -53,7 +53,7 @@
 
 					<div class="user-input-section"> <!-- class="from-address-post-wrap" -->
 						<label class="field-label from">Leaving in</label>
-						<span class="non-editable-sec">{{rideScheduledTime}} minutes</span>
+						<span class="non-editable-sec field-label">{{rideScheduledTime}} minutes</span>
 						<div class="editable-sec">
 							<!-- <label class="field-label from">Leaving In</label> -->
 							<select name="leavingIn" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t.value as t.text for t in leavingInJSON" ng-model="leavingIn">
@@ -74,7 +74,7 @@
 						<label class="field-label from">
 							Seat Available
 						</label>
-						<span>{{postedRide.currentlyAvailableSeats}} / {{postedRide.initiallyAvailableSeats}}</span>
+						<span class="field-label">{{postedRide.currentlyAvailableSeats}} / {{postedRide.initiallyAvailableSeats}}</span>
 					</div>
 				</div>
 			</div>
