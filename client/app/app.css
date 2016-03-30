@@ -1365,11 +1365,11 @@ select.post-ofc-address{
 
  .cn-wrapper li a {
     position: absolute;
-    right: -8.25em;
-    bottom: -7.7em;
+    right: 24px;
+    bottom: 4px;
     display: block;
-    width: 311px;
-    height: 311px;
+    width: 35px;
+    height: 40px;
     border-radius: 50%;
     background: transparent;
     color: #fff;
