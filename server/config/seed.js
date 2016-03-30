@@ -13,7 +13,7 @@ var Team = require('../api/team/team.model');
 
 var SeedData = require('./seedData');
 
-User.create({
+/*User.create({
     empId: '111111',
     empName: 'Jagdeep Singh Soni',
     contactNo: '9876543210',
@@ -245,7 +245,7 @@ User.create({
     rating: 5
   },function(){
     console.log('Finished populating Users');
-});
+});*/
 
 /*Ride.create({
     routeSummary : "Phase 2 Rd",
@@ -291,7 +291,7 @@ User.create({
     console.log('Finished Populating Rides');
 });*/
 
-Team.create({
+/*Team.create({
     "name": "Monday Morning Commute",
     "createdBy": {
         "empId": "111111",
@@ -364,6 +364,6 @@ Team.create({
     }
 }, function(){
     console.log('Finished populating Teams');
-});
+});*/
 
-SeedData.seedLocations();
+/*SeedData.seedLocations();*/

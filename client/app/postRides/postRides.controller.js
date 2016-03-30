@@ -282,7 +282,8 @@ angular.module('cbApp')
         ride.rideStatus = "ACTIVE";
         
         if(!$scope.routeSummary && routes > 1){
-            alert("Please select a route before posting the ride");
+            if(config.cordova) cordovaUtil.showToastMessage("Please select a route before posting the ride!")
+            else alert("Please select a route before posting the ride");
             return false;
         }
 

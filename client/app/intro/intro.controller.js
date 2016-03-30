@@ -1,10 +1,6 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('IntroCtrl', function ($scope, Auth, $state) {
+  .controller('IntroCtrl', function ($scope) {
     $scope.message = 'Hello';
-    $scope.goToLandingPage = function(){
-    	Auth.logout();
-        $state.go("signup");
-    };
   });

@@ -145,6 +145,7 @@ angular.module('cbApp')
             delete $scope.team.rideDetails.from.vicinity;
             delete $scope.team.rideDetails.from.__proto__;
 
+            fromLocation = [];
             fromLocation.push($scope.team.rideDetails.from.location[1]);
             fromLocation.push($scope.team.rideDetails.from.location[0]);
             from = fromLocation.join();
@@ -156,6 +157,7 @@ angular.module('cbApp')
 
     $scope.$watch('team.rideDetails.to', function(newValue, oldValue, scope) {
         if(newValue != oldValue){
+            toLocation = [];
             toLocation.push($scope.team.rideDetails.to.location[1]);
             toLocation.push($scope.team.rideDetails.to.location[0]);
             from = fromLocation.join();

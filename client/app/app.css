@@ -1187,11 +1187,11 @@ select.post-ofc-address{
 }
 .post-ride-container .leaflet-container{
     width:100%;
-    height: 30vh;
+    height: 35vh;
 }
 .post-ride-container .leaflet-container.team{
     width:100%;
-    height: 20vh;   
+    height: 35vh;   
 }
 .sampling-wrapper .leaflet-container{
     width:100%;

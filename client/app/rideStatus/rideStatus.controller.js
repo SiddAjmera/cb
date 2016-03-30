@@ -45,7 +45,14 @@ angular.module('cbApp')
                 $scope.rideScheduledTime--;
                 if($scope.rideScheduledTime > 0) mytimeout = $timeout($scope.onTimeout,60000);
                 else{
-                  alert("Time is up!");
+                  alert("Time is up! Your ride will be deleted from our system.");
+                  httpRequest.delete(config.apis.deleteRide + $scope.postedRide._id)
+                             .then(function(response){
+                                if(response.satatus === 204){
+                                    if(config.cordova) cordovaUtil.showToastMessage("Your ride has been deleted.")
+                                    else alert("Your ride has been deleted.");
+                                }
+                             });
                 }
             }
             var mytimeout = $timeout($scope.onTimeout,60000);

@@ -5,7 +5,15 @@ angular.module('cbApp')
     $scope.team = $stateParams.team;
     $scope.membersEmpIds = [];
      
-     Auth.getCurrentUser().then(function(data){$scope.currentUser = data; getAllSuggestions(); });
+     Auth.getCurrentUser()
+         .then(function(data){
+            $scope.currentUser = data;
+
+            $scope.center.lat = $scope.currentUser.homeAddressLocation.location[1];
+            $scope.center.lng = $scope.currentUser.homeAddressLocation.location[0];
+
+            getAllSuggestions();
+         });
 
    $scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
      $scope.markers= [];
@@ -29,7 +37,7 @@ angular.module('cbApp')
                             markerClass = "map-user-marker user-own";
                         else
                              markerClass = "map-user-marker";
-                        var image = angular.element('<img>',{src:user.userPhotoUrl,'class':markerClass});
+                        var image = angular.element('<img>',{src:user.userPhotoUrl || "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png" ,'class':markerClass});
                         var p = angular.element('<p>',{'class':'map-user-name-sec','html':user.empName});
 
 
@@ -56,7 +64,7 @@ angular.module('cbApp')
       $(".home-page-menu-options").slideToggle(250);
     }
    
-    $scope.center={
+    $scope.center = {
         lat : 18.581904504725568,
         lng : 73.68483066558838,
         zoom: 30
