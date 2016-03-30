@@ -1218,7 +1218,7 @@ select.post-ofc-address{
     width: 60px;
     height: 60px;
     background-image: url(../assets/images/suggested-icon/self-image-back.png);
-    background-size: 70px;
+    background-size: 60px;
     padding: 12px;
     border:none;
 }
