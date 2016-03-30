@@ -85,12 +85,8 @@ angular.module('cbApp')
     		if(data.status === 200){
                 if(config.cordova) cordovaUtil.showToastMessage("Your information has been stored successfully.");
     			else alert('Your information has been stored successfully.');
-    			Auth.getCurrentUser(true)
-    			.then(function(data){
-        			$scope.user = data;
-        			if(forAction == 'postRides') $state.go('userHome.postRides');
-        			else if(forAction == 'takeRide') $state.go('userHome.availableRides');
-    			});
+    			if(forAction == 'postRides') $state.go('userHome.postRides');
+        	    else if(forAction == 'takeRide') $state.go('userHome.availableRides');
     		}
     	})
     };

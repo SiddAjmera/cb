@@ -45,7 +45,8 @@ angular.module('cbApp')
                 $scope.rideScheduledTime--;
                 if($scope.rideScheduledTime > 0) mytimeout = $timeout($scope.onTimeout,60000);
                 else{
-                  alert("Time is up! Your ride will be deleted from our system.");
+                  if(config.cordova) cordovaUtil.showToastMessage("Time is up! Your ride will be deleted from our system.")
+                  else alert("Time is up! Your ride will be deleted from our system.");
                   httpRequest.delete(config.apis.deleteRide + $scope.postedRide._id)
                              .then(function(response){
                                 if(response.satatus == 204){
@@ -64,9 +65,13 @@ angular.module('cbApp')
             }
             var mytimeout = $timeout($scope.onTimeout,60000);
         },function(err){
-            if(err.status == 409) alert('Error getting recent ride details');
+            if(err.status == 409){
+                if(config.cordova) cordovaUtil.showToastMessage("Error getting your recent ride details.")
+                else alert("Error getting your recent ride details.");
+            }
             if(err.status == 404){
-              alert('You are not a part of an active ride. Please post a ride or request a ride to see it\'s details here');
+              if(config.cordova) cordovaUtil.showToastMessage("You are not a part of an active ride. Please post a ride or request a ride to see it\'s details here")
+              else alert("You are not a part of an active ride. Please post a ride or request a ride to see it\'s details here");
               $state.go('userHome.home');
             }
         });
@@ -119,11 +124,14 @@ angular.module('cbApp')
                        .then(function(data){
                           console.log("Data from cancel ride : ", data);
                           if(data.status == 200){
-                            alert("Ride Cancelled Successfully");
+                            if(config.cordova) cordovaUtil.showToastMessage('Ride Cancelled Successfully');
+                            else alert('Ride Cancelled Successfully');
                             $state.go('userHome.home');
                           }
                        }, function(err){
                           alert("Ride can't be cancelled at this point. Error : " + err);
+                          if(config.cordova) cordovaUtil.showToastMessage('Ride can\'t be cancelled at this point.');
+                          else alert('Ride can\'t be cancelled at this point.');
                        });
 
         } else return;
