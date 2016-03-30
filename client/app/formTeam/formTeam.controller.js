@@ -9,6 +9,12 @@ angular.module('cbApp')
     var toLocation = [];
     var from, to;
 
+    $scope.team = {};
+    $scope.team.teamName = "Morning Commute";
+    $scope.team.rideDetails = {};
+    $scope.team.rideDetails.from = {};
+    $scope.team.rideDetails.to = {};
+
     var directionsService = new google.maps.DirectionsService();
 
     $scope.officeAddressJSON = staticData.getTCSLocations();
@@ -90,12 +96,6 @@ angular.module('cbApp')
         }); 
     };
 
-    $scope.team = {};
-    $scope.team.teamName = "Morning Commute";
-    $scope.team.rideDetails = {};
-    $scope.team.rideDetails.from = {};
-    $scope.team.rideDetails.to = {};
-
     var currentUser = {};
 	Auth.getCurrentUser(true)
     	.then(function(data){
@@ -106,6 +106,8 @@ angular.module('cbApp')
                 fromLocation.push($scope.team.rideDetails.from.location[1]);
                 fromLocation.push($scope.team.rideDetails.from.location[0]);
                 from = fromLocation.join();
+
+                console.log("User Home Address Location : ", $scope.user.homeAddressLocation);
             }
             
             if($scope.user.officeAddressLocation){
@@ -113,13 +115,15 @@ angular.module('cbApp')
                 toLocation.push($scope.team.rideDetails.to.location[1]);
                 toLocation.push($scope.team.rideDetails.to.location[0]);
                 to = toLocation.join();
+
+                console.log("User Home Address Location : ", $scope.user.officeAddressLocation);
             }
             if($scope.user.shiftTimeIn) $scope.team.rideDetails.ridePreferredTime = _.findWhere( $scope.timeSlotJSON, { 'start': $scope.user.shiftTimeIn } );
             if(from && to) getRoute(from, to);
     	});
 
     $scope.$watch('team.rideDetails.from', function(newValue, oldValue, scope) {
-        if(newValue != oldValue){
+        if(newValue != oldValue && newValue != $scope.team.rideDetails.from){
             $scope.team.rideDetails.from.display_address = $scope.team.rideDetails.from.name;
             $scope.team.rideDetails.from.formatted_address = $scope.team.rideDetails.from.formatted_address;
             $scope.team.rideDetails.from.icon = $scope.team.rideDetails.from.icon;
@@ -156,7 +160,10 @@ angular.module('cbApp')
     });
 
     $scope.$watch('team.rideDetails.to', function(newValue, oldValue, scope) {
-        if(newValue != oldValue){
+        if(newValue != oldValue && newValue != $scope.team.rideDetails.from){
+
+            $scope.team.rideDetails.to = newValue;
+
             toLocation = [];
             toLocation.push($scope.team.rideDetails.to.location[1]);
             toLocation.push($scope.team.rideDetails.to.location[0]);
@@ -184,7 +191,7 @@ angular.module('cbApp')
 
         //For the case when the User directly visits the Form Team Page.
         var url = config.apis.signup + $scope.user._id;
-        if(!$scope.user.homeAddressLocation && !scope.user.officeAddressLocation){
+        if(!$scope.user.homeAddressLocation && !$scope.user.officeAddressLocation){
             var obj = {};
             obj.homeAddressLocation = $scope.team.rideDetails.from;
             obj.officeAddressLocation = $scope.team.rideDetails.to;
@@ -198,7 +205,6 @@ angular.module('cbApp')
                                 else alert('Your information has been stored successfully.');
                             }
                        });
-
         }
 
         $state.go('userHome.suggestions', {'team': teamObject});
