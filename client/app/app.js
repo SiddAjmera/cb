@@ -85,16 +85,17 @@ angular.module('cbApp', [
     }
     ///console.log("In run block",localStorage.isInitialized());
     
-   localStorage.isInitialized().then(function(val){
-            if(val){
-              // $location.path('/userHome/home');
-            }
-              
-            else{
-              localStorage.initialize();
-              $location.path('/intro');
-            }
-          })
+   localStorage.isInitialized()
+               .then(function(val){
+                    if(val){
+                      $location.path('/userHome/home');
+                    }
+                      
+                    else{
+                      localStorage.initialize();
+                      $location.path('/intro');
+                    }
+                })
 
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next,nextPara,prev) {
@@ -102,6 +103,8 @@ angular.module('cbApp', [
         console.log("loggedIn",loggedIn);
          console.log("next",next);
          console.log("prev",prev);
+
+
 
         if(next.authenticate && !loggedIn) {
           $location.path('/login');
