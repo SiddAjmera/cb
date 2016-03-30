@@ -138,6 +138,10 @@ angular.module('cbApp')
                         $state.go('myteams');
                     }, function(data, status, headers, config){
                         console.log("Error creating a Team");
+                        if(config.cordova) cordovaUtil.showToastMessage('There was an error forming your team. Please check your internet connection and try again.');
+                        else alert('There was an error forming your team. Please check your internet connection and try again.');
+                        createTeamHelper.clearTeam();
+                        $state.go('myteams');
                     });
     };
     
