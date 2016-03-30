@@ -75,7 +75,7 @@ angular.module('cbApp')
                 angular.forEach(routes,function(r,key){
                     var routeObj = {};
                     routeObj.color = '#'+Math.floor(Math.random()*16777215).toString(16);
-                    routeObj.weight = 4;
+                    routeObj.weight = 8;
                     routeObj.latlngs = L.Polyline.fromEncoded(r.polyline).getLatLngs();
                     routeObj.clickable = true;
                     routeObj.message = r.via;
@@ -145,6 +145,7 @@ angular.module('cbApp')
             delete $scope.team.rideDetails.from.vicinity;
             delete $scope.team.rideDetails.from.__proto__;
 
+            fromLocation = [];
             fromLocation.push($scope.team.rideDetails.from.location[1]);
             fromLocation.push($scope.team.rideDetails.from.location[0]);
             from = fromLocation.join();
@@ -156,6 +157,7 @@ angular.module('cbApp')
 
     $scope.$watch('team.rideDetails.to', function(newValue, oldValue, scope) {
         if(newValue != oldValue){
+            toLocation = [];
             toLocation.push($scope.team.rideDetails.to.location[1]);
             toLocation.push($scope.team.rideDetails.to.location[0]);
             from = fromLocation.join();
@@ -170,6 +172,13 @@ angular.module('cbApp')
         teamObject.team = $scope.team;
         teamObject.team.rideDetails.ridePreferredTimeHToO = $scope.team.rideDetails.ridePreferredTime.start;
         teamObject.team.rideDetails.ridePreferredTimeOToH = $scope.team.rideDetails.ridePreferredTime.end;
+
+        if(!$scope.routeSummary && routes.length > 1){
+            if(config.cordova) cordovaUtil.showToastMessage("Please select a route before proceeding!")
+            else alert("Please select a route before proceeding");
+            return false;
+        }
+
         teamObject.team.rideDetails.routeSummary = $scope.routeSummary;
         console.log("Final Team Object Before Find Team Memebers : ", teamObject);
 
@@ -181,10 +190,12 @@ angular.module('cbApp')
             obj.officeAddressLocation = $scope.team.rideDetails.to;
             obj.shiftTimeIn = $scope.team.rideDetails.ridePreferredTime.start;
             obj.shiftTimeout = $scope.team.rideDetails.ridePreferredTime.end;
+
             httpRequest.post(url, obj)
                        .then(function(data){
                             if(data.status === 200){
-                                alert('Your information has been stored successfully.');
+                                if(config.cordova) cordovaUtil.showToastMessage('Your information has been stored successfully.');
+                                else alert('Your information has been stored successfully.');
                             }
                        });
 

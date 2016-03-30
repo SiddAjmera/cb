@@ -50,7 +50,7 @@ angular.module('cbApp')
                 angular.forEach(routes,function(r,key){
                     var routeObj = {};
                     routeObj.color = '#'+Math.floor(Math.random()*16777215).toString(16);
-                    routeObj.weight = 5;
+                    routeObj.weight = 8;
                     routeObj.latlngs = L.Polyline.fromEncoded(r.polyline).getLatLngs();
                     routeObj.clickable = true;
                     routeObj.message = r.via;
@@ -281,8 +281,9 @@ angular.module('cbApp')
         ride.vehicleLicenseNumber = currentUser.vehicle[0].vehicleLicenseNumber;
         ride.rideStatus = "ACTIVE";
         
-        if(!$scope.routeSummary && routes > 1){
-            alert("Please select a route before posting the ride");
+        if(!$scope.routeSummary && routes.length > 1){
+            if(config.cordova) cordovaUtil.showToastMessage("Please select a route before posting the ride!")
+            else alert("Please select a route before posting the ride");
             return false;
         }
 

@@ -165,7 +165,8 @@ angular.module('cbApp')
       httpRequest.put(url,obj)
       .then(function (data) {
         if(data.status === 200){
-          alert('stored');
+          if(config.cordova) cordovaUtil.showToastMessage('Profile Image Updated Successfully');
+          else alert('Profile Image Updated Successfully');
           Auth.getCurrentUser(true)
           .then(function(data){
               console.log("Data returned : ", data);
@@ -242,7 +243,8 @@ angular.module('cbApp')
         httpRequest.put(url,obj)
         .then(function (data) {
           if(data.status === 200){
-            alert('Profile Updated Successfully');
+            if(config.cordova) cordovaUtil.showToastMessage('Profile Updated Successfully');
+            else alert('Profile Updated Successfully');
             Auth.getCurrentUser(true)
             .then(function(data){
                 console.log("Data returned : ", data);
@@ -259,7 +261,7 @@ angular.module('cbApp')
                 $scope.rightButtonText = "LOGOUT";
                 
                 $state.go('userHome.userProfile');
-            });  
+            });
           }
         });
       }

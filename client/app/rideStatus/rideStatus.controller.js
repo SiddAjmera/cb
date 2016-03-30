@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('RideStatusCtrl', function ($scope, httpRequest, $state, $timeout) {
+  .controller('RideStatusCtrl', function ($scope, Auth, httpRequest, $state, $timeout) {
     $scope.message = 'Hello';
     $scope.editableMode = false;
     $scope.leftButtonText = "RESCHEDULE RIDE";
@@ -24,6 +24,17 @@ angular.module('cbApp')
     httpRequest.get(config.apis.latestActiveRideOfUser)
         .then(function(data){
             $scope.postedRide = data.data;
+
+            Auth.getCurrentUser()
+                .then(function(data){
+                    $scope.user = data;
+                    if($scope.user.empId == $scope.postedRide.offeredBy.empId){
+                        $scope.leftButtonText = "RESCHEDULE RIDE";
+                    }else{
+                        $scope.leftButtonText = "TRACK DRIVER";
+                    }
+                 });
+
             console.log("postedRide : ", $scope.postedRide);
             var now = moment();
             var to = moment($scope.postedRide.rideScheduledTime);
@@ -34,7 +45,21 @@ angular.module('cbApp')
                 $scope.rideScheduledTime--;
                 if($scope.rideScheduledTime > 0) mytimeout = $timeout($scope.onTimeout,60000);
                 else{
-                  alert("Time is up!");
+                  alert("Time is up! Your ride will be deleted from our system.");
+                  httpRequest.delete(config.apis.deleteRide + $scope.postedRide._id)
+                             .then(function(response){
+                                if(response.satatus == 204){
+                                    if(config.cordova) cordovaUtil.showToastMessage("Your ride has been deleted.")
+                                    else alert("Your ride has been deleted.");
+                                    $state.go('userHome.home');
+                                }
+                             }, function(err){
+                                  if(err){
+                                      if(config.cordova) cordovaUtil.showToastMessage("Your ride couldn't be deleted at this point.")
+                                      else alert("Your ride couldn't be deleted at this point.");
+                                      $state.go('userHome.home');
+                                  }
+                             });
                 }
             }
             var mytimeout = $timeout($scope.onTimeout,60000);
@@ -72,6 +97,10 @@ angular.module('cbApp')
                    }, function(err){
                       alert("Ride can't be rescheduled at this point. Error : " + err);
                    });
+      }
+      else if(buttonText == "TRACK DRIVER"){
+          if(config.cordova) cordovaUtil.showToastMessage('This feature is in progress');
+          else alert('This feature is in progress');
       }
     };
 

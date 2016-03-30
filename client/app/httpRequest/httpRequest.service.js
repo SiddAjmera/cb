@@ -54,6 +54,17 @@ angular.module('cbApp')
                   });
           // Return the promise to the controller
           return promise;
+      },
+      delete: function(url){
+          var promise;
+          var req = {};
+          req.url = config.apiBaseURL + url;
+          req.method = 'DELETE';
+          promise = $http(req).
+                    then(function(response){
+                        return response;
+                    });
+          return promise;
       }
     }
    }

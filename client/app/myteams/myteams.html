@@ -2,7 +2,7 @@
 	<div class="container login-container user-home-container pad-R-none pad-L-none" scroll ng-class="{availheaderback:boolChangeClass}">
 
 		<div class="col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header">
-			<span class="glyphicon glyphicon-chevron-left cursor-pointer pull-left"></span>
+			<!-- <span class="glyphicon glyphicon-chevron-left cursor-pointer pull-left"></span> -->
 			<span class="heading">My teams</span>
 		</div>
 		<div class="my-teams-wrapper">
@@ -18,7 +18,7 @@
 				<div class="no-team-section"  ng-if="teams.length<=0">
 					<p>No Teams Yet</p>
 					<p class="no-team-sub-text">As you are new user, So please create your team first.</p>
-					<button class="create-team-btn">Create New</button>
+					<button class="create-team-btn" ng-click="goToCreateTeamPage()">Create New</button>
 				</div>
 
 				<!-- <div >

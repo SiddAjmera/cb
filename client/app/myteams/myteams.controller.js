@@ -33,4 +33,8 @@ angular.module('cbApp')
   		});
     }
 
+    $scope.goToCreateTeamPage = function(){
+      $state.go('formTeam');
+    }
+
 });
