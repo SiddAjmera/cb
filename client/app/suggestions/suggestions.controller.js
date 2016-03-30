@@ -114,7 +114,7 @@ angular.module('cbApp')
         teamObject.team.rideDetails.home = {};
         teamObject.team.rideDetails.home = teamObject.team.rideDetails.from;
         teamObject.team.rideDetails.office = {};
-        teamObject.team.rideDetails.office = teamObject.team.rideDetails.office;
+        teamObject.team.rideDetails.office = teamObject.team.rideDetails.to;
         teamObject.team.rideDetails.preferredTimeHToO = teamObject.team.rideDetails.ridePreferredTimeHToO;
         teamObject.team.rideDetails.preferredTimeOToH = teamObject.team.rideDetails.ridePreferredTimeOToH;
 
