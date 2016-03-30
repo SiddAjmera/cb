@@ -22,7 +22,7 @@
 					<div class="user-input-section">
 						<span class="non-editable-sec">{{user.contactNo}}</span>
 						<div class="editable-sec">
-							<label class="field-label from">
+							<label class="field-label">
 								Contact no.
 							</label> 
 							<input maxlength="10" class="form-control input-boxes login-input-box"  ng-class="{'error-border':!showErrorMessage}"  ng-model="user.contactNo" type="tel" name="contactNo" required ng-pattern="/^[789]\d{9}$/" placeholder="Mobile Number" >
@@ -44,7 +44,7 @@
 					<div class="user-input-section">
 						<span class="non-editable-sec">{{user.homeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span>
 						<div class="editable-sec">
-							<label class="field-label from">
+							<label class="field-label">
 								Home address
 							</label>
 							<input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box" type="text" name="homeAddress" required ng-model='user.homeAddress' g-places-autocomplete options="autocompleteOptions">
@@ -68,7 +68,7 @@
 					<div class="user-input-section">
 						<span class="non-editable-sec">{{user.officeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span>
 						<div class="editable-sec">
-							<label class="field-label from">
+							<label class="field-label">
 								Office address
 							</label>
 							<select ng-options='item as item.display_address for item in officeAddressJSON' ng-model='officeAddress' name='officeAddress' class="post-ofc-address">
@@ -92,7 +92,7 @@
 					<div class="user-input-section">
 						<span class="non-editable-sec">{{user.vehicle[0].vehicleLicenseNumber}}</span>
 						<div class="editable-sec">
-							<label class="field-label from">
+							<label class="field-label">
 								Vehicle no.
 							</label>
 							<input class="form-control input-boxes login-input-box" ng-class="{'error-border':!showErrorMessage}" type="text" maxlength="13" name="vehicleNo" required ng-pattern="/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/" ng-model="user.vehicle[0].vehicleLicenseNumber">
@@ -114,7 +114,7 @@
 					<div class="user-input-section">
 						<span class="non-editable-sec">{{user.vehicle[0].capacity}}</span>
 						<div class="editable-sec">
-							<label class="field-label from">
+							<label class="field-label">
 								Seats available
 							</label>
 							<select class="timeslot post-ride-leaving-in" name="availableSeats" ng-class="{'error-border':!showErrorMessage}" required ng-model="vehicleCapacity" ng-options="c as c for c in vehicleCapacityJSON">
@@ -142,7 +142,7 @@
 						<div class="user-input-section">
 							<span class="non-editable-sec">{{user.shiftTimeIn | date:'hh:mm a'}}</span>
 							<div class="editable-sec">
-								<label class="field-label from">
+								<label class="field-label">
 									Shift start time
 								</label>
 								<select name="shiftStartTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.start for t in timeSlotJSON"  ng-model="shiftTime">
@@ -166,7 +166,7 @@
 						<div class="user-input-section">
 							<span class="non-editable-sec">{{user.shiftTimeout | date:'hh:mm a'}}</span>
 							<div class="editable-sec">
-								<label class="field-label from">
+								<label class="field-label">
 									Shift end time
 								</label>
 								<select name="shiftEndTime" class="timeslot post-ride-leaving-in"  ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.end for t in timeSlotJSON"  ng-model="shiftTime">

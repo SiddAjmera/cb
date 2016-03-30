@@ -28,7 +28,7 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/from-icon.png" ng-click="optionAddressOptions('from')">
 					</div>
 					<div id="postFromSec" class="from-address-post-wrap">
-						<label class="field-label from">
+						<label class="field-label">
 							Home
 						</label> 
 		                <input tab-index="1" id="" ng-class="{'error-border':showErrorMessage}" class="form-control input-boxes login-input-box" type="text" name="homeAddress" required ng-model='team.rideDetails.from' g-places-autocomplete>
@@ -45,7 +45,7 @@
 						<img class="post-ride-from-icon" src="assets/images/available-rides/to.png" ng-click="optionAddressOptions('to')">
 					</div>
 					<div id="postToSec" class="from-address-post-wrap">
-						<label class="field-label from">
+						<label class="field-label">
 							Office
 						</label>
 						<select ng-options='item as item.display_address for item in officeAddressJSON' ng-model='team.rideDetails.to' name='officeAddress' class="post-ofc-address">
@@ -64,7 +64,7 @@
 						<img class="post-ride-from-icon from" src="assets/images/available-rides/starting-time.png">
 					</div>
 					<div class="from-address-post-wrap">
-						<label class="field-label from">
+						<label class="field-label">
 							Shift start time
 						</label>
 						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.start for t in timeSlotJSON"  ng-model="team.rideDetails.ridePreferredTime">
@@ -80,7 +80,7 @@
 						<img class="post-ride-from-icon from" src="assets/images/available-rides/starting-time.png">
 					</div>
 					<div class="from-address-post-wrap">
-						<label class="field-label from">
+						<label class="field-label">
 							Shift end time
 						</label>
 						<select name="leavingIn" class="timeslot post-ride-leaving-in" ng-class="{'error-border':!showErrorMessage}" required ng-options="t as t.end for t in timeSlotJSON"  ng-model="team.rideDetails.ridePreferredTime">
