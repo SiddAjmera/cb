@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest,Auth, $stateParams) {
+  .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest,Auth, $stateParams,createTeamHelper) {
     $scope.team = $stateParams.team;
     $scope.membersEmpIds = [];
      
@@ -111,6 +111,8 @@ angular.module('cbApp')
     $scope.createTeam = function(){
         console.log("$scope.team from createTeam method in Suggestions : ", $scope.team);
         var teamObject = {};
+        createTeamHelper.getTeam();
+        createTeamHelper.clearTeam();
         teamObject.createdByEmpId = $scope.membersEmpIds;
         teamObject.team = $scope.team;
 
