@@ -72,9 +72,10 @@ exports.create = function(req, res) {
 	logger.trace(req.user.empId + ' requested for Team.create');
 
 	var teamToCreate = req.body.team;
+	console.log("Team to create : " + JSON.stringify(teamToCreate));
 	teamToCreate.activities = [];
 
-	User.findOne({empId: req.body.createdByEmpId}, {empId: 1, empName: 1, contactNo: 1, userPhotoUrl: 1,  redgId: 1}, function(err, user){
+	User.findOne({empId: req.user.empId}, {empId: 1, empName: 1, contactNo: 1, userPhotoUrl: 1,  redgId: 1}, function(err, user){
 		if(err){ 
 		  logger.fatal('Error in Team.create.User.findOne Error : ' + err);
 		  return handleError(res, err); 

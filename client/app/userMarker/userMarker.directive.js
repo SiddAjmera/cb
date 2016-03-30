@@ -6,14 +6,14 @@ angular.module('cbApp')
         templateUrl: 'app/userMarker/userMarker.html',
         restrict: 'E',
         scope:{  //This represents an isolated scope. In this case this isolated scope will not be able to access the parent scope
-          contactno:"@", //@ will take the value of contactno AS STRING from it's consumer but won't update it if it's changed in the directive
-          empid:"@",  //= provides a two way data binding. i.e. it will not only take the empid value of it's consumer but will also update it if it's changed here
-          action:"&"  //& is used for methods
+            contactno:"@", //@ will take the value of contactno AS STRING from it's consumer but won't update it if it's changed in the directive
+            empid:"@",  //= provides a two way data binding. i.e. it will not only take the empid value of it's consumer but will also update it if it's changed here
+            action:"&"  //& is used for methods
         },
         link: function (scope, element, attrs) {
-            scope.addToTeam = function(user) {
+            scope.addToTeam = function() {
               // Ad "id" to the locals of "editWebsite" 
-              createTeamHelper.addToTeam(user);              
+              createTeamHelper.addToTeam(scope.empid);
             }
         }
     }}]);
