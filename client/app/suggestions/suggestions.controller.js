@@ -1,26 +1,28 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest,Auth, $stateParams,createTeamHelper) {
+  .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest,Auth, $stateParams,createTeamHelper, $state) {
     $scope.team = $stateParams.team;
     $scope.membersEmpIds = [];
      
-     Auth.getCurrentUser()
-         .then(function(data){
+    Auth.getCurrentUser()
+        .then(function(data){
             $scope.currentUser = data;
-
             $scope.center.lat = $scope.currentUser.homeAddressLocation.location[1];
             $scope.center.lng = $scope.currentUser.homeAddressLocation.location[0];
-
             getAllSuggestions();
-         });
+        });
 
-   $scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" }
-     $scope.markers= [];
+    $scope.defaults = {
+        minZoom:10,
+        maxZoom:15,
+        tap:true,
+        tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    }
+
+    $scope.markers= [];
     var getAllSuggestions = function(){
-
         console.log("The current team Object is : ", $stateParams.team);
-
         httpRequest.get(config.apis.getAllUsers).
         then(function(res){
             console.log("res",res);
@@ -40,8 +42,6 @@ angular.module('cbApp')
                         var image = angular.element('<img>',{src:user.userPhotoUrl || "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png" ,'class':markerClass});
                         var p = angular.element('<p>',{'class':'map-user-name-sec','html':user.empName});
 
-
-
                         console.log(image.outerHTML )
                         /*tempObj.layer="Options";*/
                         tempObj.icon = {
@@ -56,12 +56,12 @@ angular.module('cbApp')
                 });
                 console.log($scope.markers)
             }
-        })
+        });
     }    
 
     
     $scope.toggleFooter = function(){
-      $(".home-page-menu-options").slideToggle(250);
+        $(".home-page-menu-options").slideToggle(250);
     }
    
     $scope.center = {
@@ -70,36 +70,32 @@ angular.module('cbApp')
         zoom: 30
     };
 
-     var eventNameClick = 'leafletDirectiveMarker.myMap.click';
-     var eventNameTouch = 'leafletDirectiveMarker.myMap.touch';
-        $scope.$on(eventNameClick, function(event, args){
-            
+    var eventNameClick = 'leafletDirectiveMarker.myMap.click';
+    var eventNameTouch = 'leafletDirectiveMarker.myMap.touch';
+
+    $scope.$on(eventNameClick, function(event, args){
         $timeout(function(){
             var  wrapper = document.getElementById('cn-wrapper');
             classie.add(wrapper, 'opened-nav');
         },100)
-         
+    });
 
-        });
-        $scope.$on(eventNameTouch, function(event, args){
-            
-
-          $timeout(function(){
+    $scope.$on(eventNameTouch, function(event, args){
+        $timeout(function(){
             var  wrapper = document.getElementById('cn-wrapper');
-         classie.add(wrapper, 'opened-nav');
+            classie.add(wrapper, 'opened-nav');
         },100)
-         
+    });
 
-        });
     /*{
-            osloMarker: {
-                lat: 59.91,
-                lng: 10.75,
-                message: "I want to travel here!",
-                focus: true,
-                draggable: false
-            }
-        }*/
+        osloMarker: {
+            lat: 59.91,
+            lng: 10.75,
+            message: "I want to travel here!",
+            focus: true,
+            draggable: false
+        }
+    }*/
 
     $scope.addAsMember = function(empId){
         console.log("In Add Member with empId : ", empId);
@@ -111,10 +107,25 @@ angular.module('cbApp')
     $scope.createTeam = function(){
         console.log("$scope.team from createTeam method in Suggestions : ", $scope.team);
         var teamObject = {};
-        createTeamHelper.getTeam();
-        createTeamHelper.clearTeam();
         teamObject.createdByEmpId = $scope.membersEmpIds;
-        teamObject.team = $scope.team;
+        
+        teamObject.team = $scope.team.team;
+        teamObject.team.name = teamObject.team.teamName;
+        teamObject.team.rideDetails.home = {};
+        teamObject.team.rideDetails.home = teamObject.team.rideDetails.from;
+        teamObject.team.rideDetails.office = {};
+        teamObject.team.rideDetails.office = teamObject.team.rideDetails.office;
+        teamObject.team.rideDetails.preferredTimeHToO = teamObject.team.rideDetails.ridePreferredTimeHToO;
+        teamObject.team.rideDetails.preferredTimeOToH = teamObject.team.rideDetails.ridePreferredTimeOToH;
+
+        teamObject.membersEmpIds = createTeamHelper.getTeam();
+
+        delete teamObject.team.teamName;
+        delete teamObject.team.rideDetails.from;
+        delete teamObject.team.rideDetails.to;
+        delete teamObject.team.rideDetails.ridePreferredTimeHToO;
+        delete teamObject.team.rideDetails.ridePreferredTimeOToH;
+        delete teamObject.team.rideDetails.ridePreferredTime;
 
         console.log("Final Team Object before TeamCreation : ", teamObject);
 
@@ -123,9 +134,11 @@ angular.module('cbApp')
                         console.log("Team Created Successfully. TEAM: ", data.data);
                         if(config.cordova) cordovaUtil.showToastMessage('A request has been sent for the members to join your team.');
                         else alert('A request has been sent for the members to join your team.');
-                 }).error(function(data, status, headers, config){
-                    console.log("Error creating a Team");
-                 });
+                        createTeamHelper.clearTeam();
+                        $state.go('myteams');
+                    }, function(data, status, headers, config){
+                        console.log("Error creating a Team");
+                    });
     };
     
   });
