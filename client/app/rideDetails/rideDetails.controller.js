@@ -85,6 +85,14 @@ angular.module('cbApp')
     		if(data.status === 200){
                 if(config.cordova) cordovaUtil.showToastMessage("Your information has been stored successfully.");
     			else alert('Your information has been stored successfully.');
+
+                //This is done so that the CurrentUser Object in the localStorage is also updated.
+                //It will be updated as we are forceFetching from the Database
+                Auth.getCurrentUser(true)
+                    .then(function(data){
+                        
+                    });
+
     			if(forAction == 'postRides') $state.go('userHome.postRides');
         	    else if(forAction == 'takeRide') $state.go('userHome.availableRides');
     		}
