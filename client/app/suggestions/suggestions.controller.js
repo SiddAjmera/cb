@@ -15,7 +15,7 @@ angular.module('cbApp')
 
     $scope.defaults = {
         minZoom:10,
-        maxZoom:15,
+        maxZoom:18,
         tap:true,
         tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     }
@@ -39,7 +39,7 @@ angular.module('cbApp')
                             markerClass = "map-user-marker user-own";
                         else
                              markerClass = "map-user-marker";
-                        var image = angular.element('<img>',{src:user.userPhotoUrl || "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png" ,'class':markerClass});
+                        var image = angular.element('<img>',{src:user.userPhotoUrl || "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png" ,'class':markerClass, 'id':user.empId+"_img"});
                         var p = angular.element('<p>',{'class':'map-user-name-sec','html':user.empName});
 
                         console.log(image.outerHTML )
@@ -70,22 +70,32 @@ angular.module('cbApp')
         zoom: 30
     };
 
-    var eventNameClick = 'leafletDirectiveMarker.myMap.click';
-    var eventNameTouch = 'leafletDirectiveMarker.myMap.touch';
+    if(config.cordova){
+        var eventNameTouch = 'leafletDirectiveMarker.myMap.touch';
+        $scope.$on(eventNameTouch, function(event, args){
+            $timeout(function(){
+                if(!~(args.model.message).indexOf($scope.currentUser.empId)){
+                    var  wrapper = document.getElementById('cn-wrapper');
+                    if(wrapper) classie.add(wrapper, 'opened-nav');
+                }
+            },100)
+        });
+    }
+    else{
+        var eventNameClick = 'leafletDirectiveMarker.myMap.click';
+        $scope.$on(eventNameClick, function(event, args){
+            $timeout(function(){
+                if(!~(args.model.message).indexOf($scope.currentUser.empId)){
+                    var  wrapper = document.getElementById('cn-wrapper');
+                    if(wrapper) classie.add(wrapper, 'opened-nav');
+                }
+            },100)
+        });
+    }
 
-    $scope.$on(eventNameClick, function(event, args){
-        $timeout(function(){
-            var  wrapper = document.getElementById('cn-wrapper');
-            classie.add(wrapper, 'opened-nav');
-        },100)
-    });
+    
 
-    $scope.$on(eventNameTouch, function(event, args){
-        $timeout(function(){
-            var  wrapper = document.getElementById('cn-wrapper');
-            classie.add(wrapper, 'opened-nav');
-        },100)
-    });
+    /**/
 
     /*{
         osloMarker: {

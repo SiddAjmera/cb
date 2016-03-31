@@ -1214,6 +1214,11 @@ select.post-ofc-address{
     height: 50px;
     border: 3px solid #FF723C;
 }
+.map-user-marker.added-buddy{
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
 .user-own{
     width: 60px;
     height: 60px;
@@ -1221,6 +1226,9 @@ select.post-ofc-address{
     background-size: 60px;
     padding: 12px;
     border:none;
+    -webkit-filter: grayscale(0%);
+    -moz-filter: grayscale(0%);
+    filter: grayscale(0%);
 }
 .map-user-name-sec{
     background-color: #505050;
@@ -1513,6 +1521,9 @@ select.post-ofc-address{
 }
 .add-icon-map{
     transform:rotate(32deg);   
+}
+.add-icon-map.remove-icon-map {
+    transform: rotate(-12deg);
 }
 
 

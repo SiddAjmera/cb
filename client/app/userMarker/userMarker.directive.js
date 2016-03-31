@@ -14,6 +14,18 @@ angular.module('cbApp')
             scope.addToTeam = function() {
               // Ad "id" to the locals of "editWebsite" 
               createTeamHelper.addToTeam(scope.empid);
+              //classie.toggle();
+
+              var wrapper = document.getElementById('cn-wrapper');
+              var buddyImgId = document.getElementById(scope.empid + "_img");
+              var addImgId = document.getElementById(scope.empid + "_addIcon");
+
+              /*var addIconForBuddy = document.getElementById('add-icon-map');
+              classie.add(addIconForBuddy,'remove-icon-map');*/
+
+              classie.remove(wrapper, 'opened-nav');
+              classie.add(buddyImgId,'added-buddy');
+              classie.add(addImgId,'remove-icon-map');
             }
         }
     }}]);
