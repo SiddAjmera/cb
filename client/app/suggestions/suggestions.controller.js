@@ -14,8 +14,8 @@ angular.module('cbApp')
         });
 
     $scope.defaults = {
-        minZoom:10,
-        maxZoom:15,
+        minZoom:4,
+        maxZoom:18,
         tap:true,
         tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     }

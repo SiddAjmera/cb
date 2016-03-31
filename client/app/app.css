@@ -90,12 +90,21 @@ button:focus,input[type="button"]:focus{
     min-height: 100vh;
 }
 .each-row.login-page{
+    margin-bottom: 15px;
+}
+
+.each-row.login-page.login-btn-sec {
     margin-bottom: 0px;
 }
+
 .login-form-wrapper{
     background-color: #fff;
     float: left;
     width: 100%;
+}
+
+.login-form-wrapper .icon-style {
+    height: 47px;
 }
 
 .login-form-wrapper p.error-msg.for-wrong{
@@ -110,7 +119,7 @@ button:focus,input[type="button"]:focus{
 .login-input-box{
     border: none;
     box-shadow: none;
-    padding: 5px 10px 5px;
+    padding: 0;
     border-bottom: 1px solid #e8e8e8;
 }
 .form-control.login-input-box:focus{
@@ -129,6 +138,7 @@ button:focus,input[type="button"]:focus{
 
 .signup-sec-wrapper .user-input-section{
     padding-top: 7px;
+    padding-left: 5px;
 }
 .user-input-section{
     float: left;
@@ -185,7 +195,7 @@ button:focus,input[type="button"]:focus{
 .show-pwd-icon{
     position: absolute;
     right: 5px;
-    top: 18px;
+    top: 31px;
     width: 20px;
     cursor: pointer;
 }
@@ -300,6 +310,13 @@ button:focus,input[type="button"]:focus{
     float: left;
     width: 100%;
 }
+.signup-sec-wrapper .icon-style {
+    height: 47px;
+}
+.signup-sec-wrapper .icon-style.phone-img {
+    width: 38px;
+    height: 37px;
+}
 .form-section input{
     border-radius: 0px;
 }
@@ -337,7 +354,7 @@ button:focus,input[type="button"]:focus{
     transition:transform ease .3s;
 }
 .login-input-box{
-    height: 44px;
+    height: 30px;
 }
 .each-row div span.glyphicon-user,.each-row div span.glyphicon-home,
 .each-row div span.glyphicon-briefcase,
@@ -930,7 +947,7 @@ a.get-started-link:hover{
 .slide-arrow-sec{
     text-align: center;
 }
-.slide-arrow-sec img{
+img.slide-arrow-sec {
     cursor: pointer;
     width: 30px;
 }
@@ -1178,9 +1195,10 @@ select.post-ofc-address{
 }
 /*suggestions page css starts*/
 .suggestion-map-wrap{
-    padding-top: 60px;
+    padding-top: 0px;
     width: 470px;
     margin: 0 auto;
+    margin-top: 120px;
 }
 .leaflet-container{
     width:100%;
@@ -1712,6 +1730,7 @@ input[type=number]::-webkit-outer-spin-button {
     position: fixed;
     bottom: 0;
     z-index: 10;
+    text-align: center;
 }
 .on-the-fly-sec{
     border-bottom: 1px solid #484848;
@@ -1725,7 +1744,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 45px;
     height: 45px;
     background-size: 45px;
-    padding-top: 7px;
+    padding-top: 10px;
     font-size: 12px;
     color: #fff;
     left: 0;
@@ -2261,10 +2280,14 @@ input[type=number]::-webkit-outer-spin-button {
 .track-reschedule-btn{
     width: 48.2%;
     height: 40px;
+    line-height: 40px;
     color: #fff;
     font-size: 13px;
     border: none;
     background-color: #ababab;
+}
+.track-ride-value {
+    color: #555;
 }
 .track-btn-sec{
     margin-top: 15px;
@@ -2279,7 +2302,7 @@ input[type=number]::-webkit-outer-spin-button {
     color: #fff;
 }
 .suggestion-map-wrap .leaflet-container{
-    height: 50vh;
+    height: 60vh;
 }
 .sugg-create-team{
     width: 100%;
@@ -2678,8 +2701,11 @@ input[type=number]::-webkit-outer-spin-button {
     display: block;
     width: 97%;
 }
-.editable-mode .profile-row .user-input-section span.non-editable-sec{
+.editable-mode .profile-row .user-input-section .non-editable-sec{
     display: none;
+}
+.profile-row .user-input-section .non-editable-sec .field-value{
+    margin-top: 5px;
 }
 .editable-mode .non-editable-sec {
     display: none;
@@ -2703,7 +2729,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .editable-sec .input-boxes{
     padding: 0;
-    height: 22px;
+    height: 30px;
     font-size: 12px;
 }
 .profile-row.timing{
