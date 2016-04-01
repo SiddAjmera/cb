@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('TeamDetailsCtrl', function ($scope, $state, httpRequest, $stateParams) {
+  .controller('TeamDetailsCtrl', ['$scope', '$state', 'httpRequest', '$stateParams', function ($scope, $state, httpRequest, $stateParams) {
     $scope.message = 'Hello';
     
     var getTeamDetails = function(){
@@ -31,4 +31,4 @@ angular.module('cbApp')
     $scope.toggleFooter = function(){
         $(".home-page-menu-options").slideToggle(250);
     }
-  });
+  }]);

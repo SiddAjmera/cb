@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('socketMock', [])
-  .factory('socket', function() {
+  .factory('socket', [function() {
     return {
       socket: {
         connect: function() {},
@@ -13,4 +13,4 @@ angular.module('socketMock', [])
       syncUpdates: function() {},
       unsyncUpdates: function() {}
     };
-  });
+  }]);

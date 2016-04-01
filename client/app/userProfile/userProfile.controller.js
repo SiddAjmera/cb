@@ -259,6 +259,7 @@ angular.module('cbApp')
 
                 $scope.leftButtonText = "EDIT";
                 $scope.rightButtonText = "LOGOUT";
+                $scope.editableMode = false;
                 
                 $state.go('userHome.userProfile');
             });

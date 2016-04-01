@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('ActivitiesCtrl', function ($scope, $state, $stateParams) {
+  .controller('ActivitiesCtrl', [ '$scope', '$state', '$stateParams' ,function ($scope, $state, $stateParams) {
     $scope.message = 'Hello';
 
     $scope.team = $stateParams.team;
@@ -14,4 +14,4 @@ angular.module('cbApp')
       $(".home-page-menu-options").slideToggle(250);
     };
 
-  });
+  }]);

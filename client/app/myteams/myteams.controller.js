@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('MyteamsCtrl', function ($scope, $location, $state, Auth, httpRequest) {
+  .controller('MyteamsCtrl', ['$scope', '$location', '$state', 'Auth', 'httpRequest', function ($scope, $location, $state, Auth, httpRequest) {
     $scope.message = 'Hello';
     var currentUser;
     Auth.getCurrentUser().then(function(user){
@@ -37,4 +37,4 @@ angular.module('cbApp')
       $state.go('formTeam');
     }
 
-});
+}]);

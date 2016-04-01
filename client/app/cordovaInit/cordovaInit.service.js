@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaInit', function($document, $q, $interval) {
+  .service('cordovaInit', [ '$document', '$q', '$interval' ,function($document, $q, $interval) {
 return {
 	deviceready:function(){
 		 var d = $q.defer(),
@@ -42,4 +42,4 @@ return {
 	
 }
 	   
-	});
+	}]);

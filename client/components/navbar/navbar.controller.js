@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('NavbarCtrl', function ($scope, $location, Auth) {
+  .controller('NavbarCtrl', ['$scope', '$location', 'Auth', function ($scope, $location, Auth) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -20,4 +20,4 @@ angular.module('cbApp')
     $scope.isActive = function(route) {
       return route === $location.path();
     };
-  });
+}]);

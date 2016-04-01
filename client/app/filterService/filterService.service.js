@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('filterService', function () {
+  .service('filterService', [function () {
 
   	return{
   		filterData:function (pathArr,threshold) {
@@ -145,4 +145,4 @@ angular.module('cbApp')
   		}
   	}
     // AngularJS will instantiate a singleton by calling "new" on this function
-  });
+  }]);

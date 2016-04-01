@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('LoginCtrl', function ($scope, Auth, $location, $window,$state) {
+  .controller('LoginCtrl', [ '$scope', 'Auth', '$location', '$window', '$state', function ($scope, Auth, $location, $window,$state) {
     $scope.user = {};
     $scope.loginForm = {};
     $scope.errorMsg = '';
@@ -58,4 +58,4 @@ angular.module('cbApp')
     }*/
     
 
-  });
+  }]);

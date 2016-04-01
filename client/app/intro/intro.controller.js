@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('IntroCtrl', function ($scope) {
+  .controller('IntroCtrl', ['$scope', function ($scope) {
     $scope.message = 'Hello';
-  });
+  }]);

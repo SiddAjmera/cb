@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .directive('scroll', function ($window) {
+  .directive('scroll', ['$window', function ($window) {
      return function(scope, element, attrs) {
         angular.element($window).bind("scroll", function() {
              if (this.pageYOffset >= 75) {
@@ -14,4 +14,4 @@ angular.module('cbApp')
             scope.$apply();
         });
     };
-  });
+  }]);

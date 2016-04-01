@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('parse', function ($q) {
+  .service('parse', ['$q', function ($q) {
    return {
    		saveObject:function(object,data){
    			console.log(object,data);
@@ -24,4 +24,4 @@ angular.module('cbApp')
 		   		return testObject.save();
    		}
    };
-  });
+  }]);

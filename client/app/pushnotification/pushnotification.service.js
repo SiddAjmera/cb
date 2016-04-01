@@ -14,7 +14,7 @@ title: "Commute buddy"
 'use strict';
 
 angular.module('cbApp')
-  .service('pushnotification', function ($q) {
+  .service('pushnotification', ['$q', function ($q) {
     return {
       registerPushNotification : function(){
         var deferred= $q.defer();
@@ -78,4 +78,4 @@ angular.module('cbApp')
         console.log("Reject Callback Triggred. Here is the Data : ", data);
       }*/
     }
-});
+}]);

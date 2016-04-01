@@ -4,7 +4,7 @@
  * Removes server error when user updates input
  */
 angular.module('cbApp')
-  .directive('mongooseError', function () {
+  .directive('mongooseError', [function () {
     return {
       restrict: 'A',
       require: 'ngModel',
@@ -14,4 +14,4 @@ angular.module('cbApp')
         });
       }
     };
-  });
+  }]);

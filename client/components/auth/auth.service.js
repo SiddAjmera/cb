@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .factory('Auth', function Auth($location, $rootScope, User,$q,httpRequest,localStorage) {
+  .factory('Auth', ['$location', '$rootScope', 'User','$q','httpRequest','localStorage', function Auth($location, $rootScope, User,$q,httpRequest,localStorage) {
     var currentUser = {};
 
    // if($cookieStore.get('token')) {
@@ -269,4 +269,4 @@ angular.module('cbApp')
         return localStorage.retrieve('token');
       }
     };
-  });
+  }]);

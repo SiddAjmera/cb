@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .factory('User', function ($resource) {
+  .factory('User', ['$resource', function ($resource) {
     var api = config.apiBaseURL;
     return $resource(api+'api/users/:id/:controller', {
       id: '@_id'
@@ -20,4 +20,4 @@ angular.module('cbApp')
         }
       }
 	  });
-  });
+  }]);

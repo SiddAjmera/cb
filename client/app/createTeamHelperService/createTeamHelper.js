@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .service('createTeamHelper', function () {
+  .service('createTeamHelper', [function () {
   	var team=[];
   	return{
   		addToTeam:function(user){
@@ -17,4 +17,4 @@ angular.module('cbApp')
   			team=[];
   		}
   	}
-  });
+  }]);
