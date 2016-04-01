@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest,Auth, $stateParams,createTeamHelper, $state) {
+  .controller('SuggestionsCtrl', [ '$scope', 'leafletMarkerEvents', '$timeout', 'httpRequest', 'Auth', '$stateParams', 'createTeamHelper', '$state', 'cordovaUtil', function ($scope, leafletMarkerEvents, $timeout, httpRequest, Auth, $stateParams, createTeamHelper, $state, cordovaUtil) {
     $scope.team = $stateParams.team;
     $scope.membersEmpIds = [];
      
@@ -155,4 +155,4 @@ angular.module('cbApp')
                     });
     };
     
-  });
+  }]);

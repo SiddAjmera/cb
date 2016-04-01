@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('PostRidesCtrl', function ($scope, httpRequest, Auth, cordovaUtil, staticData, $state) {
+  .controller('PostRidesCtrl', [ '$scope', 'httpRequest', 'Auth', 'cordovaUtil', 'staticData', '$state', function ($scope, httpRequest, Auth, cordovaUtil, staticData, $state) {
     var directionsService = new google.maps.DirectionsService();
     
     /*$scope.$on('leafletDirectiveMap.click', function(event){
@@ -309,4 +309,4 @@ angular.module('cbApp')
             }
         })
     }
-});
+}]);

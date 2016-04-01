@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('RideStatusCtrl', function ($scope, Auth, httpRequest, $state, $timeout) {
+  .controller('RideStatusCtrl', [ '$scope', 'Auth', 'httpRequest', '$state', '$timeout', 'cordovaUtil', function ($scope, Auth, httpRequest, $state, $timeout, cordovaUtil) {
     $scope.message = 'Hello';
     $scope.editableMode = false;
     $scope.leftButtonText = "RESCHEDULE RIDE";
@@ -145,4 +145,4 @@ angular.module('cbApp')
     $scope.toggleFooter = function(){
       $(".home-page-menu-options").slideToggle(250);
     };
-  });
+  }]);

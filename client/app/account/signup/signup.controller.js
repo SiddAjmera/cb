@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('SignupCtrl', function ($scope, $location, $window, $state, $modal, $rootScope, cordovaUtil, httpRequest, localStorage, pushnotification, staticData) {
+  .controller('SignupCtrl', [ '$scope', '$location', '$window', '$state', '$modal', '$rootScope', 'cordovaUtil', 'httpRequest', 'localStorage', 'pushnotification', 'staticData' , function ($scope, $location, $window, $state, $modal, $rootScope, cordovaUtil, httpRequest, localStorage, pushnotification, staticData) {
     $scope.user = {};
     $scope.user.gender = "Female";
     $scope.timeSlotJSON = [
@@ -130,4 +130,4 @@ angular.module('cbApp')
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };
-  });
+  }]);

@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('MapCtrl', function ($scope,cordovaUtil) {
+  .controller('MapCtrl', [ '$scope', 'cordovaUtil' ,function ($scope,cordovaUtil) {
      $scope.startTracking=function(){
 		  
 		  cordovaUtil.getCoordinates();
 	  }
 
 	  
-  });
+  }]);

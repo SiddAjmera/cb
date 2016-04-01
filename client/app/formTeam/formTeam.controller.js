@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('FormTeamCtrl', function ($scope, $state, Auth, staticData, httpRequest) {
+  .controller('FormTeamCtrl', [ '$scope', '$state', 'Auth', 'staticData', 'httpRequest', 'cordovaUtil' ,function ($scope, $state, Auth, staticData, httpRequest, cordovaUtil) {
     $scope.message = 'Hello';
     var routes;
     
@@ -214,4 +214,4 @@ angular.module('cbApp')
       $(".home-page-menu-options").slideToggle(250);
     };
 
-  });
+  }]);

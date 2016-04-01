@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('StartSamplingCtrl', function (Auth,$scope, cordovaUtil,$rootScope,localStorage,filterService,httpRequest) {
+  .controller('StartSamplingCtrl', [ 'Auth', '$scope', 'cordovaUtil', '$rootScope', 'localStorage', 'filterService', 'httpRequest' , function (Auth, $scope, cordovaUtil, $rootScope, localStorage, filterService, httpRequest) {
     $scope.message = 'Hello';
     $scope.buttonText="START SAMPLING";
     $scope.mapEvents={};
@@ -246,4 +246,4 @@ angular.module('cbApp')
     return r;
     
 }*/
-});
+}]);

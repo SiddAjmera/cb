@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('AvailableRidesCtrl', function ($scope,httpRequest,Auth,socket, cordovaUtil, $state) {
+  .controller('AvailableRidesCtrl', [ '$scope', 'httpRequest', 'Auth', 'socket', 'cordovaUtil', '$state' ,function ($scope,httpRequest,Auth,socket, cordovaUtil, $state) {
     console.log("Loading");
   	var currentUser = {};
   	$scope.rides = [];
@@ -115,4 +115,4 @@ angular.module('cbApp')
 
 
     
-  });
+  }]);

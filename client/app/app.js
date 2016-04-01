@@ -21,19 +21,19 @@ angular.module('cbApp', [
   'google.places'
 ])
 
-.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, cfpLoadingBarProvider) {
-     console.log("In config block");
+.config([ '$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', 'cfpLoadingBarProvider' ,function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, cfpLoadingBarProvider) {
+         console.log("In config block");
 
-    //$locationProvider.html5Mode(true);
-    $httpProvider.interceptors.push('authInterceptor');
-    cfpLoadingBarProvider.includeSpinner = false;
+        //$locationProvider.html5Mode(true);
+        $httpProvider.interceptors.push('authInterceptor');
+        cfpLoadingBarProvider.includeSpinner = false;
 
-    $urlRouterProvider
-      .otherwise('/main');
+        $urlRouterProvider
+          .otherwise('/main');
 
-  })
+  }])
 
-  .factory('authInterceptor', function ($rootScope, $q,$location,localStorage) {
+  .factory('authInterceptor', [ '$rootScope', '$q', '$location', 'localStorage' ,function ($rootScope, $q,$location,localStorage) {
     return {
       // Add authorization token to headers
       request: function (config) {
@@ -71,9 +71,9 @@ angular.module('cbApp', [
         }
       }
     };
-  })
+  }])
 
-  .run(function ($rootScope, $location, Auth,localStorage,$state,cordovaUtil,cordovaInit) {
+  .run([ '$rootScope', '$location', 'Auth', 'localStorage', '$state', 'cordovaUtil', 'cordovaInit' ,function ($rootScope, $location, Auth,localStorage,$state,cordovaUtil,cordovaInit) {
     //put all the cordova specific functionality
     if(config.cordova)
     {
@@ -121,7 +121,7 @@ angular.module('cbApp', [
         }
       });
     });
-  });
+  }]);
 
 var onDeviceReady = function() {
     angular.bootstrap( document, ['cbApp']);

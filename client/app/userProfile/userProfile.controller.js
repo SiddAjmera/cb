@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('UserProfileCtrl', function ($scope, $state, Auth, $modal, cordovaUtil, $cordovaImagePicker, httpRequest, staticData) {
+  .controller('UserProfileCtrl', [ '$scope', '$state', 'Auth', '$modal', 'cordovaUtil', '$cordovaImagePicker', 'httpRequest', 'staticData' , function ($scope, $state, Auth, $modal, cordovaUtil, $cordovaImagePicker, httpRequest, staticData) {
     $scope.message = 'Hello';
     $scope.editableMode = false;
 
@@ -270,4 +270,4 @@ angular.module('cbApp')
 
 
 
-  });
+  }]);

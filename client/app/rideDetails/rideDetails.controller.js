@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('RideDetailsCtrl', ['$scope','staticData','Auth','$state','$stateParams','httpRequest'
-  	,function ($scope,staticData,Auth,$state,$stateParams,httpRequest) {
+  .controller('RideDetailsCtrl', ['$scope','staticData','Auth','$state','$stateParams','httpRequest', 'cordovaUtil'
+  	,function ($scope,staticData,Auth,$state,$stateParams,httpRequest, cordovaUtil) {
   	var forAction = $stateParams.for;
     $scope.autocompleteOptions = { componentRestrictions: { country: 'in' } }
     $scope.showAutoCompleteErrorMessage = false;

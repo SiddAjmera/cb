@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('MainCtrl', function ($scope, $http, socket, cordovaUtil, $state, localStorage) {
+  .controller('MainCtrl', [ '$scope', '$http', 'socket', 'cordovaUtil', '$state', 'localStorage' ,function ($scope, $http, socket, cordovaUtil, $state, localStorage) {
 
    
 	 // cordovaUtil.setDeviceUUID();
@@ -59,4 +59,4 @@ angular.module('cbApp')
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('thing');
     }); */
-  });
+  }]);

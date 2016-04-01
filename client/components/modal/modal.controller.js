@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cbApp')
-  .controller('ModalCtrl', function ($scope, $modalInstance) {
+  .controller('ModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
     $scope.message = 'Hello';
 
     $scope.homeAddressModalOk = function(){
@@ -16,4 +16,4 @@ angular.module('cbApp')
     };
 
 
-  });
+  }]);
