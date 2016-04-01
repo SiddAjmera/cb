@@ -92,6 +92,7 @@ angular.module('cbApp')
   				/*ride selected successfully. Show notification to ride owner*/
           if(config.cordova) cordovaUtil.showToastMessage('Your ride has been booked successfully.');
           else alert('Your ride has been booked successfully.');
+          
           $state.go('userHome.rideStatus');
   			}else if(response.status == 409){
           if(config.cordova) cordovaUtil.showToastMessage('You are already part of an Active Ride');

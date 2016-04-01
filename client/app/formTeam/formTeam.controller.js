@@ -3,7 +3,7 @@
 angular.module('cbApp')
   .controller('FormTeamCtrl', [ '$scope', '$state', 'Auth', 'staticData', 'httpRequest', 'cordovaUtil' ,function ($scope, $state, Auth, staticData, httpRequest, cordovaUtil) {
     $scope.message = 'Hello';
-    var routes;
+    var routes = [];
     
     var fromLocation = [];
     var toLocation = [];

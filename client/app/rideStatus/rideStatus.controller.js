@@ -68,6 +68,7 @@ angular.module('cbApp')
             if(err.status == 409){
                 if(config.cordova) cordovaUtil.showToastMessage("Error getting your recent ride details.")
                 else alert("Error getting your recent ride details.");
+                $state.go('userHome.home');
             }
             if(err.status == 404){
               if(config.cordova) cordovaUtil.showToastMessage("You are not a part of an active ride. Please post a ride or request a ride to see it\'s details here")
@@ -79,10 +80,10 @@ angular.module('cbApp')
     $scope.leftButtonClicked = function(buttonText){
       if(buttonText == "RESCHEDULE RIDE"){
         $scope.editableMode = true;
-        $scope.leftButtonText = "CONFIRM RESCHEDULE";
+        $scope.leftButtonText = "CONFIRM";
         $scope.rightButtonText = "CANCEL";
       }
-      else if(buttonText == "CONFIRM RESCHEDULE"){
+      else if(buttonText == "CONFIRM"){
         console.log("Leaving in : ", $scope.leavingIn);
         var postBody = {};
         postBody.newRideScheduledTime = moment().add(parseInt($scope.leavingIn),"minutes").valueOf();
@@ -90,7 +91,9 @@ angular.module('cbApp')
                    .then(function(data){
                       console.log("Data after reschedule Ride : ", data);
                       if(data.status == 200){
-                          alert("Ride rescheduled Successfully");
+                          if(config.cordova) cordovaUtil.showToastMessage('Ride rescheduled Successfully');
+                          else alert('Ride rescheduled Successfully');
+                          
                           console.log("Config.data.newRideScheduledTime : ", data.config.data.newRideScheduledTime);
                           var now = moment();
                           var to = moment(data.config.data.newRideScheduledTime);
@@ -100,7 +103,9 @@ angular.module('cbApp')
                           $scope.rightButtonText = "CANCEL RIDE";
                       }
                    }, function(err){
-                      alert("Ride can't be rescheduled at this point. Error : " + err);
+                      //alert("Ride can't be rescheduled at this point. Error : " + err);
+                      if(config.cordova) cordovaUtil.showToastMessage('Ride can\'t be rescheduled at this point.');
+                      else alert('Ride can\'t be rescheduled at this point.');
                    });
       }
       else if(buttonText == "TRACK DRIVER"){

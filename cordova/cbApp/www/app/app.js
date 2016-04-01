@@ -21,19 +21,19 @@ angular.module('cbApp', [
   'google.places'
 ])
 
-.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, cfpLoadingBarProvider) {
-     console.log("In config block");
+.config([ '$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', 'cfpLoadingBarProvider' ,function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, cfpLoadingBarProvider) {
+         console.log("In config block");
 
-    //$locationProvider.html5Mode(true);
-    $httpProvider.interceptors.push('authInterceptor');
-    cfpLoadingBarProvider.includeSpinner = false;
+        //$locationProvider.html5Mode(true);
+        $httpProvider.interceptors.push('authInterceptor');
+        cfpLoadingBarProvider.includeSpinner = false;
 
-    $urlRouterProvider
-      .otherwise('/main');
+        $urlRouterProvider
+          .otherwise('/main');
 
-  })
+  }])
 
-  .factory('authInterceptor', function ($rootScope, $q,$location,localStorage) {
+  .factory('authInterceptor', [ '$rootScope', '$q', '$location', 'localStorage' ,function ($rootScope, $q,$location,localStorage) {
     return {
       // Add authorization token to headers
       request: function (config) {
@@ -71,9 +71,9 @@ angular.module('cbApp', [
         }
       }
     };
-  })
+  }])
 
-  .run(function ($rootScope, $location, Auth,localStorage,$state,cordovaUtil,cordovaInit) {
+  .run([ '$rootScope', '$location', 'Auth', 'localStorage', '$state', 'cordovaUtil', 'cordovaInit' ,function ($rootScope, $location, Auth,localStorage,$state,cordovaUtil,cordovaInit) {
     //put all the cordova specific functionality
     if(config.cordova)
     {
@@ -121,7 +121,7 @@ angular.module('cbApp', [
         }
       });
     });
-  });
+  }]);
 
 var onDeviceReady = function() {
     angular.bootstrap( document, ['cbApp']);
@@ -164,7 +164,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('LoginCtrl', function ($scope, Auth, $location, $window,$state) {
+  .controller('LoginCtrl', [ '$scope', 'Auth', '$location', '$window', '$state', function ($scope, Auth, $location, $window,$state) {
     $scope.user = {};
     $scope.loginForm = {};
     $scope.errorMsg = '';
@@ -221,11 +221,11 @@ angular.module('cbApp')
     }*/
     
 
-  });
+  }]);
 'use strict';
 
 angular.module('cbApp')
-  .controller('SettingsCtrl', function ($scope, User, Auth) {
+  .controller('SettingsCtrl', [ '$scope', 'User', 'Auth', function ($scope, User, Auth) {
     $scope.errors = {};
 
     $scope.changePassword = function(form) {
@@ -242,12 +242,12 @@ angular.module('cbApp')
         });
       }
 		};
-  });
+  }]);
 
 'use strict';
 
 angular.module('cbApp')
-  .controller('SignupCtrl', function ($scope, $location, $window, $state, $modal, $rootScope, cordovaUtil, httpRequest, localStorage, pushnotification, staticData) {
+  .controller('SignupCtrl', [ '$scope', '$location', '$window', '$state', '$modal', '$rootScope', 'cordovaUtil', 'httpRequest', 'localStorage', 'pushnotification', 'staticData' , function ($scope, $location, $window, $state, $modal, $rootScope, cordovaUtil, httpRequest, localStorage, pushnotification, staticData) {
     $scope.user = {};
     $scope.user.gender = "Female";
     $scope.timeSlotJSON = [
@@ -376,7 +376,7 @@ angular.module('cbApp')
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };
-  });
+  }]);
 
 'use strict';
 
@@ -435,7 +435,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('ActivitiesCtrl', function ($scope, $state, $stateParams) {
+  .controller('ActivitiesCtrl', [ '$scope', '$state', '$stateParams' ,function ($scope, $state, $stateParams) {
     $scope.message = 'Hello';
 
     $scope.team = $stateParams.team;
@@ -448,8 +448,7 @@ angular.module('cbApp')
       $(".home-page-menu-options").slideToggle(250);
     };
 
-  });
-
+  }]);
 'use strict';
 
 angular.module('cbApp')
@@ -465,7 +464,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('AdminCtrl', function ($scope, $http, Auth, User) {
+  .controller('AdminCtrl', [ '$scope', '$http', 'Auth', 'User' ,function ($scope, $http, Auth, User) {
 
     // Use the User $resource to fetch all users
     $scope.users = User.query();
@@ -478,8 +477,7 @@ angular.module('cbApp')
         }
       });
     };
-  });
-
+  }]);
 'use strict';
 
 angular.module('cbApp')
@@ -494,13 +492,18 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('AvailableRidesCtrl', function ($scope,httpRequest,Auth,socket, cordovaUtil, $state) {
+  .controller('AvailableRidesCtrl', [ '$scope', 'httpRequest', 'Auth', 'socket', 'cordovaUtil', '$state' , function ($scope, httpRequest, Auth, socket, cordovaUtil, $state) {
     console.log("Loading");
   	var currentUser = {};
   	$scope.rides = [];
     var rides=[];
 
-    Auth.getCurrentUser().then(function(user){currentUser = user;getAvailableRides();})
+    Auth.getCurrentUser()
+        .then(function(user){
+            currentUser = user;
+            getAvailableRides();
+        });
+
     var populateSeats = function(ride){
       var seatMap = [];
       for(var i = 0 ; i < ride.initiallyAvailableSeats ; i++){       
@@ -515,19 +518,20 @@ angular.module('cbApp')
     var updateRideStatus=function(event,item){
         var newRide=populateSeats(item);
         var oldRide=_.findWhere($scope.rides,{'_id':item._id});
-        console.log("newRide,oldRide ",newRide,oldRide);
+        console.log("newRide, oldRide", newRide, oldRide);
         if(oldRide){
-          $scope.rides=_.reject($scope.rides,function(obj){
+          $scope.rides = _.reject($scope.rides, function(obj){
             return obj._id==oldRide._id;
-          });                    
-        }        
-        $scope.rides.push(newRide);        
+          });
+        }
+        $scope.rides.push(newRide);
     };
 
     socket.syncUpdates('ride',[],function(event,item,array){
         console.log('item  ',item,event);
         updateRideStatus(event,item);
     });
+
   	var getAvailableRides = function(){
   		var apis = config.apis.filterRides;
   		var requestJSON = {};
@@ -570,45 +574,40 @@ angular.module('cbApp')
          return;
   		}
   		
-  		requestJSON.availableSeats=ride.availableSeats-requestJSON.companions.length;
+  		requestJSON.availableSeats = ride.availableSeats - requestJSON.companions.length;
   		
   		httpRequest.put(apis,requestJSON).
   		then(function(response){
         console.log(response);
-  			if(response.status==201){
+  			if(response.status == 201){
   				/*ride selected successfully. Show notification to ride owner*/
           if(config.cordova) cordovaUtil.showToastMessage('Your ride has been booked successfully.');
           else alert('Your ride has been booked successfully.');
           $state.go('userHome.rideStatus');
-  			}else if(response.status==409){
+  			}else if(response.status == 409){
           if(config.cordova) cordovaUtil.showToastMessage('You are already part of an Active Ride');
           else alert('You are already part of an Active Ride');
           $state.go('userHome.rideStatus');
         }
   		},function(err){
             console.log("err",err);
-
-             if(err.status==409){
-                  if(config.cordova) cordovaUtil.showToastMessage('You are already part of an Active Ride');
-                  else alert('You are already part of an Active Ride');
-                  $state.go('userHome.rideStatus');
+            if(err.status == 409){
+                if(config.cordova) cordovaUtil.showToastMessage('You are already part of an Active Ride');
+                else alert('You are already part of an Active Ride');
+                $state.go('userHome.rideStatus');
             }
         })
   	}
 
   	$scope.selectSeat = function(seat){
-  		if(seat._id)
-  			return;
-
-  		if(angular.isDefined(seat.selected))
-  			seat.selected=!seat.selected;
-  		else
-  			seat.selected = true;
+  		if(seat._id) return;
+  		if(angular.isDefined(seat.selected)) seat.selected =! seat.selected;
+  		else seat.selected = true;
   	}
 
 
     
-  });
+  }]);
 
 'use strict';
 
@@ -670,7 +669,7 @@ config.cordova=true;
 'use strict';
 
 angular.module('cbApp')
-  .service('cordovaInit', function($document, $q, $interval) {
+  .service('cordovaInit', [ '$document', '$q', '$interval' ,function($document, $q, $interval) {
 return {
 	deviceready:function(){
 		 var d = $q.defer(),
@@ -711,8 +710,7 @@ return {
 	
 }
 	   
-	});
-
+	}]);
 angular.module('cbApp')
   .service('cordovaUtil',['parse','Auth','httpRequest','localStorage','$q','$rootScope',function (parse,Auth,httpRequest,localStorage,$q,$rootScope) {
   var currentUser = {};
@@ -1063,10 +1061,13 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .service('createTeamHelper', function () {
+  .service('createTeamHelper', [function () {
   	var team=[];
   	return{
   		addToTeam:function(user){
+        for(var i = 0; i < team.length; i++){
+            if(team[i] == user) return;
+        }
   			team.push(user);
   		},
   		getTeam:function(){
@@ -1076,14 +1077,17 @@ angular.module('cbApp')
   			team=[];
   		}
   	}
-  });
+  }]);
 'use strict';
 
 angular.module('cbApp')
-  .controller('CurrentRideCtrl', function ($scope) {
+  .controller('CurrentRideCtrl', [ '$scope', function ($scope) {
     $scope.message = 'Hello';
-  });
 
+    $scope.toggleFooter = function(){
+      $(".home-page-menu-options").slideToggle(250);
+    };
+  }]);
 'use strict';
 
 angular.module('cbApp')
@@ -1099,7 +1103,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .service('filterService', function () {
+  .service('filterService', [function () {
 
   	return{
   		filterData:function (pathArr,threshold) {
@@ -1243,12 +1247,12 @@ angular.module('cbApp')
   		}
   	}
     // AngularJS will instantiate a singleton by calling "new" on this function
-  });
+  }]);
 
 'use strict';
 
 angular.module('cbApp')
-  .controller('FormTeamCtrl', function ($scope, $state, Auth, staticData, httpRequest) {
+  .controller('FormTeamCtrl', [ '$scope', '$state', 'Auth', 'staticData', 'httpRequest', 'cordovaUtil' ,function ($scope, $state, Auth, staticData, httpRequest, cordovaUtil) {
     $scope.message = 'Hello';
     var routes;
     
@@ -1461,7 +1465,7 @@ angular.module('cbApp')
       $(".home-page-menu-options").slideToggle(250);
     };
 
-  });
+  }]);
 'use strict';
 
 angular.module('cbApp')
@@ -1477,7 +1481,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('HomeCtrl', function ($scope, Auth, httpRequest, $state, filterService) {
+  .controller('HomeCtrl', ['$scope', 'Auth', 'httpRequest', '$state', 'filterService', function ($scope, Auth, httpRequest, $state, filterService) {
     $scope.defaults={minZoom:10, maxZoom:15,tap:true, tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" };  
     $scope.center={
       lat : 18.581904504725568,
@@ -1622,8 +1626,7 @@ angular.module('cbApp')
 
    
     
-  });
-
+  }]);
 'use strict';
 
 angular.module('cbApp')
@@ -1712,10 +1715,9 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('IntroCtrl', function ($scope) {
+  .controller('IntroCtrl', ['$scope', function ($scope) {
     $scope.message = 'Hello';
-  });
-
+  }]);
 'use strict';
 
 angular.module('cbApp')
@@ -1898,7 +1900,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('MainCtrl', function ($scope, $http, socket, cordovaUtil, $state, localStorage) {
+  .controller('MainCtrl', [ '$scope', '$http', 'socket', 'cordovaUtil', '$state', 'localStorage' ,function ($scope, $http, socket, cordovaUtil, $state, localStorage) {
 
    
 	 // cordovaUtil.setDeviceUUID();
@@ -1956,7 +1958,7 @@ angular.module('cbApp')
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('thing');
     }); */
-  });
+  }]);
 
 'use strict';
 
@@ -1972,14 +1974,14 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('MapCtrl', function ($scope,cordovaUtil) {
+  .controller('MapCtrl', [ '$scope', 'cordovaUtil' ,function ($scope,cordovaUtil) {
      $scope.startTracking=function(){
 		  
 		  cordovaUtil.getCoordinates();
 	  }
 
 	  
-  });
+  }]);
 
 'use strict';
 
@@ -1996,7 +1998,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('MyteamsCtrl', function ($scope, $location, $state, Auth, httpRequest) {
+  .controller('MyteamsCtrl', ['$scope', '$location', '$state', 'Auth', 'httpRequest', function ($scope, $location, $state, Auth, httpRequest) {
     $scope.message = 'Hello';
     var currentUser;
     Auth.getCurrentUser().then(function(user){
@@ -2032,7 +2034,7 @@ angular.module('cbApp')
       $state.go('formTeam');
     }
 
-});
+}]);
 
 'use strict';
 
@@ -2049,7 +2051,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .service('parse', function ($q) {
+  .service('parse', ['$q', function ($q) {
    return {
    		saveObject:function(object,data){
    			console.log(object,data);
@@ -2072,12 +2074,12 @@ angular.module('cbApp')
 		   		return testObject.save();
    		}
    };
-  });
+  }]);
 
 'use strict';
 
 angular.module('cbApp')
-  .controller('PostRidesCtrl', function ($scope, httpRequest, Auth, cordovaUtil, staticData, $state) {
+  .controller('PostRidesCtrl', [ '$scope', 'httpRequest', 'Auth', 'cordovaUtil', 'staticData', '$state', function ($scope, httpRequest, Auth, cordovaUtil, staticData, $state) {
     var directionsService = new google.maps.DirectionsService();
     
     /*$scope.$on('leafletDirectiveMap.click', function(event){
@@ -2385,7 +2387,7 @@ angular.module('cbApp')
             }
         })
     }
-});
+}]);
 'use strict';
 
 angular.module('cbApp')
@@ -2415,7 +2417,7 @@ title: "Commute buddy"
 'use strict';
 
 angular.module('cbApp')
-  .service('pushnotification', function ($q) {
+  .service('pushnotification', ['$q', function ($q) {
     return {
       registerPushNotification : function(){
         var deferred= $q.defer();
@@ -2479,12 +2481,12 @@ angular.module('cbApp')
         console.log("Reject Callback Triggred. Here is the Data : ", data);
       }*/
     }
-});
+}]);
 'use strict';
 
 angular.module('cbApp')
-  .controller('RideDetailsCtrl', ['$scope','staticData','Auth','$state','$stateParams','httpRequest'
-  	,function ($scope,staticData,Auth,$state,$stateParams,httpRequest) {
+  .controller('RideDetailsCtrl', ['$scope','staticData','Auth','$state','$stateParams','httpRequest', 'cordovaUtil'
+  	,function ($scope,staticData,Auth,$state,$stateParams,httpRequest, cordovaUtil) {
   	var forAction = $stateParams.for;
     $scope.autocompleteOptions = { componentRestrictions: { country: 'in' } }
     $scope.showAutoCompleteErrorMessage = false;
@@ -2605,7 +2607,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('RideStatusCtrl', function ($scope, Auth, httpRequest, $state, $timeout) {
+  .controller('RideStatusCtrl', [ '$scope', 'Auth', 'httpRequest', '$state', '$timeout', 'cordovaUtil', function ($scope, Auth, httpRequest, $state, $timeout, cordovaUtil) {
     $scope.message = 'Hello';
     $scope.editableMode = false;
     $scope.leftButtonText = "RESCHEDULE RIDE";
@@ -2749,7 +2751,7 @@ angular.module('cbApp')
     $scope.toggleFooter = function(){
       $(".home-page-menu-options").slideToggle(250);
     };
-  });
+  }]);
 'use strict';
 
 angular.module('cbApp')
@@ -2764,7 +2766,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .directive('scroll', function ($window) {
+  .directive('scroll', ['$window', function ($window) {
      return function(scope, element, attrs) {
         angular.element($window).bind("scroll", function() {
              if (this.pageYOffset >= 75) {
@@ -2777,11 +2779,11 @@ angular.module('cbApp')
             scope.$apply();
         });
     };
-  });
+  }]);
 'use strict';
 
 angular.module('cbApp')
-  .controller('StartSamplingCtrl', function (Auth,$scope, cordovaUtil,$rootScope,localStorage,filterService,httpRequest) {
+  .controller('StartSamplingCtrl', [ 'Auth', '$scope', 'cordovaUtil', '$rootScope', 'localStorage', 'filterService', 'httpRequest' , function (Auth, $scope, cordovaUtil, $rootScope, localStorage, filterService, httpRequest) {
     $scope.message = 'Hello';
     $scope.buttonText="START SAMPLING";
     $scope.mapEvents={};
@@ -3026,7 +3028,7 @@ angular.module('cbApp')
     return r;
     
 }*/
-});
+}]);
 'use strict';
 
 angular.module('cbApp')
@@ -3042,160 +3044,160 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .service('staticData', function (httpRequest) {
+  .service('staticData', ['httpRequest', function (httpRequest) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     return{
     	getTCSLocations:function(){
-        var tcsLocations = [
-	{
-		"display_address":"TCS Sahyadri Park",
-		"formatted_address": "Sahyadri Park, Plot No. 2 & 3, Rajiv Gandhi Infotech Park, Phase-III,, Hinjewadi, Pune, Maharashtra 411057, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [73.6829262, 18.5806206],
-	    "placeId": "ChIJz2_Fp2XAwjsRf-D83a7sne8"
-    },
+	        var tcsLocations = [
+					{
+						"display_address":"TCS Sahyadri Park",
+						"formatted_address": "Sahyadri Park, Plot No. 2 & 3, Rajiv Gandhi Infotech Park, Phase-III,, Hinjewadi, Pune, Maharashtra 411057, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+					    "location": [73.6829262, 18.5806206],
+					    "placeId": "ChIJz2_Fp2XAwjsRf-D83a7sne8"
+				    },
 
-	{
-		"display_address":"TCS Bhosari",
-		"formatted_address": "TCS, Bhosari, Telco Rd, Landewadi, Pimpri, Pimpri-Chinchwad, Maharashtra 411026, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [73.838017, 18.6229641],
-	    "placeId": "ChIJkx5xWX64wjsRw2ETFkK2fKk"
-	},
+					{
+						"display_address":"TCS Bhosari",
+						"formatted_address": "TCS, Bhosari, Telco Rd, Landewadi, Pimpri, Pimpri-Chinchwad, Maharashtra 411026, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+					    "location": [73.838017, 18.6229641],
+					    "placeId": "ChIJkx5xWX64wjsRw2ETFkK2fKk"
+					},
 
-	{
-		"display_address":"TCS Quadra II",
-		"formatted_address": "TATA Consultancy Services, S.No. 238/239, Quadra II, Opp Magarpatta City, Hadapsar, Pune, Maharashtra 411028, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [73.933573, 18.5132302],
-	    "placeId": "ChIJjwkMLvXBwjsR_KclVTRIC7M"
-	},
+					{
+						"display_address":"TCS Quadra II",
+						"formatted_address": "TATA Consultancy Services, S.No. 238/239, Quadra II, Opp Magarpatta City, Hadapsar, Pune, Maharashtra 411028, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+					    "location": [73.933573, 18.5132302],
+					    "placeId": "ChIJjwkMLvXBwjsR_KclVTRIC7M"
+					},
 
-	{
-		"display_address":"Tata Research Developement and Design Center(TRDDC)",
-		"formatted_address": "TRDDC, Hadapsar, Pune, Maharashtra 411013, India",
-		"display_address" : "Tata Research Developement and Design Center",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/school-71.png",
-	    "location": [73.9166811, 18.511536],
-	    "placeId": "ChIJVVVVVeXBwjsRjhAlp31GD18"
-	},
+					{
+						"display_address":"Tata Research Developement and Design Center(TRDDC)",
+						"formatted_address": "TRDDC, Hadapsar, Pune, Maharashtra 411013, India",
+						"display_address" : "Tata Research Developement and Design Center",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/school-71.png",
+					    "location": [73.9166811, 18.511536],
+					    "placeId": "ChIJVVVVVeXBwjsRjhAlp31GD18"
+					},
 
-	{
-		"display_address":"VSNL Training Centre- Pune",
-		"formatted_address": "VSNL Training Centre, Dighi, Pune, Maharashtra 411015, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [73.8659042, 18.6053331],
-	    "placeId": "ChIJ0zPIrRTHwjsRmAZZGDn6HY0"
-	},
+					{
+						"display_address":"VSNL Training Centre- Pune",
+						"formatted_address": "VSNL Training Centre, Dighi, Pune, Maharashtra 411015, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+					    "location": [73.8659042, 18.6053331],
+					    "placeId": "ChIJ0zPIrRTHwjsRmAZZGDn6HY0"
+					},
 
-	{
-		"display_address":"The Quadron Business Park",
-		"formatted_address": "The Quadron Business Park, Plot No. 28 Rajiv Gandhi Infotech Park, Phase II, Hinjewadi, Pune, Maharashtra 411057, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [73.6970379, 18.5859733],
-	    "placeId": "ChIJ6ykEDQu7wjsRVDBjuDKHtnI"
-	},
+					{
+						"display_address":"The Quadron Business Park",
+						"formatted_address": "The Quadron Business Park, Plot No. 28 Rajiv Gandhi Infotech Park, Phase II, Hinjewadi, Pune, Maharashtra 411057, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+					    "location": [73.6970379, 18.5859733],
+					    "placeId": "ChIJ6ykEDQu7wjsRVDBjuDKHtnI"
+					},
 
-	{
-		"display_address":"CommerZone",
-		"formatted_address": "Commerzone IT Park, Yerawada, Pune, Maharashtra 411006, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [73.883805, 18.5602898],
-	    "placeId": "ChIJH7PcT9nAwjsRFK4IL60gRjI"
-	},
+					{
+						"display_address":"CommerZone",
+						"formatted_address": "Commerzone IT Park, Yerawada, Pune, Maharashtra 411006, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+					    "location": [73.883805, 18.5602898],
+					    "placeId": "ChIJH7PcT9nAwjsRFK4IL60gRjI"
+					},
 
-	{
-		"display_address":"TCS, Nyati Tiara",
-		"formatted_address": "Tata Consultancy Services, Pune Nagar Rd, Blue Hill Society, Yerawada, Pune, Maharashtra 411006, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [73.890797499, 18.5475484],
-	    "placeId": "ChIJC1YZpB3BwjsR8nFN2b93NgM"
-	},
+					{
+						"display_address":"TCS, Nyati Tiara",
+						"formatted_address": "Tata Consultancy Services, Pune Nagar Rd, Blue Hill Society, Yerawada, Pune, Maharashtra 411006, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+					    "location": [73.890797499, 18.5475484],
+					    "placeId": "ChIJC1YZpB3BwjsR8nFN2b93NgM"
+					},
 
-	{
-		"display_address":"Cerebrum IT Park" ,
-		"formatted_address": "Cerebrum IT Park, Marigold complex, Kalyani Nagar, Pune, Maharashtra 411014, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
-	    "location": [73.9105654, 18.5445986],
-	    "placeId": "ChIJG2xMEw3BwjsR5pww7XHk63U"
-	},
+					{
+						"display_address":"Cerebrum IT Park" ,
+						"formatted_address": "Cerebrum IT Park, Marigold complex, Kalyani Nagar, Pune, Maharashtra 411014, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+					    "location": [73.9105654, 18.5445986],
+					    "placeId": "ChIJG2xMEw3BwjsR5pww7XHk63U"
+					},
 
-	{
-		"display_address":"CMC LIMITED" ,
-		"formatted_address": "CMC-Pune, Elbee House, Dhole Patil Road, Siddharth Path, Pune, Maharashtra 411001, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/school-71.png",
-	    "location": [73.8762283, 18.534962],
-	    "placeId": "ChIJ47XjtPnAwjsRfl0REV-KQdY"
-	},
+					{
+						"display_address":"CMC LIMITED" ,
+						"formatted_address": "CMC-Pune, Elbee House, Dhole Patil Road, Siddharth Path, Pune, Maharashtra 411001, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/school-71.png",
+					    "location": [73.8762283, 18.534962],
+					    "placeId": "ChIJ47XjtPnAwjsRfl0REV-KQdY"
+					},
 
-	{
-		"display_address":"Birla AT And T Communications . Ltd",
-		"formatted_address": "Koregaon Park Rd, Bund Garden, Sangamvadi, Pune, Maharashtra 411001, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png",
-	    "location": [73.8850588, 18.54092559999999],
-	    "placeId": "ChIJkap8WPzAwjsRhdgLCXcF0to"
-	},
+					{
+						"display_address":"Birla AT And T Communications . Ltd",
+						"formatted_address": "Koregaon Park Rd, Bund Garden, Sangamvadi, Pune, Maharashtra 411001, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png",
+					    "location": [73.8850588, 18.54092559999999],
+					    "placeId": "ChIJkap8WPzAwjsRhdgLCXcF0to"
+					},
 
-	{
-		"display_address":"Mahindra British Telecom Limited",
-		"formatted_address": "S. No. 91, CTS No. 11/B/1, 2nd and 3rd Floor, Sharda Center, Erandwane, Pune, Maharashtra 411004, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [73.835775, 18.510174],
-	    "placeId": "ChIJZVBZBoy_wjsRVkx2MdDgx9Y"
-	},
+					{
+						"display_address":"Mahindra British Telecom Limited",
+						"formatted_address": "S. No. 91, CTS No. 11/B/1, 2nd and 3rd Floor, Sharda Center, Erandwane, Pune, Maharashtra 411004, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+					    "location": [73.835775, 18.510174],
+					    "placeId": "ChIJZVBZBoy_wjsRVkx2MdDgx9Y"
+					},
 
-	{
-		"display_address":"TCS PUNE (Millenium)" ,
-		"formatted_address": "TCS PUNE (Millenium), Godrej Millenium, Lane Number 7, Vasani Nagar, Koregaon Park, Pune, Maharashtra 411001, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [73.897226, 18.537914],
-	    "placeId": "ChIJfZBSjAbBwjsRNADABRxQrJo"
-	},
+					{
+						"display_address":"TCS PUNE (Millenium)" ,
+						"formatted_address": "TCS PUNE (Millenium), Godrej Millenium, Lane Number 7, Vasani Nagar, Koregaon Park, Pune, Maharashtra 411001, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+					    "location": [73.897226, 18.537914],
+					    "placeId": "ChIJfZBSjAbBwjsRNADABRxQrJo"
+					},
 
-	{
-		"display_address":"NAVLAKHA COMP.-PUNE" ,
-		"formatted_address": "NAVLAKHA COMP, Bibwewadi Kondhwa Road, Near Jhala Complex, Bibwewadi Kondhwa Road, Pune, Maharashtra 411037, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [73.8754836, 18.4814269],
-	    "placeId": "ChIJD00TwpzqwjsRzjNkTr9FcIU"
-	},
+					{
+						"display_address":"NAVLAKHA COMP.-PUNE" ,
+						"formatted_address": "NAVLAKHA COMP, Bibwewadi Kondhwa Road, Near Jhala Complex, Bibwewadi Kondhwa Road, Pune, Maharashtra 411037, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+					    "location": [73.8754836, 18.4814269],
+					    "placeId": "ChIJD00TwpzqwjsRzjNkTr9FcIU"
+					},
 
-	/*{
-		"display_address":"Pune-Sun Suzlon-NSTP" ,
-		"formatted_address": "Pune-Sun Suzlon, 180/1-8, Opposite Magarpatta City,, Hadapsar, Pune, Maharashtra 411028, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [18.5121034, 73.9352588],
-	    "placeId": "ChIJqVjgZ_XBwjsR4b3VqX-poDE"
-	},
+					/*{
+						"display_address":"Pune-Sun Suzlon-NSTP" ,
+						"formatted_address": "Pune-Sun Suzlon, 180/1-8, Opposite Magarpatta City,, Hadapsar, Pune, Maharashtra 411028, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+					    "location": [18.5121034, 73.9352588],
+					    "placeId": "ChIJqVjgZ_XBwjsR4b3VqX-poDE"
+					},
 
-	{"displayAddress":"Pune PSK Sites" ,
-		"formatted_address": "Passport Seva Kendra, A1, Koregaon Park Annexe, Mundhwa, Pune, Maharashtra, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
-	    "location": [18.5309037, 73.9135919],
-	    "placeId": "ChIJrXdkmJ_BwjsRG2vuqY9LP7w"
-	},
+					{"displayAddress":"Pune PSK Sites" ,
+						"formatted_address": "Passport Seva Kendra, A1, Koregaon Park Annexe, Mundhwa, Pune, Maharashtra, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+					    "location": [18.5309037, 73.9135919],
+					    "placeId": "ChIJrXdkmJ_BwjsRG2vuqY9LP7w"
+					},
 
-	{
-		"display_address":"Nashik PSK Sites" ,
-		"formatted_address": "Nashik Passport Office - Passport Seva Kendra, Shop No 3&4, Ground Floor, Nashik Pune National Highway, Nashik, Maharashtra 422214, India",
-	    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/civic_building-71.png",
-	    "location": [19.9606742, 73.8285404],
-	    "placeId": "ChIJEybtlLLq3TsRWe7D4A8HWn4"
-	},
+					{
+						"display_address":"Nashik PSK Sites" ,
+						"formatted_address": "Nashik Passport Office - Passport Seva Kendra, Shop No 3&4, Ground Floor, Nashik Pune National Highway, Nashik, Maharashtra 422214, India",
+					    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/civic_building-71.png",
+					    "location": [19.9606742, 73.8285404],
+					    "placeId": "ChIJEybtlLLq3TsRWe7D4A8HWn4"
+					},
 
-	*/
+					*/
 
-];
+			];
     		return tcsLocations;
     	}
     }
-  });
+  }]);
 
 'use strict';
 
 angular.module('cbApp')
-  .controller('SuggestionsCtrl', function ($scope, leafletMarkerEvents, $timeout,httpRequest,Auth, $stateParams,createTeamHelper, $state) {
+  .controller('SuggestionsCtrl', [ '$scope', 'leafletMarkerEvents', '$timeout', 'httpRequest', 'Auth', '$stateParams', 'createTeamHelper', '$state', 'cordovaUtil', function ($scope, leafletMarkerEvents, $timeout, httpRequest, Auth, $stateParams, createTeamHelper, $state, cordovaUtil) {
     $scope.team = $stateParams.team;
     $scope.membersEmpIds = [];
      
@@ -3208,8 +3210,8 @@ angular.module('cbApp')
         });
 
     $scope.defaults = {
-        minZoom:10,
-        maxZoom:15,
+        minZoom:4,
+        maxZoom:18,
         tap:true,
         tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     }
@@ -3233,7 +3235,7 @@ angular.module('cbApp')
                             markerClass = "map-user-marker user-own";
                         else
                              markerClass = "map-user-marker";
-                        var image = angular.element('<img>',{src:user.userPhotoUrl || "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png" ,'class':markerClass});
+                        var image = angular.element('<img>',{src:user.userPhotoUrl || "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png" ,'class':markerClass, 'id':user.empId+"_img"});
                         var p = angular.element('<p>',{'class':'map-user-name-sec','html':user.empName});
 
                         console.log(image.outerHTML )
@@ -3264,22 +3266,32 @@ angular.module('cbApp')
         zoom: 30
     };
 
-    var eventNameClick = 'leafletDirectiveMarker.myMap.click';
-    var eventNameTouch = 'leafletDirectiveMarker.myMap.touch';
+    if(config.cordova){
+        var eventNameTouch = 'leafletDirectiveMarker.myMap.touch';
+        $scope.$on(eventNameTouch, function(event, args){
+            $timeout(function(){
+                if(!~(args.model.message).indexOf($scope.currentUser.empId)){
+                    var  wrapper = document.getElementById('cn-wrapper');
+                    if(wrapper) classie.add(wrapper, 'opened-nav');
+                }
+            },100)
+        });
+    }
+    else{
+        var eventNameClick = 'leafletDirectiveMarker.myMap.click';
+        $scope.$on(eventNameClick, function(event, args){
+            $timeout(function(){
+                if(!~(args.model.message).indexOf($scope.currentUser.empId)){
+                    var  wrapper = document.getElementById('cn-wrapper');
+                    if(wrapper) classie.add(wrapper, 'opened-nav');
+                }
+            },100)
+        });
+    }
 
-    $scope.$on(eventNameClick, function(event, args){
-        $timeout(function(){
-            var  wrapper = document.getElementById('cn-wrapper');
-            classie.add(wrapper, 'opened-nav');
-        },100)
-    });
+    
 
-    $scope.$on(eventNameTouch, function(event, args){
-        $timeout(function(){
-            var  wrapper = document.getElementById('cn-wrapper');
-            classie.add(wrapper, 'opened-nav');
-        },100)
-    });
+    /**/
 
     /*{
         osloMarker: {
@@ -3332,10 +3344,14 @@ angular.module('cbApp')
                         $state.go('myteams');
                     }, function(data, status, headers, config){
                         console.log("Error creating a Team");
+                        if(config.cordova) cordovaUtil.showToastMessage('There was an error forming your team. Please check your internet connection and try again.');
+                        else alert('There was an error forming your team. Please check your internet connection and try again.');
+                        createTeamHelper.clearTeam();
+                        $state.go('myteams');
                     });
     };
     
-  });
+  }]);
 'use strict';
 
 angular.module('cbApp')
@@ -3352,7 +3368,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('TeamDetailsCtrl', function ($scope, $state, httpRequest, $stateParams) {
+  .controller('TeamDetailsCtrl', ['$scope', '$state', 'httpRequest', '$stateParams', function ($scope, $state, httpRequest, $stateParams) {
     $scope.message = 'Hello';
     
     var getTeamDetails = function(){
@@ -3382,7 +3398,7 @@ angular.module('cbApp')
     $scope.toggleFooter = function(){
         $(".home-page-menu-options").slideToggle(250);
     }
-  });
+  }]);
 'use strict';
 
 angular.module('cbApp')
@@ -3397,7 +3413,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .controller('UserHomeCtrl', function ($scope,Auth,$state,User) {
+  .controller('UserHomeCtrl', ['$scope','Auth','$state','User', function ($scope,Auth,$state,User) {
     $scope.message = 'Hello';
     $scope.tgState = false;
     Auth.getCurrentUser().then(function(data){return $scope.currentUser = data});
@@ -3415,7 +3431,7 @@ angular.module('cbApp')
     	Auth.logout();
       $state.go("login")
     }
-  });
+  }]);
 
 'use strict';
 
@@ -3445,13 +3461,25 @@ angular.module('cbApp')
             scope.addToTeam = function() {
               // Ad "id" to the locals of "editWebsite" 
               createTeamHelper.addToTeam(scope.empid);
+              //classie.toggle();
+
+              var wrapper = document.getElementById('cn-wrapper');
+              var buddyImgId = document.getElementById(scope.empid + "_img");
+              var addImgId = document.getElementById(scope.empid + "_addIcon");
+
+              /*var addIconForBuddy = document.getElementById('add-icon-map');
+              classie.add(addIconForBuddy,'remove-icon-map');*/
+
+              classie.remove(wrapper, 'opened-nav');
+              classie.add(buddyImgId,'added-buddy');
+              classie.add(addImgId,'remove-icon-map');
             }
         }
     }}]);
 'use strict';
 
 angular.module('cbApp')
-  .controller('UserProfileCtrl', function ($scope, $state, Auth, $modal, cordovaUtil, $cordovaImagePicker, httpRequest, staticData) {
+  .controller('UserProfileCtrl', [ '$scope', '$state', 'Auth', '$modal', 'cordovaUtil', '$cordovaImagePicker', 'httpRequest', 'staticData' , function ($scope, $state, Auth, $modal, cordovaUtil, $cordovaImagePicker, httpRequest, staticData) {
     $scope.message = 'Hello';
     $scope.editableMode = false;
 
@@ -3709,6 +3737,7 @@ angular.module('cbApp')
 
                 $scope.leftButtonText = "EDIT";
                 $scope.rightButtonText = "LOGOUT";
+                $scope.editableMode = false;
                 
                 $state.go('userHome.userProfile');
             });
@@ -3720,7 +3749,7 @@ angular.module('cbApp')
 
 
 
-  });
+  }]);
 
 'use strict';
 
@@ -3737,7 +3766,7 @@ angular.module('cbApp')
 'use strict';
 
 angular.module('cbApp')
-  .factory('Auth', function Auth($location, $rootScope, User,$q,httpRequest,localStorage) {
+  .factory('Auth', ['$location', '$rootScope', 'User','$q','httpRequest','localStorage', function Auth($location, $rootScope, User,$q,httpRequest,localStorage) {
     var currentUser = {};
 
    // if($cookieStore.get('token')) {
@@ -4005,12 +4034,12 @@ angular.module('cbApp')
         return localStorage.retrieve('token');
       }
     };
-  });
+  }]);
 
 'use strict';
 
 angular.module('cbApp')
-  .factory('User', function ($resource) {
+  .factory('User', ['$resource', function ($resource) {
     var api = config.apiBaseURL;
     return $resource(api+'api/users/:id/:controller', {
       id: '@_id'
@@ -4029,12 +4058,12 @@ angular.module('cbApp')
         }
       }
 	  });
-  });
+  }]);
 
 'use strict';
 
 angular.module('cbApp')
-  .controller('ModalCtrl', function ($scope, $modalInstance) {
+  .controller('ModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
     $scope.message = 'Hello';
 
     $scope.homeAddressModalOk = function(){
@@ -4049,11 +4078,11 @@ angular.module('cbApp')
     };
 
 
-  });
+  }]);
 'use strict';
 
 angular.module('cbApp')
-  .factory('Modal', function ($rootScope, $modal) {
+  .factory('Modal', ['$rootScope', '$modal', function ($rootScope, $modal) {
     /**
      * Opens a modal
      * @param  {Object} scope      - an object to be merged with modal's scope
@@ -4126,7 +4155,7 @@ angular.module('cbApp')
         }
       }
     };
-  });
+  }]);
 
 'use strict';
 
@@ -4134,7 +4163,7 @@ angular.module('cbApp')
  * Removes server error when user updates input
  */
 angular.module('cbApp')
-  .directive('mongooseError', function () {
+  .directive('mongooseError', [function () {
     return {
       restrict: 'A',
       require: 'ngModel',
@@ -4144,11 +4173,11 @@ angular.module('cbApp')
         });
       }
     };
-  });
+  }]);
 'use strict';
 
 angular.module('cbApp')
-  .controller('NavbarCtrl', function ($scope, $location, Auth) {
+  .controller('NavbarCtrl', ['$scope', '$location', 'Auth', function ($scope, $location, Auth) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -4167,12 +4196,12 @@ angular.module('cbApp')
     $scope.isActive = function(route) {
       return route === $location.path();
     };
-  });
+}]);
 /* global io */
 'use strict';
 
 angular.module('cbApp')
-  .factory('socket', function(socketFactory) {
+  .factory('socket', ['socketFactory', function(socketFactory) {
 
     // socket.io now auto-configures its connection when we ommit a connection url
     var ioSocket = io.connect(config.apiBaseURL, {
@@ -4244,14 +4273,14 @@ angular.module('cbApp')
         socket.removeAllListeners(modelName + ':remove');
       }
     };
-  });
+  }]);
 
 angular.module('cbApp').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('app/account/login/login.html',
-    "<!-- Login by Siddharth Ajmera --><div class=\"page-wrapper login-wrapper\"><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Login</span></div><div class=\"container login-container\"><div class=\"form-section login-form\"><div class=triangle-down-left-post></div><div class=login-form-wrapper><p class=\"error-msg for-wrong\">{{errorMsg}}</p><form class=form name=loginForm novalidate><div class=\"each-row login-page\"><div class=field-icon-section><span><img class=icon-style src=assets/images/icon_employee_ID.png></span></div><div id=inputUserWrapepr class=user-input-section><!-- <label for=\"#username\" class=\"moving-label\" ng-click=\"moveLabelUp('inputUserWrapepr')\">Employee Id</label> --><input tabindex=1 id=username ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" type=number name=empId placeholder=\"Employee Id\" ng-model=user.empId required ng-pattern=\"/^[0-9]*$/\" autofocus><!-- ng-click=\"moveLabelUp('inputUserWrapepr')\"\n" +
-    "                ng-blur=\"moveLabelDown('inputUserWrapepr','username')\" ng-focus=\"moveLabelUp('inputUserWrapepr')\" --><div ng-show=showErrorMessage ng-messages=loginForm.empId.$error class=login-err-wrap><p ng-message=required class=error-msg>Please enter Employee ID</p><p ng-message=pattern class=error-msg>Please enter valid Employee ID</p></div></div></div><div class=\"each-row login-page\"><div class=field-icon-section><span><img class=\"icon-style key\" src=assets/images/password.gif></span></div><div id=inputPwdWrapper class=user-input-section><!-- <label for=\"#password\" class=\"moving-label\"  ng-click=\"moveLabelUp('inputPwdWrapper')\">Password</label> --><input tabindex=2 ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control pwd-boxes login-input-box\" id=password type=password name=password placeholder=Password ng-model=user.password required><!-- ng-click=\"moveLabelUp('inputPwdWrapper')\" ng-focus=\"moveLabelUp('inputPwdWrapper')\" ng-blur=\"moveLabelDown('inputPwdWrapper','password')\" --><div ng-show=showErrorMessage ng-messages=loginForm.password.$error class=login-err-wrap><p ng-message=required class=error-msg>Please enter Password</p></div></div></div><div tabindex=3 class=\"each-row login-page login-btn-sec\" ng-click=login()><span class=login-text>LOGIN</span> <img src=assets/images/icon_car.png class=login-car-img></div></form></div><!-- <a >Forgot Password?</a>\n" +
+    "<!-- Login by Siddharth Ajmera --><div class=\"page-wrapper login-wrapper\"><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Login</span></div><div class=\"container login-container\"><div class=\"form-section login-form\"><div class=triangle-down-left-post></div><div class=login-form-wrapper><p class=\"error-msg for-wrong\">{{errorMsg}}</p><form class=form name=loginForm novalidate><div class=\"each-row login-page\"><div class=field-icon-section><span><img class=icon-style src=assets/images/icon_employee_ID.png></span></div><div id=inputUserWrapepr class=user-input-section><label class=field-label>Employee Id</label><input tabindex=1 id=username ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" type=number name=empId ng-model=user.empId required ng-pattern=\"/^[0-9]*$/\" autofocus><!-- ng-click=\"moveLabelUp('inputUserWrapepr')\"\n" +
+    "                ng-blur=\"moveLabelDown('inputUserWrapepr','username')\" ng-focus=\"moveLabelUp('inputUserWrapepr')\" --><div ng-show=showErrorMessage ng-messages=loginForm.empId.$error class=login-err-wrap><p ng-message=required class=error-msg>Please enter Employee ID</p><p ng-message=pattern class=error-msg>Please enter valid Employee ID</p></div></div></div><div class=\"each-row login-page\"><div class=field-icon-section><span><img class=\"icon-style key\" src=assets/images/password.gif></span></div><div id=inputPwdWrapper class=user-input-section><label class=field-label>Password</label><input tabindex=2 ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control pwd-boxes login-input-box\" id=password type=password name=password ng-model=user.password required><!-- ng-click=\"moveLabelUp('inputPwdWrapper')\" ng-focus=\"moveLabelUp('inputPwdWrapper')\" ng-blur=\"moveLabelDown('inputPwdWrapper','password')\" --><div ng-show=showErrorMessage ng-messages=loginForm.password.$error class=login-err-wrap><p ng-message=required class=error-msg>Please enter Password</p></div></div></div><div tabindex=3 class=\"each-row login-page login-btn-sec\" ng-click=login()><span class=login-text>LOGIN</span> <img src=assets/images/icon_car.png class=login-car-img></div></form></div><!-- <a >Forgot Password?</a>\n" +
     "        <a ui-sref=\"signup.stepOne\">Register</a> --></div><a class=forgot-link ui-sref=settings>Forgot Password?</a> <a class=\"forgot-link new-here\" ui-sref=signup>New Here?</a></div></div>"
   );
 
@@ -4262,7 +4291,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/account/signup/signup.html',
-    "<div class=page-wrapper><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Sign Up</span></div><div class=\"container login-container\"><form name=signupForm class=animation-form-signup ng-submit=register() novalidate><div><div class=\"form-section signup-section-form\"><div class=triangle-down-left-post></div><div class=signup-sec-wrapper><div class=each-row><div class=field-icon-section><span><img class=icon-style src=assets/images/icon_username.png></span></div><div class=user-input-section><input ng-class=\"{'error-border':!showErrorMessage}\" name=empName class=\"form-control input-boxes login-input-box\" ng-model=user.empName placeholder=Name required autofocus><div ng-show=!showErrorMessage ng-messages=signupForm.empName.$error class=error-msg-edit><p ng-message=required class=error-msg>Name is required</p><p ng-message=pattern class=error-msg>Invalid Name</p></div></div></div><div class=each-row><div class=field-icon-section><span><img class=icon-style src=assets/images/icon_employee_ID.png></span></div><div class=user-input-section><input type=number max=9999999 ng-class=\"{'error-border':!showErrorMessage}\" class=\"form-control input-boxes login-input-box\" ng-model=user.empId name=empid placeholder=\"Employee Id\" required ng-pattern=\"/^[1-9]\\d*$/\"><div ng-show=!showErrorMessage ng-messages=signupForm.empid.$error class=error-msg-edit><p ng-message=required class=error-msg>Employee ID is required</p><p ng-message=pattern class=error-msg>Invalid Employee ID</p><p class=error-msg>{{error.data.errors.empId.message}}</p></div></div></div><div class=each-row><div class=field-icon-section><span><img class=icon-style src=assets/images/icon_mobile_number.png></span></div><div class=user-input-section><input maxlength=10 class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" ng-model=user.contactNo type=tel name=contactNo required ng-pattern=\"/^[789]\\d{9}$/\" placeholder=\"Mobile Number\"><div ng-show=!showErrorMessage ng-messages=signupForm.contactNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Contact Number is required</p><p ng-message=pattern class=error-msg>Invalid Contact Number</p><p class=error-msg>{{error.data.errors.contactNo.message}}</p></div></div></div><div class=each-row><div class=field-icon-section><span><img class=\"icon-style key\" src=assets/images/password.gif></span></div><div class=\"user-input-section show-pwd-wrap\"><input class=\"form-control pwd-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" required type={{fieldtype}} ng-model=user.password name=password placeholder=Password> <img src=assets/images/show_password.png alt=show class=show-pwd-icon ng-click=changeFieldType() ng-if=\"fieldtype=='password'\"> <img src=assets/images/hide_Password.png alt=show class=show-pwd-icon ng-click=changeFieldType() ng-if=\"fieldtype=='text'\"><div ng-show=!showErrorMessage ng-messages=signupForm.password.$error class=error-msg-edit><p ng-message=required class=error-msg>Please enter password</p></div></div></div><div id=sites class=\"each-row gender-section\"><img src=assets/images/gender.png class=\"gender-icon pull-left\"><div class=\"radio gender-radio\"><label class=rad><input type=radio name=optradio value=Female ng-model=\"user.gender\"><i></i> Female</label></div><div class=\"radio gender-radio\"><label class=rad><input type=radio name=optradio value=Male ng-model=\"user.gender\"><i></i> Male</label></div></div><div class=\"each-row login-page login-btn-sec\" ng-click=register()><span class=login-text>SIGN UP!</span> <img src=assets/images/icon_car.png class=login-car-img></div></div><p class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none terms-condn-section\">Already a member of the <b>Commute</b>Buddy Community? <span class=link-text ui-sref=login>Login</span></p><p class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none terms-condn-section\">By signing up, I agree to <span class=link-text>TCS's Terms of Service</span> and <span class=link-text>Privacy Policy</span>.</p></div></div></form></div></div>"
+    "<div class=page-wrapper><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Sign Up</span></div><div class=\"container login-container\"><form name=signupForm class=animation-form-signup ng-submit=register() novalidate><div><div class=\"form-section signup-section-form\"><div class=triangle-down-left-post></div><div class=signup-sec-wrapper><div class=each-row><div class=field-icon-section><span><img class=icon-style src=assets/images/icon_username.png></span></div><div class=user-input-section><label class=field-label>Name</label><input ng-class=\"{'error-border':!showErrorMessage}\" name=empName class=\"form-control input-boxes login-input-box\" ng-model=user.empName required autofocus><div ng-show=!showErrorMessage ng-messages=signupForm.empName.$error class=error-msg-edit><p ng-message=required class=error-msg>Name is required</p><p ng-message=pattern class=error-msg>Invalid Name</p></div></div></div><div class=each-row><div class=field-icon-section><span><img class=icon-style src=assets/images/icon_employee_ID.png></span></div><div class=user-input-section><label class=field-label>Employee Id</label><input type=number max=9999999 ng-class=\"{'error-border':!showErrorMessage}\" class=\"form-control input-boxes login-input-box\" ng-model=user.empId name=empid required ng-pattern=\"/^[1-9]\\d*$/\"><div ng-show=!showErrorMessage ng-messages=signupForm.empid.$error class=error-msg-edit><p ng-message=required class=error-msg>Employee ID is required</p><p ng-message=pattern class=error-msg>Invalid Employee ID</p><p class=error-msg>{{error.data.errors.empId.message}}</p></div></div></div><div class=each-row><div class=field-icon-section><span><img class=\"icon-style phone-img\" src=assets/images/icon_mobile_number.png></span></div><div class=user-input-section><label class=field-label>Mobile No.</label><input maxlength=10 class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" ng-model=user.contactNo type=tel name=contactNo required ng-pattern=\"/^[789]\\d{9}$/\"><div ng-show=!showErrorMessage ng-messages=signupForm.contactNo.$error class=error-msg-edit><p ng-message=required class=error-msg>Contact Number is required</p><p ng-message=pattern class=error-msg>Invalid Contact Number</p><p class=error-msg>{{error.data.errors.contactNo.message}}</p></div></div></div><div class=each-row><div class=field-icon-section><span><img class=\"icon-style key\" src=assets/images/password.gif></span></div><div class=\"user-input-section show-pwd-wrap\"><label class=field-label>Password</label><input class=\"form-control pwd-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" required type={{fieldtype}} ng-model=user.password name=password> <img src=assets/images/show_password.png alt=show class=show-pwd-icon ng-click=changeFieldType() ng-if=\"fieldtype=='password'\"> <img src=assets/images/hide_Password.png alt=show class=show-pwd-icon ng-click=changeFieldType() ng-if=\"fieldtype=='text'\"><div ng-show=!showErrorMessage ng-messages=signupForm.password.$error class=error-msg-edit><p ng-message=required class=error-msg>Please enter password</p></div></div></div><div id=sites class=\"each-row gender-section\"><img src=assets/images/gender.png class=\"gender-icon pull-left\"><div class=\"radio gender-radio\"><label class=rad><input type=radio name=optradio value=Female ng-model=\"user.gender\"><i></i> Female</label></div><div class=\"radio gender-radio\"><label class=rad><input type=radio name=optradio value=Male ng-model=\"user.gender\"><i></i> Male</label></div></div><div class=\"each-row login-page login-btn-sec\" ng-click=register()><span class=login-text>SIGN UP!</span> <img src=assets/images/icon_car.png class=login-car-img></div></div><p class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none terms-condn-section\">Already a member of the <b>Commute</b>Buddy Community? <span class=link-text ui-sref=login>Login</span></p><p class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none terms-condn-section\">By signing up, I agree to <span class=link-text>TCS's Terms of Service</span> and <span class=link-text>Privacy Policy</span>.</p></div></div></form></div></div>"
   );
 
 
@@ -4326,7 +4355,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "\t\t\t\t\t\t<span class=\"act-time\">8:00 AM</span>\n" +
     "\t\t\t\t\t</li>\n" +
     "\t\t\t\t</ul>\n" +
-    "\t\t\t</div> --></div></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img class=home-menu-icon src=assets/images/dashboard-icon/home.png><p class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img class=home-menu-icon src=assets/images/dashboard-icon/history.png><p class=home-menu-text>HISTORY</p></div></div></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
+    "\t\t\t</div> --></div></div><div class=home-menu-swiper-wrap><img class=slide-arrow-sec src=assets/images/uparrow.png ng-click=toggleFooter() alt=up><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
   );
 
 
@@ -4336,22 +4365,22 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/availableRides/availableRides.html',
-    "<div class=\"page-wrapper avail-page-wrapper\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Available Rides</span></div><div class=\"form-section functionality-wrap avail-list-wrap\"><div><div class=triangle-down-left></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 choose-ride-wrap\"><span class=\"choose-img-wrap pull-left\"><img class=choose-ride-hand src=assets/images/available-rides/tap.png></span> <span class=choose-ride-text>Choose your ride</span></div></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-rides-lists-wrap\"><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\" ng-repeat=\"ride in rides track by $index\"><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-list-img-sec\"><img ng-src=\"{{ ride.offeredBy.userPhotoUrl || 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png' }}\" class=\"avail-user-img pull-left\"><p class=avail-user-name>{{ride.offeredBy.empName}}</p><span class=\"pull-left avail-user-gender\">{{ride.offeredBy.gender}}</span> <svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink xmlns:sketch=http://www.bohemiancoding.com/sketch/ns viewbox=\"0 0 30 37.5\" version=1.1 x=0px y=0px class=rating-star><g class=star-border stroke-width=1 fill=none fill-rule=evenodd sketch:type=MSPage><g sketch:type=MSArtboardGroup transform=\"translate(-135.000000, -225.000000)\" class=star-fill><path d=\"M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z\" sketch:type=\"MSShapeGroup\"></g></g></svg> <svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink xmlns:sketch=http://www.bohemiancoding.com/sketch/ns viewbox=\"0 0 30 37.5\" version=1.1 x=0px y=0px class=rating-star><g class=star-border stroke-width=1 fill=none fill-rule=evenodd sketch:type=MSPage><g sketch:type=MSArtboardGroup transform=\"translate(-135.000000, -225.000000)\" class=star-fill><path d=\"M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z\" sketch:type=\"MSShapeGroup\"></g></g></svg> <svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink xmlns:sketch=http://www.bohemiancoding.com/sketch/ns viewbox=\"0 0 30 37.5\" version=1.1 x=0px y=0px class=\"rating-star rated\"><g class=star-border stroke-width=1 fill=none fill-rule=evenodd sketch:type=MSPage><g sketch:type=MSArtboardGroup transform=\"translate(-135.000000, -225.000000)\" class=star-fill><path d=\"M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z\" sketch:type=\"MSShapeGroup\"></g></g></svg> <svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink xmlns:sketch=http://www.bohemiancoding.com/sketch/ns viewbox=\"0 0 30 37.5\" version=1.1 x=0px y=0px class=\"rating-star rated\"><g class=star-border stroke-width=1 fill=none fill-rule=evenodd sketch:type=MSPage><g sketch:type=MSArtboardGroup transform=\"translate(-135.000000, -225.000000)\" class=star-fill><path d=\"M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z\" sketch:type=\"MSShapeGroup\"></g></g></svg> <svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink xmlns:sketch=http://www.bohemiancoding.com/sketch/ns viewbox=\"0 0 30 37.5\" version=1.1 x=0px y=0px class=\"rating-star rated\"><g class=star-border stroke-width=1 fill=none fill-rule=evenodd sketch:type=MSPage><g sketch:type=MSArtboardGroup transform=\"translate(-135.000000, -225.000000)\" class=star-fill><path d=\"M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z\" sketch:type=\"MSShapeGroup\"></g></g></svg></div><div class=\"col-md-6 col-sm-6 col-xs-6 avail-left-sec\"><div class=each-info-line><img class=avai-ride-info-icon src=assets/images/available-rides/starting-time.png> <span class=avail-ride-date>{{ride.rideScheduledTime | date:'hh:mm a'}}</span></div></div><div class=\"col-md-6 col-sm-6 col-xs-6 avail-right-sec\"><div class=avail-right-info><span class=\"available-seat-count pull-right\">{{ride.currentlyAvailableSeats}}</span> <span class=\"pull-right seat-avail-label\">Seats Available</span></div></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-ride-address-wrap\"><img class=avai-ride-info-icon src=assets/images/available-rides/from-icon.png> <span class=address-text>{{ride.startLocation.display_address}} <span class=\"glyphicon glyphicon-chevron-right\"></span></span> <span class=address-text>{{ride.endLocation.display_address}}</span></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 via-sec\"><img class=avai-ride-info-icon src=assets/images/available-rides/from-icon.png> <span>{{ride.routeSummary}}</span></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 seat-sec\"><img class=\"avai-ride-info-icon pull-left\" src=assets/images/available-rides/from-icon.png> <span class=\"pull-left select-text\">Select a seat</span> <img ng-repeat=\"seat in ride.seatMap track by $index\" class=seat-info-img ng-src=\"{{seat._id  && 'assets/images/available-rides/filled_seat.png' || seat.selected && 'assets/images/available-rides/Tap_seat.png' || 'assets/images/available-rides/vacantSeat.png'}}\" ng-click=\"selectSeat(seat)\"></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-proceed-wrap\"><span ng-click=selectRide(ride)>BOOK MY RIDE!</span> <img class=avail-proceed-img src=assets/images/available-rides/avail-car.png></div></div><p class=no-avail-ride-message ng-if=\"rides.length<=0\">No rides available at this time. Please check back later.</p></div></div></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
+    "<div class=\"page-wrapper avail-page-wrapper\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Available Rides</span></div><div class=\"form-section functionality-wrap avail-list-wrap\"><div><div class=triangle-down-left></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 choose-ride-wrap\"><span class=\"choose-img-wrap pull-left\"><img class=choose-ride-hand src=assets/images/available-rides/tap.png></span> <span class=choose-ride-text>Choose your ride</span></div></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-rides-lists-wrap\"><div class=\"col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none each-vailable-ride\" ng-repeat=\"ride in rides track by $index\"><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-list-img-sec\"><img ng-src=\"{{ ride.offeredBy.userPhotoUrl || 'https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png' }}\" class=\"avail-user-img pull-left\"><p class=avail-user-name>{{ride.offeredBy.empName}}</p><span class=\"pull-left avail-user-gender\">{{ride.offeredBy.gender}}</span> <svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink xmlns:sketch=http://www.bohemiancoding.com/sketch/ns viewbox=\"0 0 30 37.5\" version=1.1 x=0px y=0px class=rating-star><g class=star-border stroke-width=1 fill=none fill-rule=evenodd sketch:type=MSPage><g sketch:type=MSArtboardGroup transform=\"translate(-135.000000, -225.000000)\" class=star-fill><path d=\"M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z\" sketch:type=\"MSShapeGroup\"></g></g></svg> <svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink xmlns:sketch=http://www.bohemiancoding.com/sketch/ns viewbox=\"0 0 30 37.5\" version=1.1 x=0px y=0px class=rating-star><g class=star-border stroke-width=1 fill=none fill-rule=evenodd sketch:type=MSPage><g sketch:type=MSArtboardGroup transform=\"translate(-135.000000, -225.000000)\" class=star-fill><path d=\"M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z\" sketch:type=\"MSShapeGroup\"></g></g></svg> <svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink xmlns:sketch=http://www.bohemiancoding.com/sketch/ns viewbox=\"0 0 30 37.5\" version=1.1 x=0px y=0px class=\"rating-star rated\"><g class=star-border stroke-width=1 fill=none fill-rule=evenodd sketch:type=MSPage><g sketch:type=MSArtboardGroup transform=\"translate(-135.000000, -225.000000)\" class=star-fill><path d=\"M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z\" sketch:type=\"MSShapeGroup\"></g></g></svg> <svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink xmlns:sketch=http://www.bohemiancoding.com/sketch/ns viewbox=\"0 0 30 37.5\" version=1.1 x=0px y=0px class=\"rating-star rated\"><g class=star-border stroke-width=1 fill=none fill-rule=evenodd sketch:type=MSPage><g sketch:type=MSArtboardGroup transform=\"translate(-135.000000, -225.000000)\" class=star-fill><path d=\"M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z\" sketch:type=\"MSShapeGroup\"></g></g></svg> <svg xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink xmlns:sketch=http://www.bohemiancoding.com/sketch/ns viewbox=\"0 0 30 37.5\" version=1.1 x=0px y=0px class=\"rating-star rated\"><g class=star-border stroke-width=1 fill=none fill-rule=evenodd sketch:type=MSPage><g sketch:type=MSArtboardGroup transform=\"translate(-135.000000, -225.000000)\" class=star-fill><path d=\"M157.114645,251.555278 C157.481459,251.748124 157.910175,251.436643 157.84012,251.02819 L156.482629,243.104663 L162.237212,237.495331 C162.533971,237.206063 162.370216,236.702077 161.960106,236.642484 L154.008037,235.491395 L150.448368,228.278717 C150.264961,227.907094 149.735039,227.907094 149.551632,228.278717 L145.988903,235.487426 L138.039894,236.642484 C137.629784,236.702077 137.466029,237.206063 137.762788,237.495331 L143.518954,243.104181 L142.15988,251.02819 C142.089825,251.436643 142.518541,251.748124 142.885355,251.555278 L150.003413,247.813094 L157.114645,251.555278 Z\" sketch:type=\"MSShapeGroup\"></g></g></svg></div><div class=\"col-md-6 col-sm-6 col-xs-6 avail-left-sec\"><div class=each-info-line><img class=avai-ride-info-icon src=assets/images/available-rides/starting-time.png> <span class=avail-ride-date>{{ride.rideScheduledTime | date:'hh:mm a'}}</span></div></div><div class=\"col-md-6 col-sm-6 col-xs-6 avail-right-sec\"><div class=avail-right-info><span class=\"available-seat-count pull-right\">{{ride.currentlyAvailableSeats}}</span> <span class=\"pull-right seat-avail-label\">Seats Available</span></div></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-ride-address-wrap\"><img class=avai-ride-info-icon src=assets/images/available-rides/from-icon.png> <span class=address-text>{{ride.startLocation.display_address}} <span class=\"glyphicon glyphicon-chevron-right\"></span></span> <span class=address-text>{{ride.endLocation.display_address}}</span></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 via-sec\"><img class=avai-ride-info-icon src=assets/images/available-rides/from-icon.png> <span>{{ride.routeSummary}}</span></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 seat-sec\"><img class=\"avai-ride-info-icon pull-left\" src=assets/images/available-rides/from-icon.png> <span class=\"pull-left select-text\">Select a seat</span> <img ng-repeat=\"seat in ride.seatMap track by $index\" class=seat-info-img ng-src=\"{{seat._id  && 'assets/images/available-rides/filled_seat.png' || seat.selected && 'assets/images/available-rides/Tap_seat.png' || 'assets/images/available-rides/vacantSeat.png'}}\" ng-click=\"selectSeat(seat)\"></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 avail-proceed-wrap\"><span ng-click=selectRide(ride)>BOOK MY RIDE!</span> <img class=avail-proceed-img src=assets/images/available-rides/avail-car.png></div></div><p class=no-avail-ride-message ng-if=\"rides.length<=0\">No rides available at this time. Please check back later.</p></div></div></div><div class=home-menu-swiper-wrap><img class=slide-arrow-sec src=assets/images/uparrow.png ng-click=toggleFooter() alt=up><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
   );
 
 
   $templateCache.put('app/currentRide/currentRide.html',
-    "<div class=\"page-wrapper avail-page-wrapper\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Current Ride</span></div><div class=\"form-section functionality-wrap avail-list-wrap\"><div class=triangle-down-left></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 choose-ride-wrap\"><span class=choose-ride-text>Live Tracking</span></div><div class=today-activity><p class=activity-header>Today</p><ul class=activity-list><li><span class=indic-circle></span> <span class=act-message>Siddharth is not commuting today</span> <span class=act-time>8:00 AM</span></li><li><span class=indic-circle></span> <span class=act-message>Jagdeep joined the commute</span> <span class=act-time>8:00 AM</span></li></ul></div><div class=yesterday-activity><p class=activity-header>Yesterday</p><ul class=activity-list><li><span class=indic-circle></span> <span class=act-message>Siddharth is not commuting today</span> <span class=act-time>8:00 AM</span></li><li><span class=indic-circle></span> <span class=act-message>Jagdeep joined the commute</span> <span class=act-time>8:00 AM</span></li><li><span class=indic-circle></span> <span class=act-message>Jagdeep joined the commute</span> <span class=act-time>8:00 AM</span></li><li><span class=indic-circle></span> <span class=act-message>Jagdeep joined the commute</span> <span class=act-time>8:00 AM</span></li><li><span class=indic-circle></span> <span class=act-message>Jagdeep joined the commute</span> <span class=act-time>8:00 AM</span></li></ul></div></div></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
+    "<div class=\"page-wrapper avail-page-wrapper\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Current Ride</span></div><div class=\"form-section functionality-wrap avail-list-wrap\"><div class=triangle-down-left></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 choose-ride-wrap\"><span class=choose-ride-text>Live Tracking</span></div><div class=today-activity><p class=activity-header>Today</p><ul class=activity-list><li><span class=indic-circle></span> <span class=act-message>Siddharth is not commuting today</span> <span class=act-time>8:00 AM</span></li><li><span class=indic-circle></span> <span class=act-message>Jagdeep joined the commute</span> <span class=act-time>8:00 AM</span></li></ul></div><div class=yesterday-activity><p class=activity-header>Yesterday</p><ul class=activity-list><li><span class=indic-circle></span> <span class=act-message>Siddharth is not commuting today</span> <span class=act-time>8:00 AM</span></li><li><span class=indic-circle></span> <span class=act-message>Jagdeep joined the commute</span> <span class=act-time>8:00 AM</span></li><li><span class=indic-circle></span> <span class=act-message>Jagdeep joined the commute</span> <span class=act-time>8:00 AM</span></li><li><span class=indic-circle></span> <span class=act-message>Jagdeep joined the commute</span> <span class=act-time>8:00 AM</span></li><li><span class=indic-circle></span> <span class=act-message>Jagdeep joined the commute</span> <span class=act-time>8:00 AM</span></li></ul></div></div></div><div class=home-menu-swiper-wrap><img class=slide-arrow-sec src=assets/images/uparrow.png ng-click=toggleFooter() alt=up><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
   );
 
 
   $templateCache.put('app/formTeam/formTeam.html',
-    "<div class=\"page-wrapper avail-page-wrapper\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><!-- \t\t\t<span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Form a team</span></div><form name=userProfileUpdateForm class=\"container login-container post-ride-container animation-form-signup\" novalidate><div class=triangle-down-left-post></div><div class=\"form-section signup-section-form post-ride-form\"><div class=each-row><div class=icon-address-fields><img class=\"post-ride-from-icon team-name-icon\" src=assets/images/available-rides/from-icon.png></div><div class=from-address-post-wrap><label class=field-label>Team name</label><input ng-model=team.teamName class=\"form-control login-input-box team-name-field\"></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div id=postFromSec class=from-address-post-wrap><label class=field-label>Home</label><input tab-index=1 ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" name=homeAddress required ng-model=team.rideDetails.from g-places-autocomplete><!-- <p class=\"current-loc-sec\"><img src=\"assets/images/current_location.png\">Use current location</p> --><div ng-show=!showErrorMessage ng-messages=postRideForm.rideSource.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride source is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/to.png ng-click=\"optionAddressOptions('to')\"></div><div id=postToSec class=from-address-post-wrap><label class=field-label>Office</label><select ng-options=\"item as item.display_address for item in officeAddressJSON\" ng-model=team.rideDetails.to name=officeAddress class=post-ofc-address><option style=display:none value=\"\">Office Address</option></select><div ng-show=!showErrorMessage ng-messages=postRideForm.rideDestination.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride destination is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=\"post-ride-from-icon from\" src=assets/images/available-rides/starting-time.png></div><div class=from-address-post-wrap><label class=field-label>Shift start time</label><select name=leavingIn class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t.start for t in timeSlotJSON\" ng-model=team.rideDetails.ridePreferredTime></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.leavingIn.$error class=error-msg-edit><p ng-message=required class=error-msg>Start time is req.</p></div></div><div class=each-row><div class=icon-address-fields><img class=\"post-ride-from-icon from\" src=assets/images/available-rides/starting-time.png></div><div class=from-address-post-wrap><label class=field-label>Shift end time</label><select name=leavingIn class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t.end for t in timeSlotJSON\" ng-model=team.rideDetails.ridePreferredTime></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.leavingIn.$error class=error-msg-edit><p ng-message=required class=error-msg>Start time is req.</p></div></div><label class=\"field-label route\">Tap to select a route</label></div><leaflet class=\"leaflet team\" markers=markers lf-center=center event-broadcast=events id=analyzeon defaults=defaults paths=mypath></leaflet><div class=\"each-row post-ride-continue\" name=syncData ng-click=findTeamMembers()>FIND MEMBERS... <img class=post-continue-img src=assets/images/icon_car.png></div></form></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
+    "<div class=\"page-wrapper avail-page-wrapper\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><!-- \t\t\t<span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Form a team</span></div><form name=userProfileUpdateForm class=\"container login-container post-ride-container animation-form-signup\" novalidate><div class=triangle-down-left-post></div><div class=\"form-section signup-section-form post-ride-form\"><div class=each-row><div class=icon-address-fields><img class=\"post-ride-from-icon team-name-icon\" src=assets/images/available-rides/from-icon.png></div><div class=from-address-post-wrap><label class=field-label>Team name</label><input ng-model=team.teamName class=\"form-control login-input-box team-name-field\"></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div id=postFromSec class=from-address-post-wrap><label class=field-label>Home</label><input tab-index=1 ng-class=\"{'error-border':showErrorMessage}\" class=\"form-control input-boxes login-input-box\" name=homeAddress required ng-model=team.rideDetails.from g-places-autocomplete><!-- <p class=\"current-loc-sec\"><img src=\"assets/images/current_location.png\">Use current location</p> --><div ng-show=!showErrorMessage ng-messages=postRideForm.rideSource.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride source is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/to.png ng-click=\"optionAddressOptions('to')\"></div><div id=postToSec class=from-address-post-wrap><label class=field-label>Office</label><select ng-options=\"item as item.display_address for item in officeAddressJSON\" ng-model=team.rideDetails.to name=officeAddress class=post-ofc-address><option style=display:none value=\"\">Office Address</option></select><div ng-show=!showErrorMessage ng-messages=postRideForm.rideDestination.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride destination is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=\"post-ride-from-icon from\" src=assets/images/available-rides/starting-time.png></div><div class=from-address-post-wrap><label class=field-label>Shift start time</label><select name=leavingIn class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t.start for t in timeSlotJSON\" ng-model=team.rideDetails.ridePreferredTime></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.leavingIn.$error class=error-msg-edit><p ng-message=required class=error-msg>Start time is req.</p></div></div><div class=each-row><div class=icon-address-fields><img class=\"post-ride-from-icon from\" src=assets/images/available-rides/starting-time.png></div><div class=from-address-post-wrap><label class=field-label>Shift end time</label><select name=leavingIn class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t as t.end for t in timeSlotJSON\" ng-model=team.rideDetails.ridePreferredTime></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.leavingIn.$error class=error-msg-edit><p ng-message=required class=error-msg>Start time is req.</p></div></div><label class=\"field-label route\">Tap to select a route</label></div><leaflet class=\"leaflet team\" markers=markers lf-center=center event-broadcast=events id=analyzeon defaults=defaults paths=mypath></leaflet><div class=\"each-row post-ride-continue\" name=syncData ng-click=findTeamMembers()>FIND MEMBERS... <img class=post-continue-img src=assets/images/icon_car.png></div></form></div><div class=home-menu-swiper-wrap><img class=slide-arrow-sec src=assets/images/uparrow.png ng-click=toggleFooter() alt=up><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
   );
 
 
   $templateCache.put('app/home/home.html',
-    "<div class=\"page-wrapper home-page\"><div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer avail-header-back\" ng-click=\"toggleHamburger()\"></span> --></div><div class=home-content-wrapper><p class=home-welcome-text>Welcome <span class=welcome-username>{{firstName}}</span></p><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none on-the-fly-sec\"><p class=on-the-fly-text><span class=first-letter>O</span>n <span class=first-letter>T</span>he <span class=first-letter>F</span>ly</p><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none take-post-btn-sec\"><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none\"><img src=assets/images/dashboard-icon/postRide.png class=option-icon ng-click=postRide()><p ng-click=postRide() class=option-text>POST A RIDE</p></div><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none\"><img src=assets/images/dashboard-icon/takeRide.png class=option-icon ng-click=takeRide()><p ng-click=takeRide() class=option-text>TAKE A RIDE</p></div></div><div class=or-sec>OR</div></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none pooling-section\"><p class=car-pooling-text><span class=first-letter>C</span>ar <span class=first-letter>P</span>ooling</p><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none for-team-btn-sec\"><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none\"><img src=assets/images/dashboard-icon/formTeam.png ui-sref=formTeam class=option-icon><p ui-sref=formTeam class=option-text>FORM A TEAM</p></div><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none\"><img src=assets/images/dashboard-icon/myTeams.png class=option-icon ng-click=openMyTeam()><p ng-click=openMyTeam() class=option-text>MY TEAMS</p></div></div></div></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon ui-sref=userHome.rideStatus src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text ui-sref=userHome.rideStatus>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
+    "<div class=\"page-wrapper home-page\"><div class=\"col-md-12 col-sm-12 col-xs-12 header-section\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer avail-header-back\" ng-click=\"toggleHamburger()\"></span> --></div><div class=home-content-wrapper><p class=home-welcome-text>Welcome <span class=welcome-username>{{firstName}}</span></p><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none on-the-fly-sec\"><p class=on-the-fly-text><span class=first-letter>O</span>n <span class=first-letter>T</span>he <span class=first-letter>F</span>ly</p><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none take-post-btn-sec\"><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none\"><img src=assets/images/dashboard-icon/postRide.png class=option-icon ng-click=postRide()><p ng-click=postRide() class=option-text>POST A RIDE</p></div><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none\"><img src=assets/images/dashboard-icon/takeRide.png class=option-icon ng-click=takeRide()><p ng-click=takeRide() class=option-text>TAKE A RIDE</p></div></div><div class=or-sec>OR</div></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none pooling-section\"><p class=car-pooling-text><span class=first-letter>C</span>ar <span class=first-letter>P</span>ooling</p><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none for-team-btn-sec\"><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none\"><img src=assets/images/dashboard-icon/formTeam.png ui-sref=formTeam class=option-icon><p ui-sref=formTeam class=option-text>FORM A TEAM</p></div><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left pad-L-none\"><img src=assets/images/dashboard-icon/myTeams.png class=option-icon ng-click=openMyTeam()><p ng-click=openMyTeam() class=option-text>MY TEAMS</p></div></div></div></div><div class=home-menu-swiper-wrap><img class=slide-arrow-sec src=assets/images/uparrow.png ng-click=toggleFooter() alt=up><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
   );
 
 
@@ -4463,7 +4492,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "<div class=\"page-wrapper avail-page-wrapper\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>My teams</span></div><div class=my-teams-wrapper><div class=triangle-down-left></div><div class=my-team-content><ul class=team-list ng-if=\"teams.length>0\"><li ng-repeat=\"team in teams track by $index\"><span class=count-sec ng-click=openteamDetails(team._id)>{{$index + 1}}</span> <span class=team-name-sec ng-click=openteamDetails(team._id)>{{team.name}}</span></li></ul><div class=no-team-section ng-if=\"teams.length<=0\"><p>No Teams Yet</p><p class=no-team-sub-text>As you are new user, So please create your team first.</p><button class=create-team-btn ng-click=goToCreateTeamPage()>Create New</button></div><!-- <div >\n" +
     "\t\t\t\t\t<span class=\"count-sec\" ng-click=\"openteamDetails(team._id)\">{{$index + 1}}</span>\n" +
     "\t\t\t\t\t<span class=\"team-name-sec\" ng-click=\"openteamDetails(team._id)\">{{team.name}}</span>\n" +
-    "\t\t\t\t</div> --></div></div></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
+    "\t\t\t\t</div> --></div></div></div><div class=home-menu-swiper-wrap><img class=slide-arrow-sec src=assets/images/uparrow.png ng-click=toggleFooter() alt=up><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
   );
 
 
@@ -4474,7 +4503,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/postRides/postRides.html',
-    "<div class=\"page-wrapper avail-page-wrapper\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Post a Ride</span></div><form name=userProfileUpdateForm class=\"container login-container post-ride-container animation-form-signup\" novalidate><div class=triangle-down-left-post></div><div class=\"form-section signup-section-form post-ride-form\"><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div id=postFromSec class=from-address-post-wrap><label class=field-label>From</label><select ng-model=rideData.from class=\"timeslot post-ride-leaving-in\" ng-change=fromChanged(rideData.from)><option>Home</option><option>Office</option><!-- <option>Other</option> --></select><!-- <p class=\"current-loc-sec\"><img src=\"assets/images/current_location.png\">Use current location</p> --><div ng-show=!showErrorMessage ng-messages=postRideForm.rideSource.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride source is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/to.png ng-click=\"optionAddressOptions('to')\"></div><div id=postToSec class=from-address-post-wrap><label class=field-label>To</label><select name=rideDestination placeholder=To required ng-model=rideData.to class=\"timeslot post-ride-leaving-in\" ng-change=toChanged(rideData.to)><option>Home</option><option>Office</option><!-- <option>Other</option> --></select><div ng-show=!showErrorMessage ng-messages=postRideForm.rideDestination.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride destination is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=\"post-ride-from-icon from\" src=assets/images/available-rides/starting-time.png></div><div class=from-address-post-wrap><label class=field-label>Starting at</label><select name=leavingIn class=\"timeslot post-ride-leaving-in\" ng-model=rideData.leavingIn ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t.value as t.text for t in leavingInJSON\"></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.leavingIn.$error class=error-msg-edit><p ng-message=required class=error-msg>Starting time is required</p></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/seats_avalaible.png></div><div class=from-address-post-wrap><label class=field-label>Seats available</label><select class=\"timeslot post-ride-leaving-in\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=rideData.availableSeats ng-options=\"c as c for c in availableSeatsJSON\"><option style=display:none value=\"\">Seats available</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></div><label class=\"field-label route\">Tap to select a route</label></div><leaflet class=leaflet markers=markers lf-center=center event-broadcast=events id=analyzeon defaults=defaults paths=mypath name=routeSummary></leaflet><div class=\"each-row post-ride-continue\" name=syncData ng-click=postRide()>POST MY RIDE! <img class=post-continue-img src=assets/images/icon_car.png></div></form></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
+    "<div class=\"page-wrapper avail-page-wrapper\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Post a Ride</span></div><form name=userProfileUpdateForm class=\"container login-container post-ride-container animation-form-signup\" novalidate><div class=triangle-down-left-post></div><div class=\"form-section signup-section-form post-ride-form\"><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div id=postFromSec class=from-address-post-wrap><label class=field-label>From</label><select ng-model=rideData.from class=\"timeslot post-ride-leaving-in\" ng-change=fromChanged(rideData.from)><option>Home</option><option>Office</option><!-- <option>Other</option> --></select><!-- <p class=\"current-loc-sec\"><img src=\"assets/images/current_location.png\">Use current location</p> --><div ng-show=!showErrorMessage ng-messages=postRideForm.rideSource.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride source is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/to.png ng-click=\"optionAddressOptions('to')\"></div><div id=postToSec class=from-address-post-wrap><label class=field-label>To</label><select name=rideDestination placeholder=To required ng-model=rideData.to class=\"timeslot post-ride-leaving-in\" ng-change=toChanged(rideData.to)><option>Home</option><option>Office</option><!-- <option>Other</option> --></select><div ng-show=!showErrorMessage ng-messages=postRideForm.rideDestination.$error class=error-msg-edit><p ng-message=required class=error-msg>Ride destination is required</p></div></div></div><div class=each-row><div class=icon-address-fields><img class=\"post-ride-from-icon from\" src=assets/images/available-rides/starting-time.png></div><div class=from-address-post-wrap><label class=field-label>Starting at</label><select name=leavingIn class=\"timeslot post-ride-leaving-in\" ng-model=rideData.leavingIn ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t.value as t.text for t in leavingInJSON\"></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.leavingIn.$error class=error-msg-edit><p ng-message=required class=error-msg>Starting time is required</p></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/seats_avalaible.png></div><div class=from-address-post-wrap><label class=field-label>Seats available</label><select class=\"timeslot post-ride-leaving-in\" name=availableSeats ng-class=\"{'error-border':!showErrorMessage}\" required ng-model=rideData.availableSeats ng-options=\"c as c for c in availableSeatsJSON\"><option style=display:none value=\"\">Seats available</option></select></div><div ng-show=!showErrorMessage ng-messages=postRideForm.availableSeats.$error class=error-msg-edit><p ng-message=required class=error-msg>Available seats is required</p></div></div><label class=\"field-label route\">Tap to select a route</label></div><leaflet class=leaflet markers=markers lf-center=center event-broadcast=events id=analyzeon defaults=defaults paths=mypath name=routeSummary></leaflet><div class=\"each-row post-ride-continue\" name=syncData ng-click=postRide()>POST MY RIDE! <img class=post-continue-img src=assets/images/icon_car.png></div></form></div><div class=home-menu-swiper-wrap><img class=slide-arrow-sec src=assets/images/uparrow.png ng-click=toggleFooter() alt=up><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
   );
 
 
@@ -4495,7 +4524,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t<div id=\"postFromSec\" class=\"from-address-post-wrap\">\n" +
     "\t\t\t\t\t\t<label class=\"field-label\">\n" +
-    "\t\t\t\t\t\t\tRegistration No.\n" +
+    "\t\t\t\t\t\t\tVehicle No.\n" +
     "\t\t\t\t\t\t</label>\n" +
     "\t\t                <input class=\"form-control input-boxes login-input-box\" ng-class=\"{'error-border':!showErrorMessage}\" type=\"text\" maxlength=\"13\" name=\"vehicleNo\" required ng-pattern=\"/^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/\" ng-model=\"user.vehicle[0].vehicleLicenseNumber\" placeholder=\"\">\n" +
     "\t\t                <div ng-show=\"!showErrorMessage\"  ng-messages=\"signupForm.vehicleNo.$error\" class=\"error-msg-edit\">\n" +
@@ -4612,9 +4641,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "\t</div>\n" +
     "\n" +
     "\t<div class=\"home-menu-swiper-wrap\">\n" +
-    "\t\t<div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\" >\n" +
-    "\t\t\t<img src=\"assets/images/uparrow.png\" ng-click=\"toggleFooter()\" alt=\"up\">\n" +
-    "\t\t</div>\n" +
+    "\t\t<img class=\"slide-arrow-sec\" src=\"assets/images/uparrow.png\" ng-click=\"toggleFooter()\" alt=\"up\">\n" +
     "\t\t<div class=\"home-page-menu-options\">\n" +
     "\t\t\t<div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\">\n" +
     "\t\t\t\t<img ui-sref=\"userHome.home\" class=\"home-menu-icon\" src=\"assets/images/dashboard-icon/home.png\">\n" +
@@ -4640,7 +4667,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/rideStatus/rideStatus.html',
-    "<div class=page-wrapper><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Track my ride</span></div><form name=userProfileUpdateForm class=\"container login-container post-ride-container animation-form-signup ride-status\" novalidate><div class=triangle-down-left-post></div><div class=\"form-section signup-section-form post-ride-form\" ng-class=\"{'editable-mode' : editableMode}\"><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div id=postFromSec class=from-address-post-wrap><label class=\"field-label from\">From</label><span>{{postedRide.startLocation.display_address}}</span></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/to.png ng-click=\"optionAddressOptions('to')\"></div><div id=postToSec class=from-address-post-wrap><label class=\"field-label from\">To</label><span>{{postedRide.endLocation.display_address}}</span></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/via.png ng-click=\"optionAddressOptions('to')\"></div><div id=postToSec class=from-address-post-wrap><label class=\"field-label from\">Via</label><span>{{postedRide.routeSummary}}</span></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/starting-time.png></div><div class=user-input-section><!-- class=\"from-address-post-wrap\" --><label class=\"field-label from\">Leaving in</label><span class=\"non-editable-sec field-label\">{{rideScheduledTime}} minutes</span><div class=editable-sec><!-- <label class=\"field-label from\">Leaving In</label> --><select name=leavingIn class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t.value as t.text for t in leavingInJSON\" ng-model=leavingIn><option style=display:none value=\"\">Leaving In</option></select><div class=error-msg-edit ng-messages=postRideForm.shiftEndTime.$error><p ng-message=required class=error-msg>shift time is required</p></div></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/seats_avalaible.png></div><div class=from-address-post-wrap><label class=\"field-label from\">Seat Available</label><span class=field-label>{{postedRide.currentlyAvailableSeats}} / {{postedRide.initiallyAvailableSeats}}</span></div></div></div><div class=\"each-row post-ride-continue\" name=syncData ui-sref=currentRide><!-- ng-click=\"startRide()\" -->START THE RIDE! <img class=post-continue-img src=assets/images/icon_car.png></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-L-none pad-R-none track-btn-sec\"><button class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left track-reschedule-btn\" ng-click=leftButtonClicked(leftButtonText)>{{leftButtonText}}</button> <button class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right track-reschedule-btn cancel-btn\" ng-click=rightButtonClicked(rightButtonText)>{{rightButtonText}}</button></div></form></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon ui-sref=userHome.rideStatus src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text ui-sref=userHome.rideStatus>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
+    "<div class=page-wrapper><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Track my ride</span></div><form name=userProfileUpdateForm class=\"container login-container post-ride-container animation-form-signup ride-status\" novalidate><div class=triangle-down-left-post></div><div class=\"form-section signup-section-form post-ride-form\" ng-class=\"{'editable-mode' : editableMode}\"><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/from-icon.png ng-click=\"optionAddressOptions('from')\"></div><div id=postFromSec class=from-address-post-wrap><label class=field-label>From</label><p class=track-ride-value>{{postedRide.startLocation.display_address}}</p></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/to.png ng-click=\"optionAddressOptions('to')\"></div><div id=postToSec class=from-address-post-wrap><label class=field-label>To</label><p class=track-ride-value>{{postedRide.endLocation.display_address}}</p></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/via.png ng-click=\"optionAddressOptions('to')\"></div><div id=postToSec class=from-address-post-wrap><label class=field-label>Via</label><p class=track-ride-value>{{postedRide.routeSummary}}</p></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/starting-time.png></div><div class=user-input-section><!-- class=\"from-address-post-wrap\" --><label class=field-label>Leaving in</label><p class=\"non-editable-sec track-ride-value\">{{rideScheduledTime}} minutes</p><div class=editable-sec><!-- <label class=\"field-label from\">Leaving In</label> --><select name=leavingIn class=\"timeslot post-ride-leaving-in\" ng-class=\"{'error-border':!showErrorMessage}\" required ng-options=\"t.value as t.text for t in leavingInJSON\" ng-model=leavingIn><option style=display:none value=\"\">Leaving In</option></select><div class=error-msg-edit ng-messages=postRideForm.shiftEndTime.$error><p ng-message=required class=error-msg>shift time is required</p></div></div></div></div><div class=each-row><div class=icon-address-fields><img class=post-ride-from-icon src=assets/images/available-rides/seats_avalaible.png></div><div class=from-address-post-wrap><label class=field-label>Seat Available</label><p class=track-ride-value>{{postedRide.currentlyAvailableSeats}} / {{postedRide.initiallyAvailableSeats}}</p></div></div></div><div class=\"each-row post-ride-continue\" name=syncData ui-sref=currentRide><!-- ng-click=\"startRide()\" -->START THE RIDE! <img class=post-continue-img src=assets/images/icon_car.png></div><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-L-none pad-R-none track-btn-sec\"><button class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left track-reschedule-btn\" ng-click=leftButtonClicked(leftButtonText)>{{leftButtonText}}</button> <button class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right track-reschedule-btn cancel-btn\" ng-click=rightButtonClicked(rightButtonText)>{{rightButtonText}}</button></div></form></div><div class=home-menu-swiper-wrap><img class=slide-arrow-sec src=assets/images/uparrow.png ng-click=toggleFooter() alt=up><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
   );
 
 
@@ -4653,7 +4680,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "<div class=\"page-wrapper suggestion-page-wrapper\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section post-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Get Suggestions</span></div><div class=suggestion-map-wrap><!-- <div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 pad-R-none pad-L-none sugg-search-sec\">\n" +
     "\t\t\t\t<input type=\"text\" class=\"sugg-search-box\" placeholder=\"Search for co-commuters\" >\n" +
     "\t\t\t\t<img src=\"assets/images/3x/ico_search.png\" class=\"search-icon\">\n" +
-    "\t\t\t</div> --><div class=\"triangle-down-left-post suggestion-page\"></div><p class=add-commuter-title>Tap to add co-commuters</p><leaflet markers=markers lf-center=center event-broadcast=events id=myMap defaults=defaults></leaflet><div class=sugg-create-team name=syncData ng-click=createTeam()>CREATE TEAM! <img class=post-continue-img src=assets/images/icon_car.png></div></div></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon ui-sref=userHome.rideStatus src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text ui-sref=userHome.rideStatus>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
+    "\t\t\t</div> --><div class=\"triangle-down-left-post suggestion-page\"></div><p class=add-commuter-title>Tap to add co-commuters</p><leaflet markers=markers lf-center=center event-broadcast=events id=myMap defaults=defaults></leaflet><div class=sugg-create-team name=syncData ng-click=createTeam()>CREATE TEAM! <img class=post-continue-img src=assets/images/icon_car.png></div></div></div><div class=home-menu-swiper-wrap><img class=slide-arrow-sec src=assets/images/uparrow.png ng-click=toggleFooter() alt=up><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
   );
 
 
@@ -4692,7 +4719,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/teamDetails/teamDetails.html',
-    "<div class=\"page-wrapper avail-page-wrapper team-dtl-page\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Team Details</span> <span class=\"glyphicon glyphicon-list-alt pull-right\" ng-click=getTeamActivities()></span></div><div class=team-dtl-wrapper><div class=triangle-down-left></div><p class=commute-title>{{ team.name }}</p><div class=team-detail-content><div class=\"each-row login-page\"><div class=field-icon-section><img class=icon-style src=assets/images/Locator.png></div><div class=user-input-section><p class=label-text>Starting</p><p class=value-text>{{ team.rideDetails.home.formatted_address }}</p></div></div><div class=\"each-row login-page\"><div class=field-icon-section><img class=icon-style src=assets/images/Locator.png></div><div class=user-input-section><p class=label-text>Destination</p><p class=value-text>{{ team.rideDetails.office.formatted_address }}</p></div></div><div class=\"each-row login-page\"><div class=field-icon-section><img class=\"icon-style time\" src=assets/images/time.png></div><div class=user-input-section><p class=label-text>Shift time</p><p class=value-text>{{ team.rideDetails.preferredTimeHToO }} - {{ team.rideDetails.preferredTimeOToH }}</p></div></div><p class=co-commuter-title>Co-commuters</p><ul class=co-comm-list><li class=owner><img src=assets/images/time.png> <span>{{ team.createdBy.empName }}</span></li><li ng-repeat=\"member in team.members\"><img src=assets/images/time.png> <span>{{ member.empName }}</span></li></ul></div></div></div><div class=home-menu-swiper-wrap><div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\"><img src=assets/images/uparrow.png ng-click=toggleFooter() alt=up></div><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon ui-sref=userHome.rideStatus src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text ui-sref=userHome.rideStatus>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
+    "<div class=\"page-wrapper avail-page-wrapper team-dtl-page\"><div class=\"container login-container user-home-container pad-R-none pad-L-none\" scroll ng-class={availheaderback:boolChangeClass}><div class=\"col-md-12 col-sm-12 col-xs-12 header-section avail-ride-header\"><!-- <span class=\"glyphicon glyphicon-chevron-left cursor-pointer pull-left\"></span> --><span class=heading>Team Details</span> <span class=\"glyphicon glyphicon-list-alt pull-right\" ng-click=getTeamActivities()></span></div><div class=team-dtl-wrapper><div class=triangle-down-left></div><p class=commute-title>{{ team.name }}</p><div class=team-detail-content><div class=\"each-row login-page\"><div class=field-icon-section><img class=icon-style src=assets/images/Locator.png></div><div class=user-input-section><p class=label-text>Starting</p><p class=value-text>{{ team.rideDetails.home.formatted_address }}</p></div></div><div class=\"each-row login-page\"><div class=field-icon-section><img class=icon-style src=assets/images/Locator.png></div><div class=user-input-section><p class=label-text>Destination</p><p class=value-text>{{ team.rideDetails.office.formatted_address }}</p></div></div><div class=\"each-row login-page\"><div class=field-icon-section><img class=\"icon-style time\" src=assets/images/time.png></div><div class=user-input-section><p class=label-text>Shift time</p><p class=value-text>{{ team.rideDetails.preferredTimeHToO }} - {{ team.rideDetails.preferredTimeOToH }}</p></div></div><p class=co-commuter-title>Co-commuters</p><ul class=co-comm-list><li class=owner><img src=assets/images/time.png> <span>{{ team.createdBy.empName }}</span></li><li ng-repeat=\"member in team.members\"><img src=assets/images/time.png> <span>{{ member.empName }}</span></li></ul></div></div></div><div class=home-menu-swiper-wrap><img class=slide-arrow-sec src=assets/images/uparrow.png ng-click=toggleFooter() alt=up><div class=home-page-menu-options><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.home class=home-menu-icon src=assets/images/dashboard-icon/home.png><p ui-sref=userHome.home class=home-menu-text>HOME</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.userProfile class=home-menu-icon src=assets/images/dashboard-icon/profile.png><p ui-sref=userHome.userProfile class=home-menu-text>PROFILE</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=userHome.rideStatus class=home-menu-icon src=assets/images/dashboard-icon/track-ride.png><p ui-sref=userHome.rideStatus class=home-menu-text>TRACK RIDES</p></div><div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\"><img ui-sref=activities class=home-menu-icon src=assets/images/dashboard-icon/history.png><p ui-sref=activities class=home-menu-text>HISTORY</p></div></div></div></div>"
   );
 
 
@@ -4702,7 +4729,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/userMarker/userMarker.html',
-    "<div class=cn-wrapper id=cn-wrapper>{{contactno}} {{empid}}<ul><li><a ng-href=\"tel: {{contactno}}\"><img class=calling-icon-map src=assets/images/map-icons/icon_call.png></a></li><li><a href=#><img src=assets/images/map-icons/icon_contact_rollover.png></a></li><li><a href=#><img src=assets/images/map-icons/icon_favorite.png></a></li><li data-ng-click=addToTeam()><a><img class=add-icon-map src=assets/images/map-icons/icon_add.png></a></li></ul></div>"
+    "<div class=cn-wrapper id=cn-wrapper><ul><li><a ng-href=\"tel: {{contactno}}\"><img class=calling-icon-map src=assets/images/map-icons/icon_call.png></a></li><li><a href=#><img src=assets/images/map-icons/icon_contact_rollover.png></a></li><li><a href=#><img src=assets/images/map-icons/icon_favorite.png></a></li><li data-ng-click=addToTeam()><a><img class=add-icon-map id={{empid}}_addIcon src=assets/images/map-icons/icon_add.png></a></li></ul></div>"
   );
 
 
@@ -4729,7 +4756,12 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "\t\t\t\t\t\t<img class=\"icon-style home\" src=\"assets/images/icon_mobile_number.png\">\n" +
     "\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t<div class=\"user-input-section\">\n" +
-    "\t\t\t\t\t\t<span class=\"non-editable-sec\">{{user.contactNo}}</span>\n" +
+    "\t\t\t\t\t\t<div class=\"non-editable-sec\">\n" +
+    "\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
+    "\t\t\t\t\t\t\t\tContact no.\n" +
+    "\t\t\t\t\t\t\t</label>\n" +
+    "\t\t\t\t\t\t\t<p class=\"field-value\">{{user.contactNo}}</p>\n" +
+    "\t\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t\t<div class=\"editable-sec\">\n" +
     "\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
     "\t\t\t\t\t\t\t\tContact no.\n" +
@@ -4751,7 +4783,12 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "\t\t\t\t\t\t<img class=\"icon-style home\" alt=\"Home\" src=\"assets/images/available-rides/from-icon.png\">\n" +
     "\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t<div class=\"user-input-section\">\n" +
-    "\t\t\t\t\t\t<span class=\"non-editable-sec\">{{user.homeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span>\n" +
+    "\t\t\t\t\t\t<div class=\"non-editable-sec\">\n" +
+    "\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
+    "\t\t\t\t\t\t\t\tHome address\n" +
+    "\t\t\t\t\t\t\t</label>\n" +
+    "\t\t\t\t\t\t\t<p class=\"field-value\">{{user.homeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</p>\n" +
+    "\t\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t\t<div class=\"editable-sec\">\n" +
     "\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
     "\t\t\t\t\t\t\t\tHome address\n" +
@@ -4775,7 +4812,12 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "\t\t\t\t\t\t<img class=\"icon-style home\" alt=\"Home\" src=\"assets/images/available-rides/to.png\">\n" +
     "\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t<div class=\"user-input-section\">\n" +
-    "\t\t\t\t\t\t<span class=\"non-editable-sec\">{{user.officeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</span>\n" +
+    "\t\t\t\t\t\t<div class=\"non-editable-sec\">\n" +
+    "\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
+    "\t\t\t\t\t\t\t\tOffice address\n" +
+    "\t\t\t\t\t\t\t</label>\n" +
+    "\t\t\t\t\t\t\t<p class=\"field-value\">{{user.officeAddressLocation.display_address}}, {{user.city}}, {{user.state}}</p>\n" +
+    "\t\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t\t<div class=\"editable-sec\">\n" +
     "\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
     "\t\t\t\t\t\t\t\tOffice address\n" +
@@ -4799,7 +4841,12 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "\t\t\t\t\t\t<img class=\"icon-style home\" alt=\"Home\" src=\"assets/images/car-front.png\">\n" +
     "\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t<div class=\"user-input-section\">\n" +
-    "\t\t\t\t\t\t<span class=\"non-editable-sec\">{{user.vehicle[0].vehicleLicenseNumber}}</span>\n" +
+    "\t\t\t\t\t\t<div class=\"non-editable-sec\">\n" +
+    "\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
+    "\t\t\t\t\t\t\t\tVehicle no.\n" +
+    "\t\t\t\t\t\t\t</label>\n" +
+    "\t\t\t\t\t\t\t<p class=\"field-value\">{{user.vehicle[0].vehicleLicenseNumber}}</p>\n" +
+    "\t\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t\t<div class=\"editable-sec\">\n" +
     "\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
     "\t\t\t\t\t\t\t\tVehicle no.\n" +
@@ -4821,7 +4868,12 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "\t\t\t\t\t\t<img class=\"icon-style home\" alt=\"Home\" src=\"assets/images/available-rides/to.png\">\n" +
     "\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t<div class=\"user-input-section\">\n" +
-    "\t\t\t\t\t\t<span class=\"non-editable-sec\">{{user.vehicle[0].capacity}}</span>\n" +
+    "\t\t\t\t\t\t<div class=\"non-editable-sec\">\n" +
+    "\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
+    "\t\t\t\t\t\t\t\tSeats available\n" +
+    "\t\t\t\t\t\t\t</label>\n" +
+    "\t\t\t\t\t\t\t<p class=\"field-value\">{{user.vehicle[0].capacity}}</p>\n" +
+    "\t\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t\t<div class=\"editable-sec\">\n" +
     "\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
     "\t\t\t\t\t\t\t\tSeats available\n" +
@@ -4849,7 +4901,12 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "\t\t\t\t\t\t\t<img class=\"icon-style home\" alt=\"Home\" src=\"assets/images/available-rides/starting-time.png\">\n" +
     "\t\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t\t<div class=\"user-input-section\">\n" +
-    "\t\t\t\t\t\t\t<span class=\"non-editable-sec\">{{user.shiftTimeIn | date:'hh:mm a'}}</span>\n" +
+    "\t\t\t\t\t\t\t<div class=\"non-editable-sec\">\n" +
+    "\t\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
+    "\t\t\t\t\t\t\t\t\tShift start time\n" +
+    "\t\t\t\t\t\t\t\t</label>\n" +
+    "\t\t\t\t\t\t\t\t<p class=\"field-value\">{{user.shiftTimeIn | date:'hh:mm a'}}</p>\n" +
+    "\t\t\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t\t\t<div class=\"editable-sec\">\n" +
     "\t\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
     "\t\t\t\t\t\t\t\t\tShift start time\n" +
@@ -4873,7 +4930,12 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "\t\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t\t\n" +
     "\t\t\t\t\t\t<div class=\"user-input-section\">\n" +
-    "\t\t\t\t\t\t\t<span class=\"non-editable-sec\">{{user.shiftTimeout | date:'hh:mm a'}}</span>\n" +
+    "\t\t\t\t\t\t\t<div class=\"non-editable-sec\">\n" +
+    "\t\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
+    "\t\t\t\t\t\t\t\t\tShift end time\n" +
+    "\t\t\t\t\t\t\t\t</label>\n" +
+    "\t\t\t\t\t\t\t\t<p class=\"field-value\">{{user.shiftTimeout | date:'hh:mm a'}}</p>\n" +
+    "\t\t\t\t\t\t\t</div>\n" +
     "\t\t\t\t\t\t\t<div class=\"editable-sec\">\n" +
     "\t\t\t\t\t\t\t\t<label class=\"field-label\">\n" +
     "\t\t\t\t\t\t\t\t\tShift end time\n" +
@@ -4902,9 +4964,7 @@ angular.module('cbApp').run(['$templateCache', function($templateCache) {
     "\t</div>\n" +
     "\n" +
     "\t<div class=\"home-menu-swiper-wrap\">\n" +
-    "\t\t<div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12 slide-arrow-sec\" >\n" +
-    "\t\t\t<img src=\"assets/images/uparrow.png\" ng-click=\"toggleFooter()\" alt=\"up\">\n" +
-    "\t\t</div>\n" +
+    "\t\t<img class=\"slide-arrow-sec\" src=\"assets/images/uparrow.png\" ng-click=\"toggleFooter()\" alt=\"up\">\n" +
     "\t\t<div class=\"home-page-menu-options\">\n" +
     "\t\t\t<div class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3 each-home-menu\">\n" +
     "\t\t\t\t<img ui-sref=\"userHome.home\" class=\"home-menu-icon\" src=\"assets/images/dashboard-icon/home.png\">\n" +

@@ -30,6 +30,7 @@ angular.module('cbApp')
                 $scope.suggestedUsers = res.data;
 
                 angular.forEach($scope.suggestedUsers, function(user, key){
+                    if(user.homeAddressLocation){
                         var tempObj = {};
                         tempObj.lat = parseFloat(user.homeAddressLocation.location[1]);
                         tempObj.lng = parseFloat(user.homeAddressLocation.location[0]);
@@ -38,7 +39,7 @@ angular.module('cbApp')
                         if($scope.currentUser.empId == user.empId)
                             markerClass = "map-user-marker user-own";
                         else
-                             markerClass = "map-user-marker";
+                            markerClass = "map-user-marker";
                         var image = angular.element('<img>',{src:user.userPhotoUrl || "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_100x100_v1.png" ,'class':markerClass, 'id':user.empId+"_img"});
                         var p = angular.element('<p>',{'class':'map-user-name-sec','html':user.empName});
 
@@ -53,6 +54,7 @@ angular.module('cbApp')
                                         }
                         tempObj.message='<user-marker contactno="'+user.contactNo+'" empid="'+user.empId+'" action="addAsMember('+user.empId+')"></user-marker>';
                         $scope.markers.push(tempObj);
+                    }
                 });
                 console.log($scope.markers)
             }
